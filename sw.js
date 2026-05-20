@@ -1,7 +1,7 @@
 /* ── THE WILDER HOUSE — SERVICE WORKER v2 ── */
 /* Stale-while-revalidate for HTML; long-cache for images/fonts */
 
-const CACHE = 'wilder-v5';
+const CACHE = 'wilder-v6';
 
 const SHELL = [
   '/',
