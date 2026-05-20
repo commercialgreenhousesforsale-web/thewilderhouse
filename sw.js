@@ -5,7 +5,6 @@ const CACHE = 'wilder-v7';
 
 const SHELL = [
   '/',
-  '/savannah-ghost-tour.html',
   '/forsyth-park-vacation-rental-savannah-314a',
   '/savannah-victorian-district-vacation-rental-316a',
   '/savannah-group-vacation-rental-4-bedroom',
@@ -70,6 +69,10 @@ self.addEventListener('fetch', (e) => {
     'api.mapbox.com',
     'tile.openstreetmap.org',
   ];
+
+  /* Always fetch savannah-ghost-tour.html fresh from network */
+  if (url.pathname === '/savannah-ghost-tour.html') return;
+
   if (liveHosts.some((h) => url.hostname.includes(h))) return;
 
   /* Images — cache-first (they have 1-year Cache-Control from _headers) */
