@@ -1,0 +1,24 @@
+# Legacy short URLs — .html versions
+/314A.html /forsyth-park-vacation-rental-savannah-314a 301
+/314a.html /forsyth-park-vacation-rental-savannah-314a 301
+/316A.html /savannah-victorian-district-vacation-rental-316a 301
+/316a.html /savannah-victorian-district-vacation-rental-316a 301
+/both.html /savannah-group-vacation-rental-4-bedroom 301
+/both /savannah-group-vacation-rental-4-bedroom 301
+/units.html /savannah-group-vacation-rental-4-bedroom 301
+/about.html /wilder-house-savannah-vacation-rental 301
+/wilder-house.html /wilder-house-savannah-vacation-rental 301
+/home.html / 301
+/test.html / 301
+
+# Legacy short URLs — clean path versions (orphan pages without .html extension)
+/314A /forsyth-park-vacation-rental-savannah-314a 301
+/316A /savannah-victorian-district-vacation-rental-316a 301
+/wilder-house /wilder-house-savannah-vacation-rental 301
+/units /savannah-group-vacation-rental-4-bedroom 301
+/test / 301
+
+
+# Cloudflare Pages — redirect .html URLs to clean paths
+/index.html / 301
+/*.html /:splat 301

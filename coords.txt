@@ -1,0 +1,42 @@
+Forsyth Park Fountain Savannah Georgia|32.0674|-81.0954
+Johnson Square Savannah Georgia|32.0802|-81.0915
+Madison Square Savannah Georgia|32.0807|-81.0878
+Monterey Square Savannah Georgia|32.0855|-81.0890
+Chippewa Square Savannah Georgia|32.0738|-81.0860
+Wright Square Savannah Georgia|32.0823|-81.0875
+Whitefield Square Savannah Georgia|32.0775|-81.0855
+Telfair Square Savannah Georgia|32.0745|-81.0878
+River Street Savannah Georgia|32.0859|-81.0999
+Factors Walk Savannah Georgia|32.0815|-81.0995
+Stone Stairs Savannah Georgia|32.0790|-81.0995
+Cathedral of St. John the Baptist Savannah Georgia|32.0760|-81.0885
+Independent Presbyterian Church Savannah Georgia|32.0790|-81.0895
+Wesley Monumental UMC Savannah Georgia|32.0820|-81.0888
+First African Baptist Church Savannah Georgia|32.0765|-81.0868
+17Hundred90 Inn Savannah Georgia|32.0750|-81.0895
+Marshall House Savannah Georgia|32.0755|-81.0875
+Foley House Inn Savannah Georgia|32.0760|-81.0870
+Mercer Williams House Savannah Georgia|32.0825|-81.0880
+Andrew Low House Savannah Georgia|32.0760|-81.0870
+Olde Pink House Savannah Georgia|32.0810|-81.0900
+Forsyth Park Inn Savannah Georgia|32.0609|-81.0903
+Kehoe House Savannah Georgia|32.0760|-81.0870
+Sorrel-Weed House Savannah Georgia|32.0820|-81.0890
+Moon River Brewing Company Savannah Georgia|32.0770|-81.0995
+Pirates House Savannah Georgia|32.0765|-81.0895
+Boar's Head Savannah Georgia|32.0785|-81.0875
+Colonial Park Cemetery Savannah Georgia|32.0765|-81.0880
+Laurel Grove Cemetery Savannah Georgia|32.0555|-81.0750
+Bonaventure Cemetery Savannah Georgia|32.0453|-81.0509
+City Hall Savannah Georgia|32.0758|-81.0878
+City Market Savannah Georgia|32.0810|-81.0865
+Cotton Exchange Savannah Georgia|32.0815|-81.0995
+Mason Building Savannah Georgia|32.0805|-81.0895
+Wilder House Savannah Georgia|32.0620|-81.0905
+Davenport House Savannah Georgia|32.0765|-81.0895
+Scarbrough House Savannah Georgia|32.0760|-81.0890
+Wyld Dock Bar Savannah Georgia|32.0810|-81.1005
+Pulaski Monument Savannah Georgia|32.0825|-81.0890
+Oglethorpe Statue Savannah Georgia|32.0738|-81.0860
+Tomo-Chi-Chi Statue Savannah Georgia|32.0823|-81.0875
+Whitefield Monument Savannah Georgia|32.0775|-81.0855
