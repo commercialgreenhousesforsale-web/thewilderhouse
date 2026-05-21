@@ -122,6 +122,11 @@ const locations=[{name:"The Wilder House - Safe Sanctuary",lat:32.07098,lng:-81.
 
 const voiceMap={OldLady:"0rEo3eAjssGDUCXHYENf",OldMan:"dtVZnErhiiosqofxDzSH"};
 
+// Pre-generated audio file map
+const audioFileMap={
+  "The Wilder House - Safe Sanctuary":{OldMan:"/audio/wilder-house-oldman.mp3",OldLady:"/audio/wilder-house-oldlady.mp3"}
+};
+
 let map,selectedLocation=null,geofencingActive=false,userLocation=null,markers=[],currentEditingIndex=null,adminMode=false;
 const GEOFENCE_RADIUS=200;
 const ADMIN_PASSWORD='savannah2024';
@@ -168,6 +173,15 @@ async function playNarration(idx){
 const loc=locations[idx];
 const audio=document.getElementById('narrationAudio');
 const selectedVoice=document.getElementById('voiceSelect').value;
+
+// Check if pre-generated audio file exists
+if(audioFileMap[loc.name]&&audioFileMap[loc.name][selectedVoice]){
+  audio.src=audioFileMap[loc.name][selectedVoice];
+  audio.play();
+  return;
+}
+
+// Fall back to API generation
 const voiceId=voiceMap[selectedVoice]||voiceMap.George;
 try{
 const response=await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId,{
