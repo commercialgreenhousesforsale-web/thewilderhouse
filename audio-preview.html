@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wilder House Audio Preview</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1410, #2a1810);
+      color: #c9a876;
+      font-family: Georgia, serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(58, 40, 24, 0.8);
+      border: 2px solid #8b7355;
+      border-radius: 8px;
+      padding: 40px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    }
+    h1 {
+      font-size: 28px;
+      margin: 0 0 10px 0;
+      color: #d4c5b9;
+    }
+    .subtitle {
+      color: #8b7355;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    audio {
+      width: 100%;
+      margin: 30px 0;
+      accent-color: #c9a876;
+    }
+    .info {
+      color: #a89968;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .location {
+      background: rgba(139, 115, 85, 0.1);
+      border-left: 4px solid #c9a876;
+      padding: 15px;
+      margin: 20px 0;
+      text-align: left;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wilder House - Safe Sanctuary</h1>
+    <div class="subtitle">OldMan Voice Narration Test</div>
+
+    <audio controls>
+      <source src="./audio/wilder-house-oldman.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="info">
+      <p><strong>Voice:</strong> OldMan (Deep, Mysterious)</p>
+      <p><strong>File Size:</strong> 442 KB</p>
+      <p><strong>Duration:</strong> ~55 seconds</p>
+    </div>
+
+    <div class="location">
+      "314 East Park Avenue, near Forsyth Park. Reverend Wilder blessed this sanctuary centuries ago. The protection holds absolute. No spirit crosses this threshold. The living find refuge here. The dead cannot follow. Stand here, gather courage. To the west lies Forsyth Park and its dancing fountain. To the north, the Historic District and River Street await. This sanctuary is your anchor. Return here if the spirits grow too heavy."
+    </div>
+  </div>
+</body>
+</html>
