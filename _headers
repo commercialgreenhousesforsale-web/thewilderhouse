@@ -1,2 +1,178 @@
+/* DEFAULT HEADERS FOR ALL PAGES */
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdnjs.cloudflare.com https://api.elevenlabs.io https://api.mapbox.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://api.mapbox.com; connect-src 'self' https://cdnjs.cloudflare.com https://api.mapbox.com https://api.elevenlabs.io https://api.web3forms.com https://www.google-analytics.com https://analytics.google.com https://static.cloudflareinsights.com https://api.open-meteo.com https://api.sunrise-sunset.org https://api.tidesandcurrents.noaa.gov wss://api.elevenlabs.io; img-src 'self' data: blob: https:; font-src 'self' https://cdnjs.cloudflare.com; frame-src 'self'; object-src 'none'
+  /* SECURITY HEADERS */
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(self), microphone=(), camera=(), payment=()
+
+  /* CONTENT SECURITY POLICY */
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdnjs.cloudflare.com https://api.elevenlabs.io https://api.mapbox.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://api.mapbox.com https://fonts.googleapis.com; connect-src 'self' https://cdnjs.cloudflare.com https://api.mapbox.com https://api.elevenlabs.io https://api.web3forms.com https://www.google-analytics.com https://analytics.google.com https://static.cloudflareinsights.com https://api.open-meteo.com https://api.sunrise-sunset.org https://api.tidesandcurrents.noaa.gov wss://api.elevenlabs.io https://www.googletagmanager.com; img-src 'self' data: blob: https:; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; frame-src 'self'; object-src 'none'
+
+  /* CACHING: HTML pages — always check freshness (no aggressive caching) */
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/* STATIC ASSETS — Aggressive caching for immutable files */
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/webp
+
+/*.{png,jpg,jpeg,gif,ico,svg}
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/svg+xml
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: text/css; charset=utf-8
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/javascript; charset=utf-8
+
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: font/woff
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: font/woff2
+
+/*.json
+  Cache-Control: public, max-age=3600
+  Content-Type: application/json; charset=utf-8
+
+/*.mp3
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: audio/mpeg
+  Accept-Ranges: bytes
+
+/*.webmanifest
+  Cache-Control: public, max-age=604800
+  Content-Type: application/manifest+json; charset=utf-8
+
+/* API & FORM ENDPOINTS — Bypass cache */
+/api/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  Content-Type: application/json
+
+/* INTERACTIVE/TOOL PAGES — Check freshness frequently */
+/savannah-ghost-tour.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/audio-preview.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/capture-coords.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/test.html
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/* FORM SUBMISSION PAGES — Never cache */
+/contact.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/submit-review.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/* POLICY & LEGAL PAGES — Cache for 24 hours */
+/privacy-policy.html
+  Cache-Control: public, max-age=86400, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/house-rules.html
+  Cache-Control: public, max-age=86400, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/* PROPERTY LISTING PAGES — Cache for 6 hours (semi-static) */
+/314A.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/316A.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/units.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/wilder-house.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/wilder-house-savannah-vacation-rental.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/forsyth-park-vacation-rental-savannah-314a.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/historic-savannah-vacation-rental.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/historic-savannah-vacation-rentals.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-bachelorette-party-rental.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-day-planner.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-farmers-market.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-group-vacation-rental-4-bedroom.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-romantic-vacation-rental.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-st-patricks-day-vacation-rental.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-vacation-rental-with-parking.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-victorian-district.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/savannah-victorian-district-vacation-rental-316a.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/family-vacation-rental.html
+  Cache-Control: public, max-age=21600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/* REVIEW/SOCIAL PAGES — Cache for 1 hour */
+/reviews.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/* 404 ERROR PAGE — Cache for 1 hour */
+/404.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/html; charset=utf-8
+  Status: 404
