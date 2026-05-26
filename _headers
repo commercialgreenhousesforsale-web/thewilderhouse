@@ -134,11 +134,11 @@
   Cache-Control: public, max-age=21600, must-revalidate
   Content-Type: text/html; charset=utf-8
 
-/right-now.html
+/right-now-savannah.html
   Cache-Control: public, max-age=300, must-revalidate
   Content-Type: text/html; charset=utf-8
 
-/right-now-embed.html
+/right-now-savannah-embed.html
   Cache-Control: public, max-age=300, must-revalidate
   Content-Type: text/html; charset=utf-8
 
