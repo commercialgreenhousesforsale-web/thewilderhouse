@@ -37,6 +37,9 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 .location-dot.blessed div{width:14px;height:14px;border-radius:50%;background:#66bb6a;box-shadow:0 0 10px rgba(102,187,106,0.5)}
 .location-dot:hover div{transform:scale(1.3)}
 .location-label{background:rgba(0,0,0,0.7) !important;color:#c9a876 !important;border:none !important;border-radius:3px;padding:4px 8px !important;font-size:11px !important;font-family:Georgia,serif;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5)}
+.user-location-dot{width:16px;height:16px;border-radius:50%;cursor:pointer;border:2px solid #2196F3;display:flex;align-items:center;justify-content:center}
+.user-location-dot div{width:10px;height:10px;border-radius:50%;background:#2196F3;box-shadow:0 0 8px rgba(33,150,243,0.6)}
+.user-location-label{background:rgba(33,150,243,0.9) !important;color:#ffffff !important;border:none !important;border-radius:3px;padding:4px 8px !important;font-size:10px !important;font-family:Georgia,serif;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(33,150,243,0.5)}
 .coord-editor{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#2a1810;border:2px solid #8b7355;padding:20px;border-radius:5px;z-index:1000;width:400px;box-shadow:0 0 30px rgba(0,0,0,0.8)}
 .coord-editor.active{display:block}
 .coord-editor h3{color:#c9a876;margin-bottom:15px;font-size:14px}
@@ -72,11 +75,11 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <div class="stat-item"><span>Blessed Safe Spaces:</span><strong id="blessedCount">0</strong></div>
 </div>
 <div class="location-list" id="locationList"></div>
-<button id="adminButton" onclick="promptAdminMode()" style="display:none;background:#c9534f">🔓 Unlock Admin</button>
+<button id="adminButton" onclick="promptAdminMode()" style="display:none;background:#c9534f;padding:4px;font-size:8px;margin-top:4px;opacity:0.6">🔓 Admin</button>
 <button id="editButton1" onclick="addNewLocation()" style="display:none">➕ Add New Location</button>
 <button id="editButton2" onclick="exportLocations()" style="display:none">💾 Export Data</button>
 <button onclick="centerMap()">📍 Center Map</button>
-<button onclick="startGeofencing()">🔊 Enable Voice Proximity</button>
+<button onclick="startGeofencing()">🎬 Start Tour & Accept Location</button>
 <div class="proximity-alert" id="proximityAlert"></div>
 </div>
 </div>
@@ -137,7 +140,7 @@ const audioFileMap={
   "STOP 8: Emmet Park & Savannah River":{OldMan:"/audio/stop-8-emmet-river-oldman.mp3",OldLady:"/audio/stop-8-emmet-river-oldlady.mp3"}
 };
 
-let map,selectedLocation=null,geofencingActive=false,userLocation=null,markers=[],currentEditingIndex=null,adminMode=false,routePolyline=null,currentSegmentPolyline=null;
+let map,selectedLocation=null,geofencingActive=false,userLocation=null,markers=[],currentEditingIndex=null,adminMode=false,routePolyline=null,currentSegmentPolyline=null,userMarker=null;
 const GEOFENCE_RADIUS=200;
 const ADMIN_PASSWORD='savannah2024';
 
@@ -239,15 +242,26 @@ map.setView([32.0730,-81.0900],14);
 function startGeofencing(){
 if(!navigator.geolocation){alert('Geolocation not supported');return;}
 geofencingActive=true;
-document.querySelector('button:nth-of-type(2)').textContent='📍 Ghost Proximity Active';
+document.querySelector('button:nth-of-type(2)').textContent='📍 Tour Active - GPS On';
 navigator.geolocation.watchPosition(position=>{
 userLocation={lat:position.coords.latitude,lng:position.coords.longitude};
+updateUserMarker();
 checkNearbyLocations();
 },error=>{
 console.error('Geolocation error:',error);
 geofencingActive=false;
-document.querySelector('button:nth-of-type(2)').textContent='📍 Enable Voice Proximity';
+document.querySelector('button:nth-of-type(2)').textContent='🎬 Start Tour & Accept Location';
 });
+}
+
+function updateUserMarker(){
+if(!userLocation||!map)return;
+if(userMarker){
+map.removeLayer(userMarker);
+}
+const userIcon=L.divIcon({className:'user-location-dot',html:'<div></div>',iconSize:[16,16],iconAnchor:[8,8]});
+userMarker=L.marker([userLocation.lat,userLocation.lng],{icon:userIcon}).addTo(map);
+userMarker.bindTooltip('📍 You are here',{permanent:true,direction:'top',offset:[0,-15],className:'user-location-label'});
 }
 
 function checkNearbyLocations(){
