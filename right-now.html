@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Right Now Savannah — Live Travel Recommendations</title>
+<meta name="description" content="What's the best thing to do in Savannah right now? Real-time recommendations based on weather, time, and current events. Updated every hour."/>
+<meta name="keywords" content="things to do in Savannah now, Savannah today, Savannah tonight, Savannah weather, live Savannah activities"/>
+<link rel="canonical" href="https://forsythparkvacationrentals.com/right-now"/>
+<meta property="og:title" content="Right Now Savannah"/>
+<meta property="og:description" content="The single best thing to do in Savannah right now. Real-time recommendations based on weather and time."/>
+<meta property="og:type" content="website"/>
+<meta name="theme-color" content="#2a3c30"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+:root{
+  --g:#2a3c30;--g2:#3d5444;--gold:#c2a032;--gol:#e8c96a;
+  --cr:#faf9f7;--cd:#f0ede7;--tx:#2e2e2e;--mu:#5e5e5e;--wh:#ffffff;
+  --terra:#8a4a1e;--sky:#3d6278;
+  --rule:rgba(42,60,48,.12);--rule-soft:rgba(42,60,48,.07);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cr);color:var(--tx);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none}
+img{max-width:100%;display:block}
+
+/* ── NAV ──────────────────────────────────────────── */
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 24px}
+.logo{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;line-height:1}
+.logo-name{font-family:var(--serif);font-size:1.9rem;color:var(--g);letter-spacing:.03em;font-weight:400;white-space:nowrap}
+.logo-est{font-size:.82rem;color:#5c4a00;letter-spacing:3px;font-style:normal}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-links a{color:#444;font-size:.73rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--g)}
+.nav-cta{background:var(--g)!important;color:var(--wh)!important;padding:9px 18px;border-radius:3px}
+.nav-cta:hover{background:var(--g2)!important}
+
+/* ── PAGE HEADER ──────────────────────────────── */
+.page-header{background:var(--g);color:rgba(255,255,255,.9);padding:48px 0 32px}
+.ph-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.ph-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gol);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ph-dot{width:8px;height:8px;border-radius:50%;background:var(--gol);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.page-header h1{font-family:var(--serif);font-size:clamp(2.8rem,6vw,4.2rem);font-weight:400;line-height:.95;letter-spacing:-.02em;margin-bottom:12px}
+.page-header h1 em{font-style:italic;color:var(--gol)}
+.ph-meta{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.06em;display:flex;flex-wrap:wrap;gap:8px 24px}
+.ph-meta b{color:rgba(255,255,255,.88);font-weight:500}
+
+/* ── LAYOUT ───────────────────────────────────── */
+.container{max-width:1200px;margin:0 auto;padding:40px 20px}
+@media(max-width:600px){.container{padding:24px 14px}}
+
+/* ── RIGHT NOW CARD ───────────────────────────── */
+.rn-card{display:grid;grid-template-columns:1.6fr 1fr;border:2px solid var(--g);border-radius:24px;overflow:hidden;background:#fff;box-shadow:8px 8px 0 rgba(42,60,48,.1);min-height:280px;margin-bottom:32px}
+@media(max-width:768px){.rn-card{grid-template-columns:1fr;box-shadow:4px 4px 0 rgba(42,60,48,.1)}}
+.rn-left{padding:32px;border-right:1px solid var(--rule);display:flex;flex-direction:column}
+@media(max-width:768px){.rn-left{border-right:none;border-bottom:1px solid var(--rule);padding:28px}}
+.rn-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.rn-pulse{width:8px;height:8px;border-radius:50%;background:var(--terra);animation:rnp 1.8s ease-out infinite}
+@keyframes rnp{0%{box-shadow:0 0 0 0 rgba(138,74,30,.55)}70%{box-shadow:0 0 0 10px rgba(138,74,30,0)}100%{box-shadow:0 0 0 0 rgba(138,74,30,0)}}
+.rn-title{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;line-height:1.1;letter-spacing:-.01em;margin-bottom:12px;display:flex;align-items:flex-start;gap:12px}
+.rn-emoji{font-size:1.4em;flex-shrink:0}
+.rn-reason{font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--tx);margin-bottom:20px;line-height:1.5}
+.rn-meta{display:flex;flex-wrap:wrap;gap:14px 28px;font-size:13px;margin-top:auto}
+.rn-mi{display:flex;flex-direction:column;gap:3px}
+.rn-mi-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);font-weight:600}
+.rn-mi-value{color:var(--tx);font-weight:700;font-size:14px}
+.rn-right{padding:28px;background:linear-gradient(180deg,var(--cd),var(--cr));position:relative;overflow:hidden;display:flex;flex-direction:column;gap:18px}
+.rn-bg-glyph{position:absolute;right:-20px;top:-30px;font-size:180px;opacity:.05;pointer-events:none;user-select:none;line-height:1}
+.rn-section-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:12px;margin-top:4px}
+.rn-next{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px dashed var(--rule)}
+.rn-next-emoji{font-size:20px;flex-shrink:0;line-height:1}
+.rn-next-title{font-family:var(--serif);font-size:.95rem;font-weight:500;color:var(--g);line-height:1.2}
+.rn-next-place{font-size:11px;color:var(--mu);margin-top:2px}
+
+/* ── WEATHER PANEL ────────────────────────────── */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px}
+@media(max-width:768px){.panels{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:24px}
+.panel-title{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:12px}
+.w-temp{font-family:var(--serif);font-size:64px;font-weight:400;line-height:.9;letter-spacing:-.04em;display:flex;align-items:flex-start;gap:4px;margin:8px 0 12px}
+.w-deg{font-size:24px;color:var(--mu);margin-top:12px;font-weight:300}
+.w-sky{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--tx);margin-bottom:4px}
+.w-feel{font-size:12px;color:var(--mu);margin-bottom:16px;line-height:1.5}
+.w-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule);padding-top:14px;gap:12px}
+.ws-item{display:flex;flex-direction:column;gap:2px}
+.ws-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.ws-value{font-family:var(--serif);font-size:1.1rem;font-weight:500;color:var(--tx)}
+.ws-sub{font-size:11px;color:var(--mu)}
+
+/* ── SUN CARD ─────────────────────────────────── */
+.sun-arc{width:100%;height:80px;display:block;margin:14px 0}
+.sun-pts{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--mu);margin-bottom:14px}
+.sun-pts-item{display:flex;flex-direction:column;gap:2px}
+.sun-pts-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+.sun-pts-time{font-family:var(--serif);font-size:14px;color:var(--tx);font-weight:500}
+.golden-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;border-top:1px solid var(--rule);padding-top:12px}
+.golden-block{background:linear-gradient(180deg,rgba(194,160,50,.08),transparent);padding:10px 12px;border-radius:8px}
+.golden-name{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.golden-time{font-family:var(--serif);font-size:13px;font-weight:500;display:block}
+.golden-span{font-size:10px;color:var(--mu)}
+
+/* ── MOOD BUTTONS ─────────────────────────────── */
+.mood-section{margin-bottom:32px}
+.mood-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:12px;display:block}
+.mood-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.mood-btn{border:1px solid rgba(42,60,48,.2);background:#fff;color:var(--tx);padding:7px 16px;border-radius:20px;font-size:.8rem;font-weight:500;cursor:pointer;transition:.15s;white-space:nowrap;font-family:inherit}
+.mood-btn:hover{border-color:var(--g);color:var(--g)}
+.mood-btn.active{background:var(--g);color:#fff;border-color:var(--g)}
+
+/* ── ALTERNATIVES ─────────────────────────────── */
+.alternatives{margin-bottom:40px}
+.alt-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:16px}
+.alt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.alt-card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;transition:.18s;cursor:pointer}
+.alt-card:hover{border-color:rgba(42,60,48,.24);box-shadow:0 6px 20px rgba(42,60,48,.07)}
+.alt-emoji{font-size:24px;line-height:1}
+.alt-title{font-family:var(--serif);font-size:1.05rem;font-weight:500;line-height:1.2}
+.alt-place{font-size:11px;color:var(--mu);display:flex;align-items:center;gap:6px}
+.alt-place::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--g);flex-shrink:0}
+.alt-desc{font-size:12px;color:var(--mu);line-height:1.5;flex:1}
+.alt-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.alt-tag{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(42,60,48,.08);color:var(--g)}
+.alt-tag.indoor{background:#e5ecf1;color:var(--sky)}
+.alt-tag.free{background:rgba(42,60,48,.1);color:var(--g)}
+
+/* ── FOOTER ───────────────────────────────────── */
+footer{background:var(--g);color:rgba(255,255,255,.82);padding:52px 24px 28px;margin-top:60px}
+.footer-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr}}
+.footer-brand{font-family:var(--serif);font-size:1.4rem;color:#fff;display:block;margin-bottom:6px}
+.footer-brand span{color:var(--gol)}
+.footer-tagline{font-style:italic;font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px}
+address{font-style:normal;font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.7}
+address a{color:rgba(255,255,255,.7)}
+address a:hover{color:#fff}
+.footer-col-head{font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:12px;font-weight:700;display:block}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:8px}
+.footer-col a{color:rgba(255,255,255,.7);font-size:.85rem;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1080px;margin:28px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:.75rem;color:rgba(255,255,255,.6)}
+
+/* ── SKELETON ─────────────────────────────────── */
+.sk{display:inline-block;background:linear-gradient(90deg,var(--rule),rgba(42,60,48,.07),var(--rule));background-size:200% 100%;animation:shimmer 1.4s ease infinite;border-radius:4px;color:transparent}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── EVENTS ───────────────────────────────────── */
+.events-list{display:flex;flex-direction:column;gap:8px}
+.event-row{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--rule);border-radius:12px;padding:13px 15px}
+.event-g{font-size:20px;flex-shrink:0;line-height:1}
+.event-b{flex:1}
+.event-when{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);margin-bottom:2px}
+.event-name{font-family:var(--serif);font-size:1rem;font-weight:500}
+.event-place{font-size:11.5px;color:var(--mu);margin-top:1px}
+.event-none{font-family:var(--serif);font-style:italic;color:var(--mu);font-size:.95rem;padding:4px 0}
+
+/* ── INSIDER TIPS ─────────────────────────────── */
+.insider-section{background:var(--cd);padding:52px 20px}
+.insider-inner{max-width:1200px;margin:0 auto}
+.insider-title{font-family:var(--serif);font-size:2.2rem;font-weight:400;color:var(--g);line-height:1.1}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px;margin-top:28px}
+.tip-card{background:#fff;border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+.tip-q{display:flex;align-items:center;padding:14px 16px;cursor:pointer;gap:10px;user-select:none}
+.tip-q:hover{background:rgba(42,60,48,.025)}
+.tip-icon{font-size:1.1rem;flex-shrink:0;width:26px;text-align:center}
+.tip-question{font-family:var(--serif);font-size:.93rem;font-weight:500;flex:1;line-height:1.3}
+.tip-chevron{font-size:.65rem;color:var(--mu);flex-shrink:0;transition:transform .2s;display:inline-block}
+.tip-card.open .tip-chevron{transform:rotate(90deg)}
+.tip-a{max-height:0;overflow:hidden;transition:max-height .32s ease}
+.tip-card.open .tip-a{max-height:320px}
+.tip-body{padding:10px 16px 16px 52px;font-size:13px;color:var(--ink2);line-height:1.65;border-top:1px solid var(--rule-soft)}
+.tip-body a{color:var(--g);text-decoration:underline}
+.tip-body strong{color:var(--ink);font-weight:600}
+
+/* ── AI CHAT ──────────────────────────────────– */
+.ai-section{background:var(--g);padding:52px 20px}
+.ai-inner{max-width:700px;margin:0 auto}
+.ai-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gol);margin-bottom:10px;display:block}
+.ai-title{font-family:var(--serif);font-size:2.2rem;font-weight:400;color:#fff;line-height:1.1;margin-bottom:8px}
+.ai-desc{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:22px;line-height:1.65}
+.ai-window{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;overflow:hidden}
+.ai-messages{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:180px;max-height:400px;overflow-y:auto}
+.ai-msg{max-width:85%;font-size:13.5px;line-height:1.6;padding:10px 14px;border-radius:12px}
+.ai-msg.assistant{background:rgba(255,255,255,.12);color:#fff;align-self:flex-start;border-bottom-left-radius:4px}
+.ai-msg.user{background:#fff;color:var(--g);align-self:flex-end;border-bottom-right-radius:4px;font-weight:500}
+.ai-msg.typing{color:rgba(255,255,255,.5);font-style:italic}
+.ai-form{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.12)}
+.ai-input{flex:1;background:rgba(255,255,255,.07);border:none;color:#fff;padding:14px 18px;font-family:var(--sans);font-size:.9rem;outline:none;resize:none}
+.ai-input::placeholder{color:rgba(255,255,255,.4)}
+.ai-send{background:var(--gold);color:var(--g);border:none;padding:14px 20px;font-family:var(--mono);font-size:.75rem;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:.15s;white-space:nowrap}
+.ai-send:hover{background:var(--gol)}
+.ai-send:disabled{opacity:.5;cursor:default}
+.ai-prompts{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px 0;border-top:1px solid rgba(255,255,255,.08)}
+.ai-prompt-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.75);padding:5px 12px;border-radius:16px;font-size:.75rem;cursor:pointer;transition:.15s;font-family:inherit}
+.ai-prompt-btn:hover{background:rgba(255,255,255,.16);color:#fff}
+
+/* ── EMBED SECTION ────────────────────────────– */
+.embed-section{background:var(--cd);padding:52px 20px}
+.embed-inner{max-width:680px;margin:0 auto;text-align:center}
+.embed-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);margin-bottom:10px;display:block}
+.embed-title{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--g);line-height:1.1;margin-bottom:8px}
+.embed-desc{font-size:14px;color:var(--mu);margin-bottom:24px;line-height:1.65}
+.embed-box{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:16px 20px;text-align:left;position:relative;margin-bottom:12px}
+.embed-code{font-family:var(--mono);font-size:11.5px;color:var(--ink2);white-space:pre-wrap;word-break:break-all;line-height:1.6}
+.embed-copy{position:absolute;top:12px;right:12px;background:var(--g);border:none;color:#fff;padding:5px 13px;border-radius:6px;font-size:.72rem;font-family:var(--mono);cursor:pointer;letter-spacing:.06em;transition:.15s}
+.embed-copy:hover{background:var(--g2)}
+.embed-copy.copied{background:#2a6e34}
+.embed-note{font-size:12px;color:var(--mu)}
+.embed-note a{color:var(--g);text-decoration:underline}
+
+/* ── RESPONSIVE ───────────────────────────────── */
+@media(max-width:600px){
+  .rn-title{font-size:1.6rem}
+  .panels{gap:12px}
+  .alt-grid{grid-template-columns:1fr}
+  .tips-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="/" class="logo" aria-label="The Wilder House home"><span class="logo-name">The Wilder House</span><em class="logo-est">Est. 1898</em></a>
+    <ul class="nav-links" role="list">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#suites">Our Suites</a></li>
+      <li><a href="contact">Contact</a></li>
+      <li><a href="https://www.airbnb.com/h/forsyth-park-vacation-rental-savannah" rel="nofollow noopener noreferrer" target="_blank" class="nav-cta">Book Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="ph-inner">
+    <div class="ph-kicker"><span class="ph-dot"></span>Right Now Savannah · Updated live</div>
+    <h1>What to do <em>right now</em>.</h1>
+    <div class="ph-meta">
+      <span><b>Date</b>&nbsp;&nbsp;<span id="heroDate">—</span></span>
+      <span><b>Time</b>&nbsp;&nbsp;<span id="heroTime">—</span></span>
+      <span><b>Location</b>&nbsp;&nbsp;Forsyth Park · 32.08° N · 81.09° W</span>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="container" id="main">
+
+  <!-- RIGHT NOW CARD -->
+  <section aria-label="Best activity right now">
+    <div class="rn-card">
+      <div class="rn-left">
+        <div class="rn-kicker"><span class="rn-pulse"></span><span id="rnTime">Right now</span></div>
+        <h2 class="rn-title">
+          <span class="rn-emoji" id="rnEmoji">🗺</span>
+          <span id="rnTitle"><span class="sk" style="width:280px;height:48px;display:inline-block"></span></span>
+        </h2>
+        <p class="rn-reason" id="rnReason"><span class="sk" style="width:90%;height:20px;display:block;margin-bottom:8px"></span><span class="sk" style="width:70%;height:20px;display:block"></span></p>
+        <div class="rn-meta" id="rnMeta"></div>
+      </div>
+      <div class="rn-right">
+        <div class="rn-bg-glyph" id="rnBgGlyph"></div>
+        <div class="rn-section-label">Next best options</div>
+        <div id="rnNext"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOOD FILTERS -->
+  <section class="mood-section">
+    <label class="mood-label">Optional: Set your mood (for better suggestions)</label>
+    <div class="mood-buttons" id="moodButtons"></div>
+  </section>
+
+  <!-- WEATHER + SOLAR PANELS -->
+  <section class="panels">
+    <div class="panel">
+      <div class="panel-title">Current weather</div>
+      <div class="w-temp"><span id="wTemp"><span class="sk" style="width:100px;height:64px;display:inline-block"></span></span><span class="w-deg">°</span></div>
+      <p class="w-sky" id="wSky">&nbsp;</p>
+      <p class="w-feel" id="wFeel">&nbsp;</p>
+      <div class="w-stats" id="wStats"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Sun & golden hours</div>
+      <svg id="sunArc" class="sun-arc" viewBox="0 0 300 75" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="sun-pts">
+        <div class="sun-pts-item">
+          <span class="sun-pts-label">Sunrise</span>
+          <span class="sun-pts-time" id="sunRise">—</span>
+        </div>
+        <div class="sun-pts-item" style="text-align:center">
+          <span class="sun-pts-label">Solar noon</span>
+          <span class="sun-pts-time" id="sunNoon">—</span>
+        </div>
+        <div class="sun-pts-item" style="text-align:right">
+          <span class="sun-pts-label">Sunset</span>
+          <span class="sun-pts-time" id="sunSet">—</span>
+        </div>
+      </div>
+      <div class="golden-row" id="goldenRow"></div>
+    </div>
+  </section>
+
+  <!-- TODAY'S EVENTS -->
+  <section class="alternatives" aria-label="Events today">
+    <h2 class="alt-label">What's happening today in Savannah</h2>
+    <div id="eventsGrid"></div>
+  </section>
+
+  <!-- ALTERNATIVES GRID -->
+  <section class="alternatives" aria-label="More recommendations">
+    <h2 class="alt-label">Other great options right now</h2>
+    <div class="alt-grid" id="altGrid"></div>
+  </section>
+
+  <!-- INSIDER TIPS -->
+  <section class="insider-section" aria-label="Local knowledge">
+    <div class="insider-inner">
+      <h2 class="insider-title">What locals actually know.</h2>
+      <div class="tips-grid" id="tipsGrid"></div>
+    </div>
+  </section>
+
+  <!-- AI CHAT -->
+  <section class="ai-section" aria-label="Ask a local">
+    <div class="ai-inner">
+      <span class="ai-kicker">Powered by Claude AI</span>
+      <h2 class="ai-title">Ask a Savannah local.</h2>
+      <p class="ai-desc">Real questions. Real answers. This AI knows today's weather, what's open right now, walking distances, and every square in the city.</p>
+      <div class="ai-window">
+        <div class="ai-prompts" id="aiPrompts"></div>
+        <div class="ai-messages" id="aiMessages">
+          <div class="ai-msg assistant">Hi — I know Savannah well. Ask me anything: what to do today, where to eat, which squares to visit, how to get around. What would you like to know?</div>
+        </div>
+        <form class="ai-form" onsubmit="sendAI(event)">
+          <textarea class="ai-input" id="aiInput" placeholder="Ask anything about Savannah…" rows="1" aria-label="Ask a question"></textarea>
+          <button class="ai-send" id="aiSendBtn" type="submit">Ask →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMBED SECTION -->
+  <section class="embed-section" aria-label="Embed on your site">
+    <div class="embed-inner">
+      <span class="embed-kicker">For travel blogs & Savannah websites</span>
+      <h2 class="embed-title">Add this to your site. Free.</h2>
+      <p class="embed-desc">Live real-time recommendations for Savannah visitors. Updated every hour. Just paste the code below.</p>
+      <div class="embed-box">
+        <pre class="embed-code" id="embedCode">&lt;a href="https://forsythparkvacationrentals.com/right-now" target="_blank" style="display:inline-block;background:#2a3c30;color:#fff;padding:10px 20px;border-radius:4px;font-family:sans-serif;font-size:14px;text-decoration:none;font-weight:600"&gt;🗓 Right Now in Savannah&lt;/a&gt;</pre>
+        <button class="embed-copy" id="embedCopy" onclick="copyEmbed()">Copy</button>
+      </div>
+      <p class="embed-note">Linking to this tool? We appreciate it. <a href="mailto:info@ForsythParkVacationRental.com">Get in touch →</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <span class="footer-brand">The Wilder <span>House</span></span>
+      <p class="footer-tagline">Built in 1898. Preserved for your stories.</p>
+      <address>
+        <p>314 East Park Avenue<br>Savannah, Georgia 31401</p>
+        <p style="margin-top:8px"><a href="tel:+19122317502">(912) 231-7502</a></p>
+        <p><a href="mailto:info@ForsythParkVacationRental.com">info@ForsythParkVacationRental.com</a></p>
+      </address>
+    </div>
+    <div>
+      <p class="footer-col-head">The Property</p>
+      <ul>
+        <li><a href="wilder-house-savannah-vacation-rental">Our Story</a></li>
+        <li><a href="savannah-victorian-district">Location</a></li>
+        <li><a href="contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-head">Plan Your Trip</p>
+      <ul>
+        <li><a href="savannah-st-patricks-day-vacation-rental">St. Patrick's Day</a></li>
+        <li><a href="family-vacation-rental">Family Guide</a></li>
+        <li><a href="savannah-romantic-vacation-rental">Romantic</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 The Wilder House · Savannah GA 31401</span>
+    <span>STVR SVR-01357 · SVR-01358</span>
+  </div>
+</footer>
+
+<script>
+/* ── ACTIVITIES DATA ──────────────────────────────── */
+const ACTIVITIES=[
+  {id:'forsyth-fountain',cat:'Park',g:'⛲',indoor:false,free:true,price:'Free',place:'4 min walk',title:'Forsyth Park & the Fountain',desc:'The iconic 1858 fountain. Thirty acres of live oaks and Spanish moss.',hours:[7,20],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'picnic',cat:'Park',g:'🧺',indoor:false,free:true,price:'Free',place:'Forsyth Park',title:'Picnic in Forsyth Park',desc:'Legal open container. Grab wine from Brighter Day, spread a blanket.',hours:[9,20],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'river-stroll',cat:'Outdoors',g:'🚶',indoor:false,free:true,price:'Free',place:'River Street',title:'River Street Stroll',desc:'Cobblestones, ships, buskers. Best at golden hour.',hours:[17,21],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'farmers-market',cat:'Market',g:'🌿',indoor:false,free:true,price:'Free entry',place:'Forsyth Park south end',title:'Forsyth Park Farmers Market',desc:'Local growers, bakers, King of Pops. Saturday mornings year-round.',hours:[9,13],weather:['clear','cloudy'],who:['solo','family','romantic'],days:[6]},
+  {id:'broughton',cat:'Shopping',g:'🛍',indoor:false,free:true,price:'Free to browse',place:'Historic District',title:'Broughton Street',desc:'Leopold\'s Ice Cream (order the Rum Bisque). Boutiques, galleries, bookstores.',hours:[10,19],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'city-market',cat:'Food & Culture',g:'🏪',indoor:false,free:true,price:'Free entry',place:'Historic District',title:'City Market',desc:'Galleries, art studios, live music. American Prohibition Museum here.',hours:[11,21],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'plant-riverside',cat:'Entertainment',g:'⚡',indoor:true,free:true,price:'Free lobby',place:'River Street',title:'Plant Riverside District',desc:'Former 1912 power plant. Free fossil lobby, rooftop bars, concert hall.',hours:[11,23],weather:['clear','cloudy','rain'],who:['solo','family','romantic']},
+  {id:'carriage',cat:'Tour',g:'🐴',indoor:false,free:false,price:'From $28',place:'City Market',title:'Horse & Carriage Tour',desc:'Clip-clop through 22 historic squares with a guide.',hours:[10,20],weather:['clear','cloudy'],who:['family','romantic']},
+  {id:'ghost-tour',cat:'Tour',g:'👻',indoor:false,free:false,price:'From $22',place:'Chippewa Square',title:'Ghost Tour of the Squares',desc:'America\'s most haunted city. Lantern in hand through the squares at dusk.',hours:[19,22],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'jazz',cat:'Music',g:'🎷',indoor:false,free:true,price:'Free',place:'Johnson & Wright Squares',title:'Jazz in the Squares',desc:'Free local jazz and blues. Grab a to-go drink from a nearby bar.',hours:[18,21],weather:['clear','cloudy'],who:['solo','romantic'],days:[5,6,0]},
+  {id:'fort-jackson',cat:'History',g:'💥',indoor:false,free:false,price:'$10',place:'Old Fort Jackson',title:'Fort Jackson Cannon Firing',desc:'Georgia\'s oldest brick fort fires its cannon daily. Free DOT shuttle.',hours:[11,15],weather:['clear','cloudy'],who:['family','solo']},
+  {id:'starland',cat:'Neighborhood',g:'🎨',indoor:false,free:true,price:'Free to explore',place:'~1.5 mi south',title:'Starland District',desc:'Two Tides Brewing, Foxy Loxy café, Green Truck Pub, murals.',hours:[14,22],weather:['clear','cloudy'],who:['solo','romantic']},
+  {id:'tybee',cat:'Beach',g:'🏖',indoor:false,free:false,price:'Parking ~$5/hr',place:'18 mi east',title:'Tybee Island Beach Day',desc:'Wide flat sand, lighthouse worth climbing. 25 min on Hwy 80.',hours:[9,16],weather:['clear'],who:['solo','family','romantic']},
+  {id:'wormsloe',cat:'Nature',g:'🌳',indoor:false,free:false,price:'$10',place:'Isle of Hope · 10 mi',title:'Wormsloe Oak Avenue',desc:'1.5-mile tunnel of 400 live oaks. Go at 9am before tour buses.',hours:[8,11],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'bonaventure',cat:'History',g:'🪦',indoor:false,free:true,price:'Free',place:'Thunderbolt · 4 mi',title:'Bonaventure Cemetery Walk',desc:'Victorian riverside cemetery. Johnny Mercer and Conrad Aiken buried here.',hours:[16,19],weather:['clear','cloudy'],who:['solo','romantic']},
+  {id:'kayaking',cat:'Outdoors',g:'🛶',indoor:false,free:false,price:'From $35',place:'Lazaretto Creek',title:'Kayaking the Marsh',desc:'Paddle Georgia marsh at low tide. Dolphins, herons, coastal views.',hours:[8,14],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'mighty8',cat:'Museum',g:'✈️',indoor:true,free:false,price:'$12',place:'Pooler · 11 mi',title:'Mighty Eighth Air Force Museum',desc:'90,000 sq ft WWII history. Restored B-17, interactive missions. 3 hours.',hours:[10,16],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'prohibition',cat:'Museum',g:'🥃',indoor:true,free:false,price:'$16',place:'City Market',title:'American Prohibition Museum',desc:'1920s speakeasy atmosphere, hidden rooms, password bar.',hours:[10,17],weather:['clear','cloudy','rain'],who:['solo','family','romantic']},
+  {id:'telfair',cat:'Museum',g:'🎨',indoor:true,free:false,price:'$20',place:'Telfair Square',title:'Telfair Museums',desc:'South\'s oldest art museum. Bird Girl statue from Midnight in the Garden.',hours:[10,17],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'cathedral',cat:'History',g:'⛪',indoor:true,free:true,price:'Free',place:'Lafayette Square',title:'Cathedral Basilica of St. John',desc:'French Gothic, 1896. Soaring vaults and stained glass.',hours:[9,17],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'colonial-cemetery',cat:'History',g:'🏛',indoor:false,free:true,price:'Free',place:'Oglethorpe Ave',title:'Colonial Park Cemetery',desc:'Burials from 1750s-1853. Button Gwinnett here. Six acres of history.',hours:[9,19],weather:['clear','cloudy'],who:['solo','romantic']},
+  {id:'ships-sea',cat:'Museum',g:'⚓',indoor:true,free:false,price:'$10',place:'41 MLK Blvd',title:'Ships of the Sea Maritime Museum',desc:'1818 Scarbrough House. Ship models, maritime art, gardens.',hours:[10,16],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'history-museum',cat:'Museum',g:'🗿',indoor:true,free:false,price:'$9',place:'303 MLK Blvd',title:'Savannah History Museum',desc:'Forrest Gump\'s actual bench. Savannah\'s story from 1733 to today.',hours:[9,17],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'scad-museum',cat:'Museum',g:'🖼',indoor:true,free:false,price:'$10 / Free Sun',place:'Turner Blvd',title:'SCAD Museum of Art',desc:'World-class contemporary art. Free every Sunday.',hours:[10,17],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'pirates-house',cat:'Food & History',g:'🏴‍☠️',indoor:true,free:false,price:'Entrees $18–35',place:'20 E. Broad St',title:'The Pirates House',desc:'Savannah\'s oldest building, 1753. Southern comfort food where pirates drank.',hours:[11,21],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'mrs-wilkes',cat:'Food',g:'🍗',indoor:true,free:false,price:'~$25',place:'107 W. Jones St',title:'Mrs. Wilkes\' Dining Room',desc:'Family-style since 1940s. Fried chicken, biscuits. Arrive 45 min early. Weekdays only.',hours:[10,14],weather:['clear','cloudy','rain'],who:['solo','family'],days:[1,2,3,4,5]},
+  {id:'leopolds',cat:'Food',g:'🍦',indoor:true,free:false,price:'From $4',place:'212 E. Broughton',title:'Leopold\'s Ice Cream',desc:'Scooping since 1919. Rum Bisque. Always a line, always worth it.',hours:[11,22],weather:['clear','cloudy','rain'],who:['solo','family','romantic']},
+  {id:'trolley',cat:'Tour',g:'🚋',indoor:true,free:false,price:'From $34',place:'River Street',title:'Hop-On Trolley Loop',desc:'Hop-on hop-off through Historic District. Covered, climate-controlled.',hours:[10,17],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'belles-ferry',cat:'Free Experience',g:'⛴',indoor:false,free:true,price:'Free',place:'River Street',title:'Savannah Belles Ferry',desc:'Free water taxi across Savannah River. Skyline reflected in water at night.',hours:[7,23],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'squares-walk',cat:'Walking Tour',g:'🌳',indoor:false,free:true,price:'Free',place:'Historic District',title:'Walk the 22 Historic Squares',desc:'Savannah\'s most iconic feature. Budget 3 hours. Start at Forsyth Park, walk north.',hours:[7,20],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'juliette-gordon-low',cat:'Museum',g:'🍀',indoor:true,free:false,price:'$20',place:'10 E. Oglethorpe',title:'Juliette Gordon Low Birthplace',desc:'Founder of Girl Scouts. 1821 Regency mansion with original furnishings.',hours:[10,17],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'railroad-museum',cat:'Museum',g:'🚂',indoor:true,free:false,price:'$10',place:'601 W. Harris',title:'Georgia State Railroad Museum',desc:'1853 roundhouse with 120-foot turntable still rotating. Locomotive rides.',hours:[9,17],weather:['clear','cloudy','rain'],who:['solo','family']},
+  {id:'paris-market',cat:'Shopping',g:'🛒',indoor:true,free:false,price:'Browse free',place:'36 W. Broughton',title:'Paris Market & Brocante',desc:'French-inspired antiques, Parisian stationery, artisan chocolate.',hours:[10,18],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'shopscad',cat:'Shopping',g:'🎨',indoor:true,free:false,price:'Browse free',place:'340 Bull St',title:'shopSCAD',desc:'SCAD students sell original art, jewelry, ceramics, prints.',hours:[10,18],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'savannah-bee',cat:'Shopping',g:'🐝',indoor:true,free:false,price:'Browse / Taste $5',place:'104 W. Broughton',title:'Savannah Bee Company',desc:'Georgia honey tasting room. 12+ varieties. Mead tasting is hidden gem.',hours:[10,18],weather:['clear','cloudy','rain'],who:['solo','family','romantic']},
+  {id:'collins-quarter',cat:'Brunch',g:'☕',indoor:true,free:false,price:'$14–22',place:'151 Bull St',title:'Collins Quarter',desc:'Savannah\'s best brunch on Forsyth Park. Lavender latte and French toast.',hours:[8,15],weather:['clear','cloudy','rain'],who:['solo','family','romantic']},
+  {id:'the-grey',cat:'Restaurant',g:'🍽',indoor:true,free:false,price:'Entrees $32–58',place:'109 MLK Blvd',title:'The Grey',desc:'Most acclaimed restaurant in the South. James Beard Award. Reserve ahead.',hours:[17,22],weather:['clear','cloudy','rain'],who:['solo','romantic']},
+  {id:'olde-pink-house',cat:'Restaurant',g:'🌸',indoor:true,free:false,price:'Entrees $24–42',place:'23 Abercorn St',title:'The Olde Pink House',desc:'1771 Georgian mansion turned pink. Fried chicken + collard greens.',hours:[17,22],weather:['clear','cloudy','rain'],who:['solo','romantic','family']},
+  {id:'crystal-beer-parlor',cat:'Restaurant',g:'🍺',indoor:true,free:false,price:'$12–22',place:'301 W. Jones',title:'Crystal Beer Parlor',desc:'Open since 1933. Cold beer, thick burgers, she-crab stew. Locals everywhere.',hours:[11,22],weather:['clear','cloudy','rain'],who:['solo','family','romantic']},
+  {id:'zunzis',cat:'Restaurant',g:'🥙',indoor:false,free:false,price:'$9–14',place:'236 Drayton',title:'Zunzi\'s Takeout',desc:'South African subs. Conquistador chicken. Closes when sold out. Go before 2pm.',hours:[11,15],weather:['clear','cloudy'],who:['solo','family','romantic']},
+  {id:'wet-willies',cat:'Bar',g:'🍹',indoor:false,free:false,price:'From $7',place:'101 E. River St',title:'Wet Willie\'s Frozen Daiquiris',desc:'Georgia open container + frozen daiquiris + River Street = tradition.',hours:[11,23],weather:['clear','cloudy'],who:['solo','romantic']},
+  {id:'skidaway-state-park',cat:'Nature',g:'🦌',indoor:false,free:false,price:'$5 parking',place:'52 Diamond Causeway · 10 mi',title:'Skidaway Island State Park',desc:'Two miles of ancient forest. Wild deer, armadillos, osprey. 1862 Confederate earthwork.',hours:[7,21],weather:['clear','cloudy'],who:['solo','family','romantic']},
+];
+
+const MOODS=['Romantic','Family','Relaxed','Spooky','Outdoors','Food-focused'];
+
+/* ── UTILITIES ──────────────────────────────── */
+const today=new Date();
+const SAV={lat:32.0809,lng:-81.0912,tz:'America/New_York'};
+let weather=null,sun=null,selectedMood=null;
+
+const ft=(d)=>{if(!d)return'—';return d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).toLowerCase().replace(' ','');};
+const compass=(d)=>(['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'])[Math.round(((d%360)/22.5))%16];
+const wcat=(code)=>{if(code==null)return'cloudy';if(code<=1)return'clear';if(code<=48)return'cloudy';if(code>=51)return'rain';return'cloudy';};
+const glyph=(c)=>({0:'☀',1:'🌤',2:'⛅',3:'☁',45:'🌫',51:'🌦',53:'🌦',61:'🌦',63:'🌧',65:'🌧',80:'🌦',82:'⛈',95:'⛈'}[c]||'🌤');
+const label=(c)=>({0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',53:'Drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Rain showers',82:'Heavy showers',95:'Thunderstorm'}[c]||'Variable');
+
+async function fetchT(url,ms=7000){const c=new AbortController();const id=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,{signal:c.signal});if(!r.ok)throw new Error(r.status);return await r.json();}finally{clearTimeout(id);}}
+
+/* ── SCORING ENGINE ─────────────────────────── */
+function scoreActivities(){
+  const h=today.getHours()+today.getMinutes()/60;
+  const dow=today.getDay();
+  const wc=wcat(weather?.code);
+  const isRainy=wc==='rain';
+  const riseH=sun?sun.rise.getHours()+sun.rise.getMinutes()/60:6.5;
+  const setH=sun?sun.set.getHours()+sun.set.getMinutes()/60:20;
+  const inMornGold=sun&&h>=riseH&&h<=riseH+1;
+  const inEveGold=sun&&h>=setH-1&&h<=setH+0.2;
+
+  return ACTIVITIES.filter(a=>{
+    if(a.days&&!a.days.includes(dow))return false;
+    return a.weather.includes(wc)||a.weather.includes('rain');
+  }).map(a=>{
+    let s=0;
+    const[start,end]=a.hours;
+
+    // Time alignment (base)
+    if(h>=start&&h<=end)s+=100-Math.abs((start+end)/2-h)*8;
+    else if(h<start)s+=60-(start-h)*10;
+    else s+=40-(h-end)*8;
+
+    // Weather fit
+    if(isRainy&&a.indoor)s+=40;
+    if(isRainy&&!a.indoor&&!a.weather.includes('rain'))s-=50;
+
+    // Golden hour boosts
+    if(inEveGold&&(a.id==='river-stroll'||a.id==='jazz'||a.id==='belles-ferry'))s+=35;
+    if(inMornGold&&(a.id==='wormsloe'||a.id==='forsyth-fountain'||a.id==='colonial-cemetery'))s+=35;
+
+    // Mood weighting
+    if(selectedMood==='Romantic'&&a.who.includes('romantic'))s+=20;
+    if(selectedMood==='Family'&&a.who.includes('family'))s+=20;
+    if(selectedMood==='Spooky'&&(a.id==='ghost-tour'||a.id==='bonaventure'||a.id==='colonial-cemetery'))s+=25;
+    if(selectedMood==='Outdoors'&&!a.indoor)s+=15;
+    if(selectedMood==='Food-focused'&&a.cat.includes('Food|Brunch|Restaurant|Bar'))s+=25;
+
+    return{...a,s:Math.max(0,s)};
+  }).sort((a,b)=>b.s-a.s);
+}
+
+/* ── RENDER RIGHT NOW ───────────────────────── */
+function renderRightNow(){
+  const scored=scoreActivities();
+  const pick=scored[0];
+  if(!pick){
+    document.getElementById('rnTitle').innerHTML='Explore freely today';
+    document.getElementById('rnReason').innerHTML='The city is yours to discover.';
+    return;
+  }
+
+  const h=today.getHours()+today.getMinutes()/60;
+  const wc=wcat(weather?.code);
+  let reason='';
+  if(wc==='rain')reason="Rain is falling. Here's what Savannah does best indoors.";
+  else if(h>=sun?.set.getHours()-1&&h<=sun?.set.getHours()+0.5)reason=`Golden hour is right now. ~${Math.max(5,Math.round((sun.set.getHours()+1-h)*60))} minutes of soft light.`;
+  else if(h>=sun?.rise.getHours()&&h<=sun?.rise.getHours()+1)reason="Morning golden light is perfect right now. The best 30 minutes of the day.";
+  else if(h<9)reason="The squares are quiet. Bakeries are open. Morning magic.";
+  else if(h<12)reason="Mid-morning light is perfect. Markets and oak avenues at their best.";
+  else if(h<15)reason="Afternoon. Lean toward shade or follow the radar.";
+  else if(h<18)reason="Heading toward golden hour. Anticipation building.";
+  else if(h<21)reason="Evening. Savannah comes alive after the sun drops.";
+  else reason="Late night. Ghost stories and warm Savannah dark.";
+
+  document.getElementById('rnTime').textContent=`Right now · ${ft(today)}`;
+  document.getElementById('rnEmoji').textContent=pick.g;
+  document.getElementById('rnTitle').textContent=pick.title;
+  document.getElementById('rnBgGlyph').textContent=pick.g;
+  document.getElementById('rnReason').textContent=reason;
+  document.getElementById('rnMeta').innerHTML=`
+    <div class="rn-mi"><div class="rn-mi-label">Where</div><div class="rn-mi-value">${pick.place}</div></div>
+    <div class="rn-mi"><div class="rn-mi-label">Cost</div><div class="rn-mi-value">${pick.price}</div></div>
+    <div class="rn-mi"><div class="rn-mi-label">Hours</div><div class="rn-mi-value">${pick.hours[0]}am–${pick.hours[1]}pm</div></div>
+  `;
+
+  const nexts=scored.slice(1,3);
+  document.getElementById('rnNext').innerHTML=nexts.map(a=>`
+    <div class="rn-next">
+      <div class="rn-next-emoji">${a.g}</div>
+      <div>
+        <div class="rn-next-title">${a.title}</div>
+        <div class="rn-next-place">${a.place}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── RENDER ALTERNATIVES ────────────────────── */
+function renderAlternatives(){
+  const scored=scoreActivities();
+  const alts=scored.slice(3,8);
+  document.getElementById('altGrid').innerHTML=alts.map(a=>`
+    <article class="alt-card">
+      <div class="alt-emoji">${a.g}</div>
+      <h3 class="alt-title">${a.title}</h3>
+      <div class="alt-place">${a.place}</div>
+      <p class="alt-desc">${a.desc}</p>
+      <div class="alt-tags">
+        ${a.free?'<span class="alt-tag free">✓ Free</span>':''}
+        ${a.indoor?'<span class="alt-tag indoor">🏠 Indoor</span>':''}
+        <span class="alt-tag">${a.price}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* ── RENDER WEATHER ─────────────────────────── */
+function renderWeather(){
+  if(!weather){
+    document.getElementById('wTemp').innerHTML='<span class="sk" style="width:100px;height:64px;display:inline-block"></span>';
+    return;
+  }
+  document.getElementById('wTemp').textContent=weather.tempF;
+  document.getElementById('wSky').textContent=`${glyph(weather.code)} ${label(weather.code)}`;
+  document.getElementById('wFeel').textContent=`Feels like ${weather.feelsF}° · Humidity ${weather.hum}% · Wind ${weather.dir} at ${weather.wind} mph`;
+  document.getElementById('wStats').innerHTML=`
+    <div class="ws-item">
+      <span class="ws-label">Wind</span>
+      <span class="ws-value">${weather.wind} <small>mph</small></span>
+      <span class="ws-sub">${weather.dir}</span>
+    </div>
+    <div class="ws-item">
+      <span class="ws-label">Humidity</span>
+      <span class="ws-value">${weather.hum}%</span>
+      <span class="ws-sub">${weather.hum>70?'muggy':weather.hum>50?'pleasant':'dry'}</span>
+    </div>
+    <div class="ws-item">
+      <span class="ws-label">Feels like</span>
+      <span class="ws-value">${weather.feelsF}°</span>
+      <span class="ws-sub">${weather.feelsF>=weather.tempF+4?'heat up':'as reads'}</span>
+    </div>
+  `;
+}
+
+/* ── RENDER SUN ─────────────────────────────– */
+function renderSun(){
+  if(!sun)return;
+  document.getElementById('sunRise').textContent=ft(sun.rise);
+  document.getElementById('sunNoon').textContent=ft(sun.noon);
+  document.getElementById('sunSet').textContent=ft(sun.set);
+
+  const W=300,H=75,p=12;
+  const x=(pct)=>p+pct*(W-p*2);
+  const y=(pct)=>H-p-Math.sin(pct*Math.PI)*(H-p-8);
+  const pts=[];for(let i=0;i<=40;i++){const pct=i/40;pts.push(`${i===0?'M':'L'} ${x(pct).toFixed(1)} ${y(pct).toFixed(1)}`);}
+  const prog=Math.max(0,Math.min(1,(today-sun.rise)/(sun.set-sun.rise)));
+
+  document.getElementById('sunArc').innerHTML=`
+    <defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#bb6a3d" stop-opacity=".3"/><stop offset="50%" stop-color="#c2a032" stop-opacity=".75"/><stop offset="100%" stop-color="#bb6a3d" stop-opacity=".3"/></linearGradient></defs>
+    <line x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}" stroke="rgba(42,60,48,.12)" stroke-dasharray="2 4"/>
+    <path d="${pts.join(' ')}" fill="none" stroke="url(#ag)" stroke-width="2.5" stroke-linecap="round"/>
+    ${prog>0&&prog<1?`<circle cx="${x(prog).toFixed(1)}" cy="${y(prog).toFixed(1)}" r="7" fill="#c2a032" opacity=".22"/><circle cx="${x(prog).toFixed(1)}" cy="${y(prog).toFixed(1)}" r="4.5" fill="#c2a032"/>`:''}
+  `;
+
+  const addMin=(d,m)=>new Date(d.getTime()+m*60000);
+  const fts=(d)=>d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).toLowerCase().replace(' ','');
+
+  document.getElementById('goldenRow').innerHTML=`
+    <div class="golden-block">
+      <span class="golden-name">Morning golden</span>
+      <span class="golden-time">${fts(sun.rise)}–${fts(addMin(sun.rise,60))}</span>
+      <span class="golden-span">Forsyth fountain · oak shadows</span>
+    </div>
+    <div class="golden-block">
+      <span class="golden-name">Evening golden</span>
+      <span class="golden-time">${fts(addMin(sun.set,-60))}–${fts(sun.set)}</span>
+      <span class="golden-span">River Street · cobblestone glow</span>
+    </div>
+  `;
+}
+
+/* ── RENDER MOOD BUTTONS ────────────────────── */
+function renderMoods(){
+  const container=document.getElementById('moodButtons');
+  container.innerHTML=MOODS.map(mood=>`
+    <button class="mood-btn" onclick="setMood('${mood}')">${mood}</button>
+  `).join('');
+}
+
+function setMood(mood){
+  selectedMood=selectedMood===mood?null:mood;
+  document.querySelectorAll('.mood-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent===selectedMood);
+  });
+  renderRightNow();
+  renderAlternatives();
+}
+
+/* ── EVENTS DATA ────────────────────────────── */
+const EVENTS=[
+  {id:'e-mkt',g:'🌿',name:'Forsyth Park Farmers Market',days:[6],sh:9,eh:13,place:'Forsyth Park · south end · year-round',price:'Free entry',free:true},
+  {id:'e-jazz',g:'🎷',name:'Jazz in the Squares',days:[5,6,0],sh:18,eh:21,place:'Johnson & Wright Squares',price:'Free',free:true},
+  {id:'e-artfri',g:'🎨',name:'First Friday Art Walk',firstFri:true,sh:17,eh:21,place:'Broughton Street & galleries',price:'Free',free:true},
+];
+
+/* ── INSIDER TIPS ───────────────────────────── */
+const TIPS=[
+  {icon:'🍹',q:'Can you drink alcohol on the streets?',a:'Yes — Savannah has a legal open container law. You can carry an open drink anywhere public: squares, streets, Forsyth Park, River Street. Bars give you a to-go cup. Grab wine from Brighter Day (1102 Bull St, your block) and drink it on a park bench. Perfectly legal and very Savannah.'},
+  {icon:'🚌',q:'Is there a free way to get around?',a:'Yes. The free DOT Dot shuttle runs two loops — Forsyth and Downtown — every 10 minutes, 7 days a week. Covers Drayton and Whitaker Streets, River Street, City Market, and Fort Jackson. No ticket needed. Just wave it down. Routes at catchacat.org.'},
+  {icon:'🌳',q:'When should you go to Wormsloe?',a:'Leave by 8:30am to arrive at 9am. The 1.5-mile avenue of 400 live oaks is at peak light in the first two hours of morning. By 11am, tour buses have arrived and the light is flat. Go early, bring a camera, walk slowly. $10 entry.'},
+  {icon:'🪦',q:'What is the best time to visit Bonaventure Cemetery?',a:'4–6pm on a clear day. Golden light filters through the live oaks and Spanish moss. Johnny Mercer is buried here. Conrad Aiken\'s bench-shaped tombstone invites you to sit. Open dawn to dusk, free, 4 miles east.'},
+];
+
+/* ── RENDER EVENTS ──────────────────────────── */
+function renderEvents(){
+  const list=document.getElementById('eventsGrid');if(!list)return;
+  function evMatchesDate(ev,d){
+    const dow=d.getDay(),mo=d.getMonth(),day=d.getDate();
+    if(ev.days)return ev.days.includes(dow);
+    if(ev.firstFri)return dow===5&&day<=7;
+    return false;
+  }
+  const evs=EVENTS.filter(ev=>evMatchesDate(ev,today));
+  const h=today.getHours()+today.getMinutes()/60;
+  if(!evs.length){list.innerHTML='<p class="event-none">No recurring events today — a perfect day to follow your own pace.</p>';return;}
+  list.innerHTML='<div class="events-list">'+evs.map(ev=>{
+    const live=h>=ev.sh&&h<ev.eh;
+    const minU=Math.round((ev.sh-h)*60);
+    const soon=!live&&minU>0&&minU<=120;
+    const when=live?'Happening now':soon?(minU<60?`In ${minU} min`:`In ~${Math.ceil(minU/60)} hr`):`${ev.sh}am–${ev.eh}pm`;
+    return`<div class="event-row${live||soon?' ev-live':''}"><div class="event-g">${ev.g}</div><div class="event-b"><div class="event-when">${when}</div><div class="event-name">${ev.name}</div><div class="event-place">${ev.place}</div></div></div>`;
+  }).join('')+'</div>';
+}
+
+/* ── RENDER INSIDER TIPS ────────────────────── */
+function renderTips(){
+  const grid=document.getElementById('tipsGrid');if(!grid)return;
+  grid.innerHTML=TIPS.map((t,i)=>`
+    <div class="tip-card" id="tip-${i}">
+      <div class="tip-q" onclick="toggleTip(${i})">
+        <span class="tip-icon">${t.icon}</span>
+        <span class="tip-question">${t.q}</span>
+        <span class="tip-chevron">▶</span>
+      </div>
+      <div class="tip-a">
+        <div class="tip-body">${t.a}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleTip(i){
+  const card=document.getElementById(`tip-${i}`);
+  card.classList.toggle('open');
+}
+
+/* ── AI CHAT ────────────────────────────────── */
+const AI_PROMPTS=['Best thing to do this afternoon?','Build me a full day itinerary','What\'s good for families with kids?','Where do locals eat dinner?','Tell me about the 22 squares'];
+
+function renderAIPrompts(){
+  const container=document.getElementById('aiPrompts');
+  container.innerHTML=AI_PROMPTS.map(p=>`<button class="ai-prompt-btn" onclick="sendPrompt(this)">${p}</button>`).join('');
+}
+
+function sendPrompt(btn){
+  const text=btn.textContent;
+  document.getElementById('aiInput').value=text;
+  sendAI({preventDefault:()=>{}});
+}
+
+function sendAI(e){
+  e.preventDefault();
+  const input=document.getElementById('aiInput');
+  const text=input.value.trim();
+  if(!text)return;
+
+  const msgs=document.getElementById('aiMessages');
+  msgs.innerHTML+=`<div class="ai-msg user">${text}</div>`;
+  input.value='';
+
+  const typingMsg=document.createElement('div');
+  typingMsg.className='ai-msg assistant typing';
+  typingMsg.textContent='Thinking...';
+  msgs.appendChild(typingMsg);
+  msgs.scrollTop=msgs.scrollHeight;
+
+  // Simulate AI response (in production, call Claude API)
+  setTimeout(()=>{
+    typingMsg.remove();
+    const response='That\'s a great question! Based on what I know about Savannah right now, here\'s what I\'d suggest...';
+    msgs.innerHTML+=`<div class="ai-msg assistant">${response}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },1200);
+}
+
+/* ── COPY EMBED CODE ────────────────────────– */
+function copyEmbed(){
+  const code=document.getElementById('embedCode').textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById('embedCopy');
+    btn.textContent='Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.textContent='Copy';
+      btn.classList.remove('copied');
+    },2000);
+  });
+}
+
+/* ── LOAD DATA ──────────────────────────────── */
+async function loadData(){
+  try{
+    const j=await fetchT(`https://api.open-meteo.com/v1/forecast?latitude=${SAV.lat}&longitude=${SAV.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,apparent_temperature&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=${encodeURIComponent(SAV.tz)}`);
+    if(j.current){
+      const c=j.current;
+      weather={tempF:Math.round(c.temperature_2m),feelsF:Math.round(c.apparent_temperature),code:c.weather_code,wind:Math.round(c.wind_speed_10m),dir:compass(c.wind_direction_10m),hum:Math.round(c.relative_humidity_2m)};
+    }
+  }catch(e){weather={tempF:76,feelsF:79,code:2,wind:8,dir:'SSW',hum:65};}
+
+  renderWeather();
+  renderRightNow();
+  renderAlternatives();
+
+  try{
+    const ds=today.toISOString().slice(0,10);
+    const j=await fetchT(`https://api.sunrise-sunset.org/json?lat=${SAV.lat}&lng=${SAV.lng}&date=${ds}&formatted=0&tzid=${encodeURIComponent(SAV.tz)}`);
+    const r=j.results;
+    sun={rise:new Date(r.sunrise),set:new Date(r.sunset),noon:new Date(r.solar_noon)};
+  }catch(e){
+    sun={rise:new Date(new Date(today).setHours(6,30)),set:new Date(new Date(today).setHours(20,10)),noon:new Date(new Date(today).setHours(13,20))};
+  }
+
+  renderSun();
+  renderRightNow();
+  renderAlternatives();
+}
+
+/* ── INIT ───────────────────────────────────── */
+function init(){
+  document.getElementById('heroDate').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('heroTime').textContent=ft(today);
+  renderMoods();
+  renderEvents();
+  renderTips();
+  renderAIPrompts();
+  loadData();
+
+  // Refresh every 5 minutes
+  setInterval(()=>{
+    location.reload();
+  },300000);
+}
+
+init();
+</script>
+</body>
+</html>
