@@ -134,6 +134,14 @@
   Cache-Control: public, max-age=21600, must-revalidate
   Content-Type: text/html; charset=utf-8
 
+/right-now.html
+  Cache-Control: public, max-age=300, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
+/right-now-embed.html
+  Cache-Control: public, max-age=300, must-revalidate
+  Content-Type: text/html; charset=utf-8
+
 /savannah-farmers-market.html
   Cache-Control: public, max-age=21600, must-revalidate
   Content-Type: text/html; charset=utf-8
