@@ -23,7 +23,28 @@
       "Bash(git push *)",
       "Bash(git commit -m 'Fix CSP: Allow service worker to fetch Leaflet.js and enable voice/map APIs *)",
       "Bash(cd \"/c/Users/travi/OneDrive/Documentos/thewilderhousehtml\" && grep -n \"sk_\" savannah-ghost-tour.html)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(grep -o 'name:\"The Wilder House[^}]*lat:[0-9.-]*,lng:[0-9.-]*' \"/c/Users/travi/OneDrive/Documentos/thewilderhousehtml/savannah-ghost-tour.html\")",
+      "Bash(python3)",
+      "Bash(python3 -m http.server 8000)",
+      "WebFetch(domain:nationalregisterofhistoricplaces.com)",
+      "Bash(python3 -m json.tool savannah-ghost-tour.html)",
+      "Bash(grep -o '{name:\"[^\"]*\",lat:[0-9.-]*,lng:[0-9.-]*' \"/c/Users/travi/OneDrive/Documentos/thewilderhousehtml/savannah-ghost-tour.html\")",
+      "PowerShell($html = Get-Content \"C:\\\\Users\\\\travi\\\\OneDrive\\\\Documentos\\\\thewilderhousehtml\\\\savannah-ghost-tour.html\" -Raw; if\\($html -match 'lat:32\\\\.0733156,lng:-81\\\\.0908577'\\) { Write-Host \"✓ Cathedral coordinates verified in file\" } else { Write-Host \"✗ Cathedral coordinates NOT found\" }; $lines = @\\($html | Select-String 'const locations=' -Context 1\\); if\\($lines\\) { Write-Host \"✓ locations array present\" })",
+      "Bash(grep -E \"THIS IS|COORDINAT|32\\\\.[0-9]{4,}.*-81\\\\.[0-9]{5,}\" \"C:\\\\Users\\\\travi\\\\.claude\\\\projects\\\\C--Users-travi-OneDrive-Documentos-thewilderhousehtml\\\\6cdee80d-a45d-4eac-acf0-7fafb6680d61.jsonl\")",
+      "WebFetch(domain:www.loc.gov)",
+      "Bash(ls -la \"C:\\\\Users\\\\travi\\\\OneDrive\\\\Documentos\\\\thewilderhousehtml\\\\\" | head -30)",
+      "Bash(cd /mnt/c/Users/travi/OneDrive/Documentos/thewilderhousehtml && ls -la | head -20)",
+      "Bash(wrangler pages *)",
+      "Bash(git commit *)",
+      "Bash(npx wrangler *)",
+      "Bash(copy wilder-house-opening-oldman.mp3 wilder-house-opening-oldlady.mp3)",
+      "Bash(copy forsyth-park-opening-oldman.mp3 forsyth-park-opening-oldlady.mp3)",
+      "Bash(dir *opening*.mp3)",
+      "Bash(curl -s https://forsythparkvacationrentals.com/savannah-ghost-tour.html)",
+      "Bash(curl -s https://forsythparkvacationrentals.com/savannah-ghost-tour)",
+      "Bash(mkdir -p backend/services backend/models backend/config backend/routes backend/controllers backend/middleware)",
+      "Bash(mkdir -p frontend/src/components frontend/src/pages frontend/src/utils frontend/public)"
     ]
   }
 }
