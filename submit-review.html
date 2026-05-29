@@ -65,6 +65,13 @@ nav{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.97);backdrop
 .field textarea{resize:vertical;min-height:160px;line-height:1.65}
 .field .hint{font-size:.76rem;color:#666;margin-top:5px;line-height:1.5}
 
+/* STAR RATING PICKER */
+.star-picker{display:flex;gap:12px;margin-bottom:12px}
+.star-btn{background:none;border:none;font-size:2.4rem;color:#ddd;cursor:pointer;padding:4px 6px;transition:all .2s;line-height:1}
+.star-btn:hover{color:#ffc107;transform:scale(1.15)}
+.star-btn.active{color:#ffc107}
+.star-btn.active~.star-btn{color:#ddd}
+
 .submit-btn{display:block;width:100%;padding:16px 24px;background:var(--g);color:var(--wh);font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;border:none;border-radius:3px;cursor:pointer;transition:background .2s;margin-top:8px}
 .submit-btn:hover{background:var(--g2)}
 
@@ -132,26 +139,68 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:48px 24px 32px}
 <section class="form-section">
   <div class="form-wrap">
 
-    <form name="guest-review" method="POST" id="reviewForm">
+    <form name="guest-review" method="POST" id="reviewForm" action="https://api.web3forms.com/submit">
       <input type="hidden" name="access_key" value="029c12c2-145d-4bbf-be8d-67f0de12c618">
       <input type="hidden" name="subject" value="New Review — The Wilder House">
       <input type="hidden" name="from_name" value="Wilder House Review Form">
+      <input type="hidden" name="redirect" value="https://forsythparkvacationrentals.com/submit-review?success=true">
       <input type="hidden" name="cc" value="travisareiser79@yahoo.com">
       <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
+      <!-- STAR RATING -->
       <div class="field">
-        <label for="guest-name">Your Name *</label>
-        <input type="text" id="guest-name" name="name" required placeholder="First name or first name + last initial">
+        <label>Your Rating *</label>
+        <div class="star-picker" id="starPicker">
+          <button type="button" class="star-btn" data-rating="1" aria-label="1 star">★</button>
+          <button type="button" class="star-btn" data-rating="2" aria-label="2 stars">★</button>
+          <button type="button" class="star-btn" data-rating="3" aria-label="3 stars">★</button>
+          <button type="button" class="star-btn" data-rating="4" aria-label="4 stars">★</button>
+          <button type="button" class="star-btn" data-rating="5" aria-label="5 stars">★</button>
+        </div>
+        <input type="hidden" id="rating" name="rating" required>
+        <p class="hint" id="ratingText" style="margin-top:8px">Click stars to rate your stay</p>
       </div>
 
+      <!-- SUBMISSION DATE -->
+      <div class="field">
+        <label for="submission-date">Date of Stay *</label>
+        <input type="date" id="submission-date" name="date" required>
+      </div>
+
+      <!-- SUITE SELECTION -->
+      <div class="field">
+        <label for="suite">Which Suite? *</label>
+        <select id="suite" name="suite" required style="width:100%;padding:12px 14px;border:1.5px solid rgba(42,60,48,.2);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--tx);background:var(--cr)">
+          <option value="">Select your suite</option>
+          <option value="314a">Suite 314A</option>
+          <option value="316a">Suite 316A</option>
+          <option value="both">Both Suites</option>
+        </select>
+      </div>
+
+      <!-- FIRST NAME -->
+      <div class="field">
+        <label for="first-name">First Name *</label>
+        <input type="text" id="first-name" name="firstName" required placeholder="Your first name">
+        <p class="hint">We'll display your first name with your review</p>
+      </div>
+
+      <!-- LAST NAME -->
+      <div class="field">
+        <label for="last-name">Last Name *</label>
+        <input type="text" id="last-name" name="lastName" required placeholder="Your last name">
+        <p class="hint">Kept private — helps us organize and contact you if needed</p>
+      </div>
+
+      <!-- REVIEW TEXT -->
       <div class="field">
         <label for="review-text">Your Review *</label>
         <textarea id="review-text" name="review" required placeholder="Tell us about your stay — what stood out, what you loved, what brought you to Savannah..."></textarea>
-        <p class="hint">Your review may be featured on our website. We&rsquo;ll always use just your first name.</p>
+        <p class="hint">Share your genuine experience. What made your stay special?</p>
       </div>
 
-      <button type="submit" class="submit-btn">Submit My Review</button>
-      <p class="privacy-note">Reviews are moderated before being added to the site.</p>
+      <button type="submit" class="submit-btn">Submit My 5-Star Review</button>
+      <p class="privacy-note">Reviews are moderated before being added to the site. Only your first name and review will be displayed.</p>
     </form>
 
     <div class="success-msg" id="successMsg">
@@ -237,11 +286,46 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');t.setAttribute('aria-expanded','false');});});
   }
 
+  // STAR RATING PICKER
+  var starBtns=document.querySelectorAll('.star-btn');
+  var ratingInput=document.getElementById('rating');
+  var ratingText=document.getElementById('ratingText');
+  var ratingLabels=['Click to rate','Poor','Fair','Good','Great','Perfect!'];
+
+  starBtns.forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.preventDefault();
+      var rating=this.dataset.rating;
+      ratingInput.value=rating;
+      starBtns.forEach(function(b){
+        b.classList.remove('active');
+        if(parseInt(b.dataset.rating)<=parseInt(rating)){
+          b.classList.add('active');
+        }
+      });
+      if(ratingText)ratingText.textContent=rating+' '+( rating==1?'star':'stars' )+' — '+ratingLabels[rating];
+    });
+  });
+
+  // AUTO-FILL DATE WITH TODAY
+  var dateInput=document.getElementById('submission-date');
+  if(dateInput){
+    var today=new Date();
+    var yyyy=today.getFullYear();
+    var mm=String(today.getMonth()+1).padStart(2,'0');
+    var dd=String(today.getDate()).padStart(2,'0');
+    dateInput.value=yyyy+'-'+mm+'-'+dd;
+  }
+
   var form=document.getElementById('reviewForm');
   var success=document.getElementById('successMsg');
   if(form){
     form.addEventListener('submit',function(e){
-      e.preventDefault();
+      if(!ratingInput.value){
+        e.preventDefault();
+        alert('Please select your star rating');
+        return;
+      }
       var data=new FormData(form);
       fetch('https://api.web3forms.com/submit',{method:'POST',body:data})
         .then(function(r){return r.json();})

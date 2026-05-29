@@ -402,7 +402,23 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:64px 24px 36px}
 .rc-dot-vis{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);transition:background-color .3s;pointer-events:none}
 .rc-dot.rc-dot-on .rc-dot-vis{background-color:var(--gol)}
 .skip-nav{clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px;top:4px;left:4px}
-.skip-nav:focus{clip-path:none;height:auto;overflow:visible;width:auto;background:var(--g);color:#fff;padding:8px 16px;z-index:9999;border-radius:0 0 4px 0;font-size:.8rem;font-weight:700;text-decoration:none}</style>
+.skip-nav:focus{clip-path:none;height:auto;overflow:visible;width:auto;background:var(--g);color:#fff;padding:8px 16px;z-index:9999;border-radius:0 0 4px 0;font-size:.8rem;font-weight:700;text-decoration:none}
+
+/* GUEST REVIEWS SECTION */
+.reviews-sec{background:var(--cr);padding:72px 24px}
+.reviews-inner{max-width:1080px;margin:0 auto}
+.rev-label{font-size:.67rem;letter-spacing:5px;text-transform:uppercase;color:var(--lc);font-weight:700;margin-bottom:10px;display:block}
+.rev-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.4rem);color:var(--g);font-weight:500;line-height:1.2;margin-bottom:10px}
+.rev-sub{font-size:.98rem;color:#666;max-width:600px;margin-bottom:32px;line-height:1.6}
+.rev-sub a{color:var(--g);text-decoration:underline}
+.reviews-grid-small{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.rev-card-sm{background:var(--wh);padding:24px 20px;border-radius:6px;border-left:3px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.rev-text-sm{font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;color:var(--tx);line-height:1.7;font-style:italic;margin-bottom:14px}
+.rev-author-sm{font-size:.85rem;font-weight:700;color:var(--g)}
+@media(max-width:768px){
+  .reviews-sec{padding:56px 16px}
+  .reviews-grid-small{grid-template-columns:1fr}
+}</style>
 </head>
 <body>
 <a href="#main-content" class="skip-nav">Skip to main content</a>
@@ -961,6 +977,40 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:64px 24px 36px}
     <p style="margin-top:8px"><a href="submit-review" style="display:inline-block;padding:13px 28px;background:#c2a032;color:#111;font-size:.74rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:3px;text-decoration:underline">Leave a Review</a></p>
   </div>
 </section>
+
+<!-- GUEST REVIEWS -->
+<section class="reviews-sec" aria-label="Guest reviews for Suite 316A">
+  <div class="reviews-inner">
+    <span class="rev-label">Guest Testimonials</span>
+    <h2 class="rev-title">What Guests Say About Suite 316A</h2>
+    <p class="rev-sub">Real messages from guests who stayed here. Read the full reviews or <a href="reviews?filter=316a">view all 75 Suite 316A reviews</a>.</p>
+    <div class="reviews-grid-small" id="reviewsGrid316"></div>
+  </div>
+</section>
+
+<script>
+const reviews316a = [
+  { name: "Kim", text: "We are honored to be guest in this lovely home. Absolutely stunning and perfect location. We fell in love with this house. You thought of everyting we needed for well over 5 days, its greatly appreciated.", date: "05/10/26" },
+  { name: "Torres's", text: "Your place is lovely. Thank you for thinking of everything.", date: "05/12/26" },
+  { name: "Beth", text: "Thank you for providing a welcoming beautiful home. We loved it. Took lots of pictures for inspiration in my upcoming kitchen update.", date: "05/22/26" },
+  { name: "Barbara", text: "Your home is so well cared for, beautifully decorated and thoughtfully stocked, homey and comfortable.", date: "05/06/25" },
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+  const grid = document.getElementById('reviewsGrid316');
+  if (grid) {
+    reviews316a.forEach(review => {
+      const card = document.createElement('div');
+      card.className = 'rev-card-sm';
+      card.innerHTML = `
+        <p class="rev-text-sm">"${review.text}"</p>
+        <p class="rev-author-sm">— ${review.name} <span style="color:#999;font-size:.75rem">${review.date}</span></p>
+      `;
+      grid.appendChild(card);
+    });
+  }
+});
+</script>
 
 <div class="xsell" role="complementary" aria-label="Also available">
   <div class="xsell-inner">
