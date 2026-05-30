@@ -202,6 +202,29 @@ const loc=locations[idx];
 const audio=document.getElementById('narrationAudio');
 const selectedVoice=document.getElementById('voiceSelect').value;
 
+// Show audio controls so user can play if autoplay is blocked
+audio.controls=true;
+audio.style.display='block';
+audio.style.position='fixed';
+audio.style.bottom='10px';
+audio.style.left='50%';
+audio.style.transform='translateX(-50%)';
+audio.style.zIndex='9999';
+audio.style.width='320px';
+audio.style.background='rgba(20,20,30,0.95)';
+audio.style.borderRadius='4px';
+
+// Show loading status
+let statusEl=document.getElementById('narrationStatus');
+if(!statusEl){
+statusEl=document.createElement('div');
+statusEl.id='narrationStatus';
+statusEl.style.cssText='position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:rgba(201,168,118,0.95);color:#1a1a2e;padding:6px 12px;border-radius:3px;font-size:11px;font-weight:bold;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.4)';
+document.body.appendChild(statusEl);
+}
+statusEl.textContent='🔮 Loading narration for: '+loc.name;
+statusEl.style.background='rgba(201,168,118,0.95)';
+
 // Pause any in-progress playback before changing src (prevents AbortError)
 try{audio.pause();}catch(e){}
 
@@ -217,18 +240,32 @@ if(response.ok){
 const blob=await response.blob();
 const url=URL.createObjectURL(blob);
 audio.src=url;
+statusEl.textContent='▶ Playing: '+loc.name;
+statusEl.style.background='rgba(102,187,106,0.95)';
 // Wait for audio to be ready, then play with proper Promise handling
 try{
 await audio.play();
 }catch(e){
 // AbortError happens when user clicks another location mid-load - safe to ignore
-if(e.name!=='AbortError')console.log('Play error:',e);
+if(e.name!=='AbortError'){
+console.log('Play error:',e);
+statusEl.textContent='⚠ Click ▶ on audio player below to play';
+statusEl.style.background='rgba(255,165,0,0.95)';
+}
 }
 }else{
 console.log('Voice API error:',response.status);
+const errorText=await response.text();
+console.log('Error details:',errorText);
+statusEl.textContent='❌ Voice API error: '+response.status+' - check API key/credits';
+statusEl.style.background='rgba(201,83,79,0.95)';
+statusEl.style.color='#fff';
 }
 }catch(e){
 console.log('Voice narration error',e);
+statusEl.textContent='❌ Network error: '+e.message;
+statusEl.style.background='rgba(201,83,79,0.95)';
+statusEl.style.color='#fff';
 }
 }
 
