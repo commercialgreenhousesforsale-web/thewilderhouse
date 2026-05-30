@@ -234,28 +234,33 @@ try{audio.pause();}catch(e){}
 
 // FIRST: Try pre-generated audio file (instant, no API call, no rate limits)
 const staticFile=audioFileMap[loc.name]&&audioFileMap[loc.name][selectedVoice];
-console.log('Trying to play:',loc.name,'with voice:',selectedVoice,'file:',staticFile);
+console.log('Voice selected:',selectedVoice,'| Location:',loc.name,'| File:',staticFile);
 if(staticFile){
+// Force reload by clearing src first, then setting new one
+audio.src='';
+audio.load();
 audio.src=staticFile;
+audio.load();
 // Add error listener to detect file load failures
 audio.onerror=function(e){
 console.error('Audio file failed to load:',staticFile,e);
-statusEl.textContent='❌ Audio file not found: '+staticFile;
+statusEl.textContent='❌ File not found: '+staticFile;
 statusEl.style.background='rgba(201,83,79,0.95)';
 statusEl.style.color='#fff';
 };
 audio.oncanplay=function(){
-console.log('Audio ready to play:',staticFile);
+console.log('Audio ready:',staticFile);
 };
+const voiceLabel=selectedVoice==='OldLady'?'👵 Old Lady':'👴 Old Man';
 try{
 await audio.play();
-statusEl.textContent='▶ Playing: '+loc.name;
+statusEl.textContent='▶ '+voiceLabel+' - '+loc.name;
 statusEl.style.background='rgba(102,187,106,0.95)';
 return;
 }catch(e){
 if(e.name!=='AbortError'){
 console.log('Static audio play error:',e);
-statusEl.textContent='⚠ Click ▶ on audio player below to play';
+statusEl.textContent='⚠ '+voiceLabel+' - Click ▶ to play';
 statusEl.style.background='rgba(255,165,0,0.95)';
 return;
 }
