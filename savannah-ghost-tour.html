@@ -202,6 +202,9 @@ const loc=locations[idx];
 const audio=document.getElementById('narrationAudio');
 const selectedVoice=document.getElementById('voiceSelect').value;
 
+// Pause any in-progress playback before changing src (prevents AbortError)
+try{audio.pause();}catch(e){}
+
 // Fall back to API generation
 const voiceId=voiceMap[selectedVoice]||voiceMap.OldMan;
 try{
@@ -214,7 +217,13 @@ if(response.ok){
 const blob=await response.blob();
 const url=URL.createObjectURL(blob);
 audio.src=url;
-audio.play();
+// Wait for audio to be ready, then play with proper Promise handling
+try{
+await audio.play();
+}catch(e){
+// AbortError happens when user clicks another location mid-load - safe to ignore
+if(e.name!=='AbortError')console.log('Play error:',e);
+}
 }else{
 console.log('Voice API error:',response.status);
 }
