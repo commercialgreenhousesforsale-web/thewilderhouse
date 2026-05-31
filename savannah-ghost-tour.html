@@ -59,7 +59,7 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <div class="header">
 <h1>Savannah Stories & Hauntings</h1>
 <p>FREE INTERACTIVE TOUR - 17 LOCATIONS</p>
-<div style="margin-top:8px;padding:8px;background:rgba(102,187,106,0.1);border-radius:3px;font-size:9px;color:#66bb6a;cursor:pointer;text-align:center;border:1px solid #66bb6a;display:none" id="adminBadge" onclick="toggleAdminMode()">✓ ADMIN MODE ACTIVE</div>
+<div style="margin-top:8px;padding:8px;background:rgba(102,187,106,0.1);border-radius:3px;font-size:9px;color:#66bb6a;cursor:pointer;text-align:center;border:1px solid #66bb6a;display:none" id="adminBadge">✓ ADMIN MODE ACTIVE</div>
 </div>
 <div class="voice-selector">
 <label>Tour Guide Voice:</label>
@@ -75,9 +75,9 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <div class="stat-item"><span>Blessed Safe Spaces:</span><strong id="blessedCount">0</strong></div>
 </div>
 <div class="location-list" id="locationList"></div>
-<button id="adminButton" onclick="promptAdminMode()" style="display:none;background:#c9534f;padding:4px;font-size:8px;margin-top:4px;opacity:0.6">🔓 Admin</button>
-<button id="editButton1" onclick="addNewLocation()" style="display:none">➕ Add New Location</button>
-<button id="editButton2" onclick="exportLocations()" style="display:none">💾 Export Data</button>
+<button id="adminButton" style="display:none;background:#c9534f;padding:4px;font-size:8px;margin-top:4px;opacity:0.6" disabled>🔓 Admin</button>
+<button id="editButton1" style="display:none" disabled>➕ Add New Location</button>
+<button id="editButton2" style="display:none" disabled>💾 Export Data</button>
 <button onclick="centerMap()">📍 Center Map</button>
 <button onclick="startGeofencing()">🎬 Start Tour & Accept Location</button>
 <div class="proximity-alert" id="proximityAlert"></div>
@@ -142,7 +142,7 @@ const audioFileMap={
 
 let map,selectedLocation=null,geofencingActive=false,userLocation=null,markers=[],currentEditingIndex=null,adminMode=false,routePolyline=null,currentSegmentPolyline=null,userMarker=null;
 const GEOFENCE_RADIUS=200;
-const ADMIN_PASSWORD='savannah2024';
+// Admin mode disabled in production (dev-only feature)
 
 function initMap(){
 map=L.map('map').setView([32.0730,-81.0900],14);
@@ -268,41 +268,11 @@ return;
 return;
 }
 
-// FALLBACK: API generation (only if no static file exists)
-const voiceId=voiceMap[selectedVoice]||voiceMap.OldMan;
-try{
-const response=await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId,{
-method:'POST',
-headers:{'xi-api-key':'sk_e7c4a94f287564d1b658fedd1752af90136987bc3a1c3ad8','Content-Type':'application/json'},
-body:JSON.stringify({text:loc.name+' - '+loc.story})
-});
-if(response.ok){
-const blob=await response.blob();
-const url=URL.createObjectURL(blob);
-audio.src=url;
-statusEl.textContent='▶ Playing: '+loc.name;
-statusEl.style.background='rgba(102,187,106,0.95)';
-try{
-await audio.play();
-}catch(e){
-if(e.name!=='AbortError'){
-console.log('Play error:',e);
-statusEl.textContent='⚠ Click ▶ on audio player below to play';
-statusEl.style.background='rgba(255,165,0,0.95)';
-}
-}
-}else{
-console.log('Voice API error:',response.status);
-statusEl.textContent='❌ Voice API rate limited - try again later';
+// FALLBACK: API generation disabled (API key should never be in client code)
+// Use pre-generated audio files only - no ElevenLabs API calls from browser
+statusEl.textContent='❌ Audio file not found: '+staticFile;
 statusEl.style.background='rgba(201,83,79,0.95)';
 statusEl.style.color='#fff';
-}
-}catch(e){
-console.log('Voice narration error',e);
-statusEl.textContent='❌ Network error: '+e.message;
-statusEl.style.background='rgba(201,83,79,0.95)';
-statusEl.style.color='#fff';
-}
 }
 
 function renderLocationList(){

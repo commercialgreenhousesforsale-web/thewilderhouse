@@ -241,26 +241,30 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:64px 24px 36px}
         <span class="success-sub">Your host reads every message personally and will be in touch within a few hours. No need to send again.</span>
       </div>
 
-      <form action="https://api.web3forms.com/submit" method="POST" id="contactForm">
+      <form action="https://api.web3forms.com/submit" method="POST" id="contactForm" novalidate>
         <input type="hidden" name="access_key" value="029c12c2-145d-4bbf-be8d-67f0de12c618">
         <input type="hidden" name="subject" value="New Inquiry — The Wilder House">
         <input type="hidden" name="from_name" value="Wilder House Contact Form">
         <input type="hidden" name="cc" value="travisareiser79@yahoo.com">
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off">
 
         <div class="form-group">
           <label class="form-label" for="name">Your Name</label>
-          <input class="form-input" type="text" id="name" name="name" required placeholder="Full name">
+          <input class="form-input" type="text" id="name" name="name" required minlength="2" maxlength="100" placeholder="Full name">
+          <span class="form-error" id="nameError" style="display:none;color:#d32f2f;font-size:.75rem;margin-top:4px"></span>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="email">Email Address</label>
           <input class="form-input" type="email" id="email" name="email" required placeholder="email@example.com">
+          <span class="form-error" id="emailError" style="display:none;color:#d32f2f;font-size:.75rem;margin-top:4px"></span>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="message">Your Message</label>
-          <textarea class="form-input" id="message" name="message" required placeholder="How can your host help plan your Savannah stay?"></textarea>
+          <textarea class="form-input" id="message" name="message" required minlength="10" maxlength="5000" placeholder="How can your host help plan your Savannah stay?"></textarea>
+          <span class="form-error" id="messageError" style="display:none;color:#d32f2f;font-size:.75rem;margin-top:4px"></span>
         </div>
 
         <button type="submit" class="form-btn">Send Message</button>
@@ -413,6 +417,34 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   if(form&&btn){
     form.addEventListener('submit',function(e){
       e.preventDefault();
+      var name=document.getElementById('name');
+      var email=document.getElementById('email');
+      var message=document.getElementById('message');
+      var nameErr=document.getElementById('nameError');
+      var emailErr=document.getElementById('emailError');
+      var msgErr=document.getElementById('messageError');
+      var valid=true;
+      nameErr.style.display='none';
+      emailErr.style.display='none';
+      msgErr.style.display='none';
+      if(form.honeypot.value){return;}
+      if(!name.value.trim()||name.value.trim().length<2){
+        nameErr.textContent='Please enter a valid name (2+ characters)';
+        nameErr.style.display='block';
+        valid=false;
+      }
+      var emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!emailRegex.test(email.value.trim())){
+        emailErr.textContent='Please enter a valid email address';
+        emailErr.style.display='block';
+        valid=false;
+      }
+      if(!message.value.trim()||message.value.trim().length<10){
+        msgErr.textContent='Message must be at least 10 characters';
+        msgErr.style.display='block';
+        valid=false;
+      }
+      if(!valid){return;}
       btn.textContent='Sending…';
       btn.disabled=true;
       btn.style.opacity='.7';
