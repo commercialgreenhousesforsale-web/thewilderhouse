@@ -49,6 +49,21 @@ npx wrangler pages deploy . --project-name=thewilderhouse
 ```
 - Uploads all files (caches unchanged ones)
 - Recompiles Worker bundle
+
+> ⚠️ **CRITICAL — deploying from a git worktree / feature branch:**
+> Wrangler tags the Pages deployment with the **current git branch name**. The
+> production site (`forsythparkvacationrentals.com`) only serves the **`main`**
+> branch deployment. If you deploy from any other branch (e.g. a
+> `claude/...` worktree branch), it creates a **preview** deployment that is
+> gated behind Cloudflare Access (a login page) and the live site does **not**
+> change. Always force production explicitly:
+> ```bash
+> npx wrangler pages deploy . --project-name=thewilderhouse --branch=main --commit-dirty=true
+> ```
+> Verify it actually went live by curling production (bypasses browser/SW cache):
+> ```bash
+> curl -sL https://forsythparkvacationrentals.com/savannah-day-planner | grep -c "<marker you just added>"
+> ```
 - Cloudflare Pages serves updated assets immediately
 
 ### Deploy with GitHub Integration
@@ -62,8 +77,8 @@ git status
 # Push to GitHub for version control (doesn't auto-deploy)
 git push origin main
 
-# Deploy to live site
-npx wrangler pages deploy . --project-name=thewilderhouse
+# Deploy to live site (always pin --branch=main for production — see warning above)
+npx wrangler pages deploy . --project-name=thewilderhouse --branch=main --commit-dirty=true
 ```
 
 ## Common Development Tasks
@@ -73,7 +88,7 @@ npx wrangler pages deploy . --project-name=thewilderhouse
 2. **Update CSP in `_headers`** if the page uses external APIs
 3. **Add to `_redirects`** if custom routing needed (usually not—catch-all handles it)
 4. **Link from main site** (`index.html`) in navigation
-5. **Deploy**: `npx wrangler pages deploy . --project-name=thewilderhouse`
+5. **Deploy**: `npx wrangler pages deploy . --project-name=thewilderhouse --branch=main --commit-dirty=true`
 
 ### Update CSP Headers
 Edit `_headers` file — add new domains to:

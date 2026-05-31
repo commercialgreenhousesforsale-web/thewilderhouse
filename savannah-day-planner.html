@@ -33,7 +33,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Canopy · Savannah","alternateName":"Canopy Savannah — Living Day Planner","url":"https://forsythparkvacationrentals.com/savannah-day-planner","description":"Canopy is a free, real-time Savannah guide that reads live weather, tides, golden hour, and what's open every hour, then recommends the single best thing to do right now near Forsyth Park.","applicationCategory":"TravelApplication","operatingSystem":"Any","slogan":"Your living canopy over Savannah.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"The Wilder House","url":"https://forsythparkvacationrentals.com"},"publisher":{"@type":"Organization","name":"The Wilder House","url":"https://forsythparkvacationrentals.com"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","dateModified":"2026-05-30","mainEntity":[{"@type":"Question","name":"What are the best free things to do in Savannah Georgia?","acceptedAnswer":{"@type":"Answer","text":"Savannah has dozens of free activities including Forsyth Park and the 1858 fountain, the 22 historic squares, River Street stroll, Colonial Park Cemetery, Cathedral Basilica of St. John the Baptist, Bonaventure Cemetery, and the Savannah National Wildlife Refuge. The Saturday Forsyth Park Farmers Market is free to enter."}},{"@type":"Question","name":"What should I do in Savannah when it rains?","acceptedAnswer":{"@type":"Answer","text":"Savannah has excellent indoor options: the American Prohibition Museum, Telfair Museums, Savannah History Museum (Forrest Gump bench is here), SCAD Museum of Art, Pirates House restaurant, Mrs. Wilkes Dining Room, Leopold's Ice Cream, Plant Riverside District's free fossil museum, and the covered hop-on trolley tour."}},{"@type":"Question","name":"Can you drink alcohol in public in Savannah?","acceptedAnswer":{"@type":"Answer","text":"Yes. Savannah is one of the few US cities with a legal open container law. You can carry an open drink in public spaces including streets, squares, and Forsyth Park. Bars give you a to-go cup. Grab a bottle from Brighter Day Natural Foods and enjoy the park."}},{"@type":"Question","name":"What is the free DOT shuttle in Savannah?","acceptedAnswer":{"@type":"Answer","text":"The free DOT shuttle has two loops — Forsyth and Downtown — covering Drayton and Whitaker Streets, River Street, City Market, the History Museum, and out to Fort Jackson. Runs every 10 minutes, 7 days a week. Routes at catchacat.org."}},{"@type":"Question","name":"How do I get to Tybee Island from Savannah?","acceptedAnswer":{"@type":"Answer","text":"Take Victory Drive east (Hwy 80) for 18 miles — about 25 minutes by car. There is no direct public transit to Tybee. Uber/Lyft cost around $35-50 each way. Once on the island, the lighthouse is at the north end on Meddin Drive."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","dateModified":"2026-05-31","mainEntity":[{"@type":"Question","name":"What are the best free things to do in Savannah Georgia?","acceptedAnswer":{"@type":"Answer","text":"Savannah has dozens of free activities including Forsyth Park and the 1858 fountain, the 22 historic squares, River Street stroll, Colonial Park Cemetery, Cathedral Basilica of St. John the Baptist, Bonaventure Cemetery, and the Savannah National Wildlife Refuge. The Saturday Forsyth Park Farmers Market is free to enter."}},{"@type":"Question","name":"What should I do in Savannah when it rains?","acceptedAnswer":{"@type":"Answer","text":"Savannah has excellent indoor options: the American Prohibition Museum, Telfair Museums, Savannah History Museum (Forrest Gump bench is here), SCAD Museum of Art, Pirates House restaurant, Mrs. Wilkes Dining Room, Leopold's Ice Cream, Plant Riverside District's free fossil museum, and the covered hop-on trolley tour."}},{"@type":"Question","name":"Can you drink alcohol in public in Savannah?","acceptedAnswer":{"@type":"Answer","text":"Yes. Savannah is one of the few US cities with a legal open container law. You can carry an open drink in public spaces including streets, squares, and Forsyth Park. Bars give you a to-go cup. Grab a bottle from Brighter Day Natural Foods and enjoy the park."}},{"@type":"Question","name":"What is the free DOT shuttle in Savannah?","acceptedAnswer":{"@type":"Answer","text":"The free DOT shuttle has two loops — Forsyth and Downtown — covering Drayton and Whitaker Streets, River Street, City Market, the History Museum, and out to Fort Jackson. Runs every 10 minutes, 7 days a week. Routes at catchacat.org."}},{"@type":"Question","name":"How do I get to Tybee Island from Savannah?","acceptedAnswer":{"@type":"Answer","text":"Take Victory Drive east (Hwy 80) for 18 miles — about 25 minutes by car. There is no direct public transit to Tybee. Uber/Lyft cost around $35-50 each way. Once on the island, the lighthouse is at the north end on Meddin Drive."}}]}</script>
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -117,25 +117,27 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 .page-header h1 em{font-style:italic;color:var(--gol)}
 .ph-meta{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.06em;display:flex;flex-wrap:wrap;gap:8px 24px}
 .ph-meta b{color:rgba(255,255,255,.88);font-weight:500}
+/* ── MOBILE HERO TIGHTENING (iPhone) ─────────────── */
+@media(max-width:600px){
+  .page-header{padding:24px 0 26px}
+  .page-header h1{font-size:2.05rem;line-height:1.03;margin-bottom:10px}
+  .ph-wordmark{font-size:1.95rem}
+  .ph-sep{font-size:1.6rem}
+  .ph-brand{margin-bottom:9px}
+  .ph-kicker{font-size:9px;letter-spacing:.13em;margin-bottom:9px}
+  .ph-tagline{font-size:1.02rem;line-height:1.4;margin-bottom:13px;max-width:none}
+  .ph-meta{font-size:10px;gap:6px 18px}
+}
 
 /* ── LAYOUT ───────────────────────────────────────── */
 .planner{max-width:1200px;margin:0 auto;padding:28px 20px 80px}
 @media(max-width:600px){.planner{padding:18px 14px 60px}}
-.panel-grid{display:grid;grid-template-columns:1.4fr 1fr 280px;gap:22px;align-items:start}
-@media(max-width:960px){
-  .panel-grid{grid-template-columns:1fr 260px}
-  .panel-main{grid-column:1;grid-row:1}
-  .panel-today{grid-column:1;grid-row:2}
-  .panel-weather{grid-column:2;grid-row:1/3}
-}
-@media(max-width:600px){
+.panel-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:start}
+@media(max-width:760px){
   .panel-grid{grid-template-columns:1fr}
-  .panel-main,.panel-today,.panel-weather{grid-column:auto;grid-row:auto}
   .panel-main{order:1}
-  .panel-weather{order:2;position:static!important}
-  .panel-today{order:3}
+  .panel-today{order:2}
 }
-.panel-weather{position:sticky;top:88px;display:flex;flex-direction:column;gap:16px}
 .panel-today{display:flex;flex-direction:column;gap:24px}
 
 /* ── RIGHT NOW ────────────────────────────────────── */
@@ -166,6 +168,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 .rn-runner-icon{font-size:20px;flex-shrink:0;padding-top:2px;line-height:1}
 .rn-runner-title{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--g);line-height:1.2}
 .rn-runner-sub{font-size:11px;color:var(--mu);margin-top:2px}
+.rn-cond{grid-column:1/-1;border-top:1px solid var(--rule);padding:13px clamp(20px,3vw,28px);display:flex;flex-wrap:wrap;align-items:center;gap:7px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:var(--ink2);background:linear-gradient(180deg,#fff,var(--cd))}
+.rn-cond .rc-i{display:inline-flex;align-items:center;gap:6px}
+.rn-cond .rc-i b{color:var(--ink);font-weight:700}
+.rn-cond .rc-g{font-size:13px;line-height:1}
+.rn-cond .rc-sep{width:3px;height:3px;border-radius:50%;background:var(--mu);opacity:.5;flex-shrink:0}
+@media(max-width:640px){.rn-cond{font-size:11px;gap:6px 11px}}
 
 /* ── WEATHER CARD ─────────────────────────────────── */
 .weather-card{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:14px 16px;position:relative;overflow:hidden}
@@ -209,11 +217,14 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 
 /* ── ACTIVITIES ───────────────────────────────────── */
 .acts-grid{display:flex;flex-direction:column;gap:12px}
-.act-card{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:7px;transition:.18s}
-.act-card:hover{border-color:rgba(42,60,48,.24);box-shadow:0 6px 20px rgba(42,60,48,.07)}
-.act-tag{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);display:flex;align-items:center;gap:6px}
-.act-tag::before{content:"";width:12px;height:1px;background:var(--terra)}
-.act-title{font-family:var(--serif);font-size:1.15rem;font-weight:500;line-height:1.2;letter-spacing:-.005em}
+.act-card{position:relative;background:#fff;border:1px solid var(--rule);border-radius:16px;padding:15px 17px;display:flex;flex-direction:column;gap:6px;transition:transform .18s,box-shadow .18s,border-color .18s}
+.act-card:hover{transform:translateY(-2px);border-color:rgba(42,60,48,.24);box-shadow:0 10px 26px rgba(42,60,48,.09)}
+.act-card.top{border-color:rgba(232,201,106,.55);box-shadow:0 4px 18px rgba(232,201,106,.14)}
+.act-card.top::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--gol)}
+.act-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.act-tag{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);display:flex;align-items:center;gap:8px;min-width:0}
+.act-rank{font-family:var(--serif);font-style:italic;font-size:1.05rem;line-height:1;font-weight:600;color:var(--terra);letter-spacing:0;flex-shrink:0}
+.act-title{font-family:var(--serif);font-size:1.18rem;font-weight:500;line-height:1.2;letter-spacing:-.005em}
 .act-place{font-size:11.5px;color:var(--mu);display:flex;align-items:center;gap:6px}
 .act-place::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--g);flex-shrink:0}
 .act-desc{font-size:13px;color:var(--ink2);line-height:1.55;flex:1}
@@ -245,6 +256,11 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
 #btt{position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--g);color:#fff;border:none;font-size:18px;display:none;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:500;transition:.2s}
 #btt:hover{background:var(--terra)}
 #btt.show{display:flex}
+/* iPhone safe-area: keep fixed UI clear of the home indicator */
+@supports(padding:max(0px)){
+  #btt{bottom:max(24px,calc(env(safe-area-inset-bottom) + 14px));right:max(20px,calc(env(safe-area-inset-right) + 8px))}
+  #toast{bottom:max(24px,calc(env(safe-area-inset-bottom) + 18px))}
+}
 
 /* ── QUIZ BAR ─────────────────────────────────────── */
 .quiz-bar{background:var(--cd);border-bottom:1px solid var(--rule);padding:10px 0}
@@ -395,14 +411,14 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
 <!-- PAGE HEADER -->
 <header class="page-header">
   <div class="ph-inner">
-    <div class="ph-kicker"><span class="ph-dot"></span>The Wilder House &middot; 314 East Park Avenue &middot; Three Blocks from Forsyth Park</div>
+    <div class="ph-kicker"><span class="ph-dot"></span>The Wilder House</div>
     <div class="ph-brand"><span class="ph-wordmark">Canopy</span><span class="ph-sep">·</span><span class="ph-locale">Savannah</span></div>
     <h1>The single best thing to do in&nbsp;Savannah, <em>this hour</em>.</h1>
     <p class="ph-tagline">Your living canopy over Savannah — read live from the weather, tides &amp; golden light, updated every hour.</p>
     <div class="ph-meta">
       <span><b>Date</b>&nbsp;&nbsp;<span id="heroDate">—</span></span>
       <span><b>Day</b>&nbsp;&nbsp;<span id="heroDay">—</span></span>
-      <span><b>Location</b>&nbsp;&nbsp;32.08° N &middot; 81.09° W &middot; Forsyth Park</span>
+      <span><b>Time</b>&nbsp;&nbsp;<span id="heroTime">—</span> &middot; right now in Savannah</span>
     </div>
   </div>
 </header>
@@ -459,6 +475,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
         <div class="rn-runners-h">Up next</div>
         <div id="rnRunners"></div>
       </div>
+      <div class="rn-cond" id="rnCond"></div>
     </div>
   </section>
 
@@ -486,42 +503,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
 
     </div>
 
-    <!-- PANEL: WEATHER -->
-    <div class="panel-weather">
-
-      <div class="weather-card" aria-label="Current weather">
-        <div class="weather-glow"></div>
-        <div class="w-sec">Right now &middot; Savannah</div>
-        <div class="w-temp" id="wTemp"><span class="sk" style="width:110px;height:68px;display:inline-block"></span></div>
-        <p class="w-sky" id="wSky">&nbsp;</p>
-        <p class="w-feel" id="wFeel">&nbsp;</p>
-        <div class="rain-timer" id="rainTimer"></div>
-        <div class="w-stats" id="wStats"></div>
-      </div>
-
-      <div class="tide-card" aria-label="Tide times at Fort Pulaski">
-        <div class="w-sec">Tide · Fort Pulaski</div>
-        <div id="tideBody"><span class="sk" style="width:130px;height:22px;display:inline-block"></span></div>
-      </div>
-
-      <div class="comfort-card" aria-label="Comfort conditions right now">
-        <div class="w-sec">Comfort · right now</div>
-        <div id="comfortBody"><span class="sk" style="width:160px;height:20px;display:inline-block"></span></div>
-      </div>
-
-      <div class="sun-card" aria-label="Sunrise and sunset times">
-        <div class="sun-kicker">Sun &amp; golden hours</div>
-        <svg id="sunArc" class="sun-arc" viewBox="0 0 300 75" preserveAspectRatio="none" aria-hidden="true"></svg>
-        <div class="sun-pts">
-          <div><span style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)">Sunrise</span><span class="sv" id="sunRise">—</span></div>
-          <div style="text-align:center"><span style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)">Solar noon</span><span class="sv" id="sunNoon">—</span></div>
-          <div style="text-align:right"><span style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)">Sunset</span><span class="sv" id="sunSet">—</span></div>
-        </div>
-        <div class="golden-row" id="goldenRow"></div>
-      </div>
-
-    </div>
-
   </div>
 </main>
 
@@ -546,20 +527,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
       <div class="tip-card"><div class="tip-q" onclick="toggleTip(this)"><span class="tip-icon">🎭</span><span class="tip-question">What is the Forrest Gump connection?</span><span class="tip-chevron">▶</span></div><div class="tip-a"><div class="tip-body">The famous "life is like a box of chocolates" bench scene was filmed in <strong>Chippewa Square</strong> on Bull Street. However, the actual bench was removed after filming and now lives at the <strong>Savannah History Museum</strong> on MLK Blvd. The square still looks exactly like the film. Walk to the museum (free entry for the bench) and sit in the same spot Tom Hanks sat.</div></div></div>
       <div class="tip-card"><div class="tip-q" onclick="toggleTip(this)"><span class="tip-icon">🌳</span><span class="tip-question">What are the 22 squares and how do you walk them?</span><span class="tip-chevron">▶</span></div><div class="tip-a"><div class="tip-body">Savannah's original 1733 grid plan placed a public square at the center of every ward. All 22 survive today. Each has a different story: <strong>Johnson Square</strong> (first, 1733, largest), <strong>Chippewa</strong> (Forrest Gump), <strong>Lafayette</strong> (Cathedral, Andrew Low House), <strong>Monterey</strong> (Mercer Williams House from Midnight in the Garden), <strong>Madison</strong> (Green-Meldrim House where Sherman stayed), <strong>Ellis</strong> (Johnny Mercer statue, City Market), <strong>Oglethorpe</strong> (Owens-Thomas House), <strong>Reynolds</strong> (Olde Pink House, John Wesley statue). Budget 3 hours to walk all of them. Start at Forsyth Park and work north — you end at the river.</div></div></div>
     </div>
-  </div>
-</section>
-
-<!-- EMBED -->
-<section class="embed-section" aria-label="Embed this planner on your website">
-  <div class="embed-inner">
-    <span class="embed-kicker">For travel blogs &amp; Savannah websites</span>
-    <h2 class="embed-title">Add Canopy to your site. Free.</h2>
-    <p class="embed-desc">Live weather + 65 curated Savannah activities, updated every hour. Useful to your readers, free forever. Just paste the link.</p>
-    <div class="embed-box">
-      <pre class="embed-code" id="embedCode">&lt;a href="https://forsythparkvacationrentals.com/savannah-day-planner" target="_blank" style="display:inline-block;background:#2a3c30;color:#fff;padding:10px 20px;border-radius:4px;font-family:sans-serif;font-size:14px;text-decoration:none;font-weight:600"&gt;🌳 Canopy · Savannah — The Best Thing to Do, This Hour&lt;/a&gt;</pre>
-      <button class="embed-copy" id="embedCopy" onclick="copyEmbed()">Copy</button>
-    </div>
-    <p class="embed-note">Linking to this tool? We appreciate it and will happily reciprocate. <a href="mailto:info@ForsythParkVacationRental.com">Get in touch →</a></p>
   </div>
 </section>
 
@@ -1167,15 +1134,18 @@ function renderActivities(){
   const ctx=buildCtx();
   document.getElementById('actsLabel').textContent=ctx.isRainy?'Indoor picks · rain day':FILTER.indoorOnly?'Indoor picks':"Today's picks · curated for now";
   const scored=getEligible().map(e=>({...e,s:scoreOf(e,ctx)})).sort((a,b)=>b.s-a.s).slice(0,9);
-  document.getElementById('actsGrid').innerHTML=scored.map(e=>{
+  document.getElementById('actsGrid').innerHTML=scored.map((e,i)=>{
     const bdg=[];
     if(e.indoor)bdg.push('<span class="act-badge indoor">🏠 Indoor</span>');
     else if(e.shut&&!e.walk)bdg.push('<span class="act-badge shuttle">🚌 DOT</span>');
     if(e.book)bdg.push('<span class="act-badge book">⏰ Book ahead</span>');
     const st=openStatus(e);
-    return`<article class="act-card">
-      <div class="act-tag">${e.cat}</div>
-      ${st?`<div class="act-status"><span class="${st.cls}">${st.txt}</span></div>`:''}
+    const rank=('0'+(i+1)).slice(-2);
+    return`<article class="act-card${i===0?' top':''}">
+      <div class="act-head">
+        <div class="act-tag"><span class="act-rank">${rank}</span>${e.cat}</div>
+        ${st?`<span class="${st.cls}">${st.txt}</span>`:''}
+      </div>
       <h3 class="act-title"><span style="margin-right:6px">${e.g}</span>${e.title}</h3>
       <div class="act-place">${e.place}</div>
       <p class="act-desc">${e.desc}${e.book?` <em style="color:var(--terra);font-size:12px">${e.bookNote}.</em>`:''}</p>
@@ -1186,38 +1156,39 @@ function renderActivities(){
 }
 
 /* ── RENDER WEATHER ─────────────────────────────── */
-function renderWeather(){
-  if(!weather){document.getElementById('wTemp').innerHTML='<span class="sk" style="width:110px;height:68px;display:inline-block"></span>';return;}
-  document.getElementById('wTemp').innerHTML=`${weather.tempF}<span class="w-deg">°</span>`;
-  document.getElementById('wSky').textContent=`${glyph(weather.code)}  ${label(weather.code)}.`;
-  document.getElementById('wFeel').textContent=`Feels like ${weather.feelsF}° · humidity ${weather.hum}% · winds ${weather.dir} at ${weather.wind} mph${weather.fallback?' (seasonal estimate)':''}`;
-  document.getElementById('wStats').innerHTML=`
-    <div><span class="ws-l">Wind</span><span class="ws-v">${weather.wind}<small style="font-size:12px;color:var(--mu)">mph</small></span><span class="ws-s">${weather.dir}</span></div>
-    <div><span class="ws-l">Humidity</span><span class="ws-v">${weather.hum}%</span><span class="ws-s">${weather.hum>70?'muggy':weather.hum>50?'pleasant':'dry'}</span></div>
-    <div><span class="ws-l">Feels like</span><span class="ws-v">${weather.feelsF}°</span><span class="ws-s">${weather.feelsF>=weather.tempF+4?'heat index up':'as reads'}</span></div>`;
-  renderRainTimer();renderComfort();
-}
+function renderWeather(){renderConditions();}
 
 /* ── RENDER SUN ─────────────────────────────────── */
-function renderSun(){
-  if(!sun)return;
-  document.getElementById('sunRise').textContent=ft(sun.rise);
-  document.getElementById('sunNoon').textContent=ft(sun.noon);
-  document.getElementById('sunSet').textContent=ft(sun.set);
-  const W=300,H=75,p=12;
-  const x=(pct)=>p+pct*(W-p*2);
-  const y=(pct)=>H-p-Math.sin(pct*Math.PI)*(H-p-8);
-  const pts=[];for(let i=0;i<=40;i++){const pct=i/40;pts.push(`${i===0?'M':'L'} ${x(pct).toFixed(1)} ${y(pct).toFixed(1)}`);}
-  const prog=Math.max(0,Math.min(1,(today-sun.rise)/(sun.set-sun.rise)));
-  document.getElementById('sunArc').innerHTML=`
-    <defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#bb6a3d" stop-opacity=".3"/><stop offset="50%" stop-color="#c2a032" stop-opacity=".75"/><stop offset="100%" stop-color="#bb6a3d" stop-opacity=".3"/></linearGradient></defs>
-    <line x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}" stroke="rgba(42,60,48,.12)" stroke-dasharray="2 4"/>
-    <path d="${pts.join(' ')}" fill="none" stroke="url(#ag)" stroke-width="2.5" stroke-linecap="round"/>
-    ${prog>0&&prog<1?`<circle cx="${x(prog).toFixed(1)}" cy="${y(prog).toFixed(1)}" r="7" fill="#c2a032" opacity=".22"/><circle cx="${x(prog).toFixed(1)}" cy="${y(prog).toFixed(1)}" r="4.5" fill="#c2a032"/>`:''}`;
-  document.getElementById('goldenRow').innerHTML=`
-    <div class="golden-block"><span class="golden-name">Morning golden</span><span class="golden-time">${fts(sun.rise)}–${fts(addMin(sun.rise,60))}</span><span class="golden-span">Forsyth fountain · oak shadows</span></div>
-    <div class="golden-block"><span class="golden-name">Evening golden</span><span class="golden-time">${fts(addMin(sun.set,-60))}–${fts(sun.set)}</span><span class="golden-span">River Street · cobblestone glow</span></div>`;
-  renderComfort();
+function renderSun(){renderConditions();}
+
+/* ── RENDER CONDITIONS STRIP (folded into rec card) ─ */
+function renderConditions(){
+  const el=document.getElementById('rnCond');if(!el)return;
+  if(!weather&&!tide&&!sun){el.innerHTML='<span class="rc-i" style="color:var(--mu)">Reading the sky over Savannah…</span>';return;}
+  const parts=[];
+  if(weather){
+    parts.push(`<span class="rc-i"><span class="rc-g">${glyph(weather.code)}</span><b>${weather.tempF}°</b>&nbsp;${label(weather.code).toLowerCase()}</span>`);
+    parts.push(`<span class="rc-i">feels <b>${weather.feelsF}°</b></span>`);
+    parts.push(`<span class="rc-i">wind <b>${weather.wind}</b> mph ${weather.dir}</span>`);
+    parts.push(`<span class="rc-i">humidity <b>${weather.hum}%</b></span>`);
+    const r=weather.rain;
+    if(r&&r.state==='clearing'&&r.at)parts.push(`<span class="rc-i"><span class="rc-g">🌤</span>rain eases by <b>${fts(r.at)}</b></span>`);
+    else if(r&&r.state==='wet')parts.push(`<span class="rc-i"><span class="rc-g">🌧</span>wet into the evening</span>`);
+    else if(r&&r.state==='incoming'&&r.at)parts.push(`<span class="rc-i"><span class="rc-g">🌦</span>showers ~<b>${fts(r.at)}</b></span>`);
+  }
+  if(tide){
+    const tnext=tide.rising?(tide.nextHigh?` · high <b>${fts(tide.nextHigh.t)}</b>`:''):(tide.nextLow?` · low <b>${fts(tide.nextLow.t)}</b>`:'');
+    parts.push(`<span class="rc-i"><span class="rc-g">${tide.rising?'🌊':'🐚'}</span>tide ${tide.rising?'rising':'falling'}${tnext}</span>`);
+  }
+  if(sun){
+    const mg1=addMin(sun.rise,60),eg0=addMin(sun.set,-60);
+    let g;
+    if(today<mg1)g=`morning gold <b>${fts(sun.rise)}–${fts(mg1)}</b>`;
+    else if(today<sun.set)g=`golden hour <b>${fts(eg0)}–${fts(sun.set)}</b>`;
+    else g=`sunset <b>${fts(sun.set)}</b>`;
+    parts.push(`<span class="rc-i"><span class="rc-g">🌅</span>${g}</span>`);
+  }
+  el.innerHTML=parts.join('<span class="rc-sep"></span>');
 }
 
 /* ── RENDER HOLIDAY BANNER ──────────────────────── */
@@ -1376,7 +1347,7 @@ async function loadTide(){
 }
 
 /* ── RENDER ALL ─────────────────────────────────── */
-function renderAll(){renderRightNow();renderActivities();renderItinerary();}
+function renderAll(){renderRightNow();renderActivities();renderItinerary();renderConditions();}
 
 /* ── LOAD DATA ──────────────────────────────────── */
 async function loadData(){
@@ -1436,6 +1407,7 @@ function copyEmbed(){
 function init(){
   document.getElementById('heroDate').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('heroDay').textContent=today.toLocaleDateString('en-US',{weekday:'long'});
+  document.getElementById('heroTime').textContent=ft(today);
   renderHoliday();
   renderEvents();
   renderAll();
