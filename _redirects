@@ -10,6 +10,9 @@
 /wilder-house.html /wilder-house-savannah-vacation-rental 301
 /home.html / 301
 
+# Short branded URL used in the embeddable widget code
+/right-now /right-now-savannah 301
+
 # Retired pages — redirect to group rental
 /savannah-bachelorette-party-rental /savannah-group-vacation-rental-4-bedroom 301
 /savannah-bachelorette-party-rental.html /savannah-group-vacation-rental-4-bedroom 301
