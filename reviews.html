@@ -289,56 +289,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
 
 </main>
 
-<footer>
-  <div class="footer-inner">
-    <div>
-      <a href="/" class="footer-brand" style="color:var(--wh)">The Wilder House</a>
-      <p class="footer-tagline">Built in 1898. Preserved for your stories.</p>
-      <address class="footer-contact">
-        <p>314 East Park Avenue<br>Savannah, Georgia 31401</p>
-        <p style="margin-top:8px"><a href="tel:+19122317502">(912) 231-7502</a></p>
-        <p><a href="mailto:info@ForsythParkVacationRental.com">info@ForsythParkVacationRental.com</a></p>
-      </address>
-    </div>
-    <div class="footer-col">
-      <p class="footer-col-head" style="font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:#b8a060;margin-bottom:14px;font-weight:700">Suites</p>
-      <ul>
-        <li><a href="forsyth-park-vacation-rental-savannah-314a">Suite 314A</a></li>
-        <li><a href="savannah-victorian-district-vacation-rental-316a">Suite 316A</a></li>
-        <li><a href="savannah-group-vacation-rental-4-bedroom">Book Both</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <p class="footer-col-head" style="font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:#b8a060;margin-bottom:14px;font-weight:700">The Property</p>
-      <ul>
-        <li><a href="wilder-house-savannah-vacation-rental">Our Story</a></li>
-        <li><a href="savannah-victorian-district">Location</a></li>
-        <li><a href="house-rules">House Rules</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <p class="footer-col-head" style="font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:#b8a060;margin-bottom:14px;font-weight:700">Plan Your Trip</p>
-      <ul>
-        <li><a href="savannah-farmers-market">Farmers Market</a></li>
-        <li><a href="savannah-day-planner">Live Planner</a></li>
-        <li><a href="contact">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <p class="footer-col-head" style="font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:#b8a060;margin-bottom:14px;font-weight:700">Guest Info</p>
-      <ul>
-        <li><span style="color:rgba(255,255,255,.8);font-size:.86rem">Check-in: 4 PM</span></li>
-        <li><span style="color:rgba(255,255,255,.8);font-size:.86rem">Checkout: 11 AM</span></li>
-        <li><a href="submit-review">Leave a Review</a></li>
-        <li><a href="reviews" aria-current="page">Guest Reviews</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2024 The Wilder House. All rights reserved.</p>
-    <p>Historic vacation rental in Savannah, GA &bull; License SVR-01357 & SVR-01358</p>
-  </div>
-</footer>
+<shared-footer></shared-footer>
 
 <script>
 const allReviews = [
@@ -557,5 +508,6 @@ if (filterParam && (filterParam === '314a' || filterParam === '316a')) {
 // Initial render
 renderReviews();
 </script>
+<script src="/shared-components.js" defer></script>
 </body>
 </html>

@@ -227,18 +227,7 @@ address a:hover{color:#fff}
 </head>
 <body>
 
-<!-- NAV -->
-<nav aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="/" class="logo" aria-label="The Wilder House home"><span class="logo-name">The Wilder House</span><em class="logo-est">Est. 1898</em></a>
-    <ul class="nav-links" role="list">
-      <li><a href="/">Home</a></li>
-      <li><a href="/#suites">Our Suites</a></li>
-      <li><a href="contact">Contact</a></li>
-      <li><a href="https://www.airbnb.com/h/forsyth-park-vacation-rental-savannah" rel="nofollow noopener noreferrer" target="_blank" class="nav-cta">Book Now</a></li>
-    </ul>
-  </div>
-</nav>
+<shared-header></shared-header>
 
 <!-- PAGE HEADER -->
 <header class="page-header">
@@ -368,40 +357,7 @@ address a:hover{color:#fff}
 
 </main>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <span class="footer-brand">The Wilder <span>House</span></span>
-      <p class="footer-tagline">Built in 1898. Preserved for your stories.</p>
-      <address>
-        <p>314 East Park Avenue<br>Savannah, Georgia 31401</p>
-        <p style="margin-top:8px"><a href="tel:+19122317502">(912) 231-7502</a></p>
-        <p><a href="mailto:info@ForsythParkVacationRental.com">info@ForsythParkVacationRental.com</a></p>
-      </address>
-    </div>
-    <div>
-      <p class="footer-col-head">The Property</p>
-      <ul>
-        <li><a href="wilder-house-savannah-vacation-rental">Our Story</a></li>
-        <li><a href="savannah-victorian-district">Location</a></li>
-        <li><a href="contact">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-col-head">Plan Your Trip</p>
-      <ul>
-        <li><a href="savannah-st-patricks-day-vacation-rental">St. Patrick's Day</a></li>
-        <li><a href="family-vacation-rental">Family Guide</a></li>
-        <li><a href="savannah-romantic-vacation-rental">Romantic</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>&copy; 2026 The Wilder House · Savannah GA 31401</span>
-    <span>STVR SVR-01357 · SVR-01358</span>
-  </div>
-</footer>
+<shared-footer></shared-footer>
 
 <script>
 /* ── ACTIVITIES DATA ──────────────────────────────── */
@@ -811,5 +767,6 @@ function init(){
 
 init();
 </script>
+<script src="/shared-components.js" defer></script>
 </body>
 </html>
