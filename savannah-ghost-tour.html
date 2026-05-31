@@ -416,23 +416,28 @@ function previewStory(){
 const name=document.getElementById('coordName').value.trim();
 const story=document.getElementById('coordStory').value.trim();
 const voiceSelect=document.getElementById('previewVoice').value;
-const voiceId=voiceMap[voiceSelect]||voiceMap.George;
+const voiceId=voiceMap[voiceSelect]||voiceMap.OldMan;
 if(!name||!story){
 alert('Please enter location name and story first');
 return;
 }
+// Admin token is entered at runtime and sent to our Worker proxy.
+// The ElevenLabs key lives only as a Cloudflare secret server-side — never here.
+let token=sessionStorage.getItem('ttsAdminToken');
+if(!token){token=prompt('Enter admin token:');if(!token)return;sessionStorage.setItem('ttsAdminToken',token);}
 const btn=event.target;
 btn.textContent='⏳ Loading...';
 btn.disabled=true;
-fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId,{
+fetch('/tts-proxy',{
 method:'POST',
-headers:{'xi-api-key':'sk_e7c4a94f287564d1b658fedd1752af90136987bc3a1c3ad8','Content-Type':'application/json'},
-body:JSON.stringify({text:name+' - '+story})
+headers:{'x-admin-token':token,'Content-Type':'application/json'},
+body:JSON.stringify({text:name+' - '+story,voiceId:voiceId})
 }).then(response=>{
 if(response.ok){
 return response.blob();
 }else{
-alert('Voice API error - check API key');
+if(response.status===403){sessionStorage.removeItem('ttsAdminToken');alert('Auth failed — wrong admin token. Try again.');}
+else{alert('Voice preview error ('+response.status+')');}
 btn.textContent='▶ Play Preview';
 btn.disabled=false;
 return null;
