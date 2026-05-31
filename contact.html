@@ -114,6 +114,8 @@ nav{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.97);backdrop
 textarea.form-input{height:140px;resize:vertical}
 .form-btn{width:100%;padding:15px;background:var(--g);color:var(--wh);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:8px}
 .form-btn:hover{background:var(--g2)}
+.form-btn:disabled{opacity:.6;cursor:not-allowed}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
 .form-note{font-size:.76rem;color:var(--mu);margin-top:14px;line-height:1.6;text-align:center}
 
 /* CONTACT INFO SIDEBAR */
@@ -251,7 +253,14 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:64px 24px 36px}
           <span class="form-error" id="messageError" style="display:none;color:#d32f2f;font-size:.75rem;margin-top:4px"></span>
         </div>
 
-        <button type="submit" class="form-btn">Send Message</button>
+        <button type="submit" class="form-btn" id="submitBtn">
+          <span id="btnText">Send Message</span>
+          <span id="btnLoader" style="display:none;margin-left:8px">
+            <span style="display:inline-block;width:4px;height:4px;background:#fff;border-radius:50%;margin:0 2px;animation:pulse 1.4s infinite"></span>
+            <span style="display:inline-block;width:4px;height:4px;background:#fff;border-radius:50%;margin:0 2px;animation:pulse 1.4s infinite 0.2s"></span>
+            <span style="display:inline-block;width:4px;height:4px;background:#fff;border-radius:50%;margin:0 2px;animation:pulse 1.4s infinite 0.4s"></span>
+          </span>
+        </button>
         <p class="form-note">Your host typically responds within 2&ndash;4 hours.</p>
       </form>
     </div>
@@ -367,9 +376,11 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
         valid=false;
       }
       if(!valid){return;}
-      btn.textContent='Sending…';
+      var btnText=document.getElementById('btnText');
+      var btnLoader=document.getElementById('btnLoader');
+      btnText.style.display='none';
+      btnLoader.style.display='inline';
       btn.disabled=true;
-      btn.style.opacity='.7';
       fetch('https://api.web3forms.com/submit',{
         method:'POST',
         headers:{'Accept':'application/json'},
@@ -381,9 +392,9 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
           form.style.display='none';
           setTimeout(function(){if(b)b.scrollIntoView({behavior:'smooth',block:'center'});},100);
         }else{
-          btn.textContent='Send Message';
+          btnText.style.display='inline';btnLoader.style.display='none';
           btn.disabled=false;
-          btn.style.opacity='1';
+/* button state restored */
           alert('Something went wrong. Please try again or call (912) 231-7502.');
         }
       }).catch(function(){
