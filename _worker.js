@@ -29,6 +29,45 @@ export default {
       }
     }
 
+    if (url.pathname === '/wx-proxy') {
+      // Ground-truth current conditions from the NWS Savannah station (KSAV).
+      // open-meteo's model 'current' can report 0mm while it's actually raining;
+      // this observed feed is used to override the rain state on the day planner.
+      try {
+        const resp = await fetch('https://api.weather.gov/stations/KSAV/observations/latest', {
+          headers: {
+            'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)',
+            'Accept': 'application/geo+json'
+          }
+        });
+        if (!resp.ok) {
+          return new Response('Upstream ' + resp.status, { status: 502, headers: { 'Access-Control-Allow-Origin': '*' } });
+        }
+        const data = await resp.json();
+        const p = (data && data.properties) || {};
+        const text = (p.textDescription || '').toLowerCase();
+        const precip = (p.precipitationLastHour && p.precipitationLastHour.value != null) ? p.precipitationLastHour.value : 0;
+        const present = Array.isArray(p.presentWeather)
+          ? p.presentWeather.map(function (w) { return (w.weather || '').toLowerCase(); }).join(',')
+          : '';
+        const rainWords = /rain|drizzle|shower|thunder/;
+        const active = rainWords.test(text) || rainWords.test(present);
+        const raining = active || precip >= 0.2;
+        return new Response(JSON.stringify({
+          raining: raining, active: active, precipLastHour: precip,
+          text: p.textDescription || '', present: present, ts: p.timestamp || ''
+        }), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=300'
+          }
+        });
+      } catch (e) {
+        return new Response('wx error: ' + e.message, { status: 502, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    }
+
     if (url.pathname === '/tts-proxy') {
       if (request.method !== 'POST') {
         return new Response('Method Not Allowed', { status: 405 });

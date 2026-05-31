@@ -990,7 +990,7 @@ function vibeOk(e){
 
 /* ── GET ELIGIBLE ───────────────────────────────── */
 function getEligible(relax){
-  const wc=wcat(weather?.code);const dow=today.getDay();const isRainy=wc==='rain';
+  const wc=wcat(weather?.code);const dow=today.getDay();const isRainy=wc==='rain'||!!(weather&&weather.observedRain);
   const res=A.filter(e=>{
     const reach=e.walk||e.shut||e.drive;
     const dayOk=!e.days||e.days.includes(dow);
@@ -1009,7 +1009,7 @@ function getEligible(relax){
 /* ── SCORING ENGINE ─────────────────────────────── */
 function buildCtx(){
   const h=today.getHours()+today.getMinutes()/60;
-  const wc=wcat(weather?.code);const isRainy=wc==='rain';
+  const wc=wcat(weather?.code);const isRainy=wc==='rain'||!!(weather&&weather.observedRain);
   const riseH=sun?sun.rise.getHours()+sun.rise.getMinutes()/60:6.5;
   const setH=sun?sun.set.getHours()+sun.set.getMinutes()/60:20;
   const inMornGold=sun&&h>=riseH&&h<=riseH+1;
@@ -1296,6 +1296,19 @@ async function loadData(){
     }
   }catch{weather={tempF:76,feelsF:79,code:2,wind:8,dir:'SSW',hum:65,uv:6,rain:{state:'dry'},fallback:true};}
   renderWeather();renderAll();
+  // Ground-truth rain override: open-meteo's model 'current' sometimes reports
+  // 0mm while it's actually raining. Cross-check the NWS Savannah observation
+  // (via same-origin Worker proxy) and force the wet state when it's truly raining.
+  try{
+    const w=await fetchT('/wx-proxy',6000);
+    if(weather&&w&&w.raining){
+      weather.observedRain=true;
+      if(!weather.rain||weather.rain.state==='dry'||weather.rain.state==='incoming'){
+        weather.rain={state:'wet',observed:true};
+      }
+      renderWeather();renderAll();
+    }
+  }catch{}
   try{
     const j=await fetchT(`https://api.sunrise-sunset.org/json?lat=${SAV.lat}&lng=${SAV.lng}&date=${ds}&formatted=0&tzid=${encodeURIComponent(SAV.tz)}`);
     const r=j.results;
