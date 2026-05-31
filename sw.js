@@ -1,14 +1,13 @@
 /* ── THE WILDER HOUSE — SERVICE WORKER v2 ── */
 /* Stale-while-revalidate for HTML; long-cache for images/fonts */
 
-const CACHE = 'wilder-v7';
+const CACHE = 'wilder-v8';
 
 const SHELL = [
   '/',
   '/forsyth-park-vacation-rental-savannah-314a',
   '/savannah-victorian-district-vacation-rental-316a',
   '/savannah-group-vacation-rental-4-bedroom',
-  '/savannah-bachelorette-party-rental',
   '/savannah-vacation-rental-with-parking',
   '/savannah-romantic-vacation-rental',
   '/savannah-day-planner',

@@ -10,6 +10,10 @@
 /wilder-house.html /wilder-house-savannah-vacation-rental 301
 /home.html / 301
 
+# Retired pages — redirect to group rental
+/savannah-bachelorette-party-rental /savannah-group-vacation-rental-4-bedroom 301
+/savannah-bachelorette-party-rental.html /savannah-group-vacation-rental-4-bedroom 301
+
 # Legacy short URLs — clean path versions (orphan pages without .html extension)
 /314A /forsyth-park-vacation-rental-savannah-314a 301
 /316A /savannah-victorian-district-vacation-rental-316a 301
