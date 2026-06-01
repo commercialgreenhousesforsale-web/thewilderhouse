@@ -105,9 +105,13 @@ export default {
         });
         if (!resp.ok) {
           const msg = await resp.text();
-          return new Response('Upstream ' + resp.status + ': ' + msg.slice(0, 200), { status: 502 });
+          return new Response('Upstream ' + resp.status + ': ' + msg.slice(0, 300), { status: 502 });
         }
-        return new Response(resp.body, {
+        // Buffer the audio rather than streaming resp.body: a streamed upstream
+        // body that errors mid-flight surfaces as an opaque Cloudflare 502 that
+        // bypasses this try/catch. Buffering keeps errors catchable here.
+        const audio = await resp.arrayBuffer();
+        return new Response(audio, {
           headers: { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'no-store' }
         });
       } catch (e) {
