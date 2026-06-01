@@ -59,7 +59,7 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <div class="header">
 <h1>Savannah Stories & Hauntings</h1>
 <p>FREE INTERACTIVE TOUR - 17 LOCATIONS</p>
-<div style="margin-top:8px;padding:8px;background:rgba(102,187,106,0.1);border-radius:3px;font-size:9px;color:#66bb6a;cursor:pointer;text-align:center;border:1px solid #66bb6a;display:none" id="adminBadge">✓ ADMIN MODE ACTIVE</div>
+<div style="margin-top:8px;padding:8px;background:rgba(102,187,106,0.1);border-radius:3px;font-size:9px;color:#66bb6a;cursor:pointer;text-align:center;border:1px solid #66bb6a;display:none" id="adminBadge" onclick="adminMode=false;updateAdminUI();" title="Click to exit admin mode">✓ ADMIN MODE ACTIVE · click to exit</div>
 </div>
 <div class="voice-selector">
 <label>Tour Guide Voice:</label>
@@ -541,8 +541,17 @@ alert('Locations exported! File downloaded.');
 
 window.addEventListener('load',()=>{
 loadFromStorage();
+// Authoring/preview mode: open the page as …/savannah-ghost-tour#admin to
+// reveal the per-location editor. Clicking a map pin then opens the editor
+// with a Play Preview button. The real security is the server-side admin
+// token on /tts-proxy — this client toggle only unhides the editing UI.
+if((location.hash||'').toLowerCase().indexOf('admin')!==-1){adminMode=true;}
 updateAdminUI();
 initMap();
+});
+window.addEventListener('hashchange',()=>{
+const on=(location.hash||'').toLowerCase().indexOf('admin')!==-1;
+if(on!==adminMode){adminMode=on;updateAdminUI();}
 });
 </script>
 </body>
