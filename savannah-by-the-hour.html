@@ -452,6 +452,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
       </div>
       <div class="rn-cond" id="rnCond"></div>
     </div>
+    <p class="rn-sync" id="rnSync"><span class="rn-sync-dot"></span>Live tool &middot; data synced <time id="rnSyncTime" datetime="2026-06-03">June 3, 2026</time> &middot; weather, tide &amp; golden hour refresh every hour</p>
   </section>
 
   <noscript>
@@ -525,6 +526,10 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px 32px}
 </section>
 
 <style>
+  .rn-sync{font-family:var(--sans);font-size:.74rem;letter-spacing:.02em;color:rgba(255,255,255,.5);text-align:center;margin:14px auto 0;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}
+  .rn-sync time{color:rgba(255,255,255,.74);font-weight:600}
+  .rn-sync-dot{width:7px;height:7px;border-radius:50%;background:#5fbf7a;box-shadow:0 0 0 0 rgba(95,191,122,.6);animation:rnSyncPulse 2.4s infinite}
+  @keyframes rnSyncPulse{0%{box-shadow:0 0 0 0 rgba(95,191,122,.5)}70%{box-shadow:0 0 0 7px rgba(95,191,122,0)}100%{box-shadow:0 0 0 0 rgba(95,191,122,0)}}
   .rn-fallback{max-width:760px;margin:0 auto 26px;padding:20px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:14px;font-family:var(--sans);color:rgba(255,255,255,.72);line-height:1.6;font-size:.95rem}
   .rn-fallback strong{color:#fff}
   .rn-fallback ul{margin:14px 0 0;padding-left:20px}
@@ -1191,6 +1196,7 @@ function renderRightNow(){
   }
   const reason=reasonFor(pick,ctx);
   document.getElementById('rnTime').textContent=`Right now · ${ft(today)}`;
+  try{const sd=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});const stEl=document.getElementById('rnSyncTime');if(stEl){stEl.textContent=`${sd} at ${fts(today)} ET`;stEl.setAttribute('datetime',today.toISOString());}}catch(e){}
   document.getElementById('rnKicker').textContent='🌳 This hour in Savannah · the best thing to do';
   document.getElementById('rnTitle').innerHTML=`<span>${pick.g}</span> ${pick.title}`;
   document.getElementById('rnBgGlyph').textContent=pick.g;
