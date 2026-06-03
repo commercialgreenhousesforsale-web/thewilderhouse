@@ -13,6 +13,10 @@
 # Short branded URL used in the embeddable widget code
 /right-now /right-now-savannah 301
 
+# Planner rebranded — old "Savannah Day Planner" slug folds into "Savannah by the Hour"
+/savannah-day-planner /savannah-by-the-hour 301
+/savannah-day-planner.html /savannah-by-the-hour 301
+
 # Retired pages — redirect to group rental
 /savannah-bachelorette-party-rental /savannah-group-vacation-rental-4-bedroom 301
 /savannah-bachelorette-party-rental.html /savannah-group-vacation-rental-4-bedroom 301
