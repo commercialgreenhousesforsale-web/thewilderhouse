@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="robots" content="noindex, follow">
-<title>Savannah Stories & Hauntings Tour - Free Interactive Ghost Tour</title>
+<meta name="robots" content="noindex, nofollow">
+<title>Savannah Remembers - Free Interactive Ghost Tour</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -32,6 +32,11 @@ button{width:100%;padding:8px;background:linear-gradient(135deg,#8b7355,#6b5344)
 button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 .proximity-alert{display:none;background:rgba(201,168,118,0.2);border:2px solid #c9a876;padding:10px;margin-top:10px;border-radius:3px;color:#c9a876;font-size:9px;text-align:center}
 @media(max-width:1024px){.tour-container{flex-direction:column}#map{height:60%}.sidebar{width:100%;height:40%;border-left:none;border-top:3px solid #8b7355}}
+.tour-controls{display:flex;flex-direction:column}
+.primary-cta{background:linear-gradient(135deg,#4caf50,#2e7d32);font-size:13px;padding:14px}
+/* On phones the sidebar is a short, scrollable strip — pin the main controls to
+   the top of it so Start Tour / Center Map are always reachable without hunting. */
+@media(max-width:1024px){.tour-controls{position:sticky;top:0;z-index:60;background:#3d2817;margin:0 -20px 10px;padding:10px 20px;box-shadow:0 6px 14px rgba(0,0,0,.5);border-bottom:1px solid #8b7355}.tour-controls button{margin-top:8px}.tour-controls button:first-child{margin-top:0}}
 .location-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid #8b7355;display:flex;align-items:center;justify-content:center}
 .location-dot.haunted div{width:14px;height:14px;border-radius:50%;background:#c9a876;box-shadow:0 0 10px rgba(201,168,118,0.5)}
 .location-dot.blessed div{width:14px;height:14px;border-radius:50%;background:#66bb6a;box-shadow:0 0 10px rgba(102,187,106,0.5)}
@@ -39,6 +44,16 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 .location-label{background:rgba(0,0,0,0.7) !important;color:#c9a876 !important;border:none !important;border-radius:3px;padding:4px 8px !important;font-size:11px !important;font-family:Georgia,serif;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5)}
 .user-location-dot{width:16px;height:16px;border-radius:50%;cursor:pointer;border:2px solid #2196F3;display:flex;align-items:center;justify-content:center}
 .user-location-dot div{width:10px;height:10px;border-radius:50%;background:#2196F3;box-shadow:0 0 8px rgba(33,150,243,0.6)}
+/* Directional puck on the user's location: blue dot + a translucent "beam"
+   (flashlight cone) that starts narrow AT the pin and fans out wide toward
+   the next stop — the standard nav-app way to show heading. North-up map, so
+   the rotation is the true bearing to the stop. */
+.user-puck{position:relative}
+.user-rot{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transition:transform .35s ease-out;will-change:transform}
+.user-rot svg{position:absolute;left:-44px;top:-78px;overflow:visible}
+.user-dot2{position:absolute;left:-10px;top:-10px;width:20px;height:20px;border-radius:50%;background:#2196F3;border:3px solid #fff;box-shadow:0 0 10px rgba(33,150,243,0.95)}
+.guide-line{filter:drop-shadow(0 0 4px rgba(102,187,106,0.9));animation:guideFlow 1s linear infinite}
+@keyframes guideFlow{to{stroke-dashoffset:-12}}
 .user-location-label{background:rgba(33,150,243,0.9) !important;color:#ffffff !important;border:none !important;border-radius:3px;padding:4px 8px !important;font-size:10px !important;font-family:Georgia,serif;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(33,150,243,0.5)}
 .coord-editor{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#2a1810;border:2px solid #8b7355;padding:20px;border-radius:5px;z-index:1000;width:400px;box-shadow:0 0 30px rgba(0,0,0,0.8)}
 .coord-editor.active{display:block}
@@ -57,15 +72,20 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <div id="map"></div>
 <div class="sidebar">
 <div class="header">
-<h1>Savannah Stories & Hauntings</h1>
+<h1>Savannah Remembers</h1>
 <p>FREE INTERACTIVE TOUR - 17 LOCATIONS</p>
 <div style="margin-top:8px;padding:8px;background:rgba(102,187,106,0.1);border-radius:3px;font-size:9px;color:#66bb6a;cursor:pointer;text-align:center;border:1px solid #66bb6a;display:none" id="adminBadge" onclick="adminMode=false;updateAdminUI();" title="Click to exit admin mode">✓ ADMIN MODE ACTIVE · click to exit</div>
+</div>
+<div class="tour-controls" id="tourControls">
+<button id="startTourBtn" class="primary-cta" onclick="showLocationPrimer()">🎬 Start Tour</button>
+<button onclick="centerMap()">📍 Center Map</button>
+<button id="demoButton" style="display:none;background:#3d6b46" onclick="demoFromWilder()">🧪 Demo from Wilder House</button>
 </div>
 <div class="voice-selector">
 <label>Tour Guide Voice:</label>
 <select id="voiceSelect">
-<option value="OldLady">👵 Old Lady</option>
-<option value="OldMan">👴 Old Man</option>
+<option value="OldLady">🎙️ Narrator (Female)</option>
+<option value="OldMan">🎙️ Narrator (Male)</option>
 </select>
 </div>
 <div class="stats">
@@ -78,9 +98,28 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <button id="adminButton" style="display:none;background:#c9534f;padding:4px;font-size:8px;margin-top:4px;opacity:0.6" disabled>🔓 Admin</button>
 <button id="editButton1" style="display:none" disabled>➕ Add New Location</button>
 <button id="editButton2" style="display:none" disabled>💾 Export Data</button>
-<button onclick="centerMap()">📍 Center Map</button>
-<button onclick="startGeofencing()">🎬 Start Tour & Accept Location</button>
 <div class="proximity-alert" id="proximityAlert"></div>
+</div>
+</div>
+<div id="compassNav" style="display:none;position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);transform:translateX(-50%);z-index:9999;align-items:center;gap:12px;background:rgba(15,15,20,0.94);border:1px solid #66bb6a;border-radius:14px;padding:10px 14px;box-shadow:0 4px 18px rgba(0,0,0,.5)">
+<div style="display:flex;flex-direction:column;line-height:1.25">
+<span id="compassDist" style="color:#fff;font-weight:700;font-size:15px">&mdash;</span>
+<span id="compassTarget" style="color:#9fd8a6;font-size:11px">Next memory</span>
+<span id="compassHint" style="color:#6f8f74;font-size:9px;letter-spacing:.3px">follow the green beam &amp; line</span>
+</div>
+<button id="compassBtn" onclick="enableCompass()" style="display:none;background:#66bb6a;color:#10210f;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🧭 Enable compass</button>
+</div>
+<!-- Location primer: a friendly "why we need this" card shown BEFORE the system
+     prompt, so guests understand the value + privacy and confidently tap Allow
+     (iOS only asks once — a reflexive "Don't Allow" otherwise locks them out). -->
+<div id="locPrimer" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,8,6,0.82);align-items:center;justify-content:center;padding:24px">
+<div style="max-width:340px;width:100%;background:linear-gradient(180deg,#3d2817,#241510);border:1px solid #8b7355;border-radius:16px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.6);text-align:center;color:#e9dcc6;box-sizing:border-box">
+<div style="font-size:34px">🕯️📍</div>
+<h2 style="margin:10px 0 8px;color:#e7c389;font-size:19px;font-family:Georgia,serif">Walk with the stories</h2>
+<p style="font-size:13px;line-height:1.55;color:#cdbfa6;margin:0 0 14px">Savannah Remembers plays each haunting automatically as you reach the spot. To do that, it follows your location while you walk.</p>
+<p style="font-size:11px;line-height:1.5;color:#9c8f78;margin:0 0 20px">🔒 Your location stays on your phone — we never store it, share it, or track you.</p>
+<button onclick="acceptLocationPrimer()" class="primary-cta" style="text-transform:none;margin:0">Continue, then tap &ldquo;Allow&rdquo;</button>
+<div onclick="dismissLocationPrimer()" style="margin-top:14px;font-size:12px;color:#8b7355;cursor:pointer">Not now</div>
 </div>
 </div>
 <audio id="narrationAudio" style="display:none"></audio>
@@ -109,8 +148,9 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <textarea id="coordStory" placeholder="Enter location story..." style="width:100%;padding:8px;margin-top:5px;background:#1a1410;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-family:Georgia,serif;font-size:11px;min-height:80px;box-sizing:border-box"></textarea>
 <label style="margin-top:10px">Preview Voice:</label>
 <select id="previewVoice" style="width:100%;padding:8px;margin-top:5px;background:#1a1410;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-size:11px">
-<option value="OldLady">👵 Old Lady</option>
-<option value="OldMan">👴 Old Man</option>
+<option value="OldLady">🎙️ Narrator (Female)</option>
+<option value="OldMan">🎙️ Narrator (Male)</option>
+<option value="Wilder">⛪ Reverend Wilder</option>
 </select>
 <button onclick="previewStory()" style="width:100%;padding:10px;margin-top:10px;background:#8b7355;color:#f5f5dc;border:none;border-radius:3px;cursor:pointer;font-size:11px;font-weight:bold">▶ Play Preview</button>
 <div class="buttons">
@@ -124,11 +164,11 @@ button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
 <script>
 let locations=[{name:"BONUS: Wilder House Opening",lat:32.063892,lng:-81.093253,type:"Blessed",story:"Welcome to the Wilder House. Before we step out, I want you to know you are standing in a protected place. Reverend Wilder blessed these walls long ago, and that blessing still holds. Nothing we encounter tonight will follow you back here. This house is your sanctuary. Breathe easy. When you're ready, we'll walk west along Park Avenue — just five minutes — and begin where Savannah starts to open its memory to us."},{name:"OPENING: South Forsyth Park",lat:32.06501,lng:-81.097223,type:"Historic Park",story:"You didn't just come to Savannah. Savannah called you here. This city does not haunt the way most people think. It remembers. It carries its past in deep, layered memory — some parts gentle, some heavy, some still unfinished. Tonight we walk north from the southern edge of Forsyth Park all the way to the river. With every step, the city will slowly reveal more of itself. What begins as individual memories will gradually become one single, continuous story. Stay close. Listen carefully. Let Savannah tell you what it remembers."},{name:"STOP 1: Telfair Hospital",lat:32.064674,lng:-81.096386,type:"Historic Hospital",story:"Our journey begins with a memory of will — strong and unyielding. Mary Telfair built this hospital as a sanctuary for women only. No men allowed. That was her unbreakable rule. When she died, she chose to stay. She still walks these halls — a tall figure in a long brown dress. Her lavender perfume appears without warning. Doors close with quiet purpose. Some men still feel her presence gently but firmly reminding them: this space has its boundaries. Even now, Mary protects what she built. This is how Savannah remembers strength. Let's keep walking north… and the city begins to show us something softer."},{name:"STOP 2: Forsyth Park Fountain",lat:32.06922,lng:-81.095635,type:"Haunted Park",story:"Here, strength gives way to sorrow. This fountain is one of Savannah's most beloved images — graceful and beautiful. But beauty in this city often holds deeper truths beneath its surface. A fourteen-year-old girl named Lottie once lived with a terrible secret. In confusion, she poisoned a woman she believed was her rival… only to discover it was her own mother. The truth, hidden by polite Savannah society, shattered her completely. She never recovered. Her spirit returned to this fountain — the most beautiful place she knew. People still see a young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. Many feel waves of guilt and sadness pass through them. This is Savannah remembering the pain that beauty tries, but cannot fully hide. Let's continue walking north. The memories are growing older now."},{name:"STOP 3: Green-Meldrim House",lat:32.073902,lng:-81.094079,type:"Historic Mansion",story:"As we move deeper into the city, we meet a memory of bondage and beauty. In 1864, General Sherman occupied this mansion as his headquarters. But the presence that still lingers here belongs to an enslaved woman who worked inside these walls. Even while enslaved, she found moments of freedom in music. She would pause her labor whenever orchestras played, letting the melodies lift her. Today, people hear that same phantom music drifting through empty rooms. They feel a quiet, purposeful presence still moving through the house — still reaching for beauty in a world that tried to deny it to her. Savannah remembers those who were silenced… but whose spirits refused to be erased. Let's keep walking."},{name:"STOP 4: Chippewa Square",lat:32.075843,lng:-81.093124,type:"Historic Square",story:"Now the memory shifts again — this time into interruption. Inside the Foley House Inn, workers discovered a human skeleton hidden inside a wall in 1987. A man had entered Honoria Foley's room with harmful intentions. She defended herself with a candlestick. Rather than face the truth, they sealed his body inside the wall. They call him Wally. Guests still see him — a man in 19th-century clothing who vanishes when looked at directly. One maid returned to find a perfectly set table destroyed, as if someone had finally sat down to eat in the house that became his tomb. Across the square, actress Betty still watches performances at the Savannah Theatre. She loved the stage so deeply she could never truly leave. Some wounds in Savannah refuse to close. Some stories refuse to end. Let's keep walking."},{name:"STOP 5: Owens-Thomas House",lat:32.076213,lng:-81.093213,type:"Historic Mansion",story:"Here we feel a memory of ownership and attachment. Margaret Thomas, known as the Lady in Gray, still tends these gardens she loved in life. People see her moving among the plants in a flowing gray dress. Inside the house, Mr. Owens appears — large and stern — watching visitors with the judgment of a man who still believes he owns what he built. He turns and walks straight through walls as if they don't exist. Sometimes you hear a match strike, followed by the rich, impossible scent of 19th-century pipe tobacco. These spirits are not angry. They are simply unwilling to release what they cherished. The city's memory is becoming heavier now. Let's continue toward the cemetery."},{name:"STOP 6: Colonial Park Cemetery",lat:32.076116,lng:-81.090356,type:"Historic Cemetery",story:"This place holds a memory that is almost too much to contain. Over 10,000 people are buried in these six acres. Most without names or markers. Revolutionary soldiers. Yellow fever victims. Enslaved people. Forgotten families. At night, some still see Revolutionary War soldiers marching in formation — still drilling as if the war never ended. This ground carries too much pain, too many lost lives, and too much history to ever rest completely. We are getting closer to the river now… where everything finally comes together."},{name:"STOP 7: Pulaski Monument",lat:32.077388,lng:-81.09005,type:"Historic Monument",story:"Before we reach the water, we pass a memory of honor. Casimir Pulaski was mortally wounded nearby in 1779. His remains rest beneath this monument. At dusk, colonial soldiers sometimes appear around it, standing at attention, saluting their commander with quiet loyalty. Not every memory in Savannah remains broken. Some have found peace. One final walk now."},{name:"STOP 8: Emmet Park & Savannah River",lat:32.080375,lng:-81.088972,type:"Historic Park",story:"And now… we have reached the place where all the layers become one. For nearly 300 years, this river carried Savannah's deepest wound — the arrival and suffering of countless enslaved Africans. Tens of thousands passed through these docks in chains. At twilight, many hear voices rising from the water — fragments of African languages and Gullah carried on the breeze. Not in rage… but quietly insisting: Remember us. The river does not separate the stories we walked through tonight. It holds them all. Mary's iron will. Lottie's sorrow. The enslaved woman's music. Wally's unfinished anger. The Lady in Gray's devotion. The soldiers' endless march. You have walked through the living memory of Savannah tonight. And now that memory walks with you. Carry these stories gently. Speak them when you can. That is all the city asks."}];
 
-const voiceMap={OldLady:"0rEo3eAjssGDUCXHYENf",OldMan:"dtVZnErhiiosqofxDzSH"};
+const voiceMap={OldLady:"0rEo3eAjssGDUCXHYENf",OldMan:"dtVZnErhiiosqofxDzSH",Wilder:"a4BsmeT8RITKlxlCY9PO"};
 
 // Pre-generated audio file map
 const audioFileMap={
-  "BONUS: Wilder House Opening":{OldMan:"/audio/wilder-house-opening-oldman.mp3",OldLady:"/audio/wilder-house-oldlady.mp3"},
+  "BONUS: Wilder House Opening":{OldMan:"/audio/wilder-house-opening-oldman.mp3",OldLady:"/audio/wilder-house-oldlady.mp3",Wilder:"/audio/wilder-house-opening-wilder.mp3?v=2"},
   "OPENING: South Forsyth Park":{OldMan:"/audio/forsyth-park-opening-oldman.mp3",OldLady:"/audio/forsyth-park-opening-oldlady.mp3"},
   "STOP 1: Telfair Hospital":{OldMan:"/audio/stop-1-telfair-hospital-oldman.mp3",OldLady:"/audio/stop-1-telfair-hospital-oldlady.mp3"},
   "STOP 2: Forsyth Park Fountain":{OldMan:"/audio/stop-2-forsyth-fountain-oldman.mp3",OldLady:"/audio/stop-2-forsyth-fountain-oldlady.mp3"},
@@ -142,13 +182,23 @@ const audioFileMap={
 
 let map,selectedLocation=null,geofencingActive=false,userLocation=null,markers=[],currentEditingIndex=null,adminMode=false,routePolyline=null,currentSegmentPolyline=null,userMarker=null;
 const GEOFENCE_RADIUS=200;
+let tourProgressIdx=0,guideLine=null,guideRouteOrigin=null,guideRouteIdx=-1,guideRouteBusy=false,guideRouteDistM=null;
+// Compass / facing-direction state. compassHeading is degrees CW from north
+// (0=N) of the way the phone is physically pointed; null until/unless the
+// device gives us an orientation reading. lastBrg is the true bearing to the
+// next stop (the no-compass fallback). beamRot accumulates so the beam always
+// rotates the SHORT way and never back-spins through north.
+let compassHeading=null,orientationStarted=false,lastBrg=0,beamRot=0;
 // Admin mode disabled in production (dev-only feature)
 
 function initMap(){
 map=L.map('map').setView([32.0730,-81.0900],14);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-attribution:'Map data &copy; OpenStreetMap, CartoDB',maxZoom:19
+attribution:'&copy; OSM &copy; CARTO',maxZoom:19
 }).addTo(map);
+// Drop the "Leaflet" prefix from the credit (optional/allowed to remove). The
+// OSM + CARTO credit must stay — those licenses legally require attribution.
+map.attributionControl.setPrefix(false);
 
 markers=[];
 locations.forEach((loc,idx)=>{
@@ -200,7 +250,10 @@ currentSegmentPolyline.bringToFront();
 async function playNarration(idx){
 const loc=locations[idx];
 const audio=document.getElementById('narrationAudio');
-const selectedVoice=document.getElementById('voiceSelect').value;
+let selectedVoice=document.getElementById('voiceSelect').value;
+// Reverend Wilder narrates only his own segment (the Wilder House opening),
+// regardless of the guide voice the guest selected.
+if(loc.name==='BONUS: Wilder House Opening'){selectedVoice='Wilder';}
 
 // Ensure audio is unmuted and at full volume
 audio.muted=false;
@@ -251,7 +304,7 @@ statusEl.style.color='#fff';
 audio.oncanplay=function(){
 console.log('Audio ready:',staticFile);
 };
-const voiceLabel=selectedVoice==='OldLady'?'👵 Old Lady':'👴 Old Man';
+const voiceLabel=selectedVoice==='OldLady'?'🎙️ Narrator (Female)':(selectedVoice==='Wilder'?'⛪ Reverend Wilder':'🎙️ Narrator (Male)');
 try{
 await audio.play();
 statusEl.textContent='▶ '+voiceLabel+' - '+loc.name;
@@ -291,29 +344,146 @@ function centerMap(){
 map.setView([32.0730,-81.0900],14);
 }
 
+// Show the "why we need location" primer before the OS prompt. If the guest
+// already granted location on a previous visit, skip straight to starting.
+function showLocationPrimer(){
+try{
+if(navigator.permissions&&navigator.permissions.query){
+navigator.permissions.query({name:'geolocation'}).then(function(p){
+if(p&&p.state==='granted'){startGeofencing();}
+else{const m=document.getElementById('locPrimer');if(m)m.style.display='flex';}
+}).catch(function(){const m=document.getElementById('locPrimer');if(m)m.style.display='flex';});
+return;
+}
+}catch(e){}
+const m=document.getElementById('locPrimer');if(m)m.style.display='flex';
+}
+function dismissLocationPrimer(){const m=document.getElementById('locPrimer');if(m)m.style.display='none';}
+function acceptLocationPrimer(){dismissLocationPrimer();startGeofencing();}
+
 function startGeofencing(){
 if(!navigator.geolocation){alert('Geolocation not supported');return;}
+setupCompass();
 geofencingActive=true;
-document.querySelector('button:nth-of-type(2)').textContent='📍 Tour Active - GPS On';
+document.getElementById('startTourBtn').textContent='📍 Tour Active - GPS On';
+document.getElementById('compassNav').style.display='flex';
+document.getElementById('compassDist').textContent='Locating…';
+document.getElementById('compassTarget').textContent='Finding your first memory';
 navigator.geolocation.watchPosition(position=>{
 userLocation={lat:position.coords.latitude,lng:position.coords.longitude};
 updateUserMarker();
 checkNearbyLocations();
+updateGuide();
 },error=>{
 console.error('Geolocation error:',error);
+// Surface the failure on-screen instead of dying silently (which looked like
+// "stops show but my dot never appears"). Map the GPS error code to a fix.
+const dist=document.getElementById('compassDist');
+const tgt=document.getElementById('compassTarget');
+const hint=document.getElementById('compassHint');
+if(error&&error.code===1){ // PERMISSION_DENIED
+dist.textContent='Location blocked';
+tgt.textContent='Tap to fix ↓';
+hint.textContent='Settings ▸ Privacy ▸ Location Services ▸ Safari ▸ While Using · then reload';
 geofencingActive=false;
-document.querySelector('button:nth-of-type(2)').textContent='🎬 Start Tour & Accept Location';
-});
+document.getElementById('startTourBtn').textContent='🎬 Start Tour & Accept Location';
+}else if(error&&error.code===2){ // POSITION_UNAVAILABLE
+dist.textContent='No GPS signal';
+tgt.textContent='Step outside';
+hint.textContent='move into the open & keep this page open — still trying…';
+}else{ // TIMEOUT (3) — watchPosition keeps trying, so stay active
+dist.textContent='Finding GPS…';
+tgt.textContent='hang tight';
+hint.textContent='locking onto satellites — keep the page open';
+}
+},{enableHighAccuracy:true,maximumAge:1000,timeout:20000});
 }
 
 function updateUserMarker(){
 if(!userLocation||!map)return;
-if(userMarker){
-map.removeLayer(userMarker);
+// Create the marker once and reuse it so the cone can smoothly rotate
+// (recreating it every GPS tick would kill the CSS transition).
+if(!userMarker){
+const html='<div class="user-rot" id="userRot">'+
+'<svg width="88" height="80" viewBox="0 0 88 80">'+
+'<defs><radialGradient id="beamGrad" cx="50%" cy="100%" r="100%">'+
+'<stop offset="0%" stop-color="#7CFC8A" stop-opacity="0.9"/>'+
+'<stop offset="55%" stop-color="#66bb6a" stop-opacity="0.45"/>'+
+'<stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/>'+
+'</radialGradient></defs>'+
+'<path d="M44 76 L8 10 A40 40 0 0 1 80 10 Z" fill="url(#beamGrad)"/>'+
+'</svg></div>'+
+'<div class="user-dot2"></div>';
+const userIcon=L.divIcon({className:'user-puck',html:html,iconSize:[0,0],iconAnchor:[0,0]});
+userMarker=L.marker([userLocation.lat,userLocation.lng],{icon:userIcon,interactive:false,keyboard:false,zIndexOffset:1000}).addTo(map);
+}else{
+userMarker.setLatLng([userLocation.lat,userLocation.lng]);
 }
-const userIcon=L.divIcon({className:'user-location-dot',html:'<div></div>',iconSize:[16,16],iconAnchor:[8,8]});
-userMarker=L.marker([userLocation.lat,userLocation.lng],{icon:userIcon}).addTo(map);
-userMarker.bindTooltip('📍 You are here',{permanent:true,direction:'top',offset:[0,-15],className:'user-location-label'});
+}
+// Rotate the cone on the user dot. deg = degrees clockwise from north; the map
+// is north-up so 0 points straight up = north. We accumulate into beamRot and
+// move by the SHORTEST angular delta, so crossing north (359->1) sweeps a few
+// degrees forward instead of spinning ~358 the wrong way.
+function setUserCone(deg){
+const el=document.getElementById('userRot');if(!el)return;
+let delta=((deg-beamRot)%360+540)%360-180;
+beamRot+=delta;
+el.style.transform='rotate('+beamRot+'deg)';
+}
+// Decide which way the beam points: if the phone gives us a compass heading we
+// show the FACING direction (beam sweeps as you turn in place, like a nav-app
+// cone — align it with the green line to walk the right way). With no compass
+// we fall back to pointing the beam straight at the next stop.
+function updateBeam(){setUserCone(compassHeading!=null?compassHeading:lastBrg);}
+// Small status line under the distance so we can SEE what the compass is doing
+// on the phone (iOS is finicky and silent otherwise).
+function setCompassHint(t){const el=document.getElementById('compassHint');if(el)el.textContent=t;}
+let iosCompass=(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function');
+let gotHeading=false;
+function onOrient(e){
+let h=null;
+if(typeof e.webkitCompassHeading==='number'&&!isNaN(e.webkitCompassHeading)){
+h=e.webkitCompassHeading; // iOS: true-north heading, already 0=N clockwise
+}else if(e.absolute===true&&typeof e.alpha==='number'&&!isNaN(e.alpha)){
+h=(360-e.alpha)%360; // Android absolute: convert CCW alpha to CW heading
+}
+// Ignore relative (non-absolute) readings — they aren't tied to true north and
+// would point the beam the wrong way; we simply stay in position-bearing mode.
+if(h!=null){
+compassHeading=((h%360)+360)%360;
+if(!gotHeading){gotHeading=true;const b=document.getElementById('compassBtn');if(b)b.style.display='none';setCompassHint('🧭 compass on · turn to aim the beam');}
+updateBeam();
+}
+}
+function attachOrient(){
+window.addEventListener('deviceorientationabsolute',onOrient,true);
+window.addEventListener('deviceorientation',onOrient,true);
+setTimeout(function(){if(!gotHeading)setCompassHint('compass unavailable · beam points to the stop');},2500);
+}
+// Called when the tour starts. On iOS the permission popup MUST come from its
+// own clean tap, so we reveal the "Enable compass" button instead of firing the
+// request inside the Start tap (where it competes with the location popup and
+// often never shows). Android can attach immediately.
+function setupCompass(){
+if(orientationStarted)return;orientationStarted=true;
+if(iosCompass){
+const b=document.getElementById('compassBtn');if(b)b.style.display='inline-block';
+setCompassHint('tap 🧭 Enable compass to aim the beam');
+}else{
+try{attachOrient();}catch(err){setCompassHint('compass unavailable · beam points to the stop');}
+}
+}
+// The iOS permission request — runs from the Enable-compass button tap (a clean
+// user gesture, which is what iOS requires to show the popup). Retryable.
+function enableCompass(){
+try{
+if(iosCompass){
+DeviceOrientationEvent.requestPermission().then(function(state){
+if(state==='granted'){gotHeading=false;attachOrient();}
+else{setCompassHint('compass blocked · Settings ▸ Safari ▸ Motion & Orientation: ON, then reload');}
+}).catch(function(){setCompassHint('compass error · tap 🧭 again');});
+}else{attachOrient();}
+}catch(err){setCompassHint('compass unavailable · beam points to the stop');}
 }
 
 function checkNearbyLocations(){
@@ -350,6 +520,93 @@ const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 return R*c*1000;
 }
 
+// Great-circle bearing from current position to the next waypoint.
+// Result is degrees clockwise from true north (0=N,90=E,180=S,270=W).
+// Uses GPS positions ONLY — never the phone's compass/orientation — so it
+// shows where the next stop is relative to where you stand, and never
+// jitters as you turn the device.
+function bearingTo(lat1,lon1,lat2,lon2){
+const toR=Math.PI/180,toD=180/Math.PI;
+const dLon=(lon2-lon1)*toR;
+const y=Math.sin(dLon)*Math.cos(lat2*toR);
+const x=Math.cos(lat1*toR)*Math.sin(lat2*toR)-Math.sin(lat1*toR)*Math.cos(lat2*toR)*Math.cos(dLon);
+return (Math.atan2(y,x)*toD+360)%360;
+}
+// Location-only wayfinding: an arrow that points toward the next stop
+// (north-up, matching the map), plus a glowing line on the map and a
+// distance readout. No compass / no device orientation.
+function updateGuide(){
+const nav=document.getElementById('compassNav');
+if(!nav||nav.style.display==='none'||!userLocation||!locations.length||!map)return;
+let target=locations[tourProgressIdx];
+if(target){
+const d0=getDistance(userLocation.lat,userLocation.lng,target.lat,target.lng);
+if(d0<40&&tourProgressIdx<locations.length-1){tourProgressIdx++;target=locations[tourProgressIdx];}
+}
+if(!target){
+if(guideLine){map.removeLayer(guideLine);guideLine=null;}
+const cone=document.getElementById('userRot');if(cone)cone.style.opacity='0';
+document.getElementById('compassDist').textContent="Tour complete";
+document.getElementById('compassTarget').textContent='✦ Every memory heard';
+return;
+}
+const dist=getDistance(userLocation.lat,userLocation.lng,target.lat,target.lng);
+const brg=bearingTo(userLocation.lat,userLocation.lng,target.lat,target.lng);
+// Record the true bearing to the stop and refresh the beam. If the compass is
+// live the beam shows your facing direction (and updateBeam ignores brg); with
+// no compass the beam points straight at the stop along the green line.
+lastBrg=brg;updateBeam();
+// Draw the guide line ONCE (straight placeholder); after that we never wipe
+// it back to straight on every GPS tick — the road route persists.
+if(!guideLine){
+guideLine=L.polyline([[userLocation.lat,userLocation.lng],[target.lat,target.lng]],{color:'#66bb6a',weight:4,opacity:0.9,dashArray:'2 10',lineCap:'round',className:'guide-line'}).addTo(map);
+guideLine.bringToFront();
+}
+// Only (re)route when the target changed OR the guest has actually walked
+// >25 m from where we last routed — immune to GPS jitter.
+const moved=!guideRouteOrigin||guideRouteOrigin.idx!==tourProgressIdx||
+getDistance(guideRouteOrigin.lat,guideRouteOrigin.lng,userLocation.lat,userLocation.lng)>25;
+if(moved&&!guideRouteBusy){
+guideRouteOrigin={lat:userLocation.lat,lng:userLocation.lng,idx:tourProgressIdx};
+fetchWalkingRoute({lat:userLocation.lat,lng:userLocation.lng},target,tourProgressIdx);
+}
+// Prefer the real walking distance once we have a route for this stop.
+const showM=(guideRouteIdx===tourProgressIdx&&guideRouteDistM!=null)?guideRouteDistM:dist;
+const ft=Math.round(showM*3.28084);
+const dtxt=ft<=30?"You're here":(ft<1000?ft+' ft':(showM/1609.34).toFixed(1)+' mi');
+document.getElementById('compassDist').textContent=dtxt;
+document.getElementById('compassTarget').textContent='→ '+target.name;
+}
+
+// Fetch a walking route (OSM foot profile) and redraw the guide line along
+// the actual streets/sidewalks. Foot routing follows the road network but
+// ignores one-way car restrictions — correct for pedestrians. Falls back
+// silently to the straight line if the routing service is unreachable.
+async function fetchWalkingRoute(from,to,idx){
+if(guideRouteBusy)return;
+guideRouteBusy=true;
+try{
+const url='https://routing.openstreetmap.de/routed-foot/route/v1/foot/'+
+from.lng+','+from.lat+';'+to.lng+','+to.lat+'?overview=full&geometries=geojson';
+const r=await fetch(url);
+if(!r.ok)throw new Error('route '+r.status);
+const j=await r.json();
+const route=j&&j.routes&&j.routes[0];
+if(route&&route.geometry&&route.geometry.coordinates&&route.geometry.coordinates.length>1){
+// Apply only if the guest is still headed to this same stop.
+if(tourProgressIdx===idx&&guideLine){
+const coords=route.geometry.coordinates.map(c=>[c[1],c[0]]);
+guideLine.setLatLngs(coords);
+guideLine.bringToFront();
+guideRouteIdx=idx;
+guideRouteDistM=route.distance;
+const el=document.getElementById('compassDist');
+if(el){const ft=Math.round(route.distance*3.28084);el.textContent=ft<=30?"You're here":(ft<1000?ft+' ft':(route.distance/1609.34).toFixed(1)+' mi');}
+}
+}
+}catch(e){/* keep the straight-line fallback */}
+finally{guideRouteBusy=false;}
+}
 function updateStats(){
 document.getElementById('totalCount').textContent=locations.length;
 const haunted=locations.filter(l=>!l.type.includes('Blessed')).length;
@@ -484,17 +741,38 @@ const badge=document.getElementById('adminBadge');
 const adminBtn=document.getElementById('adminButton');
 const editBtn1=document.getElementById('editButton1');
 const editBtn2=document.getElementById('editButton2');
+const demoBtn=document.getElementById('demoButton');
 if(adminMode){
 badge.style.display='block';
 adminBtn.style.display='none';
 editBtn1.style.display='block';
 editBtn2.style.display='block';
+if(demoBtn)demoBtn.style.display='block';
 }else{
 badge.style.display='none';
 adminBtn.style.display='block';
 editBtn1.style.display='none';
 editBtn2.style.display='none';
+if(demoBtn)demoBtn.style.display='none';
 }
+}
+
+// Admin-only: plant a virtual GPS location at the Reverend's front steps so
+// you can watch the beam + road-following line route to the first real stop
+// from anywhere (no need to be in Savannah). Static demo — no movement.
+function demoFromWilder(){
+setupCompass();
+geofencingActive=true;
+tourProgressIdx=0;
+guideRouteOrigin=null;guideRouteIdx=-1;guideRouteDistM=null;
+userLocation={lat:32.063892,lng:-81.093253};
+const nav=document.getElementById('compassNav');if(nav)nav.style.display='flex';
+document.getElementById('compassDist').textContent='Locating…';
+document.getElementById('compassTarget').textContent='Demo from Wilder House';
+if(map)map.setView([userLocation.lat,userLocation.lng],17);
+updateUserMarker();
+checkNearbyLocations();
+updateGuide();
 }
 
 function addNewLocation(){

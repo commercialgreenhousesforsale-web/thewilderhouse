@@ -89,7 +89,7 @@ export default {
       const text = ((body && body.text) || '').toString().slice(0, 2500);
       const voiceId = ((body && body.voiceId) || '').toString();
       // Allowlist the known tour voices so the endpoint can't be abused for arbitrary TTS.
-      const ALLOWED_VOICES = ['0rEo3eAjssGDUCXHYENf', 'dtVZnErhiiosqofxDzSH'];
+      const ALLOWED_VOICES = ['0rEo3eAjssGDUCXHYENf', 'dtVZnErhiiosqofxDzSH', 'a4BsmeT8RITKlxlCY9PO'];
       if (!text || !ALLOWED_VOICES.includes(voiceId)) {
         return new Response('Invalid text or voice', { status: 400 });
       }
@@ -101,7 +101,7 @@ export default {
             'Content-Type': 'application/json',
             'Accept': 'audio/mpeg'
           },
-          body: JSON.stringify({ text: text, model_id: 'eleven_monolingual_v1' })
+          body: JSON.stringify({ text: text, model_id: 'eleven_v3' })
         });
         if (!resp.ok) {
           const msg = await resp.text();
