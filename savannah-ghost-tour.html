@@ -2,835 +2,873 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Savannah Remembers - Free Interactive Ghost Tour</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Savannah Remembers — Walking Memory Experience</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Georgia,serif;background:#1a1410;overflow:hidden}
-.tour-container{display:flex;height:100vh}
-#map{flex:1;background:#2a2520}
-.sidebar{width:420px;background:linear-gradient(180deg,#3d2817,#2a1810);border-left:3px solid #8b7355;overflow-y:auto;padding:20px;box-shadow:-5px 0 20px rgba(0,0,0,0.5)}
-.header{text-align:center;border-bottom:2px solid #8b7355;padding-bottom:12px;margin-bottom:12px}
-.header h1{font-size:18px;color:#c9a876;margin-bottom:5px}
-.header p{font-size:9px;color:#8b7355}
-.voice-selector{margin:10px 0;padding:8px;background:rgba(139,115,85,0.1);border-radius:3px}
-.voice-selector label{font-size:9px;color:#c9a876;display:block;margin-bottom:5px}
-.voice-selector select{width:100%;padding:5px;background:#2a1810;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-size:9px}
-.stats{background:rgba(139,115,85,0.1);border:1px solid #8b7355;border-radius:4px;padding:10px;margin-bottom:10px;font-size:10px}
-.stats h3{color:#c9a876;margin-bottom:5px}
-.stat-item{display:flex;justify-content:space-between;margin-bottom:3px}
-.location-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:300px;overflow-y:auto}
-.location-card{background:rgba(139,115,85,0.08);border-left:4px solid #8b7355;padding:8px;border-radius:3px;cursor:pointer;transition:all 0.3s;font-size:9px}
-.location-card:hover{background:rgba(139,115,85,0.15);border-color:#c9a876}
-.location-card.active{background:rgba(201,168,118,0.2);border-color:#c9a876}
-.location-name{font-size:11px;font-weight:bold;color:#c9a876;margin-bottom:2px}
-.location-type{font-size:8px;color:#8b7355}
-.location-story{font-size:9px;color:#a89968;line-height:1.3;margin-top:4px}
-button{width:100%;padding:8px;background:linear-gradient(135deg,#8b7355,#6b5344);color:#f5f5dc;border:none;border-radius:3px;cursor:pointer;font-size:10px;font-weight:bold;text-transform:uppercase;box-shadow:0 0 10px rgba(139,115,85,0.3);margin-top:10px;transition:all 0.3s}
-button:hover{background:linear-gradient(135deg,#a89968,#8b7d60)}
-.proximity-alert{display:none;background:rgba(201,168,118,0.2);border:2px solid #c9a876;padding:10px;margin-top:10px;border-radius:3px;color:#c9a876;font-size:9px;text-align:center}
-@media(max-width:1024px){.tour-container{flex-direction:column}#map{height:60%}.sidebar{width:100%;height:40%;border-left:none;border-top:3px solid #8b7355}}
-.tour-controls{display:flex;flex-direction:column}
-.primary-cta{background:linear-gradient(135deg,#4caf50,#2e7d32);font-size:13px;padding:14px}
-/* On phones the sidebar is a short, scrollable strip — pin the main controls to
-   the top of it so Start Tour / Center Map are always reachable without hunting. */
-@media(max-width:1024px){.tour-controls{position:sticky;top:0;z-index:60;background:#3d2817;margin:0 -20px 10px;padding:10px 20px;box-shadow:0 6px 14px rgba(0,0,0,.5);border-bottom:1px solid #8b7355}.tour-controls button{margin-top:8px}.tour-controls button:first-child{margin-top:0}}
-.location-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid #8b7355;display:flex;align-items:center;justify-content:center}
-.location-dot.haunted div{width:14px;height:14px;border-radius:50%;background:#c9a876;box-shadow:0 0 10px rgba(201,168,118,0.5)}
-.location-dot.blessed div{width:14px;height:14px;border-radius:50%;background:#66bb6a;box-shadow:0 0 10px rgba(102,187,106,0.5)}
-.location-dot:hover div{transform:scale(1.3)}
-.location-label{background:rgba(0,0,0,0.7) !important;color:#c9a876 !important;border:none !important;border-radius:3px;padding:4px 8px !important;font-size:11px !important;font-family:Georgia,serif;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5)}
-.user-location-dot{width:16px;height:16px;border-radius:50%;cursor:pointer;border:2px solid #2196F3;display:flex;align-items:center;justify-content:center}
-.user-location-dot div{width:10px;height:10px;border-radius:50%;background:#2196F3;box-shadow:0 0 8px rgba(33,150,243,0.6)}
-/* Directional puck on the user's location: blue dot + a translucent "beam"
-   (flashlight cone) that starts narrow AT the pin and fans out wide toward
-   the next stop — the standard nav-app way to show heading. North-up map, so
-   the rotation is the true bearing to the stop. */
-.user-puck{position:relative}
-.user-rot{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transition:transform .35s ease-out;will-change:transform}
-.user-rot svg{position:absolute;left:-44px;top:-78px;overflow:visible}
-.user-dot2{position:absolute;left:-10px;top:-10px;width:20px;height:20px;border-radius:50%;background:#2196F3;border:3px solid #fff;box-shadow:0 0 10px rgba(33,150,243,0.95)}
-.guide-line{filter:drop-shadow(0 0 4px rgba(102,187,106,0.9));animation:guideFlow 1s linear infinite}
-@keyframes guideFlow{to{stroke-dashoffset:-12}}
-.user-location-label{background:rgba(33,150,243,0.9) !important;color:#ffffff !important;border:none !important;border-radius:3px;padding:4px 8px !important;font-size:10px !important;font-family:Georgia,serif;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(33,150,243,0.5)}
-.coord-editor{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#2a1810;border:2px solid #8b7355;padding:20px;border-radius:5px;z-index:1000;width:400px;box-shadow:0 0 30px rgba(0,0,0,0.8)}
-.coord-editor.active{display:block}
-.coord-editor h3{color:#c9a876;margin-bottom:15px;font-size:14px}
-.coord-editor label{color:#a89968;display:block;margin-top:10px;font-size:11px}
-.coord-editor input{width:100%;padding:8px;margin-top:5px;background:#1a1410;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-family:monospace;font-size:12px;box-sizing:border-box}
-.coord-editor .buttons{display:flex;gap:10px}
-.coord-editor button{flex:1;padding:10px;margin-top:15px;background:#8b7355;color:#f5f5dc;border:none;border-radius:3px;cursor:pointer;font-size:11px}
-.coord-editor button:hover{background:#a89968}
-.coord-editor .close{position:absolute;top:10px;right:15px;cursor:pointer;color:#c9a876;font-size:20px;font-weight:bold}
-.coord-editor .close:hover{color:#d4c5b9}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Georgia', serif;
+  background: #0a0805;
+  color: #e9dcc6;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.memory-container {
+  display: flex;
+  height: 100vh;
+  background: #0a0805;
+}
+
+#map {
+  flex: 1;
+  background: #1a1410;
+  z-index: 1;
+}
+
+.story-panel {
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
+  border-left: 1px solid rgba(233, 220, 198, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.7);
+}
+
+.story-header {
+  background: rgba(10, 8, 6, 0.95);
+  border-bottom: 1px solid rgba(233, 220, 198, 0.15);
+  padding: 24px 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.story-header h1 {
+  font-size: 22px;
+  color: #e7c389;
+  margin-bottom: 4px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.story-header p {
+  font-size: 11px;
+  color: #8b7d60;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.story-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.story-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.story-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.story-content::-webkit-scrollbar-thumb {
+  background: rgba(233, 220, 198, 0.2);
+  border-radius: 3px;
+}
+
+.stop-card {
+  background: rgba(42, 37, 32, 0.5);
+  border: 1px solid rgba(233, 220, 198, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stop-number {
+  font-size: 10px;
+  color: #8b7d60;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.stop-name {
+  font-size: 18px;
+  color: #e7c389;
+  font-weight: 400;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.truth-badge {
+  display: inline-block;
+  font-size: 9px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.truth-fact {
+  background: rgba(76, 175, 80, 0.2);
+  color: #66bb6a;
+  border: 1px solid rgba(102, 187, 106, 0.3);
+}
+
+.truth-legend {
+  background: rgba(201, 168, 118, 0.2);
+  color: #e8c96a;
+  border: 1px solid rgba(232, 201, 106, 0.3);
+}
+
+.truth-theatrical {
+  background: rgba(156, 39, 176, 0.2);
+  color: #ce93d8;
+  border: 1px solid rgba(206, 147, 216, 0.3);
+}
+
+.narrator-section {
+  margin-bottom: 12px;
+}
+
+.narrator-label {
+  font-size: 10px;
+  color: #8b7d60;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.narrator-text {
+  font-size: 14px;
+  color: #d4c5b9;
+  line-height: 1.7;
+  font-style: italic;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 2px solid rgba(232, 201, 106, 0.4);
+  border-radius: 4px;
+}
+
+.spirit-section {
+  background: rgba(156, 39, 176, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 3px solid rgba(206, 147, 216, 0.5);
+  margin: 12px 0;
+}
+
+.spirit-label {
+  font-size: 9px;
+  color: #ce93d8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.spirit-name {
+  font-size: 12px;
+  color: #ce93d8;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.spirit-monologue {
+  font-size: 13px;
+  color: #d4c5b9;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.memory-significance {
+  border-top: 1px solid rgba(233, 220, 198, 0.1);
+  padding-top: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: #a89968;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.arc-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #8b7d60;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(233, 220, 198, 0.08);
+}
+
+.arc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(232, 201, 106, 0.6);
+}
+
+.walking-info {
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.walking-time {
+  font-size: 12px;
+  color: #64b5f6;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.walking-direction {
+  font-size: 11px;
+  color: #9fd8a6;
+  line-height: 1.5;
+}
+
+.nav-controls {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px;
+  background: rgba(10, 8, 6, 0.95);
+  border-top: 1px solid rgba(233, 220, 198, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.nav-btn-prev {
+  background: rgba(139, 115, 85, 0.3);
+  color: #a89968;
+  border: 1px solid rgba(139, 115, 85, 0.5);
+}
+
+.nav-btn-prev:hover {
+  background: rgba(139, 115, 85, 0.4);
+}
+
+.nav-btn-next {
+  background: linear-gradient(135deg, rgba(102, 187, 106, 0.3), rgba(76, 175, 80, 0.2));
+  color: #66bb6a;
+  border: 1px solid rgba(102, 187, 106, 0.5);
+}
+
+.nav-btn-next:hover {
+  background: linear-gradient(135deg, rgba(102, 187, 106, 0.4), rgba(76, 175, 80, 0.3));
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(233, 220, 198, 0.1);
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #66bb6a, #e8c96a);
+  transition: width 0.4s ease;
+}
+
+@media (max-width: 1024px) {
+  .memory-container {
+    flex-direction: column;
+  }
+
+  #map {
+    height: 40%;
+    order: 2;
+  }
+
+  .story-panel {
+    height: 60%;
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(233, 220, 198, 0.1);
+    order: 1;
+  }
+
+  .story-header {
+    padding: 16px;
+  }
+
+  .story-header h1 {
+    font-size: 18px;
+  }
+
+  .story-content {
+    padding: 16px;
+  }
+}
+
+audio {
+  display: none;
+}
+
+.stop-marker {
+  opacity: 0.6;
+  transition: all 0.3s;
+}
+
+.stop-marker.active {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(232, 201, 106, 0.8));
+}
+
+.stop-marker.blessed .marker-dot {
+  background: #66bb6a;
+  box-shadow: 0 0 10px rgba(102, 187, 106, 0.6);
+}
+
+.stop-marker.haunted .marker-dot {
+  background: #e8c96a;
+  box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
+}
+
+.marker-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+}
+
+.proximity-alert {
+  display: none;
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 998;
+  background: rgba(102, 187, 106, 0.95);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.4s ease;
+}
+
+.proximity-alert.show {
+  display: block;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
 </style>
 </head>
 <body>
-<div class="tour-container">
-<div id="map"></div>
-<div class="sidebar">
-<div class="header">
-<h1>Savannah Remembers</h1>
-<p>FREE INTERACTIVE TOUR - 17 LOCATIONS</p>
-<div style="margin-top:8px;padding:8px;background:rgba(102,187,106,0.1);border-radius:3px;font-size:9px;color:#66bb6a;cursor:pointer;text-align:center;border:1px solid #66bb6a;display:none" id="adminBadge" onclick="adminMode=false;updateAdminUI();" title="Click to exit admin mode">✓ ADMIN MODE ACTIVE · click to exit</div>
-</div>
-<div class="tour-controls" id="tourControls">
-<button id="startTourBtn" class="primary-cta" onclick="showLocationPrimer()">🎬 Start Tour</button>
-<button onclick="centerMap()">📍 Center Map</button>
-<button id="demoButton" style="display:none;background:#3d6b46" onclick="demoFromWilder()">🧪 Demo from Wilder House</button>
-</div>
-<div class="voice-selector">
-<label>Tour Guide Voice:</label>
-<select id="voiceSelect">
-<option value="OldLady">🎙️ Narrator (Female)</option>
-<option value="OldMan">🎙️ Narrator (Male)</option>
-</select>
-</div>
-<div class="stats">
-<h3>Tour Map</h3>
-<div class="stat-item"><span>Total Locations:</span><strong id="totalCount">0</strong></div>
-<div class="stat-item"><span>Haunted:</span><strong id="hauntedCount">0</strong></div>
-<div class="stat-item"><span>Blessed Safe Spaces:</span><strong id="blessedCount">0</strong></div>
-</div>
-<div class="location-list" id="locationList"></div>
-<button id="adminButton" style="display:none;background:#c9534f;padding:4px;font-size:8px;margin-top:4px;opacity:0.6" disabled>🔓 Admin</button>
-<button id="editButton1" style="display:none" disabled>➕ Add New Location</button>
-<button id="editButton2" style="display:none" disabled>💾 Export Data</button>
-<div class="proximity-alert" id="proximityAlert"></div>
-</div>
-</div>
-<div id="compassNav" style="display:none;position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);transform:translateX(-50%);z-index:9999;align-items:center;gap:12px;background:rgba(15,15,20,0.94);border:1px solid #66bb6a;border-radius:14px;padding:10px 14px;box-shadow:0 4px 18px rgba(0,0,0,.5)">
-<div style="display:flex;flex-direction:column;line-height:1.25">
-<span id="compassDist" style="color:#fff;font-weight:700;font-size:15px">&mdash;</span>
-<span id="compassTarget" style="color:#9fd8a6;font-size:11px">Next memory</span>
-<span id="compassHint" style="color:#6f8f74;font-size:9px;letter-spacing:.3px">follow the green beam &amp; line</span>
-</div>
-<button id="compassBtn" onclick="enableCompass()" style="display:none;background:#66bb6a;color:#10210f;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🧭 Enable compass</button>
-</div>
-<!-- Location primer: a friendly "why we need this" card shown BEFORE the system
-     prompt, so guests understand the value + privacy and confidently tap Allow
-     (iOS only asks once — a reflexive "Don't Allow" otherwise locks them out). -->
-<div id="locPrimer" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,8,6,0.82);align-items:center;justify-content:center;padding:24px">
-<div style="max-width:340px;width:100%;background:linear-gradient(180deg,#3d2817,#241510);border:1px solid #8b7355;border-radius:16px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.6);text-align:center;color:#e9dcc6;box-sizing:border-box">
-<div style="font-size:34px">🕯️📍</div>
-<h2 style="margin:10px 0 8px;color:#e7c389;font-size:19px;font-family:Georgia,serif">Walk with the stories</h2>
-<p style="font-size:13px;line-height:1.55;color:#cdbfa6;margin:0 0 14px">Savannah Remembers plays each haunting automatically as you reach the spot. To do that, it follows your location while you walk.</p>
-<p style="font-size:11px;line-height:1.5;color:#9c8f78;margin:0 0 20px">🔒 Your location stays on your phone — we never store it, share it, or track you.</p>
-<button onclick="acceptLocationPrimer()" class="primary-cta" style="text-transform:none;margin:0">Continue, then tap &ldquo;Allow&rdquo;</button>
-<div onclick="dismissLocationPrimer()" style="margin-top:14px;font-size:12px;color:#8b7355;cursor:pointer">Not now</div>
-</div>
-</div>
-<audio id="narrationAudio" style="display:none"></audio>
 
-<div class="coord-editor" id="coordEditor">
-<div class="close" onclick="closeCoordEditor()">&times;</div>
-<h3>Edit Location</h3>
-<label>Location Name:</label>
-<input type="text" id="coordName" placeholder="Location name">
-<label>Latitude:</label>
-<input type="number" id="coordLat" step="0.000001" placeholder="32.0730">
-<label>Longitude:</label>
-<input type="number" id="coordLng" step="0.000001" placeholder="-81.0900">
-<label>Type:</label>
-<select id="coordType" style="width:100%;padding:8px;margin-top:5px;background:#1a1410;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-size:11px">
-<option value="Haunted">Haunted</option>
-<option value="Blessed">Blessed Safe Space</option>
-<option value="Historic">Historic Location</option>
-<option value="Church">Church</option>
-<option value="Inn">Inn/Hotel</option>
-<option value="Restaurant">Restaurant/Bar</option>
-<option value="Monument">Monument</option>
-<option value="Other">Other</option>
-</select>
-<label>Story/Description:</label>
-<textarea id="coordStory" placeholder="Enter location story..." style="width:100%;padding:8px;margin-top:5px;background:#1a1410;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-family:Georgia,serif;font-size:11px;min-height:80px;box-sizing:border-box"></textarea>
-<label style="margin-top:10px">Preview Voice:</label>
-<select id="previewVoice" style="width:100%;padding:8px;margin-top:5px;background:#1a1410;color:#c9a876;border:1px solid #8b7355;border-radius:3px;font-size:11px">
-<option value="OldLady">🎙️ Narrator (Female)</option>
-<option value="OldMan">🎙️ Narrator (Male)</option>
-<option value="Wilder">⛪ Reverend Wilder</option>
-</select>
-<button onclick="previewStory()" style="width:100%;padding:10px;margin-top:10px;background:#8b7355;color:#f5f5dc;border:none;border-radius:3px;cursor:pointer;font-size:11px;font-weight:bold">▶ Play Preview</button>
-<div class="buttons">
-<button onclick="saveCoordinates()" style="background:#66bb6a;margin:0;flex:2">Save Changes</button>
-<button onclick="deleteLocation()" style="background:#c9534f;margin:0;flex:1">Delete</button>
-<button onclick="closeCoordEditor()" style="background:#8b7355;margin:0">Cancel</button>
+<div class="memory-container">
+  <div id="map"></div>
+
+  <div class="story-panel">
+    <div class="story-header">
+      <h1>Savannah Remembers</h1>
+      <p>Walking Memory Experience</p>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="story-content" id="storyContent">
+      <p style="color: #8b7d60; text-align: center; padding: 40px 20px;">
+        Loading experience...
+      </p>
+    </div>
+
+    <div class="nav-controls">
+      <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="previousStop()">← Previous</button>
+      <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStop()">Next →</button>
+    </div>
+  </div>
 </div>
-</div>
+
+<div class="proximity-alert" id="proximityAlert"></div>
+<audio id="narrationAudio"></audio>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
 <script>
-let locations=[{name:"BONUS: Wilder House Opening",lat:32.063892,lng:-81.093253,type:"Blessed",story:"Welcome to the Wilder House. Before we step out, I want you to know you are standing in a protected place. Reverend Wilder blessed these walls long ago, and that blessing still holds. Nothing we encounter tonight will follow you back here. This house is your sanctuary. Breathe easy. When you're ready, we'll walk west along Park Avenue — just five minutes — and begin where Savannah starts to open its memory to us."},{name:"OPENING: South Forsyth Park",lat:32.06501,lng:-81.097223,type:"Historic Park",story:"You didn't just come to Savannah. Savannah called you here. This city does not haunt the way most people think. It remembers. It carries its past in deep, layered memory — some parts gentle, some heavy, some still unfinished. Tonight we walk north from the southern edge of Forsyth Park all the way to the river. With every step, the city will slowly reveal more of itself. What begins as individual memories will gradually become one single, continuous story. Stay close. Listen carefully. Let Savannah tell you what it remembers."},{name:"STOP 1: Telfair Hospital",lat:32.064674,lng:-81.096386,type:"Historic Hospital",story:"Our journey begins with a memory of will — strong and unyielding. Mary Telfair built this hospital as a sanctuary for women only. No men allowed. That was her unbreakable rule. When she died, she chose to stay. She still walks these halls — a tall figure in a long brown dress. Her lavender perfume appears without warning. Doors close with quiet purpose. Some men still feel her presence gently but firmly reminding them: this space has its boundaries. Even now, Mary protects what she built. This is how Savannah remembers strength. Let's keep walking north… and the city begins to show us something softer."},{name:"STOP 2: Forsyth Park Fountain",lat:32.06922,lng:-81.095635,type:"Haunted Park",story:"Here, strength gives way to sorrow. This fountain is one of Savannah's most beloved images — graceful and beautiful. But beauty in this city often holds deeper truths beneath its surface. A fourteen-year-old girl named Lottie once lived with a terrible secret. In confusion, she poisoned a woman she believed was her rival… only to discover it was her own mother. The truth, hidden by polite Savannah society, shattered her completely. She never recovered. Her spirit returned to this fountain — the most beautiful place she knew. People still see a young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. Many feel waves of guilt and sadness pass through them. This is Savannah remembering the pain that beauty tries, but cannot fully hide. Let's continue walking north. The memories are growing older now."},{name:"STOP 3: Green-Meldrim House",lat:32.073902,lng:-81.094079,type:"Historic Mansion",story:"As we move deeper into the city, we meet a memory of bondage and beauty. In 1864, General Sherman occupied this mansion as his headquarters. But the presence that still lingers here belongs to an enslaved woman who worked inside these walls. Even while enslaved, she found moments of freedom in music. She would pause her labor whenever orchestras played, letting the melodies lift her. Today, people hear that same phantom music drifting through empty rooms. They feel a quiet, purposeful presence still moving through the house — still reaching for beauty in a world that tried to deny it to her. Savannah remembers those who were silenced… but whose spirits refused to be erased. Let's keep walking."},{name:"STOP 4: Chippewa Square",lat:32.075843,lng:-81.093124,type:"Historic Square",story:"Now the memory shifts again — this time into interruption. Inside the Foley House Inn, workers discovered a human skeleton hidden inside a wall in 1987. A man had entered Honoria Foley's room with harmful intentions. She defended herself with a candlestick. Rather than face the truth, they sealed his body inside the wall. They call him Wally. Guests still see him — a man in 19th-century clothing who vanishes when looked at directly. One maid returned to find a perfectly set table destroyed, as if someone had finally sat down to eat in the house that became his tomb. Across the square, actress Betty still watches performances at the Savannah Theatre. She loved the stage so deeply she could never truly leave. Some wounds in Savannah refuse to close. Some stories refuse to end. Let's keep walking."},{name:"STOP 5: Owens-Thomas House",lat:32.076213,lng:-81.093213,type:"Historic Mansion",story:"Here we feel a memory of ownership and attachment. Margaret Thomas, known as the Lady in Gray, still tends these gardens she loved in life. People see her moving among the plants in a flowing gray dress. Inside the house, Mr. Owens appears — large and stern — watching visitors with the judgment of a man who still believes he owns what he built. He turns and walks straight through walls as if they don't exist. Sometimes you hear a match strike, followed by the rich, impossible scent of 19th-century pipe tobacco. These spirits are not angry. They are simply unwilling to release what they cherished. The city's memory is becoming heavier now. Let's continue toward the cemetery."},{name:"STOP 6: Colonial Park Cemetery",lat:32.076116,lng:-81.090356,type:"Historic Cemetery",story:"This place holds a memory that is almost too much to contain. Over 10,000 people are buried in these six acres. Most without names or markers. Revolutionary soldiers. Yellow fever victims. Enslaved people. Forgotten families. At night, some still see Revolutionary War soldiers marching in formation — still drilling as if the war never ended. This ground carries too much pain, too many lost lives, and too much history to ever rest completely. We are getting closer to the river now… where everything finally comes together."},{name:"STOP 7: Pulaski Monument",lat:32.077388,lng:-81.09005,type:"Historic Monument",story:"Before we reach the water, we pass a memory of honor. Casimir Pulaski was mortally wounded nearby in 1779. His remains rest beneath this monument. At dusk, colonial soldiers sometimes appear around it, standing at attention, saluting their commander with quiet loyalty. Not every memory in Savannah remains broken. Some have found peace. One final walk now."},{name:"STOP 8: Emmet Park & Savannah River",lat:32.080375,lng:-81.088972,type:"Historic Park",story:"And now… we have reached the place where all the layers become one. For nearly 300 years, this river carried Savannah's deepest wound — the arrival and suffering of countless enslaved Africans. Tens of thousands passed through these docks in chains. At twilight, many hear voices rising from the water — fragments of African languages and Gullah carried on the breeze. Not in rage… but quietly insisting: Remember us. The river does not separate the stories we walked through tonight. It holds them all. Mary's iron will. Lottie's sorrow. The enslaved woman's music. Wally's unfinished anger. The Lady in Gray's devotion. The soldiers' endless march. You have walked through the living memory of Savannah tonight. And now that memory walks with you. Carry these stories gently. Speak them when you can. That is all the city asks."}];
+// ============================================================================
+// SAVANNAH REMEMBERS — GHOST TOUR DATA STRUCTURE (12-PHASE EMOTIONAL ARC)
+// ============================================================================
 
-const voiceMap={OldLady:"0rEo3eAjssGDUCXHYENf",OldMan:"dtVZnErhiiosqofxDzSH",Wilder:"a4BsmeT8RITKlxlCY9PO"};
+const TOUR_DATA = {
+  title: "Savannah Remembers",
+  description: "A walking journey through Savannah's deepest memories",
 
-// Pre-generated audio file map
-const audioFileMap={
-  "BONUS: Wilder House Opening":{OldMan:"/audio/wilder-house-opening-oldman.mp3",OldLady:"/audio/wilder-house-oldlady.mp3",Wilder:"/audio/wilder-house-opening-wilder.mp3?v=2"},
-  "OPENING: South Forsyth Park":{OldMan:"/audio/forsyth-park-opening-oldman.mp3",OldLady:"/audio/forsyth-park-opening-oldlady.mp3"},
-  "STOP 1: Telfair Hospital":{OldMan:"/audio/stop-1-telfair-hospital-oldman.mp3",OldLady:"/audio/stop-1-telfair-hospital-oldlady.mp3"},
-  "STOP 2: Forsyth Park Fountain":{OldMan:"/audio/stop-2-forsyth-fountain-oldman.mp3",OldLady:"/audio/stop-2-forsyth-fountain-oldlady.mp3"},
-  "STOP 3: Green-Meldrim House":{OldMan:"/audio/stop-3-green-meldrim-oldman.mp3",OldLady:"/audio/stop-3-green-meldrim-oldlady.mp3"},
-  "STOP 4: Chippewa Square":{OldMan:"/audio/stop-4-chippewa-square-oldman.mp3",OldLady:"/audio/stop-4-chippewa-square-oldlady.mp3"},
-  "STOP 5: Owens-Thomas House":{OldMan:"/audio/stop-5-owens-thomas-oldman.mp3",OldLady:"/audio/stop-5-owens-thomas-oldlady.mp3"},
-  "STOP 6: Colonial Park Cemetery":{OldMan:"/audio/stop-6-colonial-cemetery-oldman.mp3",OldLady:"/audio/stop-6-colonial-cemetery-oldlady.mp3"},
-  "STOP 7: Pulaski Monument":{OldMan:"/audio/stop-7-pulaski-monument-oldman.mp3",OldLady:"/audio/stop-7-pulaski-monument-oldlady.mp3"},
-  "STOP 8: Emmet Park & Savannah River":{OldMan:"/audio/stop-8-emmet-river-oldman.mp3",OldLady:"/audio/stop-8-emmet-river-oldlady.mp3"}
+  stops: [
+    {
+      id: 0,
+      name: "The Wilder House — Sanctuary Opening",
+      location: "314 East Park Avenue, Victorian District",
+      lat: 32.063892,
+      lng: -81.093253,
+      type: "Blessed",
+      arcPhase: 0,
+      arcLabel: "Threshold — Sacred Ground",
+      walkingTimeToNext: "4:00 min",
+      truthType: "theatrical",
+      narrator: {
+        voice: "OldMan",
+        text: "Welcome to the Wilder House. Before we step into Savannah's memory tonight, understand: you are standing in a protected place. Reverend Wilder blessed these walls long ago, and that blessing still holds. Nothing we encounter tonight will follow you back here. This house is your sanctuary. Breathe easy. When you're ready, we'll walk west along Park Avenue — just five minutes — and begin where Savannah starts to open its memory to us."
+      },
+      memorSignificance: "Every memory begins in a safe place. Before we walk into sorrow, strength, violence, and loss, we are reminded: there is sanctuary. There is shelter. Savannah's hauntings cannot touch us here."
+    },
+
+    {
+      id: 1,
+      name: "STOP 1: Telfair Hospital",
+      location: "121 W. 8th Street, Historic District",
+      lat: 32.064674,
+      lng: -81.096386,
+      type: "Haunted",
+      arcPhase: 1,
+      arcLabel: "Strength — Iron Will",
+      walkingTimeToNext: "1:45 min",
+      truthType: "fact",
+      narrator: {
+        voice: "OldLady",
+        text: "Our journey begins with a memory of will — strong and unyielding. Mary Telfair built this hospital as a sanctuary for women only. No men allowed. That was her unbreakable rule. When she died, she chose to stay. She still walks these halls — a tall figure in a long brown dress. Her lavender perfume appears without warning. Doors close with quiet purpose. Some men still feel her presence gently but firmly reminding them: this space has its boundaries. Even now, Mary protects what she built."
+      },
+      spirit: {
+        name: "Mary Telfair",
+        timeperiod: "1779–1875",
+        monologue: "I built this place for women who had nowhere else to turn. My rule was absolute: no men. Not because of hatred, but because some boundaries, once established, must hold. I protected them in life. I protect this space in death. That does not change."
+      },
+      memorSignificance: "Strength in Savannah is often female. It is quiet. It is unwavering. It protects what it loves."
+    },
+
+    {
+      id: 2,
+      name: "STOP 2: Spanish War Veteran Statue",
+      location: "Forsyth Park, near south entrance",
+      lat: 32.064950,
+      lng: -81.097180,
+      type: "Historic",
+      arcPhase: 2,
+      arcLabel: "Vigilance — The Watcher",
+      walkingTimeToNext: "1:20 min",
+      truthType: "fact",
+      narrator: {
+        voice: "OldMan",
+        text: "A soldier stands here, bronze and eternal, watching over Forsyth Park. He was sent to fight in a foreign war — Spain, the Caribbean, lands that had nothing to do with Savannah. But he came home. He came home changed. And now he stands, forever looking over this park, forever keeping watch. Some soldiers never truly leave their post. Some continue their duty long after their bodies have returned to the earth."
+      },
+      spirit: {
+        name: "The Spanish War Veteran",
+        monologue: "They sent us to fight for glory. We fought for survival. Now I stand here, watching the park I knew as a boy. Nothing rests when you've seen what we've seen. The watch continues. That's all we know."
+      },
+      memorSignificance: "Savannah sent her sons to fight in distant wars. Some returned as ghosts long before their bodies died."
+    },
+
+    {
+      id: 3,
+      name: "STOP 3: Live Oak Grove — Moss and Memory",
+      location: "Forsyth Park, central oaks",
+      lat: 32.065800,
+      lng: -81.095500,
+      type: "Haunted",
+      arcPhase: 3,
+      arcLabel: "Atmosphere — The Watching Trees",
+      walkingTimeToNext: "2:13 min",
+      truthType: "theatrical",
+      narrator: {
+        voice: "OldLady",
+        text: "You are now under the oldest living things in Savannah. These live oaks have been here for three hundred years. Longer than any building. Longer than any person who has walked beneath them. The moss hangs like memories — draped, heavy, gray. The trees remember everything. Every secret shared in their shade. Every sorrow hidden beneath their canopy. Every love that bloomed and died here. The homes around us are beautiful, but beauty here is always watching. Always listening. Always remembering."
+      },
+      memorSignificance: "Nature remembers longer than we do. The trees and moss bear witness to all of Savannah's secrets."
+    },
+
+    {
+      id: 4,
+      name: "STOP 4: Francois Benton & Confederate Monument",
+      location: "Chippewa Square area",
+      lat: 32.074100,
+      lng: -81.093800,
+      type: "Monument",
+      arcPhase: 4,
+      arcLabel: "History — The Unresolved",
+      walkingTimeToNext: "3:45 min",
+      truthType: "fact",
+      narrator: {
+        voice: "OldMan",
+        text: "This square holds two men in stone. Francois Benton, who loved Savannah. And a towering monument to Confederate dead — men who died for a cause that was already dying. These monuments stand as Savannah stands: containing contradictions. Beauty built on injustice. Honor tangled with grief. The city does not erase these contradictions. It holds them. It remembers them. Some of those who died here still cannot rest. They linger in the shadow of stone."
+      },
+      memorSignificance: "Savannah's monuments contain unresolved history. The city remembers not just triumph, but failure and moral wound."
+    },
+
+    {
+      id: 5,
+      name: "STOP 5: Forsyth Fountain — Beauty and Sorrow",
+      location: "Forsyth Park, central fountain",
+      lat: 32.06922,
+      lng: -81.095635,
+      type: "Haunted",
+      arcPhase: 5,
+      arcLabel: "Tragedy — Hidden Beneath Beauty",
+      walkingTimeToNext: "3:45 min",
+      geofenceRadius: 150,
+      truthType: "legend",
+      narrator: {
+        voice: "OldLady",
+        text: "Here, strength gives way to sorrow. This fountain is one of Savannah's most beloved images — graceful, iconic, beautiful. But beauty in this city often holds deeper truths beneath its surface. A fourteen-year-old girl named Lottie once lived with a terrible secret. In confusion and desperation, she poisoned a woman she believed was her rival — only to discover it was her own mother. The truth shattered her completely. She never recovered. Her spirit returned to this fountain — the most beautiful place she knew. People still see a young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. Many feel waves of sadness and guilt pass through them without warning."
+      },
+      spirit: {
+        name: "Lottie",
+        monologue: "I didn't know. I didn't know until it was too late. She was my mother. This fountain is beautiful. But beautiful things can hide the worst of us. I'm sorry. I'm so sorry."
+      },
+      memorSignificance: "Beauty in Savannah often conceals tragedy. The fountain reminds us: the most beautiful places sometimes hold the heaviest pain."
+    },
+
+    {
+      id: 6,
+      name: "STOP 6: Kessler Mansion — Old Armstrong College",
+      location: "429 Bull Street, Historic District",
+      lat: 32.075900,
+      lng: -81.093600,
+      type: "Historic",
+      arcPhase: 6,
+      arcLabel: "Legacy — Echoes of Institution",
+      walkingTimeToNext: "1:30 min",
+      truthType: "fact",
+      narrator: {
+        voice: "OldMan",
+        text: "This mansion once housed Armstrong College — a place of learning and aspiration. The walls remember students who studied here, who dreamed of futures beyond these rooms. Some of those dreams were realized. Many were not. The building stands now as a reminder of the transience of institutions. What seemed permanent is now memory. What bustled with life is now quiet. Yet the spirits of ambition still linger here — the echoes of young people who believed their education would change their lives."
+      },
+      memorSignificance: "Savannah's institutions have always shaped the dreams of its young people. When those institutions fall, the dreams don't always die — they haunt the spaces they left behind."
+    },
+
+    {
+      id: 7,
+      name: "STOP 7: Pulaski Square & Monument",
+      location: "Pulaski Square, Historic District",
+      lat: 32.077388,
+      lng: -81.09005,
+      type: "Monument",
+      arcPhase: 7,
+      arcLabel: "Honor — The Peaceful Rest",
+      walkingTimeToNext: "1:50 min",
+      truthType: "fact",
+      narrator: {
+        voice: "OldLady",
+        text: "Casimir Pulaski was mortally wounded nearby in 1779 — the Revolutionary War's end, perhaps, for Savannah. His remains rest beneath this monument. Unlike so many others we have encountered tonight, Pulaski has found peace. Colonial soldiers sometimes appear around this square at dusk, standing at attention, saluting their commander with quiet loyalty. Not every memory in Savannah remains broken. Some have earned rest. Some have found forgiveness. Some have learned that honor, finally, is enough."
+      },
+      memorSignificance: "Not all of Savannah's ghosts are restless. Some have earned peace through service and sacrifice. This square teaches us: some memories, in the end, find rest."
+    },
+
+    {
+      id: 8,
+      name: "STOP 8: Jones & Bull Street Corner",
+      location: "Corner of Jones & Bull Street",
+      lat: 32.077800,
+      lng: -81.093400,
+      type: "Historic",
+      arcPhase: 8,
+      arcLabel: "Intersection — Where Paths Cross",
+      walkingTimeToNext: "1:30 min",
+      truthType: "theatrical",
+      narrator: {
+        voice: "OldMan",
+        text: "This corner is an intersection — a place where people have crossed paths for two centuries. Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. All have stood here. All have been changed by this moment of crossing. Intersections are liminal spaces. They belong to no one. They hold the energy of countless meetings, partings, and collisions. Some people return to the places where their lives changed forever. This corner holds many such returns."
+      },
+      memorSignificance: "Intersections are sacred in cities. They are where destinies collide. Savannah's corners remember every crossing."
+    },
+
+    {
+      id: 9,
+      name: "STOP 9: Madison Square — Convergence",
+      location: "Madison Square, Historic District",
+      lat: 32.076800,
+      lng: -81.092400,
+      type: "Blessed",
+      arcPhase: 9,
+      arcLabel: "Convergence — Many Voices",
+      walkingTimeToNext: "2:40 min",
+      truthType: "fact",
+      narrator: {
+        voice: "OldLady",
+        text: "Madison Square holds three voices. The church stands as sanctuary — a place where people have always sought safety and prayer. The Sorrel Weed House holds the memory of bondage and survival. The Green-Meldrim House holds the memory of occupation and resistance. All three stand here together, in one square, containing Savannah's contradictions. The church does not erase the history of the houses around it. The houses do not negate the sanctity of the church. They exist together. They remember together. And in this convergence, we understand: Savannah's memory is not simple. It is layered. It is tragic and sacred at once. The city holds all of it."
+      },
+      memorSignificance: "Madison Square is where Savannah's different histories come together. The city's memory becomes whole here — not resolved, but integrated."
+    },
+
+    {
+      id: 10,
+      name: "STOP 10: Chippewa Square — Unresolution",
+      location: "Chippewa Square, Historic District",
+      lat: 32.075843,
+      lng: -81.093124,
+      type: "Haunted",
+      arcPhase: 10,
+      arcLabel: "Unresolution — The Continuing Story",
+      walkingTimeToNext: "2:30 min walk to river",
+      truthType: "legend",
+      narrator: {
+        voice: "OldMan",
+        text: "Chippewa Square holds a memory that will not rest. Inside the Foley House Inn, workers discovered a human skeleton sealed inside a wall in 1987. A man had entered Honoria Foley's room with harm in his heart. She defended herself. Rather than face the truth, they sealed his body inside the wall. They call him Wally. Guests still see him — a figure in 19th-century clothes who vanishes when looked at directly. Across the square, actress Betty still watches performances at the Savannah Theatre. She loved the stage so deeply she could never truly leave. Some wounds in Savannah refuse to close. Some stories refuse to end."
+      },
+      spirit: {
+        name: "Wally",
+        monologue: "They sealed me inside. I don't understand. I don't understand what happened. I'm still here. I don't know how to leave. Why can't anyone see me? Why can't anyone help me?"
+      },
+      memorSignificance: "Some of Savannah's memories have never found resolution. They continue. They insist on being remembered. Some ghosts cannot rest because their stories were never truly told."
+    },
+
+    {
+      id: 11,
+      name: "EPILOGUE: Savannah River — Release",
+      location: "Emmet Park, River edge",
+      lat: 32.080375,
+      lng: -81.088972,
+      type: "Threshold",
+      arcPhase: 11,
+      arcLabel: "Release — The River Remembers",
+      walkingTimeToNext: null,
+      truthType: "fact",
+      narrator: {
+        voice: "OldLady",
+        text: "And now we have reached the place where all the layers become one. For nearly three hundred years, this river carried Savannah's deepest wound — the arrival and suffering of countless enslaved Africans. Tens of thousands passed through these docks in chains. At twilight, many hear voices rising from the water — fragments of African languages and Gullah carried on the breeze. Not in rage. But quietly insisting: Remember us. The river does not separate the stories we walked through tonight. It holds them all. Mary's iron will. Lottie's sorrow. The soldiers' vigilance. The city's unresolved contradictions. You have walked through the living memory of Savannah tonight. And now that memory walks with you. Carry these stories gently. Speak them when you can. That is all the city asks."
+      },
+      memorSignificance: "The river is Savannah's deepest memory. It holds all the voices — the protected and the enslaved, the remembered and the forgotten. The river does not end the tour. It continues it. The memory continues."
+    }
+  ]
 };
 
-let map,selectedLocation=null,geofencingActive=false,userLocation=null,markers=[],currentEditingIndex=null,adminMode=false,routePolyline=null,currentSegmentPolyline=null,userMarker=null;
-const GEOFENCE_RADIUS=200;
-let tourProgressIdx=0,guideLine=null,guideRouteOrigin=null,guideRouteIdx=-1,guideRouteBusy=false,guideRouteDistM=null;
-// Compass / facing-direction state. compassHeading is degrees CW from north
-// (0=N) of the way the phone is physically pointed; null until/unless the
-// device gives us an orientation reading. lastBrg is the true bearing to the
-// next stop (the no-compass fallback). beamRot accumulates so the beam always
-// rotates the SHORT way and never back-spins through north.
-let compassHeading=null,orientationStarted=false,lastBrg=0,beamRot=0;
-// Admin mode disabled in production (dev-only feature)
+// ============================================================================
+// APPLICATION STATE
+// ============================================================================
 
-function initMap(){
-map=L.map('map').setView([32.0730,-81.0900],14);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-attribution:'&copy; OSM &copy; CARTO',maxZoom:19
-}).addTo(map);
-// Drop the "Leaflet" prefix from the credit (optional/allowed to remove). The
-// OSM + CARTO credit must stay — those licenses legally require attribution.
-map.attributionControl.setPrefix(false);
+let map;
+let currentStopIndex = 0;
+let userLocation = null;
+let markers = [];
+let routePolyline = null;
 
-markers=[];
-locations.forEach((loc,idx)=>{
-const icon=L.divIcon({className:'location-dot '+(loc.type.includes('Blessed')?'blessed':'haunted'),html:'<div></div>',iconSize:[20,20],iconAnchor:[10,10]});
-const marker=L.marker([loc.lat,loc.lng],{icon,draggable:true}).addTo(map);
-markers.push(marker);
-marker.bindTooltip(loc.name,{permanent:true,direction:'right',offset:[10,0],className:'location-label'});
-marker.on('click',()=>{
-selectLocationByIndex(idx);
-if(adminMode)openCoordEditor(idx);
-});
-marker.on('dragend',()=>{
-if(!adminMode)return;
-const newLat=marker.getLatLng().lat;
-const newLng=marker.getLatLng().lng;
-locations[idx].lat=parseFloat(newLat.toFixed(6));
-locations[idx].lng=parseFloat(newLng.toFixed(6));
-document.getElementById('coordLat').value=locations[idx].lat;
-document.getElementById('coordLng').value=locations[idx].lng;
-saveToStorage();
-});
-});
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
 
-// Create complete tour route polyline
-const routeCoords=locations.map(loc=>[loc.lat,loc.lng]);
-routePolyline=L.polyline(routeCoords,{color:'#c9a876',weight:3,opacity:0.3,dashArray:'5,5'}).addTo(map);
-
-renderLocationList();
-updateStats();
+function initApp() {
+  initMap();
+  renderCurrentStop();
+  startLocationTracking();
 }
 
-function selectLocationByIndex(idx){
-selectedLocation=idx;
-highlightCurrentSegment(idx);
-renderLocationList();
-playNarration(idx);
+function initMap() {
+  map = L.map('map').setView([32.0730, -81.0900], 14);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OSM &copy; CARTO',
+    maxZoom: 19
+  }).addTo(map);
+  map.attributionControl.setPrefix(false);
+
+  // Create markers for all stops
+  TOUR_DATA.stops.forEach((stop, idx) => {
+    const isBlessed = stop.type === 'Blessed';
+    const iconClass = isBlessed ? 'blessed' : 'haunted';
+
+    const icon = L.divIcon({
+      className: `stop-marker ${iconClass}`,
+      html: `<div class="marker-dot"></div>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+
+    const marker = L.marker([stop.lat, stop.lng], { icon })
+      .addTo(map)
+      .bindTooltip(stop.name, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -10]
+      });
+
+    marker.on('click', () => jumpToStop(idx));
+    markers.push(marker);
+  });
+
+  // Draw route
+  const routeCoords = TOUR_DATA.stops.map(stop => [stop.lat, stop.lng]);
+  routePolyline = L.polyline(routeCoords, {
+    color: '#c9a876',
+    weight: 2,
+    opacity: 0.3,
+    dashArray: '5,5'
+  }).addTo(map);
 }
 
-function highlightCurrentSegment(idx){
-if(currentSegmentPolyline)map.removeLayer(currentSegmentPolyline);
-if(idx<locations.length-1){
-const current=[locations[idx].lat,locations[idx].lng];
-const next=[locations[idx+1].lat,locations[idx+1].lng];
-currentSegmentPolyline=L.polyline([current,next],{color:'#c9a876',weight:5,opacity:1}).addTo(map);
-currentSegmentPolyline.bringToFront();
-}
+// ============================================================================
+// STOP RENDERING
+// ============================================================================
+
+function renderCurrentStop() {
+  const stop = TOUR_DATA.stops[currentStopIndex];
+  const container = document.getElementById('storyContent');
+
+  // Update progress
+  const progress = ((currentStopIndex + 1) / TOUR_DATA.stops.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  // Build HTML
+  let html = `<div class="stop-card">`;
+
+  // Stop number & name
+  html += `<div class="stop-number">Stop ${stop.id + 1} of ${TOUR_DATA.stops.length}</div>`;
+  html += `<div class="stop-name">${stop.name}</div>`;
+
+  // Truth badge
+  const truthBadgeClass = `truth-${stop.truthType}`;
+  const truthLabel = stop.truthType.charAt(0).toUpperCase() + stop.truthType.slice(1);
+  html += `<span class="truth-badge ${truthBadgeClass}">${truthLabel}</span>`;
+
+  // Emotional arc indicator
+  html += `<div class="arc-indicator">
+    <span class="arc-dot"></span>
+    <span>${stop.arcLabel}</span>
+  </div>`;
+
+  // Narrator section
+  html += `<div class="narrator-section">
+    <label class="narrator-label">🎙️ Narration</label>
+    <div class="narrator-text">${stop.narrator.text}</div>
+  </div>`;
+
+  // Spirit section (if exists)
+  if (stop.spirit) {
+    html += `<div class="spirit-section">
+      <label class="spirit-label">👤 ${stop.spirit.name.toUpperCase()}</label>
+      <div class="spirit-monologue">"${stop.spirit.monologue}"</div>
+    </div>`;
+  }
+
+  // Memory significance
+  html += `<div class="memory-significance">
+    <strong>Savannah's Memory:</strong> ${stop.memorSignificance}
+  </div>`;
+
+  // Walking info
+  if (stop.walkingTimeToNext) {
+    html += `<div class="walking-info">
+      <span class="walking-time">⏱️ ${stop.walkingTimeToNext}</span>
+      <span class="walking-direction">Walk to the next stop when ready</span>
+    </div>`;
+  } else {
+    html += `<div class="walking-info" style="background: rgba(102, 187, 106, 0.15); border-color: rgba(102, 187, 106, 0.4);">
+      <span class="walking-time" style="color: #66bb6a;">✓ Final Stop — The River's Memory</span>
+      <span class="walking-direction">You have reached the threshold. Take time to reflect.</span>
+    </div>`;
+  }
+
+  html += `</div>`;
+
+  container.innerHTML = html;
+
+  // Update button states
+  document.getElementById('prevBtn').disabled = currentStopIndex === 0;
+  document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.stops.length - 1;
+
+  // Center map on current stop
+  map.setView([stop.lat, stop.lng], 15);
+
+  // Highlight current marker
+  markers.forEach((marker, idx) => {
+    marker.setIcon(L.divIcon({
+      className: `stop-marker ${TOUR_DATA.stops[idx].type === 'Blessed' ? 'blessed' : 'haunted'} ${idx === currentStopIndex ? 'active' : ''}`,
+      html: `<div class="marker-dot"></div>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    }));
+  });
 }
 
-async function playNarration(idx){
-const loc=locations[idx];
-const audio=document.getElementById('narrationAudio');
-let selectedVoice=document.getElementById('voiceSelect').value;
-// Reverend Wilder narrates only his own segment (the Wilder House opening),
-// regardless of the guide voice the guest selected.
-if(loc.name==='BONUS: Wilder House Opening'){selectedVoice='Wilder';}
-
-// Ensure audio is unmuted and at full volume
-audio.muted=false;
-audio.volume=1.0;
-
-// Show audio controls so user can play if autoplay is blocked
-audio.controls=true;
-audio.style.display='block';
-audio.style.position='fixed';
-audio.style.bottom='10px';
-audio.style.left='50%';
-audio.style.transform='translateX(-50%)';
-audio.style.zIndex='9999';
-audio.style.width='320px';
-audio.style.background='rgba(20,20,30,0.95)';
-audio.style.borderRadius='4px';
-
-// Show loading status
-let statusEl=document.getElementById('narrationStatus');
-if(!statusEl){
-statusEl=document.createElement('div');
-statusEl.id='narrationStatus';
-statusEl.style.cssText='position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:rgba(201,168,118,0.95);color:#1a1a2e;padding:6px 12px;border-radius:3px;font-size:11px;font-weight:bold;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.4)';
-document.body.appendChild(statusEl);
-}
-statusEl.textContent='🔮 Loading narration for: '+loc.name;
-statusEl.style.background='rgba(201,168,118,0.95)';
-
-// Pause any in-progress playback before changing src (prevents AbortError)
-try{audio.pause();}catch(e){}
-
-// FIRST: Try pre-generated audio file (instant, no API call, no rate limits)
-const staticFile=audioFileMap[loc.name]&&audioFileMap[loc.name][selectedVoice];
-console.log('Voice selected:',selectedVoice,'| Location:',loc.name,'| File:',staticFile);
-if(staticFile){
-// Force reload by clearing src first, then setting new one
-audio.src='';
-audio.load();
-audio.src=staticFile;
-audio.load();
-// Add error listener to detect file load failures
-audio.onerror=function(e){
-console.error('Audio file failed to load:',staticFile,e);
-statusEl.textContent='❌ File not found: '+staticFile;
-statusEl.style.background='rgba(201,83,79,0.95)';
-statusEl.style.color='#fff';
-};
-audio.oncanplay=function(){
-console.log('Audio ready:',staticFile);
-};
-const voiceLabel=selectedVoice==='OldLady'?'🎙️ Narrator (Female)':(selectedVoice==='Wilder'?'⛪ Reverend Wilder':'🎙️ Narrator (Male)');
-try{
-await audio.play();
-statusEl.textContent='▶ '+voiceLabel+' - '+loc.name;
-statusEl.style.background='rgba(102,187,106,0.95)';
-return;
-}catch(e){
-if(e.name!=='AbortError'){
-console.log('Static audio play error:',e);
-statusEl.textContent='⚠ '+voiceLabel+' - Click ▶ to play';
-statusEl.style.background='rgba(255,165,0,0.95)';
-return;
-}
-}
-return;
+function nextStop() {
+  if (currentStopIndex < TOUR_DATA.stops.length - 1) {
+    currentStopIndex++;
+    renderCurrentStop();
+  }
 }
 
-// FALLBACK: API generation disabled (API key should never be in client code)
-// Use pre-generated audio files only - no ElevenLabs API calls from browser
-statusEl.textContent='❌ Audio file not found: '+staticFile;
-statusEl.style.background='rgba(201,83,79,0.95)';
-statusEl.style.color='#fff';
+function previousStop() {
+  if (currentStopIndex > 0) {
+    currentStopIndex--;
+    renderCurrentStop();
+  }
 }
 
-function renderLocationList(){
-const list=document.getElementById('locationList');
-list.innerHTML='';
-locations.forEach((loc,idx)=>{
-const card=document.createElement('div');
-card.className='location-card'+(selectedLocation===idx?' active':'');
-card.innerHTML='<div class="location-name">'+loc.name+'</div><div class="location-type">'+loc.type+'</div><div class="location-story">'+loc.story+'</div>';
-card.onclick=()=>selectLocationByIndex(idx);
-list.appendChild(card);
-});
+function jumpToStop(idx) {
+  currentStopIndex = idx;
+  renderCurrentStop();
 }
 
-function centerMap(){
-map.setView([32.0730,-81.0900],14);
+// ============================================================================
+// LOCATION TRACKING (STUB FOR EXPANSION)
+// ============================================================================
+
+function startLocationTracking() {
+  if ('geolocation' in navigator) {
+    navigator.geolocation.watchPosition(
+      (position) => {
+        userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+      },
+      (error) => {
+        console.log('Location tracking available for expansion');
+      }
+    );
+  }
 }
 
-// Show the "why we need location" primer before the OS prompt. If the guest
-// already granted location on a previous visit, skip straight to starting.
-function showLocationPrimer(){
-try{
-if(navigator.permissions&&navigator.permissions.query){
-navigator.permissions.query({name:'geolocation'}).then(function(p){
-if(p&&p.state==='granted'){startGeofencing();}
-else{const m=document.getElementById('locPrimer');if(m)m.style.display='flex';}
-}).catch(function(){const m=document.getElementById('locPrimer');if(m)m.style.display='flex';});
-return;
-}
-}catch(e){}
-const m=document.getElementById('locPrimer');if(m)m.style.display='flex';
-}
-function dismissLocationPrimer(){const m=document.getElementById('locPrimer');if(m)m.style.display='none';}
-function acceptLocationPrimer(){dismissLocationPrimer();startGeofencing();}
+// ============================================================================
+// STARTUP
+// ============================================================================
 
-function startGeofencing(){
-if(!navigator.geolocation){alert('Geolocation not supported');return;}
-setupCompass();
-geofencingActive=true;
-document.getElementById('startTourBtn').textContent='📍 Tour Active - GPS On';
-document.getElementById('compassNav').style.display='flex';
-document.getElementById('compassDist').textContent='Locating…';
-document.getElementById('compassTarget').textContent='Finding your first memory';
-navigator.geolocation.watchPosition(position=>{
-userLocation={lat:position.coords.latitude,lng:position.coords.longitude};
-updateUserMarker();
-checkNearbyLocations();
-updateGuide();
-},error=>{
-console.error('Geolocation error:',error);
-// Surface the failure on-screen instead of dying silently (which looked like
-// "stops show but my dot never appears"). Map the GPS error code to a fix.
-const dist=document.getElementById('compassDist');
-const tgt=document.getElementById('compassTarget');
-const hint=document.getElementById('compassHint');
-if(error&&error.code===1){ // PERMISSION_DENIED
-dist.textContent='Location blocked';
-tgt.textContent='Tap to fix ↓';
-hint.textContent='Settings ▸ Privacy ▸ Location Services ▸ Safari ▸ While Using · then reload';
-geofencingActive=false;
-document.getElementById('startTourBtn').textContent='🎬 Start Tour & Accept Location';
-}else if(error&&error.code===2){ // POSITION_UNAVAILABLE
-dist.textContent='No GPS signal';
-tgt.textContent='Step outside';
-hint.textContent='move into the open & keep this page open — still trying…';
-}else{ // TIMEOUT (3) — watchPosition keeps trying, so stay active
-dist.textContent='Finding GPS…';
-tgt.textContent='hang tight';
-hint.textContent='locking onto satellites — keep the page open';
-}
-},{enableHighAccuracy:true,maximumAge:1000,timeout:20000});
-}
-
-function updateUserMarker(){
-if(!userLocation||!map)return;
-// Create the marker once and reuse it so the cone can smoothly rotate
-// (recreating it every GPS tick would kill the CSS transition).
-if(!userMarker){
-const html='<div class="user-rot" id="userRot">'+
-'<svg width="88" height="80" viewBox="0 0 88 80">'+
-'<defs><radialGradient id="beamGrad" cx="50%" cy="100%" r="100%">'+
-'<stop offset="0%" stop-color="#7CFC8A" stop-opacity="0.9"/>'+
-'<stop offset="55%" stop-color="#66bb6a" stop-opacity="0.45"/>'+
-'<stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/>'+
-'</radialGradient></defs>'+
-'<path d="M44 76 L8 10 A40 40 0 0 1 80 10 Z" fill="url(#beamGrad)"/>'+
-'</svg></div>'+
-'<div class="user-dot2"></div>';
-const userIcon=L.divIcon({className:'user-puck',html:html,iconSize:[0,0],iconAnchor:[0,0]});
-userMarker=L.marker([userLocation.lat,userLocation.lng],{icon:userIcon,interactive:false,keyboard:false,zIndexOffset:1000}).addTo(map);
-}else{
-userMarker.setLatLng([userLocation.lat,userLocation.lng]);
-}
-}
-// Rotate the cone on the user dot. deg = degrees clockwise from north; the map
-// is north-up so 0 points straight up = north. We accumulate into beamRot and
-// move by the SHORTEST angular delta, so crossing north (359->1) sweeps a few
-// degrees forward instead of spinning ~358 the wrong way.
-function setUserCone(deg){
-const el=document.getElementById('userRot');if(!el)return;
-let delta=((deg-beamRot)%360+540)%360-180;
-beamRot+=delta;
-el.style.transform='rotate('+beamRot+'deg)';
-}
-// Decide which way the beam points: if the phone gives us a compass heading we
-// show the FACING direction (beam sweeps as you turn in place, like a nav-app
-// cone — align it with the green line to walk the right way). With no compass
-// we fall back to pointing the beam straight at the next stop.
-function updateBeam(){setUserCone(compassHeading!=null?compassHeading:lastBrg);}
-// Small status line under the distance so we can SEE what the compass is doing
-// on the phone (iOS is finicky and silent otherwise).
-function setCompassHint(t){const el=document.getElementById('compassHint');if(el)el.textContent=t;}
-let iosCompass=(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function');
-let gotHeading=false;
-function onOrient(e){
-let h=null;
-if(typeof e.webkitCompassHeading==='number'&&!isNaN(e.webkitCompassHeading)){
-h=e.webkitCompassHeading; // iOS: true-north heading, already 0=N clockwise
-}else if(e.absolute===true&&typeof e.alpha==='number'&&!isNaN(e.alpha)){
-h=(360-e.alpha)%360; // Android absolute: convert CCW alpha to CW heading
-}
-// Ignore relative (non-absolute) readings — they aren't tied to true north and
-// would point the beam the wrong way; we simply stay in position-bearing mode.
-if(h!=null){
-compassHeading=((h%360)+360)%360;
-if(!gotHeading){gotHeading=true;const b=document.getElementById('compassBtn');if(b)b.style.display='none';setCompassHint('🧭 compass on · turn to aim the beam');}
-updateBeam();
-}
-}
-function attachOrient(){
-window.addEventListener('deviceorientationabsolute',onOrient,true);
-window.addEventListener('deviceorientation',onOrient,true);
-setTimeout(function(){if(!gotHeading)setCompassHint('compass unavailable · beam points to the stop');},2500);
-}
-// Called when the tour starts. On iOS the permission popup MUST come from its
-// own clean tap, so we reveal the "Enable compass" button instead of firing the
-// request inside the Start tap (where it competes with the location popup and
-// often never shows). Android can attach immediately.
-function setupCompass(){
-if(orientationStarted)return;orientationStarted=true;
-if(iosCompass){
-const b=document.getElementById('compassBtn');if(b)b.style.display='inline-block';
-setCompassHint('tap 🧭 Enable compass to aim the beam');
-}else{
-try{attachOrient();}catch(err){setCompassHint('compass unavailable · beam points to the stop');}
-}
-}
-// The iOS permission request — runs from the Enable-compass button tap (a clean
-// user gesture, which is what iOS requires to show the popup). Retryable.
-function enableCompass(){
-try{
-if(iosCompass){
-DeviceOrientationEvent.requestPermission().then(function(state){
-if(state==='granted'){gotHeading=false;attachOrient();}
-else{setCompassHint('compass blocked · Settings ▸ Safari ▸ Motion & Orientation: ON, then reload');}
-}).catch(function(){setCompassHint('compass error · tap 🧭 again');});
-}else{attachOrient();}
-}catch(err){setCompassHint('compass unavailable · beam points to the stop');}
-}
-
-function checkNearbyLocations(){
-if(!userLocation||!geofencingActive)return;
-const alert=document.getElementById('proximityAlert');
-let nearby=[];
-locations.forEach((loc,idx)=>{
-const dist=getDistance(userLocation.lat,userLocation.lng,loc.lat,loc.lng);
-if(dist<GEOFENCE_RADIUS){
-nearby.push({name:loc.name,distance:dist,idx:idx});
-}
-});
-if(nearby.length>0){
-nearby.sort((a,b)=>a.distance-b.distance);
-const closest=nearby[0];
-alert.style.display='block';
-alert.innerHTML='👻 '+closest.name+' ('+Math.round(closest.distance)+'m away)<br><small>Tap location to hear story</small>';
-if(closest.distance<50&&!userLocation.lastPlayedIdx){
-userLocation.lastPlayedIdx=closest.idx;
-playNarration(closest.idx);
-setTimeout(()=>{delete userLocation.lastPlayedIdx},30000);
-}
-}else{
-alert.style.display='none';
-}
-}
-
-function getDistance(lat1,lon1,lat2,lon2){
-const R=6371;
-const dLat=(lat2-lat1)*Math.PI/180;
-const dLon=(lon2-lon1)*Math.PI/180;
-const a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
-const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-return R*c*1000;
-}
-
-// Great-circle bearing from current position to the next waypoint.
-// Result is degrees clockwise from true north (0=N,90=E,180=S,270=W).
-// Uses GPS positions ONLY — never the phone's compass/orientation — so it
-// shows where the next stop is relative to where you stand, and never
-// jitters as you turn the device.
-function bearingTo(lat1,lon1,lat2,lon2){
-const toR=Math.PI/180,toD=180/Math.PI;
-const dLon=(lon2-lon1)*toR;
-const y=Math.sin(dLon)*Math.cos(lat2*toR);
-const x=Math.cos(lat1*toR)*Math.sin(lat2*toR)-Math.sin(lat1*toR)*Math.cos(lat2*toR)*Math.cos(dLon);
-return (Math.atan2(y,x)*toD+360)%360;
-}
-// Location-only wayfinding: an arrow that points toward the next stop
-// (north-up, matching the map), plus a glowing line on the map and a
-// distance readout. No compass / no device orientation.
-function updateGuide(){
-const nav=document.getElementById('compassNav');
-if(!nav||nav.style.display==='none'||!userLocation||!locations.length||!map)return;
-let target=locations[tourProgressIdx];
-if(target){
-const d0=getDistance(userLocation.lat,userLocation.lng,target.lat,target.lng);
-if(d0<40&&tourProgressIdx<locations.length-1){tourProgressIdx++;target=locations[tourProgressIdx];}
-}
-if(!target){
-if(guideLine){map.removeLayer(guideLine);guideLine=null;}
-const cone=document.getElementById('userRot');if(cone)cone.style.opacity='0';
-document.getElementById('compassDist').textContent="Tour complete";
-document.getElementById('compassTarget').textContent='✦ Every memory heard';
-return;
-}
-const dist=getDistance(userLocation.lat,userLocation.lng,target.lat,target.lng);
-const brg=bearingTo(userLocation.lat,userLocation.lng,target.lat,target.lng);
-// Record the true bearing to the stop and refresh the beam. If the compass is
-// live the beam shows your facing direction (and updateBeam ignores brg); with
-// no compass the beam points straight at the stop along the green line.
-lastBrg=brg;updateBeam();
-// Draw the guide line ONCE (straight placeholder); after that we never wipe
-// it back to straight on every GPS tick — the road route persists.
-if(!guideLine){
-guideLine=L.polyline([[userLocation.lat,userLocation.lng],[target.lat,target.lng]],{color:'#66bb6a',weight:4,opacity:0.9,dashArray:'2 10',lineCap:'round',className:'guide-line'}).addTo(map);
-guideLine.bringToFront();
-}
-// Only (re)route when the target changed OR the guest has actually walked
-// >25 m from where we last routed — immune to GPS jitter.
-const moved=!guideRouteOrigin||guideRouteOrigin.idx!==tourProgressIdx||
-getDistance(guideRouteOrigin.lat,guideRouteOrigin.lng,userLocation.lat,userLocation.lng)>25;
-if(moved&&!guideRouteBusy){
-guideRouteOrigin={lat:userLocation.lat,lng:userLocation.lng,idx:tourProgressIdx};
-fetchWalkingRoute({lat:userLocation.lat,lng:userLocation.lng},target,tourProgressIdx);
-}
-// Prefer the real walking distance once we have a route for this stop.
-const showM=(guideRouteIdx===tourProgressIdx&&guideRouteDistM!=null)?guideRouteDistM:dist;
-const ft=Math.round(showM*3.28084);
-const dtxt=ft<=30?"You're here":(ft<1000?ft+' ft':(showM/1609.34).toFixed(1)+' mi');
-document.getElementById('compassDist').textContent=dtxt;
-document.getElementById('compassTarget').textContent='→ '+target.name;
-}
-
-// Fetch a walking route (OSM foot profile) and redraw the guide line along
-// the actual streets/sidewalks. Foot routing follows the road network but
-// ignores one-way car restrictions — correct for pedestrians. Falls back
-// silently to the straight line if the routing service is unreachable.
-async function fetchWalkingRoute(from,to,idx){
-if(guideRouteBusy)return;
-guideRouteBusy=true;
-try{
-const url='https://routing.openstreetmap.de/routed-foot/route/v1/foot/'+
-from.lng+','+from.lat+';'+to.lng+','+to.lat+'?overview=full&geometries=geojson';
-const r=await fetch(url);
-if(!r.ok)throw new Error('route '+r.status);
-const j=await r.json();
-const route=j&&j.routes&&j.routes[0];
-if(route&&route.geometry&&route.geometry.coordinates&&route.geometry.coordinates.length>1){
-// Apply only if the guest is still headed to this same stop.
-if(tourProgressIdx===idx&&guideLine){
-const coords=route.geometry.coordinates.map(c=>[c[1],c[0]]);
-guideLine.setLatLngs(coords);
-guideLine.bringToFront();
-guideRouteIdx=idx;
-guideRouteDistM=route.distance;
-const el=document.getElementById('compassDist');
-if(el){const ft=Math.round(route.distance*3.28084);el.textContent=ft<=30?"You're here":(ft<1000?ft+' ft':(route.distance/1609.34).toFixed(1)+' mi');}
-}
-}
-}catch(e){/* keep the straight-line fallback */}
-finally{guideRouteBusy=false;}
-}
-function updateStats(){
-document.getElementById('totalCount').textContent=locations.length;
-const haunted=locations.filter(l=>!l.type.includes('Blessed')).length;
-const blessed=locations.filter(l=>l.type.includes('Blessed')).length;
-document.getElementById('hauntedCount').textContent=haunted;
-document.getElementById('blessedCount').textContent=blessed;
-}
-
-function openCoordEditor(idx){
-const loc=locations[idx];
-currentEditingIndex=idx;
-document.getElementById('coordName').value=loc.name;
-document.getElementById('coordLat').value=loc.lat;
-document.getElementById('coordLng').value=loc.lng;
-document.getElementById('coordType').value=loc.type.split(' ')[0];
-document.getElementById('coordStory').value=loc.story;
-document.getElementById('coordEditor').classList.add('active');
-}
-
-function closeCoordEditor(){
-document.getElementById('coordEditor').classList.remove('active');
-currentEditingIndex=null;
-}
-
-function saveCoordinates(){
-if(currentEditingIndex===null)return;
-const newName=document.getElementById('coordName').value.trim();
-const newLat=parseFloat(document.getElementById('coordLat').value);
-const newLng=parseFloat(document.getElementById('coordLng').value);
-const newType=document.getElementById('coordType').value;
-const newStory=document.getElementById('coordStory').value.trim();
-if(!newName||isNaN(newLat)||isNaN(newLng)||!newStory){alert('Please fill all fields');return;}
-const loc=locations[currentEditingIndex];
-loc.name=newName;
-loc.lat=newLat;
-loc.lng=newLng;
-loc.type=newType;
-loc.story=newStory;
-const marker=markers[currentEditingIndex];
-if(marker){
-marker.setLatLng([newLat,newLng]);
-marker.bindTooltip(newName,{permanent:true,direction:'right',offset:[10,0],className:'location-label'});
-}
-renderLocationList();
-closeCoordEditor();
-alert('Location updated!');
-}
-
-function deleteLocation(){
-if(currentEditingIndex===null)return;
-if(!confirm('Delete this location permanently?'))return;
-const locName=locations[currentEditingIndex].name;
-locations.splice(currentEditingIndex,1);
-const marker=markers[currentEditingIndex];
-if(marker)map.removeLayer(marker);
-markers.splice(currentEditingIndex,1);
-currentEditingIndex=null;
-saveToStorage();
-initMap();
-alert(locName+' deleted!');
-}
-
-function previewStory(){
-const name=document.getElementById('coordName').value.trim();
-const story=document.getElementById('coordStory').value.trim();
-const voiceSelect=document.getElementById('previewVoice').value;
-const voiceId=voiceMap[voiceSelect]||voiceMap.OldMan;
-if(!name||!story){
-alert('Please enter location name and story first');
-return;
-}
-// Admin token is entered at runtime and sent to our Worker proxy.
-// The ElevenLabs key lives only as a Cloudflare secret server-side — never here.
-let token=sessionStorage.getItem('ttsAdminToken');
-if(!token){token=prompt('Enter admin token:');if(!token)return;sessionStorage.setItem('ttsAdminToken',token);}
-const btn=event.target;
-btn.textContent='⏳ Loading...';
-btn.disabled=true;
-fetch('/tts-proxy',{
-method:'POST',
-headers:{'x-admin-token':token,'Content-Type':'application/json'},
-body:JSON.stringify({text:name+' - '+story,voiceId:voiceId})
-}).then(response=>{
-if(response.ok){
-return response.blob();
-}else{
-if(response.status===403){sessionStorage.removeItem('ttsAdminToken');alert('Auth failed — wrong admin token. Try again.');}
-else{alert('Voice preview error ('+response.status+')');}
-btn.textContent='▶ Play Preview';
-btn.disabled=false;
-return null;
-}
-}).then(blob=>{
-if(blob){
-const url=URL.createObjectURL(blob);
-const audio=new Audio(url);
-audio.play();
-btn.textContent='▶ Play Preview';
-btn.disabled=false;
-audio.onended=()=>{
-URL.revokeObjectURL(url);
-};
-}
-}).catch(e=>{
-console.error('Preview error',e);
-alert('Could not load preview - check connection');
-btn.textContent='▶ Play Preview';
-btn.disabled=false;
-});
-}
-
-function promptAdminMode(){
-const pwd=prompt('Enter admin password:');
-if(pwd===null)return;
-if(pwd===ADMIN_PASSWORD){
-adminMode=true;
-updateAdminUI();
-alert('Admin mode unlocked!');
-}else{
-alert('Incorrect password');
-}
-}
-
-function toggleAdminMode(){
-adminMode=false;
-updateAdminUI();
-alert('Admin mode locked');
-}
-
-function updateAdminUI(){
-const badge=document.getElementById('adminBadge');
-const adminBtn=document.getElementById('adminButton');
-const editBtn1=document.getElementById('editButton1');
-const editBtn2=document.getElementById('editButton2');
-const demoBtn=document.getElementById('demoButton');
-if(adminMode){
-badge.style.display='block';
-adminBtn.style.display='none';
-editBtn1.style.display='block';
-editBtn2.style.display='block';
-if(demoBtn)demoBtn.style.display='block';
-}else{
-badge.style.display='none';
-adminBtn.style.display='block';
-editBtn1.style.display='none';
-editBtn2.style.display='none';
-if(demoBtn)demoBtn.style.display='none';
-}
-}
-
-// Admin-only: plant a virtual GPS location at the Reverend's front steps so
-// you can watch the beam + road-following line route to the first real stop
-// from anywhere (no need to be in Savannah). Static demo — no movement.
-function demoFromWilder(){
-setupCompass();
-geofencingActive=true;
-tourProgressIdx=0;
-guideRouteOrigin=null;guideRouteIdx=-1;guideRouteDistM=null;
-userLocation={lat:32.063892,lng:-81.093253};
-const nav=document.getElementById('compassNav');if(nav)nav.style.display='flex';
-document.getElementById('compassDist').textContent='Locating…';
-document.getElementById('compassTarget').textContent='Demo from Wilder House';
-if(map)map.setView([userLocation.lat,userLocation.lng],17);
-updateUserMarker();
-checkNearbyLocations();
-updateGuide();
-}
-
-function addNewLocation(){
-const newLat=parseFloat(prompt('Enter latitude (e.g., 32.0730):'));
-const newLng=parseFloat(prompt('Enter longitude (e.g., -81.0900):'));
-if(isNaN(newLat)||isNaN(newLng)){alert('Invalid coordinates');return;}
-const newName=prompt('Enter location name:');
-if(!newName){return;}
-const newType=prompt('Enter type (Haunted, Blessed, Historic, Church, etc.):','Haunted');
-const newStory=prompt('Enter story/description:','');
-if(!newStory){alert('Story cannot be empty');return;}
-locations.push({name:newName,lat:newLat,lng:newLng,type:newType,story:newStory});
-saveToStorage();
-initMap();
-alert(newName+' added! Total locations: '+locations.length);
-}
-
-function saveToStorage(){
-localStorage.setItem('savannahGhostTourLocations',JSON.stringify(locations));
-}
-
-function loadFromStorage(){
-const saved=localStorage.getItem('savannahGhostTourLocations');
-if(saved){
-try{
-locations=JSON.parse(saved);
-}catch(e){
-console.error('Error loading saved locations',e);
-}
-}
-}
-
-function exportLocations(){
-const exportData='// Savannah Ghost Tour - Location Data\n// Updated: '+new Date().toLocaleString()+'\n// Total Locations: '+locations.length+'\n\nconst locations=['+locations.map(l=>'{\n  name:"'+l.name.replace(/"/g,'\\"')+'",\n  lat:'+l.lat+',\n  lng:'+l.lng+',\n  type:"'+l.type.replace(/"/g,'\\"')+'",\n  story:"'+l.story.replace(/"/g,'\\"').replace(/\n/g,'\\n')+'"\n}').join(',\n')+'\n];\n';
-const blob=new Blob([exportData],{type:'text/plain'});
-const url=URL.createObjectURL(blob);
-const a=document.createElement('a');
-a.href=url;
-a.download='savannah-locations-'+new Date().toISOString().split('T')[0]+'.txt';
-a.click();
-URL.revokeObjectURL(url);
-alert('Locations exported! File downloaded.');
-}
-
-window.addEventListener('load',()=>{
-loadFromStorage();
-// Authoring/preview mode: open the page as …/savannah-ghost-tour#admin to
-// reveal the per-location editor. Clicking a map pin then opens the editor
-// with a Play Preview button. The real security is the server-side admin
-// token on /tts-proxy — this client toggle only unhides the editing UI.
-if((location.hash||'').toLowerCase().indexOf('admin')!==-1){adminMode=true;}
-updateAdminUI();
-initMap();
-});
-window.addEventListener('hashchange',()=>{
-const on=(location.hash||'').toLowerCase().indexOf('admin')!==-1;
-if(on!==adminMode){adminMode=on;updateAdminUI();}
-});
+document.addEventListener('DOMContentLoaded', initApp);
 </script>
+
 </body>
 </html>
