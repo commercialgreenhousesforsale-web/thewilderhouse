@@ -205,6 +205,77 @@ body {
   font-family: 'Georgia', serif;
 }
 
+.audio-player {
+  background: rgba(102, 187, 106, 0.1);
+  border: 1px solid rgba(102, 187, 106, 0.3);
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.play-btn {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  background: rgba(102, 187, 106, 0.2);
+  border: 1px solid rgba(102, 187, 106, 0.4);
+  color: #66bb6a;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.play-btn:hover {
+  background: rgba(102, 187, 106, 0.3);
+}
+
+.play-btn.playing {
+  background: rgba(102, 187, 106, 0.3);
+  color: #66bb6a;
+}
+
+.audio-progress {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(102, 187, 106, 0.2);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #66bb6a;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.audio-time {
+  font-size: 10px;
+  color: #9fd8a6;
+  display: flex;
+  justify-content: space-between;
+}
+
 .walking-info {
   background: rgba(33, 150, 243, 0.1);
   border: 1px solid rgba(33, 150, 243, 0.3);
@@ -801,6 +872,24 @@ function renderCurrentStop() {
   // Narration
   html += `<div class="narration-text">${narrationMode.text}</div>`;
 
+  // Audio player
+  const audioFile = narrationMode.audio_file || `/audio/stop-${stop.order}-${stop.name.toLowerCase().replace(/\s+/g, '-')}-${stateLabel}.mp3`;
+  html += `
+  <div class="audio-player">
+    <div class="audio-controls">
+      <button class="play-btn" onclick="playAudio('${audioFile}', this)" title="Play narration">▶</button>
+      <div class="audio-progress">
+        <div class="progress-track" onclick="seekAudio(event, '${audioFile}')">
+          <div class="progress-fill" id="progressFill-${stop.id}"></div>
+        </div>
+        <div class="audio-time">
+          <span id="currentTime-${stop.id}">0:00</span>
+          <span id="duration-${stop.id}">${formatTime(narrationMode.duration_sec)}</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
   // Walking info (to next stop)
   if (currentStopIndex < TOUR_DATA.stops.length - 1) {
     const nextStop = TOUR_DATA.stops[currentStopIndex + 1];
@@ -869,6 +958,91 @@ function showProximityAlert(message) {
   alert.textContent = message;
   alert.classList.add('show');
   setTimeout(() => alert.classList.remove('show'), 3000);
+}
+
+// ============================================================================
+// AUDIO PLAYBACK FUNCTIONS
+// ============================================================================
+
+let currentAudioButton = null;
+
+function playAudio(audioFile, buttonEl) {
+  const audio = document.getElementById('narrationAudio');
+
+  // If clicking same button, toggle play/pause
+  if (currentAudioButton === buttonEl && !audio.paused) {
+    audio.pause();
+    buttonEl.textContent = '▶';
+    buttonEl.classList.remove('playing');
+    return;
+  }
+
+  // Stop previous audio
+  if (currentAudioButton && currentAudioButton !== buttonEl) {
+    audio.pause();
+    currentAudioButton.textContent = '▶';
+    currentAudioButton.classList.remove('playing');
+  }
+
+  // Load and play new audio
+  audio.src = audioFile;
+  audio.play().catch(err => {
+    console.log('Audio playback unavailable:', err);
+    buttonEl.textContent = '⊘';
+  });
+
+  buttonEl.textContent = '⏸';
+  buttonEl.classList.add('playing');
+  currentAudioButton = buttonEl;
+
+  // Update progress as it plays
+  audio.ontimeupdate = () => {
+    updateAudioProgress(audio);
+  };
+
+  audio.onended = () => {
+    buttonEl.textContent = '▶';
+    buttonEl.classList.remove('playing');
+  };
+}
+
+function seekAudio(event, audioFile) {
+  const audio = document.getElementById('narrationAudio');
+  if (audio.src !== audioFile) {
+    audio.src = audioFile;
+  }
+
+  const track = event.currentTarget;
+  const clickX = event.offsetX;
+  const width = track.offsetWidth;
+  const seekTime = (clickX / width) * audio.duration;
+
+  audio.currentTime = seekTime;
+}
+
+function updateAudioProgress(audio) {
+  const currentBtn = currentAudioButton;
+  if (!currentBtn) return;
+
+  const stopId = currentBtn.closest('.stop-card') ?
+    currentBtn.closest('.stop-card').querySelector('.stop-number').textContent.match(/\d+/)[0] :
+    null;
+
+  if (stopId) {
+    const progress = (audio.currentTime / audio.duration) * 100 || 0;
+    const progressEl = document.getElementById(`progressFill-${stopId - 1}`);
+    const timeEl = document.getElementById(`currentTime-${stopId - 1}`);
+
+    if (progressEl) progressEl.style.width = progress + '%';
+    if (timeEl) timeEl.textContent = formatTime(audio.currentTime);
+  }
+}
+
+function formatTime(seconds) {
+  if (!seconds || isNaN(seconds)) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
 // ============================================================================
