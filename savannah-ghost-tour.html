@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Savannah Remembers — Walking Memory Experience</title>
+<title>Savannah Remembers — GPS Walking Memory Experience</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -65,13 +65,23 @@ body {
   text-transform: uppercase;
 }
 
+.gps-status {
+  font-size: 9px;
+  color: #66bb6a;
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(102, 187, 106, 0.1);
+  border-radius: 3px;
+  display: inline-block;
+}
+
 .story-content {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .story-content::-webkit-scrollbar {
@@ -100,29 +110,67 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.stop-header {
+  margin-bottom: 12px;
+}
+
 .stop-number {
   font-size: 10px;
   color: #8b7d60;
   letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .stop-name {
   font-size: 18px;
   color: #e7c389;
   font-weight: 400;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   line-height: 1.3;
 }
 
-.truth-badge {
+.arrival-state {
   display: inline-block;
   font-size: 9px;
   padding: 4px 10px;
   border-radius: 12px;
-  margin-bottom: 12px;
   letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.arrival-early {
+  background: rgba(33, 150, 243, 0.2);
+  color: #64b5f6;
+  border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.arrival-ontime {
+  background: rgba(102, 187, 106, 0.2);
+  color: #66bb6a;
+  border: 1px solid rgba(102, 187, 106, 0.3);
+}
+
+.arrival-late {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffa726;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.arrival-manual {
+  background: rgba(156, 39, 176, 0.2);
+  color: #ce93d8;
+  border: 1px solid rgba(206, 147, 216, 0.3);
+}
+
+.truth-badge {
+  display: inline-block;
+  font-size: 8px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -145,87 +193,16 @@ body {
   border: 1px solid rgba(206, 147, 216, 0.3);
 }
 
-.narrator-section {
-  margin-bottom: 12px;
-}
-
-.narrator-label {
-  font-size: 10px;
-  color: #8b7d60;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.narrator-text {
+.narration-text {
   font-size: 14px;
   color: #d4c5b9;
-  line-height: 1.7;
-  font-style: italic;
+  line-height: 1.8;
   padding: 12px;
   background: rgba(0, 0, 0, 0.3);
   border-left: 2px solid rgba(232, 201, 106, 0.4);
   border-radius: 4px;
-}
-
-.spirit-section {
-  background: rgba(156, 39, 176, 0.1);
-  padding: 12px;
-  border-radius: 6px;
-  border-left: 3px solid rgba(206, 147, 216, 0.5);
-  margin: 12px 0;
-}
-
-.spirit-label {
-  font-size: 9px;
-  color: #ce93d8;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.spirit-name {
-  font-size: 12px;
-  color: #ce93d8;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.spirit-monologue {
-  font-size: 13px;
-  color: #d4c5b9;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-.memory-significance {
-  border-top: 1px solid rgba(233, 220, 198, 0.1);
-  padding-top: 12px;
-  margin-top: 12px;
-  font-size: 12px;
-  color: #a89968;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-.arc-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  color: #8b7d60;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(233, 220, 198, 0.08);
-}
-
-.arc-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(232, 201, 106, 0.6);
+  white-space: pre-wrap;
+  font-family: 'Georgia', serif;
 }
 
 .walking-info {
@@ -234,19 +211,8 @@ body {
   padding: 12px;
   border-radius: 6px;
   margin-top: 12px;
-}
-
-.walking-time {
-  font-size: 12px;
-  color: #64b5f6;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.walking-direction {
   font-size: 11px;
   color: #9fd8a6;
-  line-height: 1.5;
 }
 
 .nav-controls {
@@ -264,7 +230,7 @@ body {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -354,22 +320,14 @@ audio {
   filter: drop-shadow(0 0 8px rgba(232, 201, 106, 0.8));
 }
 
-.stop-marker.blessed .marker-dot {
-  background: #66bb6a;
-  box-shadow: 0 0 10px rgba(102, 187, 106, 0.6);
-}
-
-.stop-marker.haunted .marker-dot {
-  background: #e8c96a;
-  box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
-}
-
 .marker-dot {
   width: 14px;
   height: 14px;
   border-radius: 50%;
   border: 2px solid #fff;
+  background: #e8c96a;
   box-sizing: border-box;
+  box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
 }
 
 .proximity-alert {
@@ -386,11 +344,11 @@ audio {
   font-size: 12px;
   font-weight: 600;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-  animation: slideUp 0.4s ease;
 }
 
 .proximity-alert.show {
   display: block;
+  animation: slideUp 0.4s ease;
 }
 
 @keyframes slideUp {
@@ -407,7 +365,8 @@ audio {
   <div class="story-panel">
     <div class="story-header">
       <h1>Savannah Remembers</h1>
-      <p>Walking Memory Experience</p>
+      <p>GPS-Triggered Walking Memory Experience</p>
+      <div class="gps-status" id="gpsStatus">📍 GPS Ready</div>
     </div>
 
     <div class="progress-bar">
@@ -434,259 +393,256 @@ audio {
 
 <script>
 // ============================================================================
-// SAVANNAH REMEMBERS — GHOST TOUR DATA STRUCTURE (12-PHASE EMOTIONAL ARC)
+// SAVANNAH REMEMBERS — 8-STOP GPS-TRIGGERED TOUR WITH ARRIVAL MODES
 // ============================================================================
 
 const TOUR_DATA = {
-  title: "Savannah Remembers",
-  description: "A walking journey through Savannah's deepest memories",
-
   stops: [
     {
       id: 0,
-      name: "The Wilder House — Sanctuary Opening",
-      location: "314 East Park Avenue, Victorian District",
+      order: 1,
+      name: "The Wilder House",
+      location: "314 East Park Avenue",
       lat: 32.063892,
       lng: -81.093253,
-      type: "Blessed",
-      arcPhase: 0,
-      arcLabel: "Threshold — Sacred Ground",
-      walkingTimeToNext: "4:00 min",
-      truthType: "theatrical",
-      narrator: {
-        voice: "OldMan",
-        text: "Welcome to the Wilder House. Before we step into Savannah's memory tonight, understand: you are standing in a protected place. Reverend Wilder blessed these walls long ago, and that blessing still holds. Nothing we encounter tonight will follow you back here. This house is your sanctuary. Breathe easy. When you're ready, we'll walk west along Park Avenue — just five minutes — and begin where Savannah starts to open its memory to us."
+      gps_radius_m: 40,
+      voice_archetype: "guide",
+      truth_type: "theatrical",
+      theme: "Threshold — Sanctuary",
+      ambient_audio: "/audio/ambient-victorian-home-interior.mp3",
+
+      early_arrival: {
+        text: "You're early. Take a moment. Breathe. We'll begin when you're ready.",
+        duration_sec: 10
       },
-      memorSignificance: "Every memory begins in a safe place. Before we walk into sorrow, strength, violence, and loss, we are reminded: there is sanctuary. There is shelter. Savannah's hauntings cannot touch us here."
+
+      on_time: {
+        text: "Welcome to the Wilder House. Before we step into Savannah's memory tonight, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. [pause 2s] That blessing still holds. Nothing we encounter tonight will follow you back here. This house is your sanctuary. [pause 2s] Breathe easy. When you're ready, we'll walk west along Park Avenue — just five minutes — and begin where Savannah starts to open its memory to us.",
+        duration_sec: 65
+      },
+
+      late_arrival: {
+        text: "You've found the Wilder House. It's a threshold — a protected place before we walk into memory. Take a breath. Then... we'll begin.",
+        duration_sec: 20
+      }
     },
 
     {
       id: 1,
-      name: "STOP 1: Telfair Hospital",
-      location: "121 W. 8th Street, Historic District",
+      order: 2,
+      name: "Telfair Hospital",
+      location: "121 W. 8th Street",
       lat: 32.064674,
       lng: -81.096386,
-      type: "Haunted",
-      arcPhase: 1,
-      arcLabel: "Strength — Iron Will",
-      walkingTimeToNext: "1:45 min",
-      truthType: "fact",
-      narrator: {
-        voice: "OldLady",
-        text: "Our journey begins with a memory of will — strong and unyielding. Mary Telfair built this hospital as a sanctuary for women only. No men allowed. That was her unbreakable rule. When she died, she chose to stay. She still walks these halls — a tall figure in a long brown dress. Her lavender perfume appears without warning. Doors close with quiet purpose. Some men still feel her presence gently but firmly reminding them: this space has its boundaries. Even now, Mary protects what she built."
+      gps_radius_m: 40,
+      voice_archetype: "spirit",
+      truth_type: "fact",
+      theme: "Strength — Iron Will",
+      ambient_audio: "/audio/ambient-old-hospital-hallway.mp3",
+
+      early_arrival: {
+        text: "You're at Telfair Hospital. Something strong lives here. You'll feel it in a moment.",
+        duration_sec: 12
       },
-      spirit: {
-        name: "Mary Telfair",
-        timeperiod: "1779–1875",
-        monologue: "I built this place for women who had nowhere else to turn. My rule was absolute: no men. Not because of hatred, but because some boundaries, once established, must hold. I protected them in life. I protect this space in death. That does not change."
+
+      on_time: {
+        text: "Our journey begins with a memory of will. [pause 1s] Strong. Unyielding. Mary Telfair built this hospital as a sanctuary for women only. No men allowed. That was her rule. [pause 2s] Unbreakable. When she died, she chose to stay. She still walks these halls — a tall figure in a long brown dress. Guests report her lavender perfume... appearing without warning. Doors close. With quiet purpose. Some men still feel her presence. Gently. But firmly. Reminding them: this space has its boundaries. [pause 2s] Even now, Mary protects what she built.",
+        duration_sec: 75
       },
-      memorSignificance: "Strength in Savannah is often female. It is quiet. It is unwavering. It protects what it loves."
+
+      late_arrival: {
+        text: "You've arrived at Telfair Hospital. Mary Telfair's will still guards this place. Feel it.",
+        duration_sec: 18
+      }
     },
 
     {
       id: 2,
-      name: "STOP 2: Spanish War Veteran Statue",
-      location: "Forsyth Park, near south entrance",
-      lat: 32.064950,
-      lng: -81.097180,
-      type: "Historic",
-      arcPhase: 2,
-      arcLabel: "Vigilance — The Watcher",
-      walkingTimeToNext: "1:20 min",
-      truthType: "fact",
-      narrator: {
-        voice: "OldMan",
-        text: "A soldier stands here, bronze and eternal, watching over Forsyth Park. He was sent to fight in a foreign war — Spain, the Caribbean, lands that had nothing to do with Savannah. But he came home. He came home changed. And now he stands, forever looking over this park, forever keeping watch. Some soldiers never truly leave their post. Some continue their duty long after their bodies have returned to the earth."
+      order: 3,
+      name: "Live Oak Grove",
+      location: "Forsyth Park, central oaks",
+      lat: 32.065800,
+      lng: -81.095500,
+      gps_radius_m: 50,
+      voice_archetype: "guide",
+      truth_type: "theatrical",
+      theme: "Atmosphere — The Watching Trees",
+      ambient_audio: "/audio/ambient-oak-grove-wind-moss.mp3",
+
+      early_arrival: {
+        text: "You're standing under the oldest living things in Savannah. Feel the age. Wait here a moment.",
+        duration_sec: 12
       },
-      spirit: {
-        name: "The Spanish War Veteran",
-        monologue: "They sent us to fight for glory. We fought for survival. Now I stand here, watching the park I knew as a boy. Nothing rests when you've seen what we've seen. The watch continues. That's all we know."
+
+      on_time: {
+        text: "You are now under the oldest living things in Savannah. These live oaks have been here for three hundred years. [pause 2s] Longer than any building. Longer than any person who has walked beneath them. The moss hangs like memories — draped. Heavy. Gray. [pause 1s] The trees remember everything. Every secret shared in their shade. Every sorrow hidden beneath their canopy. Every love that bloomed and died here. [pause 2s] The homes around us are beautiful. But beauty here is always watching. Always listening. Always remembering.",
+        duration_sec: 70
       },
-      memorSignificance: "Savannah sent her sons to fight in distant wars. Some returned as ghosts long before their bodies died."
+
+      late_arrival: {
+        text: "The oak trees remember everything. Three hundred years of Savannah's secrets hang in this moss.",
+        duration_sec: 15
+      }
     },
 
     {
       id: 3,
-      name: "STOP 3: Live Oak Grove — Moss and Memory",
-      location: "Forsyth Park, central oaks",
-      lat: 32.065800,
-      lng: -81.095500,
-      type: "Haunted",
-      arcPhase: 3,
-      arcLabel: "Atmosphere — The Watching Trees",
-      walkingTimeToNext: "2:13 min",
-      truthType: "theatrical",
-      narrator: {
-        voice: "OldLady",
-        text: "You are now under the oldest living things in Savannah. These live oaks have been here for three hundred years. Longer than any building. Longer than any person who has walked beneath them. The moss hangs like memories — draped, heavy, gray. The trees remember everything. Every secret shared in their shade. Every sorrow hidden beneath their canopy. Every love that bloomed and died here. The homes around us are beautiful, but beauty here is always watching. Always listening. Always remembering."
+      order: 4,
+      name: "Monument Area — History Unresolved",
+      location: "Chippewa Square area",
+      lat: 32.074100,
+      lng: -81.093800,
+      gps_radius_m: 40,
+      voice_archetype: "guide",
+      truth_type: "fact",
+      theme: "History — The Unresolved",
+      ambient_audio: "/audio/ambient-city-square-stone.mp3",
+
+      early_arrival: {
+        text: "You're early at the monuments. Stand here and look up. See the contradictions.",
+        duration_sec: 10
       },
-      memorSignificance: "Nature remembers longer than we do. The trees and moss bear witness to all of Savannah's secrets."
+
+      on_time: {
+        text: "This square holds two men in stone. Francois Benton, who loved Savannah. And a towering monument to Confederate dead — men who died for a cause that was already dying. [pause 2s] These monuments stand as Savannah stands. [pause 1s] Containing contradictions. Beauty built on injustice. Honor tangled with grief. [pause 2s] The city does not erase these contradictions. It holds them. It remembers them. [pause 1s] Some of those who died here still cannot rest. They linger in the shadow of stone.",
+        duration_sec: 68
+      },
+
+      late_arrival: {
+        text: "Savannah's monuments contain unresolved history. Beauty and grief standing together.",
+        duration_sec: 16
+      }
     },
 
     {
       id: 4,
-      name: "STOP 4: Francois Benton & Confederate Monument",
-      location: "Chippewa Square area",
-      lat: 32.074100,
-      lng: -81.093800,
-      type: "Monument",
-      arcPhase: 4,
-      arcLabel: "History — The Unresolved",
-      walkingTimeToNext: "3:45 min",
-      truthType: "fact",
-      narrator: {
-        voice: "OldMan",
-        text: "This square holds two men in stone. Francois Benton, who loved Savannah. And a towering monument to Confederate dead — men who died for a cause that was already dying. These monuments stand as Savannah stands: containing contradictions. Beauty built on injustice. Honor tangled with grief. The city does not erase these contradictions. It holds them. It remembers them. Some of those who died here still cannot rest. They linger in the shadow of stone."
+      order: 5,
+      name: "Forsyth Fountain",
+      location: "Forsyth Park, central fountain",
+      lat: 32.06922,
+      lng: -81.095635,
+      gps_radius_m: 60,
+      voice_archetype: "spirit",
+      truth_type: "legend",
+      theme: "Tragedy — Hidden Beneath Beauty",
+      ambient_audio: "/audio/ambient-fountain-water-echo.mp3",
+
+      early_arrival: {
+        text: "You're approaching the fountain. The most beautiful place in Savannah. Remember that.",
+        duration_sec: 12
       },
-      memorSignificance: "Savannah's monuments contain unresolved history. The city remembers not just triumph, but failure and moral wound."
+
+      on_time: {
+        text: "Here, strength gives way to sorrow. [pause 2s] This fountain is one of Savannah's most beloved images. Graceful. Iconic. Beautiful. [pause 1s] But beauty in this city often holds deeper truths beneath its surface. [pause 2s] A girl named Lottie once lived with a terrible secret. In confusion... and desperation... she poisoned a woman she believed was her rival. [pause 2s] Only to discover it was her own mother. [pause 3s] The truth shattered her completely. She never recovered. Her spirit returned to this fountain — the most beautiful place she knew. [pause 1s] People still see a young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. [pause 1s] Many feel waves of sadness pass through them... without warning.",
+        duration_sec: 80
+      },
+
+      late_arrival: {
+        text: "Beauty here hides sorrow. Lottie's regret never left the fountain.",
+        duration_sec: 15
+      }
     },
 
     {
       id: 5,
-      name: "STOP 5: Forsyth Fountain — Beauty and Sorrow",
-      location: "Forsyth Park, central fountain",
-      lat: 32.06922,
-      lng: -81.095635,
-      type: "Haunted",
-      arcPhase: 5,
-      arcLabel: "Tragedy — Hidden Beneath Beauty",
-      walkingTimeToNext: "3:45 min",
-      geofenceRadius: 150,
-      truthType: "legend",
-      narrator: {
-        voice: "OldLady",
-        text: "Here, strength gives way to sorrow. This fountain is one of Savannah's most beloved images — graceful, iconic, beautiful. But beauty in this city often holds deeper truths beneath its surface. A fourteen-year-old girl named Lottie once lived with a terrible secret. In confusion and desperation, she poisoned a woman she believed was her rival — only to discover it was her own mother. The truth shattered her completely. She never recovered. Her spirit returned to this fountain — the most beautiful place she knew. People still see a young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. Many feel waves of sadness and guilt pass through them without warning."
+      order: 6,
+      name: "Kessler Mansion — Armstrong College",
+      location: "429 Bull Street",
+      lat: 32.075900,
+      lng: -81.093600,
+      gps_radius_m: 40,
+      voice_archetype: "guide",
+      truth_type: "fact",
+      theme: "Legacy — Lost Youth",
+      ambient_audio: "/audio/ambient-old-mansion-interior.mp3",
+
+      early_arrival: {
+        text: "You've arrived early at Kessler Mansion. This place once shaped the dreams of young people.",
+        duration_sec: 12
       },
-      spirit: {
-        name: "Lottie",
-        monologue: "I didn't know. I didn't know until it was too late. She was my mother. This fountain is beautiful. But beautiful things can hide the worst of us. I'm sorry. I'm so sorry."
+
+      on_time: {
+        text: "This mansion once housed Armstrong College — a place of learning. Aspiration. [pause 1s] The walls remember students who studied here. Who dreamed of futures beyond these rooms. Some of those dreams were realized. [pause 2s] Many were not. [pause 1s] The building stands now as a reminder of the transience of institutions. What seemed permanent is now memory. What bustled with life is now quiet. [pause 2s] Yet the spirits of ambition still linger here — the echoes of young people who believed their education would change their lives. [pause 1s] Maybe it did. Maybe it didn't. The building remembers both.",
+        duration_sec: 72
       },
-      memorSignificance: "Beauty in Savannah often conceals tragedy. The fountain reminds us: the most beautiful places sometimes hold the heaviest pain."
+
+      late_arrival: {
+        text: "Armstrong College is gone, but the dreams of its students never left this building.",
+        duration_sec: 16
+      }
     },
 
     {
       id: 6,
-      name: "STOP 6: Kessler Mansion — Old Armstrong College",
-      location: "429 Bull Street, Historic District",
-      lat: 32.075900,
-      lng: -81.093600,
-      type: "Historic",
-      arcPhase: 6,
-      arcLabel: "Legacy — Echoes of Institution",
-      walkingTimeToNext: "1:30 min",
-      truthType: "fact",
-      narrator: {
-        voice: "OldMan",
-        text: "This mansion once housed Armstrong College — a place of learning and aspiration. The walls remember students who studied here, who dreamed of futures beyond these rooms. Some of those dreams were realized. Many were not. The building stands now as a reminder of the transience of institutions. What seemed permanent is now memory. What bustled with life is now quiet. Yet the spirits of ambition still linger here — the echoes of young people who believed their education would change their lives."
+      order: 7,
+      name: "Pulaski Square & Monument",
+      location: "Pulaski Square",
+      lat: 32.077388,
+      lng: -81.09005,
+      gps_radius_m: 40,
+      voice_archetype: "guide",
+      truth_type: "fact",
+      theme: "Honor — Peace Found",
+      ambient_audio: "/audio/ambient-square-stone-wind.mp3",
+
+      early_arrival: {
+        text: "You're early at Pulaski Square. This is a place of rest. You'll understand in a moment.",
+        duration_sec: 12
       },
-      memorSignificance: "Savannah's institutions have always shaped the dreams of its young people. When those institutions fall, the dreams don't always die — they haunt the spaces they left behind."
+
+      on_time: {
+        text: "Casimir Pulaski was mortally wounded nearby in 1779. The Revolutionary War's end, perhaps, for Savannah. His remains rest beneath this monument. [pause 2s] Unlike so many others we have encountered tonight... Pulaski has found peace. [pause 1s] Colonial soldiers sometimes appear around this square at dusk. Standing at attention. Saluting their commander with quiet loyalty. [pause 2s] Not every memory in Savannah remains broken. Some have earned rest. Some have found forgiveness. [pause 1s] Some have learned that honor, finally... is enough.",
+        duration_sec: 65
+      },
+
+      late_arrival: {
+        text: "Pulaski earned rest. Not all of Savannah's ghosts are restless.",
+        duration_sec: 14
+      }
     },
 
     {
       id: 7,
-      name: "STOP 7: Pulaski Square & Monument",
-      location: "Pulaski Square, Historic District",
-      lat: 32.077388,
-      lng: -81.09005,
-      type: "Monument",
-      arcPhase: 7,
-      arcLabel: "Honor — The Peaceful Rest",
-      walkingTimeToNext: "1:50 min",
-      truthType: "fact",
-      narrator: {
-        voice: "OldLady",
-        text: "Casimir Pulaski was mortally wounded nearby in 1779 — the Revolutionary War's end, perhaps, for Savannah. His remains rest beneath this monument. Unlike so many others we have encountered tonight, Pulaski has found peace. Colonial soldiers sometimes appear around this square at dusk, standing at attention, saluting their commander with quiet loyalty. Not every memory in Savannah remains broken. Some have earned rest. Some have found forgiveness. Some have learned that honor, finally, is enough."
-      },
-      memorSignificance: "Not all of Savannah's ghosts are restless. Some have earned peace through service and sacrifice. This square teaches us: some memories, in the end, find rest."
-    },
-
-    {
-      id: 8,
-      name: "STOP 8: Jones & Bull Street Corner",
+      order: 8,
+      name: "Jones & Bull Street Corner",
       location: "Corner of Jones & Bull Street",
       lat: 32.077800,
       lng: -81.093400,
-      type: "Historic",
-      arcPhase: 8,
-      arcLabel: "Intersection — Where Paths Cross",
-      walkingTimeToNext: "1:30 min",
-      truthType: "theatrical",
-      narrator: {
-        voice: "OldMan",
-        text: "This corner is an intersection — a place where people have crossed paths for two centuries. Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. All have stood here. All have been changed by this moment of crossing. Intersections are liminal spaces. They belong to no one. They hold the energy of countless meetings, partings, and collisions. Some people return to the places where their lives changed forever. This corner holds many such returns."
-      },
-      memorSignificance: "Intersections are sacred in cities. They are where destinies collide. Savannah's corners remember every crossing."
-    },
+      gps_radius_m: 40,
+      voice_archetype: "guide",
+      truth_type: "theatrical",
+      theme: "Unseen Lives — The Intersection",
+      ambient_audio: "/audio/ambient-city-street-traffic-distant.mp3",
 
-    {
-      id: 9,
-      name: "STOP 9: Madison Square — Convergence",
-      location: "Madison Square, Historic District",
-      lat: 32.076800,
-      lng: -81.092400,
-      type: "Blessed",
-      arcPhase: 9,
-      arcLabel: "Convergence — Many Voices",
-      walkingTimeToNext: "2:40 min",
-      truthType: "fact",
-      narrator: {
-        voice: "OldLady",
-        text: "Madison Square holds three voices. The church stands as sanctuary — a place where people have always sought safety and prayer. The Sorrel Weed House holds the memory of bondage and survival. The Green-Meldrim House holds the memory of occupation and resistance. All three stand here together, in one square, containing Savannah's contradictions. The church does not erase the history of the houses around it. The houses do not negate the sanctity of the church. They exist together. They remember together. And in this convergence, we understand: Savannah's memory is not simple. It is layered. It is tragic and sacred at once. The city holds all of it."
+      early_arrival: {
+        text: "You're at an intersection. A place where lives crossed for two centuries.",
+        duration_sec: 11
       },
-      memorSignificance: "Madison Square is where Savannah's different histories come together. The city's memory becomes whole here — not resolved, but integrated."
-    },
 
-    {
-      id: 10,
-      name: "STOP 10: Chippewa Square — Unresolution",
-      location: "Chippewa Square, Historic District",
-      lat: 32.075843,
-      lng: -81.093124,
-      type: "Haunted",
-      arcPhase: 10,
-      arcLabel: "Unresolution — The Continuing Story",
-      walkingTimeToNext: "2:30 min walk to river",
-      truthType: "legend",
-      narrator: {
-        voice: "OldMan",
-        text: "Chippewa Square holds a memory that will not rest. Inside the Foley House Inn, workers discovered a human skeleton sealed inside a wall in 1987. A man had entered Honoria Foley's room with harm in his heart. She defended herself. Rather than face the truth, they sealed his body inside the wall. They call him Wally. Guests still see him — a figure in 19th-century clothes who vanishes when looked at directly. Across the square, actress Betty still watches performances at the Savannah Theatre. She loved the stage so deeply she could never truly leave. Some wounds in Savannah refuse to close. Some stories refuse to end."
+      on_time: {
+        text: "This corner is an intersection — a place where people have crossed paths for two hundred years. [pause 1s] Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. [pause 1s] All have stood here. All have been changed by this moment of crossing. [pause 2s] Intersections are liminal spaces. They belong to no one. [pause 1s] They hold the energy of countless meetings. Partings. Collisions. [pause 2s] Some people return to the places where their lives changed forever. This corner holds many such returns. [pause 1s] You might feel them if you stand here long enough.",
+        duration_sec: 68
       },
-      spirit: {
-        name: "Wally",
-        monologue: "They sealed me inside. I don't understand. I don't understand what happened. I'm still here. I don't know how to leave. Why can't anyone see me? Why can't anyone help me?"
-      },
-      memorSignificance: "Some of Savannah's memories have never found resolution. They continue. They insist on being remembered. Some ghosts cannot rest because their stories were never truly told."
-    },
 
-    {
-      id: 11,
-      name: "EPILOGUE: Savannah River — Release",
-      location: "Emmet Park, River edge",
-      lat: 32.080375,
-      lng: -81.088972,
-      type: "Threshold",
-      arcPhase: 11,
-      arcLabel: "Release — The River Remembers",
-      walkingTimeToNext: null,
-      truthType: "fact",
-      narrator: {
-        voice: "OldLady",
-        text: "And now we have reached the place where all the layers become one. For nearly three hundred years, this river carried Savannah's deepest wound — the arrival and suffering of countless enslaved Africans. Tens of thousands passed through these docks in chains. At twilight, many hear voices rising from the water — fragments of African languages and Gullah carried on the breeze. Not in rage. But quietly insisting: Remember us. The river does not separate the stories we walked through tonight. It holds them all. Mary's iron will. Lottie's sorrow. The soldiers' vigilance. The city's unresolved contradictions. You have walked through the living memory of Savannah tonight. And now that memory walks with you. Carry these stories gently. Speak them when you can. That is all the city asks."
-      },
-      memorSignificance: "The river is Savannah's deepest memory. It holds all the voices — the protected and the enslaved, the remembered and the forgotten. The river does not end the tour. It continues it. The memory continues."
+      late_arrival: {
+        text: "Intersections are sacred. This corner remembers every crossing.",
+        duration_sec: 14
+      }
     }
   ]
 };
 
 // ============================================================================
-// APPLICATION STATE
+// STATE MANAGEMENT
 // ============================================================================
 
 let map;
 let currentStopIndex = 0;
 let userLocation = null;
+let arrivalState = "manual"; // "early", "on_time", "late", "manual"
 let markers = [];
 let routePolyline = null;
+let gpsWatchId = null;
 
 // ============================================================================
 // INITIALIZATION
@@ -695,7 +651,7 @@ let routePolyline = null;
 function initApp() {
   initMap();
   renderCurrentStop();
-  startLocationTracking();
+  startGPS();
 }
 
 function initMap() {
@@ -706,13 +662,10 @@ function initMap() {
   }).addTo(map);
   map.attributionControl.setPrefix(false);
 
-  // Create markers for all stops
+  // Create markers
   TOUR_DATA.stops.forEach((stop, idx) => {
-    const isBlessed = stop.type === 'Blessed';
-    const iconClass = isBlessed ? 'blessed' : 'haunted';
-
     const icon = L.divIcon({
-      className: `stop-marker ${iconClass}`,
+      className: `stop-marker`,
       html: `<div class="marker-dot"></div>`,
       iconSize: [18, 18],
       iconAnchor: [9, 9]
@@ -720,7 +673,7 @@ function initMap() {
 
     const marker = L.marker([stop.lat, stop.lng], { icon })
       .addTo(map)
-      .bindTooltip(stop.name, {
+      .bindTooltip(`${stop.order}. ${stop.name}`, {
         permanent: false,
         direction: 'top',
         offset: [0, -10]
@@ -730,7 +683,7 @@ function initMap() {
     markers.push(marker);
   });
 
-  // Draw route
+  // Route polyline
   const routeCoords = TOUR_DATA.stops.map(stop => [stop.lat, stop.lng]);
   routePolyline = L.polyline(routeCoords, {
     color: '#c9a876',
@@ -741,64 +694,124 @@ function initMap() {
 }
 
 // ============================================================================
-// STOP RENDERING
+// ARRIVAL STATE DETECTION
+// ============================================================================
+
+function startGPS() {
+  if ('geolocation' in navigator) {
+    gpsWatchId = navigator.geolocation.watchPosition(
+      (position) => {
+        userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          accuracy: position.coords.accuracy
+        };
+        detectArrivalState();
+      },
+      (error) => {
+        console.log('GPS available for GPS-triggered mode');
+        document.getElementById('gpsStatus').textContent = '📍 GPS Available';
+      }
+    );
+  }
+}
+
+function detectArrivalState() {
+  if (!userLocation) return;
+
+  const stop = TOUR_DATA.stops[currentStopIndex];
+  const distance = calculateDistance(
+    userLocation.lat, userLocation.lng,
+    stop.lat, stop.lng
+  );
+
+  const radiusM = stop.gps_radius_m || 40;
+
+  if (distance < radiusM) {
+    // Triggered!
+    arrivalState = "on_time";
+    showProximityAlert(`✓ You've arrived at: ${stop.name}`);
+    renderCurrentStop();
+  } else if (distance < radiusM * 2) {
+    arrivalState = "early";
+    document.getElementById('gpsStatus').textContent = `📍 ${Math.round(distance)}m away`;
+  }
+}
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371000; // Earth radius in meters
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lng2 - lng1) * Math.PI) / 180;
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// ============================================================================
+// STOP RENDERING WITH ARRIVAL MODES
 // ============================================================================
 
 function renderCurrentStop() {
   const stop = TOUR_DATA.stops[currentStopIndex];
   const container = document.getElementById('storyContent');
 
-  // Update progress
+  // Progress
   const progress = ((currentStopIndex + 1) / TOUR_DATA.stops.length) * 100;
   document.getElementById('progressFill').style.width = progress + '%';
 
-  // Build HTML
-  let html = `<div class="stop-card">`;
+  // Determine narration based on arrival state
+  let narrationMode;
+  let narrationText;
+  let stateLabel;
 
-  // Stop number & name
-  html += `<div class="stop-number">Stop ${stop.id + 1} of ${TOUR_DATA.stops.length}</div>`;
-  html += `<div class="stop-name">${stop.name}</div>`;
-
-  // Truth badge
-  const truthBadgeClass = `truth-${stop.truthType}`;
-  const truthLabel = stop.truthType.charAt(0).toUpperCase() + stop.truthType.slice(1);
-  html += `<span class="truth-badge ${truthBadgeClass}">${truthLabel}</span>`;
-
-  // Emotional arc indicator
-  html += `<div class="arc-indicator">
-    <span class="arc-dot"></span>
-    <span>${stop.arcLabel}</span>
-  </div>`;
-
-  // Narrator section
-  html += `<div class="narrator-section">
-    <label class="narrator-label">🎙️ Narration</label>
-    <div class="narrator-text">${stop.narrator.text}</div>
-  </div>`;
-
-  // Spirit section (if exists)
-  if (stop.spirit) {
-    html += `<div class="spirit-section">
-      <label class="spirit-label">👤 ${stop.spirit.name.toUpperCase()}</label>
-      <div class="spirit-monologue">"${stop.spirit.monologue}"</div>
-    </div>`;
+  if (arrivalState === "early") {
+    narrationMode = stop.early_arrival;
+    stateLabel = "early";
+  } else if (arrivalState === "on_time") {
+    narrationMode = stop.on_time;
+    stateLabel = "on-time";
+  } else {
+    // manual or late
+    narrationMode = stop.late_arrival;
+    stateLabel = arrivalState === "late" ? "late" : "manual";
   }
 
-  // Memory significance
-  html += `<div class="memory-significance">
-    <strong>Savannah's Memory:</strong> ${stop.memorSignificance}
-  </div>`;
+  let html = `<div class="stop-card">`;
 
-  // Walking info
-  if (stop.walkingTimeToNext) {
+  // Header
+  html += `<div class="stop-header">`;
+  html += `<div class="stop-number">Stop ${stop.order} of ${TOUR_DATA.stops.length}</div>`;
+  html += `<div class="stop-name">${stop.name}</div>`;
+
+  // Badges
+  const stateClass = `arrival-${stateLabel}`;
+  html += `<span class="arrival-state ${stateClass}">${stateLabel}</span>`;
+
+  const truthClass = `truth-${stop.truth_type}`;
+  const truthLabel = stop.truth_type === "theatrical" ? "Theatrical" : stop.truth_type === "legend" ? "Legend" : "Fact";
+  html += `<span class="truth-badge ${truthClass}">${truthLabel}</span>`;
+
+  html += `</div>`;
+
+  // Theme
+  html += `<p style="color: #8b7d60; font-size: 11px; margin-bottom: 12px; letter-spacing: 0.5px; text-transform: uppercase;">${stop.theme}</p>`;
+
+  // Narration
+  html += `<div class="narration-text">${narrationMode.text}</div>`;
+
+  // Walking info (to next stop)
+  if (currentStopIndex < TOUR_DATA.stops.length - 1) {
+    const nextStop = TOUR_DATA.stops[currentStopIndex + 1];
     html += `<div class="walking-info">
-      <span class="walking-time">⏱️ ${stop.walkingTimeToNext}</span>
-      <span class="walking-direction">Walk to the next stop when ready</span>
+      📍 Next Stop: ${nextStop.name}<br>
+      Walk at a steady pace to the next location
     </div>`;
   } else {
     html += `<div class="walking-info" style="background: rgba(102, 187, 106, 0.15); border-color: rgba(102, 187, 106, 0.4);">
-      <span class="walking-time" style="color: #66bb6a;">✓ Final Stop — The River's Memory</span>
-      <span class="walking-direction">You have reached the threshold. Take time to reflect.</span>
+      ✓ Final Stop<br>
+      You've walked through Savannah's memory. Take time to reflect.
     </div>`;
   }
 
@@ -806,22 +819,26 @@ function renderCurrentStop() {
 
   container.innerHTML = html;
 
-  // Update button states
+  // Update buttons
   document.getElementById('prevBtn').disabled = currentStopIndex === 0;
   document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.stops.length - 1;
 
-  // Center map on current stop
+  // Center map
   map.setView([stop.lat, stop.lng], 15);
 
-  // Highlight current marker
+  // Highlight marker
   markers.forEach((marker, idx) => {
     marker.setIcon(L.divIcon({
-      className: `stop-marker ${TOUR_DATA.stops[idx].type === 'Blessed' ? 'blessed' : 'haunted'} ${idx === currentStopIndex ? 'active' : ''}`,
+      className: `stop-marker ${idx === currentStopIndex ? 'active' : ''}`,
       html: `<div class="marker-dot"></div>`,
       iconSize: [18, 18],
       iconAnchor: [9, 9]
     }));
   });
+
+  // Reset arrival state for manual navigation
+  arrivalState = "manual";
+  document.getElementById('gpsStatus').textContent = '📍 GPS Ready';
 }
 
 function nextStop() {
@@ -844,23 +861,14 @@ function jumpToStop(idx) {
 }
 
 // ============================================================================
-// LOCATION TRACKING (STUB FOR EXPANSION)
+// UI HELPERS
 // ============================================================================
 
-function startLocationTracking() {
-  if ('geolocation' in navigator) {
-    navigator.geolocation.watchPosition(
-      (position) => {
-        userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-      },
-      (error) => {
-        console.log('Location tracking available for expansion');
-      }
-    );
-  }
+function showProximityAlert(message) {
+  const alert = document.getElementById('proximityAlert');
+  alert.textContent = message;
+  alert.classList.add('show');
+  setTimeout(() => alert.classList.remove('show'), 3000);
 }
 
 // ============================================================================
@@ -868,6 +876,12 @@ function startLocationTracking() {
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', initApp);
+
+window.addEventListener('beforeunload', () => {
+  if (gpsWatchId) {
+    navigator.geolocation.clearWatch(gpsWatchId);
+  }
+});
 </script>
 
 </body>
