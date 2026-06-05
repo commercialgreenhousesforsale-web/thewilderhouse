@@ -1,1 +1,84 @@
-{"name":"","short_name":"","icons":[{"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#ffffff","background_color":"#ffffff","display":"standalone"}
+{
+  "short_name": "SavannahHour",
+  "name": "Savannah by the Hour — Live Activity Guide",
+  "description": "Real-time recommendations for the best thing to do in Savannah right now. Weather, tides, golden hour, and what's open — updated live.",
+  "start_url": "/savannah-by-the-hour",
+  "scope": "/",
+  "background_color": "#121212",
+  "theme_color": "#1a2b1a",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "lifestyle"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/wilder-house-forsyth-park-savannah-vacation-rental.webp",
+      "sizes": "1200x900",
+      "type": "image/webp",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/wilder-house-forsyth-park-savannah-vacation-rental.webp",
+      "sizes": "540x720",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Right Now",
+      "short_name": "Right Now",
+      "description": "See the single best thing to do in Savannah right now",
+      "url": "/savannah-by-the-hour?view=now",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Insider Tips",
+      "short_name": "Tips",
+      "description": "Explore local insider tips and hidden Savannah knowledge",
+      "url": "/savannah-by-the-hour?view=tips",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

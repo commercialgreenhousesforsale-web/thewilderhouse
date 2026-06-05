@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Savannah Remembers — GPS Walking Memory Experience</title>
+<title>Forsyth Ghost Tour — Fine-Tune All 17 Stops</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,11 +30,12 @@ body {
   flex: 1;
   background: #1a1410;
   z-index: 1;
+  cursor: crosshair;
 }
 
 .story-panel {
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
   border-left: 1px solid rgba(233, 220, 198, 0.1);
   display: flex;
@@ -45,77 +47,48 @@ body {
 .story-header {
   background: rgba(10, 8, 6, 0.95);
   border-bottom: 1px solid rgba(233, 220, 198, 0.15);
-  padding: 24px 20px;
+  padding: 16px;
   text-align: center;
   backdrop-filter: blur(10px);
 }
 
 .story-header h1 {
-  font-size: 22px;
+  font-size: 20px;
   color: #e7c389;
   margin-bottom: 4px;
   font-weight: 400;
-  letter-spacing: 0.5px;
 }
 
 .story-header p {
-  font-size: 11px;
+  font-size: 10px;
   color: #8b7d60;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-}
-
-.gps-status {
-  font-size: 9px;
-  color: #66bb6a;
-  margin-top: 8px;
-  padding: 6px 10px;
-  background: rgba(102, 187, 106, 0.1);
-  border-radius: 3px;
-  display: inline-block;
 }
 
 .story-content {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.story-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.story-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.story-content::-webkit-scrollbar-thumb {
-  background: rgba(233, 220, 198, 0.2);
-  border-radius: 3px;
+  gap: 12px;
 }
 
 .stop-card {
   background: rgba(42, 37, 32, 0.5);
   border: 1px solid rgba(233, 220, 198, 0.1);
-  border-radius: 8px;
-  padding: 16px;
-  animation: fadeIn 0.6s ease-out;
+  border-radius: 6px;
+  padding: 12px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.stop-header {
-  margin-bottom: 12px;
+.stop-card.modified {
+  border-color: rgba(232, 201, 106, 0.6);
+  background: rgba(232, 201, 106, 0.05);
 }
 
 .stop-number {
-  font-size: 10px;
+  font-size: 9px;
   color: #8b7d60;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -123,188 +96,97 @@ body {
 }
 
 .stop-name {
-  font-size: 18px;
+  font-size: 16px;
   color: #e7c389;
   font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.coords-group {
+  display: flex;
+  gap: 6px;
   margin-bottom: 8px;
-  line-height: 1.3;
+  font-size: 10px;
 }
 
-.arrival-state {
-  display: inline-block;
-  font-size: 9px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-right: 8px;
-}
-
-.arrival-early {
-  background: rgba(33, 150, 243, 0.2);
-  color: #64b5f6;
-  border: 1px solid rgba(33, 150, 243, 0.3);
-}
-
-.arrival-ontime {
-  background: rgba(102, 187, 106, 0.2);
-  color: #66bb6a;
+.coord-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(102, 187, 106, 0.3);
-}
-
-.arrival-late {
-  background: rgba(255, 193, 7, 0.2);
-  color: #ffa726;
-  border: 1px solid rgba(255, 193, 7, 0.3);
-}
-
-.arrival-manual {
-  background: rgba(156, 39, 176, 0.2);
-  color: #ce93d8;
-  border: 1px solid rgba(206, 147, 216, 0.3);
-}
-
-.truth-badge {
-  display: inline-block;
-  font-size: 8px;
-  padding: 3px 8px;
-  border-radius: 10px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.truth-fact {
-  background: rgba(76, 175, 80, 0.2);
   color: #66bb6a;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.coord-input:focus {
+  outline: none;
+  border-color: rgba(102, 187, 106, 0.7);
+  background: rgba(102, 187, 106, 0.1);
+}
+
+.radius-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 10px;
+}
+
+.radius-input {
+  width: 50px;
+  background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(102, 187, 106, 0.3);
+  color: #66bb6a;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
 }
 
-.truth-legend {
-  background: rgba(201, 168, 118, 0.2);
-  color: #e8c96a;
-  border: 1px solid rgba(232, 201, 106, 0.3);
-}
-
-.truth-theatrical {
-  background: rgba(156, 39, 176, 0.2);
-  color: #ce93d8;
-  border: 1px solid rgba(206, 147, 216, 0.3);
+.radius-input:focus {
+  outline: none;
+  border-color: rgba(102, 187, 106, 0.7);
+  background: rgba(102, 187, 106, 0.1);
 }
 
 .narration-text {
-  font-size: 14px;
+  font-size: 10px;
   color: #d4c5b9;
-  line-height: 1.8;
-  padding: 12px;
+  line-height: 1.3;
+  padding: 6px;
   background: rgba(0, 0, 0, 0.3);
   border-left: 2px solid rgba(232, 201, 106, 0.4);
-  border-radius: 4px;
-  white-space: pre-wrap;
-  font-family: 'Georgia', serif;
-}
-
-.audio-player {
-  background: rgba(102, 187, 106, 0.1);
-  border: 1px solid rgba(102, 187, 106, 0.3);
-  border-radius: 6px;
-  padding: 12px;
-  margin-top: 12px;
-}
-
-.audio-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.play-btn {
-  flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
-  background: rgba(102, 187, 106, 0.2);
-  border: 1px solid rgba(102, 187, 106, 0.4);
-  color: #66bb6a;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.play-btn:hover {
-  background: rgba(102, 187, 106, 0.3);
-}
-
-.play-btn.playing {
-  background: rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-}
-
-.audio-progress {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.progress-track {
-  width: 100%;
-  height: 4px;
-  background: rgba(102, 187, 106, 0.2);
-  border-radius: 2px;
-  cursor: pointer;
-  position: relative;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #66bb6a;
-  border-radius: 2px;
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
-.audio-time {
-  font-size: 10px;
-  color: #9fd8a6;
-  display: flex;
-  justify-content: space-between;
-}
-
-.walking-info {
-  background: rgba(33, 150, 243, 0.1);
-  border: 1px solid rgba(33, 150, 243, 0.3);
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 12px;
-  font-size: 11px;
-  color: #9fd8a6;
+  border-radius: 3px;
+  max-height: 80px;
+  overflow-y: auto;
 }
 
 .nav-controls {
   display: flex;
-  gap: 10px;
-  padding: 16px 20px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
   background: rgba(10, 8, 6, 0.95);
   border-top: 1px solid rgba(233, 220, 198, 0.1);
-  backdrop-filter: blur(10px);
+}
+
+.nav-row {
+  display: flex;
+  gap: 8px;
 }
 
 .nav-btn {
   flex: 1;
-  padding: 12px;
+  padding: 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   transition: all 0.3s;
 }
 
@@ -314,18 +196,16 @@ body {
   border: 1px solid rgba(139, 115, 85, 0.5);
 }
 
-.nav-btn-prev:hover {
-  background: rgba(139, 115, 85, 0.4);
-}
-
 .nav-btn-next {
-  background: linear-gradient(135deg, rgba(102, 187, 106, 0.3), rgba(76, 175, 80, 0.2));
+  background: rgba(102, 187, 106, 0.3);
   color: #66bb6a;
   border: 1px solid rgba(102, 187, 106, 0.5);
 }
 
-.nav-btn-next:hover {
-  background: linear-gradient(135deg, rgba(102, 187, 106, 0.4), rgba(76, 175, 80, 0.3));
+.nav-btn-export {
+  background: rgba(156, 39, 176, 0.3);
+  color: #ce93d8;
+  border: 1px solid rgba(156, 39, 176, 0.5);
 }
 
 .nav-btn:disabled {
@@ -333,62 +213,24 @@ body {
   cursor: not-allowed;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 3px;
-  background: rgba(233, 220, 198, 0.1);
-  margin-bottom: 10px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #66bb6a, #e8c96a);
-  transition: width 0.4s ease;
-}
-
-@media (max-width: 1024px) {
-  .memory-container {
-    flex-direction: column;
-  }
-
-  #map {
-    height: 40%;
-    order: 2;
-  }
-
-  .story-panel {
-    height: 60%;
-    max-width: 100%;
-    border-left: none;
-    border-top: 1px solid rgba(233, 220, 198, 0.1);
-    order: 1;
-  }
-
-  .story-header {
-    padding: 16px;
-  }
-
-  .story-header h1 {
-    font-size: 18px;
-  }
-
-  .story-content {
-    padding: 16px;
-  }
-}
-
-audio {
-  display: none;
+.nav-btn:hover:not(:disabled) {
+  opacity: 1;
+  filter: brightness(1.1);
 }
 
 .stop-marker {
-  opacity: 0.6;
+  opacity: 0.7;
   transition: all 0.3s;
+  cursor: grab;
 }
 
 .stop-marker.active {
   opacity: 1;
-  filter: drop-shadow(0 0 8px rgba(232, 201, 106, 0.8));
+  filter: drop-shadow(0 0 10px rgba(232, 201, 106, 0.8));
+}
+
+.stop-marker.dragging {
+  cursor: grabbing;
 }
 
 .marker-dot {
@@ -401,30 +243,70 @@ audio {
   box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
 }
 
-.proximity-alert {
-  display: none;
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 998;
-  background: rgba(102, 187, 106, 0.95);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+.marker-dot.modified {
+  background: #ff9800;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
 }
 
-.proximity-alert.show {
-  display: block;
-  animation: slideUp 0.4s ease;
+.instructions {
+  font-size: 9px;
+  color: #8b7d60;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+.stop-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.stop-selector-btn {
+  padding: 6px 8px;
+  background: rgba(139, 115, 85, 0.2);
+  border: 1px solid rgba(139, 115, 85, 0.4);
+  color: #a89968;
+  border-radius: 3px;
+  font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stop-selector-btn:hover {
+  background: rgba(139, 115, 85, 0.4);
+}
+
+.stop-selector-btn.active {
+  background: rgba(232, 201, 106, 0.3);
+  border-color: rgba(232, 201, 106, 0.6);
+  color: #e7c389;
+}
+
+@media (max-width: 1024px) {
+  .memory-container {
+    flex-direction: column;
+  }
+  #map {
+    height: 50%;
+    order: 2;
+  }
+  .story-panel {
+    height: 50%;
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(233, 220, 198, 0.1);
+    order: 1;
+  }
 }
 </style>
 </head>
@@ -435,327 +317,126 @@ audio {
 
   <div class="story-panel">
     <div class="story-header">
-      <h1>Savannah Remembers</h1>
-      <p>GPS-Triggered Walking Memory Experience</p>
-      <div class="gps-status" id="gpsStatus">📍 GPS Ready</div>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
+      <h1>Forsyth Ghost Tour</h1>
+      <p>Fine-Tune All 17 Stops — Drag Markers or Edit Coordinates</p>
     </div>
 
     <div class="story-content" id="storyContent">
-      <p style="color: #8b7d60; text-align: center; padding: 40px 20px;">
-        Loading experience...
+      <p style="color: #8b7d60; text-align: center; padding: 20px 10px; font-size: 11px;">
+        Loading 17 stops...
       </p>
     </div>
 
     <div class="nav-controls">
-      <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="previousStop()">← Previous</button>
-      <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStop()">Next →</button>
+      <div class="nav-row">
+        <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="previousStop()">← Prev</button>
+        <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStop()">Next →</button>
+      </div>
+      <button class="nav-btn nav-btn-export" onclick="exportCoordinates()">📋 Copy JSON</button>
     </div>
   </div>
 </div>
 
-<div class="proximity-alert" id="proximityAlert"></div>
-<audio id="narrationAudio"></audio>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
-// ============================================================================
-// SAVANNAH REMEMBERS — 8-STOP GPS-TRIGGERED TOUR WITH ARRIVAL MODES
-// ============================================================================
-
-const TOUR_DATA = {
-  stops: [
-    {
-      id: 0,
-      order: 1,
-      name: "The Wilder House",
-      location: "314 East Park Avenue",
-      lat: 32.063892,
-      lng: -81.093253,
-      gps_radius_m: 40,
-      voice_archetype: "guide",
-      truth_type: "theatrical",
-      theme: "Threshold — Sanctuary",
-      ambient_audio: "/audio/ambient-victorian-home-interior.mp3",
-
-      early_arrival: {
-        text: "You're early. Take a moment. Breathe. We'll begin when you're ready.",
-        duration_sec: 10
-      },
-
-      on_time: {
-        text: "Welcome to the Wilder House. Before we step into Savannah's memory tonight, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. [pause 2s] That blessing still holds. Nothing we encounter tonight will follow you back here. This house is your sanctuary. [pause 2s] Breathe easy. When you're ready, we'll walk west along Park Avenue — just five minutes — and begin where Savannah starts to open its memory to us.",
-        duration_sec: 65
-      },
-
-      late_arrival: {
-        text: "You've found the Wilder House. It's a threshold — a protected place before we walk into memory. Take a breath. Then... we'll begin.",
-        duration_sec: 20
-      }
-    },
-
-    {
-      id: 1,
-      order: 2,
-      name: "Telfair Hospital",
-      location: "121 W. 8th Street",
-      lat: 32.064674,
-      lng: -81.096386,
-      gps_radius_m: 40,
-      voice_archetype: "spirit",
-      truth_type: "fact",
-      theme: "Strength — Iron Will",
-      ambient_audio: "/audio/ambient-old-hospital-hallway.mp3",
-
-      early_arrival: {
-        text: "You're at Telfair Hospital. Something strong lives here. You'll feel it in a moment.",
-        duration_sec: 12
-      },
-
-      on_time: {
-        text: "Our journey begins with a memory of will. [pause 1s] Strong. Unyielding. Mary Telfair built this hospital as a sanctuary for women only. No men allowed. That was her rule. [pause 2s] Unbreakable. When she died, she chose to stay. She still walks these halls — a tall figure in a long brown dress. Guests report her lavender perfume... appearing without warning. Doors close. With quiet purpose. Some men still feel her presence. Gently. But firmly. Reminding them: this space has its boundaries. [pause 2s] Even now, Mary protects what she built.",
-        duration_sec: 75
-      },
-
-      late_arrival: {
-        text: "You've arrived at Telfair Hospital. Mary Telfair's will still guards this place. Feel it.",
-        duration_sec: 18
-      }
-    },
-
-    {
-      id: 2,
-      order: 3,
-      name: "Live Oak Grove",
-      location: "Forsyth Park, central oaks",
-      lat: 32.065800,
-      lng: -81.095500,
-      gps_radius_m: 50,
-      voice_archetype: "guide",
-      truth_type: "theatrical",
-      theme: "Atmosphere — The Watching Trees",
-      ambient_audio: "/audio/ambient-oak-grove-wind-moss.mp3",
-
-      early_arrival: {
-        text: "You're standing under the oldest living things in Savannah. Feel the age. Wait here a moment.",
-        duration_sec: 12
-      },
-
-      on_time: {
-        text: "You are now under the oldest living things in Savannah. These live oaks have been here for three hundred years. [pause 2s] Longer than any building. Longer than any person who has walked beneath them. The moss hangs like memories — draped. Heavy. Gray. [pause 1s] The trees remember everything. Every secret shared in their shade. Every sorrow hidden beneath their canopy. Every love that bloomed and died here. [pause 2s] The homes around us are beautiful. But beauty here is always watching. Always listening. Always remembering.",
-        duration_sec: 70
-      },
-
-      late_arrival: {
-        text: "The oak trees remember everything. Three hundred years of Savannah's secrets hang in this moss.",
-        duration_sec: 15
-      }
-    },
-
-    {
-      id: 3,
-      order: 4,
-      name: "Monument Area — History Unresolved",
-      location: "Chippewa Square area",
-      lat: 32.074100,
-      lng: -81.093800,
-      gps_radius_m: 40,
-      voice_archetype: "guide",
-      truth_type: "fact",
-      theme: "History — The Unresolved",
-      ambient_audio: "/audio/ambient-city-square-stone.mp3",
-
-      early_arrival: {
-        text: "You're early at the monuments. Stand here and look up. See the contradictions.",
-        duration_sec: 10
-      },
-
-      on_time: {
-        text: "This square holds two men in stone. Francois Benton, who loved Savannah. And a towering monument to Confederate dead — men who died for a cause that was already dying. [pause 2s] These monuments stand as Savannah stands. [pause 1s] Containing contradictions. Beauty built on injustice. Honor tangled with grief. [pause 2s] The city does not erase these contradictions. It holds them. It remembers them. [pause 1s] Some of those who died here still cannot rest. They linger in the shadow of stone.",
-        duration_sec: 68
-      },
-
-      late_arrival: {
-        text: "Savannah's monuments contain unresolved history. Beauty and grief standing together.",
-        duration_sec: 16
-      }
-    },
-
-    {
-      id: 4,
-      order: 5,
-      name: "Forsyth Fountain",
-      location: "Forsyth Park, central fountain",
-      lat: 32.06922,
-      lng: -81.095635,
-      gps_radius_m: 60,
-      voice_archetype: "spirit",
-      truth_type: "legend",
-      theme: "Tragedy — Hidden Beneath Beauty",
-      ambient_audio: "/audio/ambient-fountain-water-echo.mp3",
-
-      early_arrival: {
-        text: "You're approaching the fountain. The most beautiful place in Savannah. Remember that.",
-        duration_sec: 12
-      },
-
-      on_time: {
-        text: "Here, strength gives way to sorrow. [pause 2s] This fountain is one of Savannah's most beloved images. Graceful. Iconic. Beautiful. [pause 1s] But beauty in this city often holds deeper truths beneath its surface. [pause 2s] A girl named Lottie once lived with a terrible secret. In confusion... and desperation... she poisoned a woman she believed was her rival. [pause 2s] Only to discover it was her own mother. [pause 3s] The truth shattered her completely. She never recovered. Her spirit returned to this fountain — the most beautiful place she knew. [pause 1s] People still see a young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. [pause 1s] Many feel waves of sadness pass through them... without warning.",
-        duration_sec: 80
-      },
-
-      late_arrival: {
-        text: "Beauty here hides sorrow. Lottie's regret never left the fountain.",
-        duration_sec: 15
-      }
-    },
-
-    {
-      id: 5,
-      order: 6,
-      name: "Kessler Mansion — Armstrong College",
-      location: "429 Bull Street",
-      lat: 32.075900,
-      lng: -81.093600,
-      gps_radius_m: 40,
-      voice_archetype: "guide",
-      truth_type: "fact",
-      theme: "Legacy — Lost Youth",
-      ambient_audio: "/audio/ambient-old-mansion-interior.mp3",
-
-      early_arrival: {
-        text: "You've arrived early at Kessler Mansion. This place once shaped the dreams of young people.",
-        duration_sec: 12
-      },
-
-      on_time: {
-        text: "This mansion once housed Armstrong College — a place of learning. Aspiration. [pause 1s] The walls remember students who studied here. Who dreamed of futures beyond these rooms. Some of those dreams were realized. [pause 2s] Many were not. [pause 1s] The building stands now as a reminder of the transience of institutions. What seemed permanent is now memory. What bustled with life is now quiet. [pause 2s] Yet the spirits of ambition still linger here — the echoes of young people who believed their education would change their lives. [pause 1s] Maybe it did. Maybe it didn't. The building remembers both.",
-        duration_sec: 72
-      },
-
-      late_arrival: {
-        text: "Armstrong College is gone, but the dreams of its students never left this building.",
-        duration_sec: 16
-      }
-    },
-
-    {
-      id: 6,
-      order: 7,
-      name: "Pulaski Square & Monument",
-      location: "Pulaski Square",
-      lat: 32.077388,
-      lng: -81.09005,
-      gps_radius_m: 40,
-      voice_archetype: "guide",
-      truth_type: "fact",
-      theme: "Honor — Peace Found",
-      ambient_audio: "/audio/ambient-square-stone-wind.mp3",
-
-      early_arrival: {
-        text: "You're early at Pulaski Square. This is a place of rest. You'll understand in a moment.",
-        duration_sec: 12
-      },
-
-      on_time: {
-        text: "Casimir Pulaski was mortally wounded nearby in 1779. The Revolutionary War's end, perhaps, for Savannah. His remains rest beneath this monument. [pause 2s] Unlike so many others we have encountered tonight... Pulaski has found peace. [pause 1s] Colonial soldiers sometimes appear around this square at dusk. Standing at attention. Saluting their commander with quiet loyalty. [pause 2s] Not every memory in Savannah remains broken. Some have earned rest. Some have found forgiveness. [pause 1s] Some have learned that honor, finally... is enough.",
-        duration_sec: 65
-      },
-
-      late_arrival: {
-        text: "Pulaski earned rest. Not all of Savannah's ghosts are restless.",
-        duration_sec: 14
-      }
-    },
-
-    {
-      id: 7,
-      order: 8,
-      name: "Jones & Bull Street Corner",
-      location: "Corner of Jones & Bull Street",
-      lat: 32.077800,
-      lng: -81.093400,
-      gps_radius_m: 40,
-      voice_archetype: "guide",
-      truth_type: "theatrical",
-      theme: "Unseen Lives — The Intersection",
-      ambient_audio: "/audio/ambient-city-street-traffic-distant.mp3",
-
-      early_arrival: {
-        text: "You're at an intersection. A place where lives crossed for two centuries.",
-        duration_sec: 11
-      },
-
-      on_time: {
-        text: "This corner is an intersection — a place where people have crossed paths for two hundred years. [pause 1s] Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. [pause 1s] All have stood here. All have been changed by this moment of crossing. [pause 2s] Intersections are liminal spaces. They belong to no one. [pause 1s] They hold the energy of countless meetings. Partings. Collisions. [pause 2s] Some people return to the places where their lives changed forever. This corner holds many such returns. [pause 1s] You might feel them if you stand here long enough.",
-        duration_sec: 68
-      },
-
-      late_arrival: {
-        text: "Intersections are sacred. This corner remembers every crossing.",
-        duration_sec: 14
-      }
-    }
-  ]
-};
-
-// ============================================================================
-// STATE MANAGEMENT
-// ============================================================================
+let TOUR_DATA = null;
+let ORIGINAL_COORDS = {};
 
 let map;
 let currentStopIndex = 0;
-let userLocation = null;
-let arrivalState = "manual"; // "early", "on_time", "late", "manual"
 let markers = [];
 let routePolyline = null;
-let gpsWatchId = null;
+let draggingMarkerIndex = null;
 
-// ============================================================================
-// INITIALIZATION
-// ============================================================================
+// Load JSON data
+fetch('/FORSYTH_GHOST_TOUR_17_STOPS.json?v=' + Date.now())
+  .then(res => res.json())
+  .then(data => {
+    TOUR_DATA = data.stops;
+    ORIGINAL_COORDS = JSON.parse(JSON.stringify(TOUR_DATA));
+    initApp();
+  })
+  .catch(err => {
+    console.error('Error loading tour data:', err);
+    document.getElementById('storyContent').innerHTML = '<p style="color: #ff6b6b;">Error loading tour data. Make sure FORSYTH_GHOST_TOUR_17_STOPS.json exists.</p>';
+  });
 
 function initApp() {
   initMap();
   renderCurrentStop();
-  startGPS();
 }
 
 function initMap() {
-  map = L.map('map').setView([32.0730, -81.0900], 14);
+  map = L.map('map').setView([32.0730, -81.0900], 13);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OSM &copy; CARTO',
     maxZoom: 19
   }).addTo(map);
   map.attributionControl.setPrefix(false);
 
-  // Create markers
-  TOUR_DATA.stops.forEach((stop, idx) => {
+  for (let idx = 0; idx < TOUR_DATA.length; idx++) {
+    const stop = TOUR_DATA[idx];
+
     const icon = L.divIcon({
       className: `stop-marker`,
       html: `<div class="marker-dot"></div>`,
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
     });
 
-    const marker = L.marker([stop.lat, stop.lng], { icon })
-      .addTo(map)
-      .bindTooltip(`${stop.order}. ${stop.name}`, {
-        permanent: false,
-        direction: 'top',
-        offset: [0, -10]
-      });
+    const marker = L.marker([stop.lat, stop.lng], {
+      icon,
+      draggable: true
+    }).addTo(map);
 
-    marker.on('click', () => jumpToStop(idx));
+    marker.bindTooltip(`${stop.order}. ${stop.name}`, {
+      permanent: false,
+      direction: 'top',
+      offset: [0, -10]
+    });
+
+    // Use closure to capture idx
+    marker.on('click', (function(index) {
+      return function() { jumpToStop(index); };
+    })(idx));
+
+    marker.on('dragstart', (function(index) {
+      return function() {
+        draggingMarkerIndex = index;
+        if (marker._icon) marker._icon.classList.add('dragging');
+      };
+    })(idx));
+
+    marker.on('drag', (function(index, m) {
+      return function() {
+        const pos = m.getLatLng();
+        TOUR_DATA[index].lat = parseFloat(pos.lat.toFixed(6));
+        TOUR_DATA[index].lng = parseFloat(pos.lng.toFixed(6));
+        updateRoutePolyline();
+        if (index === currentStopIndex) {
+          renderCurrentStop();
+        }
+      };
+    })(idx, marker));
+
+    marker.on('dragend', (function(index, m) {
+      return function() {
+        draggingMarkerIndex = null;
+        if (m._icon) m._icon.classList.remove('dragging');
+        updateMarkerStyles();
+      };
+    })(idx, marker));
+
     markers.push(marker);
-  });
+  }
 
-  // Route polyline
-  const routeCoords = TOUR_DATA.stops.map(stop => [stop.lat, stop.lng]);
+  updateRoutePolyline();
+}
+
+function updateRoutePolyline() {
+  if (routePolyline) map.removeLayer(routePolyline);
+  const routeCoords = TOUR_DATA.map(stop => [stop.lat, stop.lng]);
   routePolyline = L.polyline(routeCoords, {
     color: '#c9a876',
     weight: 2,
@@ -764,174 +445,92 @@ function initMap() {
   }).addTo(map);
 }
 
-// ============================================================================
-// ARRIVAL STATE DETECTION
-// ============================================================================
-
-function startGPS() {
-  if ('geolocation' in navigator) {
-    gpsWatchId = navigator.geolocation.watchPosition(
-      (position) => {
-        userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-          accuracy: position.coords.accuracy
-        };
-        detectArrivalState();
-      },
-      (error) => {
-        console.log('GPS available for GPS-triggered mode');
-        document.getElementById('gpsStatus').textContent = '📍 GPS Available';
-      }
-    );
-  }
-}
-
-function detectArrivalState() {
-  if (!userLocation) return;
-
-  const stop = TOUR_DATA.stops[currentStopIndex];
-  const distance = calculateDistance(
-    userLocation.lat, userLocation.lng,
-    stop.lat, stop.lng
-  );
-
-  const radiusM = stop.gps_radius_m || 40;
-
-  if (distance < radiusM) {
-    // Triggered!
-    arrivalState = "on_time";
-    showProximityAlert(`✓ You've arrived at: ${stop.name}`);
-    renderCurrentStop();
-  } else if (distance < radiusM * 2) {
-    arrivalState = "early";
-    document.getElementById('gpsStatus').textContent = `📍 ${Math.round(distance)}m away`;
-  }
-}
-
-function calculateDistance(lat1, lng1, lat2, lng2) {
-  const R = 6371000; // Earth radius in meters
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (lat2 * Math.PI) / 180;
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  const Δλ = ((lng2 - lng1) * Math.PI) / 180;
-  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
-
-// ============================================================================
-// STOP RENDERING WITH ARRIVAL MODES
-// ============================================================================
-
 function renderCurrentStop() {
-  const stop = TOUR_DATA.stops[currentStopIndex];
+  const stop = TOUR_DATA[currentStopIndex];
+  const orig = ORIGINAL_COORDS[currentStopIndex];
+  const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
+
   const container = document.getElementById('storyContent');
 
-  // Progress
-  const progress = ((currentStopIndex + 1) / TOUR_DATA.stops.length) * 100;
-  document.getElementById('progressFill').style.width = progress + '%';
-
-  // Determine narration based on arrival state
-  let narrationMode;
-  let narrationText;
-  let stateLabel;
-
-  if (arrivalState === "early") {
-    narrationMode = stop.early_arrival;
-    stateLabel = "early";
-  } else if (arrivalState === "on_time") {
-    narrationMode = stop.on_time;
-    stateLabel = "on-time";
-  } else {
-    // manual or late
-    narrationMode = stop.late_arrival;
-    stateLabel = arrivalState === "late" ? "late" : "manual";
-  }
-
-  let html = `<div class="stop-card">`;
-
-  // Header
-  html += `<div class="stop-header">`;
-  html += `<div class="stop-number">Stop ${stop.order} of ${TOUR_DATA.stops.length}</div>`;
+  let html = `<div class="stop-card ${isModified ? 'modified' : ''}">`;
+  html += `<div class="stop-number">Stop ${stop.order} of ${TOUR_DATA.length}</div>`;
   html += `<div class="stop-name">${stop.name}</div>`;
 
-  // Badges
-  const stateClass = `arrival-${stateLabel}`;
-  html += `<span class="arrival-state ${stateClass}">${stateLabel}</span>`;
+  html += `<div class="instructions">💡 Drag marker on map or edit below. Orange highlight = changed.</div>`;
 
-  const truthClass = `truth-${stop.truth_type}`;
-  const truthLabel = stop.truth_type === "theatrical" ? "Theatrical" : stop.truth_type === "legend" ? "Legend" : "Fact";
-  html += `<span class="truth-badge ${truthClass}">${truthLabel}</span>`;
-
+  html += `<div class="coords-group">`;
+  html += `<input type="number" class="coord-input" id="latInput" step="0.000001" placeholder="Latitude" value="${stop.lat.toFixed(6)}" onchange="updateStopFromInput('lat')">`;
+  html += `<input type="number" class="coord-input" id="lngInput" step="0.000001" placeholder="Longitude" value="${stop.lng.toFixed(6)}" onchange="updateStopFromInput('lng')">`;
   html += `</div>`;
 
-  // Theme
-  html += `<p style="color: #8b7d60; font-size: 11px; margin-bottom: 12px; letter-spacing: 0.5px; text-transform: uppercase;">${stop.theme}</p>`;
+  html += `<div class="radius-group">`;
+  html += `<label style="color: #8b7d60;">Radius (m):</label>`;
+  html += `<input type="number" class="radius-input" id="radiusInput" min="20" max="200" value="${stop.radius_m}" onchange="updateStopFromInput('radius')">`;
+  html += `</div>`;
 
-  // Narration
-  html += `<div class="narration-text">${narrationMode.text}</div>`;
-
-  // Audio player
-  const audioFile = narrationMode.audio_file || `/audio/stop-${stop.order}-${stop.name.toLowerCase().replace(/\s+/g, '-')}-${stateLabel}.mp3`;
-  html += `
-  <div class="audio-player">
-    <div class="audio-controls">
-      <button class="play-btn" onclick="playAudio('${audioFile}', this)" title="Play narration">▶</button>
-      <div class="audio-progress">
-        <div class="progress-track" onclick="seekAudio(event, '${audioFile}')">
-          <div class="progress-fill" id="progressFill-${stop.id}"></div>
-        </div>
-        <div class="audio-time">
-          <span id="currentTime-${stop.id}">0:00</span>
-          <span id="duration-${stop.id}">${formatTime(narrationMode.duration_sec)}</span>
-        </div>
-      </div>
-    </div>
-  </div>`;
-
-  // Walking info (to next stop)
-  if (currentStopIndex < TOUR_DATA.stops.length - 1) {
-    const nextStop = TOUR_DATA.stops[currentStopIndex + 1];
-    html += `<div class="walking-info">
-      📍 Next Stop: ${nextStop.name}<br>
-      Walk at a steady pace to the next location
-    </div>`;
-  } else {
-    html += `<div class="walking-info" style="background: rgba(102, 187, 106, 0.15); border-color: rgba(102, 187, 106, 0.4);">
-      ✓ Final Stop<br>
-      You've walked through Savannah's memory. Take time to reflect.
-    </div>`;
+  if (isModified) {
+    html += `<div style="font-size: 9px; color: #ff9800; padding: 6px; background: rgba(255, 152, 0, 0.1); border-radius: 3px; margin-bottom: 6px;">✎ Modified from original</div>`;
   }
+
+  html += `<div style="font-size: 9px; color: #8b7d60; margin-bottom: 6px;">Walk time: ${stop.walking_time_to_next} | Target narration: ${stop.narration_target}</div>`;
+  html += `<div class="narration-text"><strong>Theme:</strong> ${stop.theme}</div>`;
 
   html += `</div>`;
 
   container.innerHTML = html;
 
-  // Update buttons
   document.getElementById('prevBtn').disabled = currentStopIndex === 0;
-  document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.stops.length - 1;
+  document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.length - 1;
 
-  // Center map
   map.setView([stop.lat, stop.lng], 15);
+  updateMarkerStyles();
+}
 
-  // Highlight marker
+function updateMarkerStyles() {
   markers.forEach((marker, idx) => {
+    const stop = TOUR_DATA[idx];
+    const orig = ORIGINAL_COORDS[idx];
+    const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
+
     marker.setIcon(L.divIcon({
       className: `stop-marker ${idx === currentStopIndex ? 'active' : ''}`,
-      html: `<div class="marker-dot"></div>`,
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
+      html: `<div class="marker-dot ${isModified ? 'modified' : ''}"></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
     }));
   });
+}
 
-  // Reset arrival state for manual navigation
-  arrivalState = "manual";
-  document.getElementById('gpsStatus').textContent = '📍 GPS Ready';
+function updateStopFromInput(field) {
+  const stop = TOUR_DATA[currentStopIndex];
+
+  if (field === 'lat') {
+    const val = parseFloat(document.getElementById('latInput').value);
+    if (!isNaN(val)) {
+      stop.lat = val;
+      markers[currentStopIndex].setLatLng([val, stop.lng]);
+      updateRoutePolyline();
+    }
+  } else if (field === 'lng') {
+    const val = parseFloat(document.getElementById('lngInput').value);
+    if (!isNaN(val)) {
+      stop.lng = val;
+      markers[currentStopIndex].setLatLng([stop.lat, val]);
+      updateRoutePolyline();
+    }
+  } else if (field === 'radius') {
+    const val = parseInt(document.getElementById('radiusInput').value);
+    if (!isNaN(val)) {
+      stop.radius_m = val;
+    }
+  }
+
+  updateMarkerStyles();
+  renderCurrentStop();
 }
 
 function nextStop() {
-  if (currentStopIndex < TOUR_DATA.stops.length - 1) {
+  if (currentStopIndex < TOUR_DATA.length - 1) {
     currentStopIndex++;
     renderCurrentStop();
   }
@@ -949,112 +548,31 @@ function jumpToStop(idx) {
   renderCurrentStop();
 }
 
-// ============================================================================
-// UI HELPERS
-// ============================================================================
+function exportCoordinates() {
+  const output = TOUR_DATA.map(stop => ({
+    order: stop.order,
+    name: stop.name,
+    lat: stop.lat,
+    lng: stop.lng,
+    radius_m: stop.radius_m
+  }));
 
-function showProximityAlert(message) {
-  const alert = document.getElementById('proximityAlert');
-  alert.textContent = message;
-  alert.classList.add('show');
-  setTimeout(() => alert.classList.remove('show'), 3000);
-}
-
-// ============================================================================
-// AUDIO PLAYBACK FUNCTIONS
-// ============================================================================
-
-let currentAudioButton = null;
-
-function playAudio(audioFile, buttonEl) {
-  const audio = document.getElementById('narrationAudio');
-
-  // If clicking same button, toggle play/pause
-  if (currentAudioButton === buttonEl && !audio.paused) {
-    audio.pause();
-    buttonEl.textContent = '▶';
-    buttonEl.classList.remove('playing');
-    return;
-  }
-
-  // Stop previous audio
-  if (currentAudioButton && currentAudioButton !== buttonEl) {
-    audio.pause();
-    currentAudioButton.textContent = '▶';
-    currentAudioButton.classList.remove('playing');
-  }
-
-  // Load and play new audio
-  audio.src = audioFile;
-  audio.play().catch(err => {
-    console.log('Audio playback unavailable:', err);
-    buttonEl.textContent = '⊘';
+  const json = JSON.stringify(output, null, 2);
+  navigator.clipboard.writeText(json).then(() => {
+    alert('✓ Coordinates copied to clipboard!\n\nPaste into your editor or share with the team.');
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = json;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('✓ Coordinates copied to clipboard!');
   });
-
-  buttonEl.textContent = '⏸';
-  buttonEl.classList.add('playing');
-  currentAudioButton = buttonEl;
-
-  // Update progress as it plays
-  audio.ontimeupdate = () => {
-    updateAudioProgress(audio);
-  };
-
-  audio.onended = () => {
-    buttonEl.textContent = '▶';
-    buttonEl.classList.remove('playing');
-  };
 }
 
-function seekAudio(event, audioFile) {
-  const audio = document.getElementById('narrationAudio');
-  if (audio.src !== audioFile) {
-    audio.src = audioFile;
-  }
-
-  const track = event.currentTarget;
-  const clickX = event.offsetX;
-  const width = track.offsetWidth;
-  const seekTime = (clickX / width) * audio.duration;
-
-  audio.currentTime = seekTime;
-}
-
-function updateAudioProgress(audio) {
-  const currentBtn = currentAudioButton;
-  if (!currentBtn) return;
-
-  const stopId = currentBtn.closest('.stop-card') ?
-    currentBtn.closest('.stop-card').querySelector('.stop-number').textContent.match(/\d+/)[0] :
-    null;
-
-  if (stopId) {
-    const progress = (audio.currentTime / audio.duration) * 100 || 0;
-    const progressEl = document.getElementById(`progressFill-${stopId - 1}`);
-    const timeEl = document.getElementById(`currentTime-${stopId - 1}`);
-
-    if (progressEl) progressEl.style.width = progress + '%';
-    if (timeEl) timeEl.textContent = formatTime(audio.currentTime);
-  }
-}
-
-function formatTime(seconds) {
-  if (!seconds || isNaN(seconds)) return '0:00';
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
-// ============================================================================
-// STARTUP
-// ============================================================================
-
-document.addEventListener('DOMContentLoaded', initApp);
-
-window.addEventListener('beforeunload', () => {
-  if (gpsWatchId) {
-    navigator.geolocation.clearWatch(gpsWatchId);
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  // App will start once JSON loads
 });
 </script>
 
