@@ -1,0 +1,362 @@
+{
+  "audio_manifest": {
+    "version": "3.0",
+    "title": "Forsyth Ghost Tour - Audio Files Manifest",
+    "status": "STRUCTURE DEFINED - FILES NOT YET GENERATED",
+    "last_updated": "2026-06-05",
+    "total_files_planned": 128,
+    "phases": {
+      "pilot": {
+        "status": "READY FOR GENERATION",
+        "files_count": 6,
+        "narrator": "woman",
+        "description": "6 pilot files for field testing",
+        "files": [
+          {
+            "id": 1,
+            "stop_number": 1,
+            "stop_name": "Wilder House",
+            "variant": "on_time",
+            "filename": "SAV_STOP_01_NARRATOR_ON.mp3",
+            "path": "/audio/woman/stop_01/",
+            "narrator": "woman",
+            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+            "character_voice": null,
+            "expected_duration_seconds": 240,
+            "duration_tolerance_seconds": 5,
+            "audio_tags": "[grounding, protective, sacred, present]",
+            "voice_settings": {
+              "stability": 70,
+              "similarity_boost": 75
+            },
+            "bitrate_kbps": 192,
+            "sample_rate_hz": 44100,
+            "format": "mp3"
+          },
+          {
+            "id": 2,
+            "stop_number": 6,
+            "stop_name": "Forsyth Fountain",
+            "variant": "on_time",
+            "filename": "SAV_STOP_06_NARRATOR_ON.mp3",
+            "path": "/audio/woman/stop_06/",
+            "narrator": "woman",
+            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+            "character_voice": "lottie",
+            "character_voice_id": "I571sUNz6E53D5YaJgVg",
+            "expected_duration_seconds": 160,
+            "duration_tolerance_seconds": 5,
+            "audio_tags": "[vulnerable, intimate, confessional, heartbroken, regretful]",
+            "voice_settings": {
+              "stability": 70,
+              "similarity_boost": 75
+            },
+            "bitrate_kbps": 192,
+            "sample_rate_hz": 44100,
+            "format": "mp3",
+            "note": "EMOTIONAL CORE — PRIORITY IN PILOT TESTING"
+          },
+          {
+            "id": 3,
+            "stop_number": 11,
+            "stop_name": "Chippewa Square",
+            "variant": "on_time",
+            "filename": "SAV_STOP_11_NARRATOR_ON.mp3",
+            "path": "/audio/woman/stop_11/",
+            "narrator": "woman",
+            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+            "character_voice": null,
+            "expected_duration_seconds": 76,
+            "duration_tolerance_seconds": 5,
+            "audio_tags": "[serious, unflinching, sorrowful, witnessing]",
+            "voice_settings": {
+              "stability": 70,
+              "similarity_boost": 75
+            },
+            "bitrate_kbps": 192,
+            "sample_rate_hz": 44100,
+            "format": "mp3"
+          },
+          {
+            "id": 4,
+            "stop_number": 18,
+            "stop_name": "Final Anchor - Sea Merchants Statue",
+            "variant": "on_time",
+            "filename": "SAV_STOP_18_NARRATOR_ON.mp3",
+            "path": "/audio/woman/stop_18/",
+            "narrator": "woman",
+            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+            "character_voice": "elderon",
+            "character_voice_id": "NwyAvGnfbFoNNEi4UuTq",
+            "expected_duration_seconds": 180,
+            "duration_tolerance_seconds": 5,
+            "audio_tags": "[integrating, releasing, peaceful, eternal]",
+            "voice_settings": {
+              "stability": 70,
+              "similarity_boost": 75
+            },
+            "bitrate_kbps": 192,
+            "sample_rate_hz": 44100,
+            "format": "mp3"
+          },
+          {
+            "id": 5,
+            "stop_number": "opening",
+            "stop_name": "Opening Frame",
+            "variant": "on_time",
+            "filename": "SAV_OPENING_FRAME_WOMAN.mp3",
+            "path": "/audio/woman/opening/",
+            "narrator": "woman",
+            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+            "character_voice": null,
+            "expected_duration_seconds": 30,
+            "duration_tolerance_seconds": 3,
+            "audio_tags": "[grounding, protective, sacred, present]",
+            "voice_settings": {
+              "stability": 70,
+              "similarity_boost": 75
+            },
+            "bitrate_kbps": 192,
+            "sample_rate_hz": 44100,
+            "format": "mp3"
+          },
+          {
+            "id": 6,
+            "stop_number": "closing",
+            "stop_name": "Closing Frame",
+            "variant": "on_time",
+            "filename": "SAV_CLOSING_FRAME_WOMAN.mp3",
+            "path": "/audio/woman/closing/",
+            "narrator": "woman",
+            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+            "character_voice": null,
+            "expected_duration_seconds": 30,
+            "duration_tolerance_seconds": 3,
+            "audio_tags": "[grateful, inviting, community]",
+            "voice_settings": {
+              "stability": 70,
+              "similarity_boost": 75
+            },
+            "bitrate_kbps": 192,
+            "sample_rate_hz": 44100,
+            "format": "mp3"
+          }
+        ]
+      },
+      "phase_1": {
+        "status": "READY AFTER PILOT VALIDATION",
+        "files_count": 72,
+        "narrator": "woman",
+        "description": "All 18 stops × 3 variants (early/on/late) for woman narrator",
+        "note": "Remaining 66 files after pilot 6 completed"
+      },
+      "phase_2": {
+        "status": "PLANNED FOR FUTURE",
+        "files_count": 56,
+        "narrator": "man",
+        "description": "All 18 stops × 3 variants (early/on/late) for man narrator + opening/closing",
+        "note": "After Phase 1 deployed and validated"
+      }
+    },
+    "file_naming_convention": {
+      "format": "SAV_[LOCATION]_[NARRATOR]_[VARIANT].mp3",
+      "location_codes": {
+        "STOP_01": "Wilder House",
+        "STOP_02": "Telfair Hospital",
+        "STOP_03": "Spanish War Veteran Statue",
+        "STOP_04": "Live Oak Grove",
+        "STOP_05": "Monument Area",
+        "STOP_06": "Forsyth Fountain",
+        "STOP_07": "Kessler Mansion",
+        "STOP_08": "Monterey Square",
+        "STOP_09": "Jones & Bull Corner",
+        "STOP_10": "Madison Square",
+        "STOP_11": "Chippewa Square",
+        "STOP_12": "Oglethorpe Church",
+        "STOP_13": "Wright Square",
+        "STOP_14": "Johnson Square",
+        "STOP_15": "Bay & Bull / City Hall",
+        "STOP_16": "Cotton Exchange",
+        "STOP_17": "River Access Ramp",
+        "STOP_18": "Final Anchor - Sea Merchants Statue",
+        "OPENING_FRAME": "Tour Opening",
+        "CLOSING_FRAME": "Tour Closing"
+      },
+      "narrator_codes": {
+        "NARRATOR": "Default narrator (woman = Grandma Rachel)",
+        "LOTTIE": "Character voice at Stop 6",
+        "ELDERON": "Character voice at Stops 16, 17, 18"
+      },
+      "variant_codes": {
+        "EARLY": "User arrived early (GPS confidence < 40%)",
+        "ON": "User arrived at right time (GPS confidence 40-70%)",
+        "LATE": "User arrived late (GPS confidence > 70%)"
+      },
+      "examples": {
+        "example_1": "SAV_STOP_01_NARRATOR_ON.mp3",
+        "example_2": "SAV_STOP_06_LOTTIE_ON.mp3",
+        "example_3": "SAV_STOP_18_ELDERON_ON.mp3",
+        "example_4": "SAV_OPENING_FRAME_NARRATOR.mp3"
+      }
+    },
+    "audio_technical_specs": {
+      "model": "ElevenLabs Eleven v3",
+      "model_id": "eleven_v3",
+      "format": "MP3",
+      "bitrate": 192,
+      "bitrate_unit": "kbps",
+      "sample_rate": 44100,
+      "sample_rate_unit": "Hz",
+      "channels": "Stereo",
+      "voice_settings": {
+        "stability": 70,
+        "similarity_boost": 75,
+        "explanation": "Stability 70 balances natural pacing with clarity. Similarity Boost 75 maintains consistent narrator voice across all 72+ files."
+      }
+    },
+    "voice_ids": {
+      "woman_narrator": {
+        "id": "0rEo3eAjssGDUCXHYENf",
+        "name": "Grandma Rachel",
+        "tier": "Creator Plan Premium",
+        "files": 72
+      },
+      "man_narrator": {
+        "id": "dtVZnErhiiosqofxDzSH",
+        "name": "Havoc",
+        "tier": "Creator Plan Premium",
+        "files": 56,
+        "status": "Phase 2"
+      },
+      "character_lottie": {
+        "id": "I571sUNz6E53D5YaJgVg",
+        "name": "Lottie",
+        "character": "Spirit at Forsyth Fountain",
+        "tier": "Creator Plan Premium",
+        "files": 3,
+        "stops": [6],
+        "note": "Appears at Stop 6 for emotional peak (on_time, early, late variants)"
+      },
+      "character_elderon": {
+        "id": "NwyAvGnfbFoNNEi4UuTq",
+        "name": "Elderon",
+        "character": "River witness at Cotton Exchange, River Ramp, Final Anchor",
+        "tier": "Creator Plan Premium",
+        "files": 9,
+        "stops": [16, 17, 18],
+        "note": "Appears at Stops 16, 17, 18 for final integration (on_time, early, late variants)"
+      }
+    },
+    "storage_structure": {
+      "base_path": "/audio/",
+      "woman_narrator_path": "/audio/woman/",
+      "man_narrator_path": "/audio/man/",
+      "directory_tree": {
+        "description": "Complete directory structure for all 128 files",
+        "structure": [
+          {
+            "path": "/audio/woman/stop_01/",
+            "files": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"]
+          },
+          {
+            "path": "/audio/woman/stop_02/",
+            "files": ["SAV_STOP_02_NARRATOR_EARLY.mp3", "SAV_STOP_02_NARRATOR_ON.mp3", "SAV_STOP_02_NARRATOR_LATE.mp3"]
+          },
+          "... (stop_03 through stop_18)",
+          {
+            "path": "/audio/woman/opening/",
+            "files": ["SAV_OPENING_FRAME_WOMAN.mp3"]
+          },
+          {
+            "path": "/audio/woman/closing/",
+            "files": ["SAV_CLOSING_FRAME_WOMAN.mp3"]
+          },
+          {
+            "path": "/audio/man/stop_01/",
+            "files": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"],
+            "status": "Phase 2"
+          }
+        ]
+      }
+    },
+    "url_reference_in_app": {
+      "description": "How FINAL_APP.js references audio files",
+      "base_url": "/audio/",
+      "example_references": {
+        "stop_1_on_time": "/audio/woman/stop_01/SAV_STOP_01_NARRATOR_ON.mp3",
+        "stop_6_character": "/audio/woman/stop_06/SAV_STOP_06_LOTTIE_ON.mp3",
+        "stop_18_elderon": "/audio/woman/stop_18/SAV_STOP_18_ELDERON_ON.mp3",
+        "opening": "/audio/woman/opening/SAV_OPENING_FRAME_WOMAN.mp3",
+        "closing": "/audio/woman/closing/SAV_CLOSING_FRAME_WOMAN.mp3"
+      },
+      "app_configuration": "See FINAL_APP.js - narrators.woman.base_path and FINAL_TOUR.json - audio.base_path"
+    },
+    "deployment_checklist": {
+      "before_upload": [
+        "All 72 files (Phase 1) generated and QA validated",
+        "File naming convention followed exactly",
+        "All files in correct directory structure",
+        "Metadata verified (duration, bitrate, format)",
+        "No duplicate files",
+        "No corrupted files"
+      ],
+      "cloudflare_pages_deployment": [
+        "Upload /audio/ directory to Cloudflare Pages root",
+        "Set Cache-Control headers for audio files: public, max-age=31536000 (1 year)",
+        "Verify audio files serve as /audio/woman/stop_01/SAV_STOP_01_NARRATOR_ON.mp3",
+        "Test in app that audio loads and plays correctly"
+      ]
+    },
+    "version_control": {
+      "git_strategy": "Audio files NOT committed to git (too large)",
+      "instead": "Store audio files on Cloudflare Pages or CDN, referenced via URL in app",
+      "local_backup": "Keep local /audio/ directory for version control in BACKUP drive",
+      "sync_strategy": "Manual upload to Cloudflare Pages after generation, tracked via manifest dates"
+    },
+    "cost_estimate": {
+      "elevenlabs_api_cost": {
+        "model": "Eleven v3",
+        "cost_per_character": "$0.000003",
+        "estimated_total_characters": 180000,
+        "estimated_total_cost": "$0.54",
+        "note": "Well within Creator Plan limits"
+      },
+      "storage_cost": {
+        "total_files": 128,
+        "average_file_size_mb": 2.5,
+        "total_storage_gb": 0.32,
+        "cloudflare_pages": "Included with Pages deployment (no additional charge)"
+      }
+    },
+    "testing_and_validation": {
+      "pilot_phase": {
+        "files": 6,
+        "qa_checklist": "See QUALITY_CHECKLIST.md",
+        "field_testing_required": true,
+        "listener_feedback_required": true,
+        "emotional_transformation_verified": true
+      },
+      "phase_1_validation": {
+        "files": 72,
+        "spot_check_percentage": 10,
+        "spot_check_count": 8,
+        "full_tour_walk": "Recommended at least once",
+        "listener_count": "Minimum 3 independent listeners"
+      }
+    },
+    "next_steps": [
+      "Verify this manifest structure is understood",
+      "Create /audio/ directory structure locally",
+      "Generate Pilot 6 files per AUDIO_GENERATION_GUIDE.md",
+      "Run QA checklist on pilot files",
+      "Deploy pilot files to test environment",
+      "Conduct field testing in Savannah",
+      "Gather listener feedback",
+      "Validate emotional transformation occurred",
+      "Sign-off on pilot phase",
+      "Generate remaining Phase 1 files (66 files)",
+      "Deploy full Phase 1 to production",
+      "Plan Phase 2 (man narrator) for future"
+    ]
+  }
+}
