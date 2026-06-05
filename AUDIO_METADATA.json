@@ -8,140 +8,63 @@
     "phases": {
       "pilot": {
         "status": "READY FOR GENERATION",
-        "files_count": 6,
+        "files_count": 18,
         "narrator": "woman",
-        "description": "6 pilot files for field testing",
-        "files": [
-          {
-            "id": 1,
-            "stop_number": 1,
-            "stop_name": "Wilder House",
-            "variant": "on_time",
-            "filename": "SAV_STOP_01_NARRATOR_ON.mp3",
-            "path": "/audio/woman/stop_01/",
-            "narrator": "woman",
-            "narrator_id": "0rEo3eAjssGDUCXHYENf",
-            "character_voice": null,
-            "expected_duration_seconds": 240,
-            "duration_tolerance_seconds": 5,
+        "description": "18 pilot files (Stops 1-6, all 3 variants) for field testing",
+        "scope": "Wilder House → Forsyth Fountain (complete emotional arc: threshold → strength → vigilance → witness → contradiction → emotional peak)",
+        "files": {
+          "stop_1": {
+            "name": "Wilder House",
+            "variants": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"],
+            "duration_seconds": 240,
             "audio_tags": "[grounding, protective, sacred, present]",
-            "voice_settings": {
-              "stability": 70,
-              "similarity_boost": 75
-            },
-            "bitrate_kbps": 192,
-            "sample_rate_hz": 44100,
-            "format": "mp3"
+            "character_voice": null
           },
-          {
-            "id": 2,
-            "stop_number": 6,
-            "stop_name": "Forsyth Fountain",
-            "variant": "on_time",
-            "filename": "SAV_STOP_06_NARRATOR_ON.mp3",
-            "path": "/audio/woman/stop_06/",
-            "narrator": "woman",
-            "narrator_id": "0rEo3eAjssGDUCXHYENf",
+          "stop_2": {
+            "name": "Telfair Hospital",
+            "variants": ["SAV_STOP_02_NARRATOR_EARLY.mp3", "SAV_STOP_02_NARRATOR_ON.mp3", "SAV_STOP_02_NARRATOR_LATE.mp3"],
+            "duration_seconds": 105,
+            "audio_tags": "[strong, authoritative, protective, impressed]",
+            "character_voice": null
+          },
+          "stop_3": {
+            "name": "Spanish War Veteran Statue",
+            "variants": ["SAV_STOP_03_NARRATOR_EARLY.mp3", "SAV_STOP_03_NARRATOR_ON.mp3", "SAV_STOP_03_NARRATOR_LATE.mp3"],
+            "duration_seconds": 80,
+            "audio_tags": "[melancholic, respectful, haunted, witnessing]",
+            "character_voice": null
+          },
+          "stop_4": {
+            "name": "Live Oak Grove",
+            "variants": ["SAV_STOP_04_NARRATOR_EARLY.mp3", "SAV_STOP_04_NARRATOR_ON.mp3", "SAV_STOP_04_NARRATOR_LATE.mp3"],
+            "duration_seconds": 130,
+            "audio_tags": "[awed, reverent, slow, meditative]",
+            "character_voice": null
+          },
+          "stop_5": {
+            "name": "Monument Area",
+            "variants": ["SAV_STOP_05_NARRATOR_EARLY.mp3", "SAV_STOP_05_NARRATOR_ON.mp3", "SAV_STOP_05_NARRATOR_LATE.mp3"],
+            "duration_seconds": 225,
+            "audio_tags": "[clear-eyed, witnessing, holding-space, unflinching]",
+            "character_voice": null
+          },
+          "stop_6": {
+            "name": "Forsyth Fountain",
+            "variants": ["SAV_STOP_06_LOTTIE_EARLY.mp3", "SAV_STOP_06_LOTTIE_ON.mp3", "SAV_STOP_06_LOTTIE_LATE.mp3"],
+            "duration_seconds": 160,
+            "audio_tags": "[vulnerable, intimate, confessional, heartbroken, regretful]",
             "character_voice": "lottie",
             "character_voice_id": "I571sUNz6E53D5YaJgVg",
-            "expected_duration_seconds": 160,
-            "duration_tolerance_seconds": 5,
-            "audio_tags": "[vulnerable, intimate, confessional, heartbroken, regretful]",
-            "voice_settings": {
-              "stability": 70,
-              "similarity_boost": 75
-            },
-            "bitrate_kbps": 192,
-            "sample_rate_hz": 44100,
-            "format": "mp3",
-            "note": "EMOTIONAL CORE — PRIORITY IN PILOT TESTING"
-          },
-          {
-            "id": 3,
-            "stop_number": 11,
-            "stop_name": "Chippewa Square",
-            "variant": "on_time",
-            "filename": "SAV_STOP_11_NARRATOR_ON.mp3",
-            "path": "/audio/woman/stop_11/",
-            "narrator": "woman",
-            "narrator_id": "0rEo3eAjssGDUCXHYENf",
-            "character_voice": null,
-            "expected_duration_seconds": 76,
-            "duration_tolerance_seconds": 5,
-            "audio_tags": "[serious, unflinching, sorrowful, witnessing]",
-            "voice_settings": {
-              "stability": 70,
-              "similarity_boost": 75
-            },
-            "bitrate_kbps": 192,
-            "sample_rate_hz": 44100,
-            "format": "mp3"
-          },
-          {
-            "id": 4,
-            "stop_number": 18,
-            "stop_name": "Final Anchor - Sea Merchants Statue",
-            "variant": "on_time",
-            "filename": "SAV_STOP_18_NARRATOR_ON.mp3",
-            "path": "/audio/woman/stop_18/",
-            "narrator": "woman",
-            "narrator_id": "0rEo3eAjssGDUCXHYENf",
-            "character_voice": "elderon",
-            "character_voice_id": "NwyAvGnfbFoNNEi4UuTq",
-            "expected_duration_seconds": 180,
-            "duration_tolerance_seconds": 5,
-            "audio_tags": "[integrating, releasing, peaceful, eternal]",
-            "voice_settings": {
-              "stability": 70,
-              "similarity_boost": 75
-            },
-            "bitrate_kbps": 192,
-            "sample_rate_hz": 44100,
-            "format": "mp3"
-          },
-          {
-            "id": 5,
-            "stop_number": "opening",
-            "stop_name": "Opening Frame",
-            "variant": "on_time",
-            "filename": "SAV_OPENING_FRAME_WOMAN.mp3",
-            "path": "/audio/woman/opening/",
-            "narrator": "woman",
-            "narrator_id": "0rEo3eAjssGDUCXHYENf",
-            "character_voice": null,
-            "expected_duration_seconds": 30,
-            "duration_tolerance_seconds": 3,
-            "audio_tags": "[grounding, protective, sacred, present]",
-            "voice_settings": {
-              "stability": 70,
-              "similarity_boost": 75
-            },
-            "bitrate_kbps": 192,
-            "sample_rate_hz": 44100,
-            "format": "mp3"
-          },
-          {
-            "id": 6,
-            "stop_number": "closing",
-            "stop_name": "Closing Frame",
-            "variant": "on_time",
-            "filename": "SAV_CLOSING_FRAME_WOMAN.mp3",
-            "path": "/audio/woman/closing/",
-            "narrator": "woman",
-            "narrator_id": "0rEo3eAjssGDUCXHYENf",
-            "character_voice": null,
-            "expected_duration_seconds": 30,
-            "duration_tolerance_seconds": 3,
-            "audio_tags": "[grateful, inviting, community]",
-            "voice_settings": {
-              "stability": 70,
-              "similarity_boost": 75
-            },
-            "bitrate_kbps": 192,
-            "sample_rate_hz": 44100,
-            "format": "mp3"
+            "note": "EMOTIONAL CORE & CHARACTER VOICE TEST"
           }
-        ]
+        },
+        "narrator_info": {
+          "name": "Grandma Rachel",
+          "voice_id": "0rEo3eAjssGDUCXHYENf",
+          "only_narrator_for_pilot": true
+        },
+        "total_duration_seconds": 940,
+        "total_duration_minutes": 15.7
       },
       "phase_1": {
         "status": "READY AFTER PILOT VALIDATION",

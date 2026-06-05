@@ -270,29 +270,63 @@ else:
 
 ---
 
-## PART 4: PILOT PHASE (6 Files - Woman Narrator Only)
+## PART 4: PILOT PHASE (18 Files - Woman Narrator Only: Stops 1-6)
 
 ### 4.1 Pilot Files to Generate First
 
-Generate these 6 files for field testing:
+Generate these 18 files (6 stops × 3 variants each) for field testing:
 
-1. **SAV_STOP_01_NARRATOR_ON.mp3** (Wilder House — setting tone)
-2. **SAV_STOP_06_NARRATOR_ON.mp3** (Forsyth Fountain — Lottie character voice, emotional core)
-3. **SAV_STOP_11_NARRATOR_ON.mp3** (Chippewa Square — difficult truth)
-4. **SAV_STOP_18_NARRATOR_ON.mp3** (Final Anchor — Elderon, integration)
-5. **SAV_OPENING_FRAME_WOMAN.mp3** (Tour opening)
-6. **SAV_CLOSING_FRAME_WOMAN.mp3** (Tour closing)
+**Stop 1: Wilder House** (Threshold, protection)
+- SAV_STOP_01_NARRATOR_EARLY.mp3
+- SAV_STOP_01_NARRATOR_ON.mp3
+- SAV_STOP_01_NARRATOR_LATE.mp3
 
-**Why these?**
-- Stop 1: Sets narrator tone for entire tour
-- Stop 6: Tests character voice (Lottie) and emotional peak
-- Stop 11: Tests difficult content delivery
-- Stop 18: Tests Elderon voice and integration
-- Opening/Closing: Framing for entire experience
+**Stop 2: Telfair Hospital** (Strength, will)
+- SAV_STOP_02_NARRATOR_EARLY.mp3
+- SAV_STOP_02_NARRATOR_ON.mp3
+- SAV_STOP_02_NARRATOR_LATE.mp3
+
+**Stop 3: Spanish War Veteran Statue** (Vigilance, watch)
+- SAV_STOP_03_NARRATOR_EARLY.mp3
+- SAV_STOP_03_NARRATOR_ON.mp3
+- SAV_STOP_03_NARRATOR_LATE.mp3
+
+**Stop 4: Live Oak Grove** (Witness, memory)
+- SAV_STOP_04_NARRATOR_EARLY.mp3
+- SAV_STOP_04_NARRATOR_ON.mp3
+- SAV_STOP_04_NARRATOR_LATE.mp3
+
+**Stop 5: Monument Area** (Contradiction, complexity)
+- SAV_STOP_05_NARRATOR_EARLY.mp3
+- SAV_STOP_05_NARRATOR_ON.mp3
+- SAV_STOP_05_NARRATOR_LATE.mp3
+
+**Stop 6: Forsyth Fountain** (Emotional peak — with Lottie character voice)
+- SAV_STOP_06_LOTTIE_EARLY.mp3 (Character voice: Lottie)
+- SAV_STOP_06_LOTTIE_ON.mp3 (Character voice: Lottie)
+- SAV_STOP_06_LOTTIE_LATE.mp3 (Character voice: Lottie)
+
+**Total Pilot Files: 18**
+**Total Duration: ~15.7 minutes (complete mini-journey)**
+**Narrator: Woman (Grandma Rachel) only**
+**Character Voices: Lottie at Stop 6 only**
+
+**Why this scope?**
+- Stop 1: Sets narrator tone and protects listener (threshold)
+- Stops 2-5: Tests emotional arc (strength → vigilance → witness → contradiction)
+- Stop 6: Tests character voice (Lottie) at emotional peak
+- All 3 variants: Tests early/on/late GPS confidence variations
+- Complete journey: Tests listener transformation arc (15 minutes walking)
 
 ### 4.2 Pilot Testing Protocol
 
 See **QUALITY_CHECKLIST.md** for detailed testing procedures.
+
+**Field Test**: Complete walk from Wilder House → Forsyth Fountain
+- Test all 6 stops in sequence
+- Test all 3 variants at each stop (early/on/late)
+- Validate emotional arc progression
+- Collect listener feedback
 
 ---
 

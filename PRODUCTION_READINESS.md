@@ -235,6 +235,29 @@
 
 ---
 
+## SECTION 6b: PILOT PHASE SCOPE (Updated)
+
+### Pilot Scope: Stops 1-6 (Wilder House → Forsyth Fountain)
+
+**Files**: 18 (6 stops × 3 variants)
+- Stop 1: Wilder House (early/on/late)
+- Stop 2: Telfair Hospital (early/on/late)
+- Stop 3: Spanish War Veteran Statue (early/on/late)
+- Stop 4: Live Oak Grove (early/on/late)
+- Stop 5: Monument Area (early/on/late)
+- Stop 6: Forsyth Fountain with Lottie character voice (early/on/late)
+
+**Narrator**: Female (Grandma Rachel) ONLY
+**Character Voices**: Lottie at Stop 6 ONLY
+**No More After Pilot**: No opening/closing frames, no other character voices, no other stops
+
+**Duration**: ~15.7 minutes (complete mini-journey)
+**Why This Scope**: Tests full emotional arc (threshold → strength → vigilance → witness → contradiction → emotional peak) with character voice integration
+
+**Status**: ✅ DEFINED
+
+---
+
 ## SECTION 8: VERSION CONTROL ✅ COMPLETE
 
 ### 8.1 Git Status
@@ -293,21 +316,32 @@ These are helpful reference documents but don't need to be committed:
 
 ## SECTION 10: TESTING PLAN ✅ DEFINED
 
-### 10.1 Pilot Phase Testing (6 Files)
+### 10.1 Pilot Phase Testing (18 Files: Stops 1-6)
 
+**Scope**: Wilder House → Forsyth Fountain (6 stops × 3 variants = 18 files)
+- Stop 1: Wilder House (early/on/late)
+- Stop 2: Telfair Hospital (early/on/late)
+- Stop 3: Spanish War Veteran Statue (early/on/late)
+- Stop 4: Live Oak Grove (early/on/late)
+- Stop 5: Monument Area (early/on/late)
+- Stop 6: Forsyth Fountain with Lottie character voice (early/on/late)
+
+**Narrator**: Female (Grandma Rachel) only
+**Character Voices**: Lottie at Stop 6 only
 **Timeline**: Immediately after generation
 
 Tests to perform:
 - ✅ Technical validation (format, duration, bitrate)
 - ✅ Audio quality listening (room, car, outdoor)
-- ✅ Emotional delivery validation
+- ✅ Emotional delivery validation (threshold → strength → vigilance → witness → contradiction → emotional peak)
 - ✅ Loudness measurement (-14 LUFS ±2)
 - ✅ SSML/Audio Tags rendering
-- ✅ Field test in Savannah (1+ stops)
+- ✅ Character voice (Lottie at Stop 6) validation
+- ✅ Field test in Savannah (all 6 stops, complete walk)
 - ✅ 1-3 independent listener feedback
-- ✅ Emotional transformation confirmation
+- ✅ Emotional transformation confirmation (listeners see Savannah differently)
 
-**Status**: ✅ PLAN DEFINED (QUALITY_CHECKLIST.md)
+**Status**: ✅ PLAN UPDATED
 
 ### 10.2 Phase 1 Testing (72 Files)
 
