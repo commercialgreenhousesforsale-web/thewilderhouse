@@ -68,7 +68,7 @@
         "name": "Lottie",
         "voiceId": "I571sUNz6E53D5YaJgVg",
         "character": "Lottie — Spirit at Forsyth Fountain",
-        "stop_id": 6,
+        "stop_id": 5,
         "description": "Young woman, haunted, regretful, carries unresolved grief",
         "expression_intensity": 0.85,
         "voice_tier": "Creator Plan Premium",
@@ -80,7 +80,7 @@
         "name": "Elderon",
         "voiceId": "NwyAvGnfbFoNNEi4UuTq",
         "character": "Elderon — Witnessing voice at river",
-        "stop_ids": [16, 17, 18],
+        "stop_ids": [15, 16, 17],
         "description": "Ancient presence, speaks from water itself, integration and release",
         "expression_intensity": 0.65,
         "voice_tier": "Creator Plan Premium",
@@ -92,9 +92,10 @@
   },
   "stops": [
     {
-      "id": 1,
-      "order": 1,
+      "id": 0,
+      "order": 0,
       "name": "Wilder House",
+      "designation": "gateway",
       "lat": 32.063887,
       "lng": -81.093304,
       "radius": 40,
@@ -102,9 +103,9 @@
       "walking_time_seconds": 240,
       "tags": ["ghost", "threshold", "blessing"],
       "audio": {
-        "early": "SAV_STOP_01_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_01_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_01_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_00_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_00_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_00_NARRATOR_LATE.mp3"
       },
       "early_arrival": "You're early. Take a breath. This is a threshold — a protected place where nothing dark can follow. Wait here. Settle yourself.",
       "on_time": "Welcome to the Wilder House. <break time=\"500ms\"/> Before we step into Savannah's memory, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. <break time=\"600ms\"/> His father had a grocery store on this very block. <break time=\"500ms\"/> This house became sanctuary. <break time=\"600ms\"/> That blessing still holds. <break time=\"400ms\"/> Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. <break time=\"800ms\"/> Breathe. Ground yourself. <break time=\"500ms\"/> The city is waiting.",
@@ -116,9 +117,10 @@
       "next_walk_guidance": "Head east toward Telfair Hospital. The walk is about four minutes. As you go, notice the city around you—the oaks, the squares, the weight of time."
     },
     {
-      "id": 2,
-      "order": 2,
+      "id": 1,
+      "order": 1,
       "name": "Telfair Hospital",
+      "designation": "public_tour_start",
       "lat": 32.06469,
       "lng": -81.096227,
       "radius": 40,
@@ -126,11 +128,10 @@
       "walking_time_seconds": 105,
       "tags": ["ghost", "female", "authority"],
       "audio": {
-        "early": "SAV_STOP_02_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_02_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_02_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_01_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_01_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_01_NARRATOR_LATE.mp3"
       },
-      "character_voice": "lottie",
       "early_arrival": "You're approaching Telfair Hospital. Something strong lives here. A will that never bent. Wait for it.",
       "on_time": "Our journey begins with a memory of will. <break time=\"700ms\"/> Strong. <break time=\"400ms\"/> Unyielding. <break time=\"400ms\"/> Absolute. Mary Telfair built this hospital as a sanctuary for women only. <emphasis level=\"strong\">Only for women.</emphasis> <break time=\"600ms\"/> No man was permitted to cross its threshold. <break time=\"500ms\"/> Only babies born there were allowed to stay. <break time=\"600ms\"/> That was her law. Unbreakable. <break time=\"500ms\"/> When she died, she chose to remain. She still walks these halls — a tall figure in a long brown dress, moving with purpose. Her lavender perfume announces her without warning. <break time=\"700ms\"/> Doors close behind visitors with quiet authority. Men who enter report her presence: gentle but firm. A boundary being held. <break time=\"500ms\"/> Even now, Mary protects what she built. This is how Savannah remembers strength. Not as conquest. But as protection. As will made into law.",
       "late_arrival": "Mary Telfair's boundary still guards this hospital. Some laws, once set, hold forever.",
@@ -141,8 +142,8 @@
       "next_walk_guidance": "Keep walking north. The Spanish War Veteran statue is about ninety seconds ahead, overlooking Forsyth Park."
     },
     {
-      "id": 3,
-      "order": 3,
+      "id": 2,
+      "order": 2,
       "name": "Spanish War Veteran Statue",
       "lat": 32.064981,
       "lng": -81.097188,
@@ -151,9 +152,9 @@
       "walking_time_seconds": 80,
       "tags": ["ghost", "soldier", "memory"],
       "audio": {
-        "early": "SAV_STOP_03_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_03_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_03_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_02_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_02_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_02_NARRATOR_LATE.mp3"
       },
       "early_arrival": "A statue stands here. Bronze. Watching. Eternal.",
       "on_time": "A soldier stands here, cast in bronze. <break time=\"600ms\"/> He was sent to fight in a foreign war — Spain, the Caribbean, places that had nothing to do with Savannah. <break time=\"500ms\"/> He fought for reasons he didn't fully understand. <break time=\"700ms\"/> But he came home. Changed. Haunted. <break time=\"600ms\"/> He chose this spot — overlooking Forsyth Park, the place he knew as a boy. <break time=\"500ms\"/> Now he stands watch. Forever. <break time=\"600ms\"/> Some soldiers never truly leave their post. The war ends, their bodies return, but some part of them stays vigilant. <break time=\"700ms\"/> That's what lives in this statue. Not rest. But <emphasis level=\"strong\">eternal attention.</emphasis> A man transformed by what he saw, watching over the city that sent him away.",
@@ -165,8 +166,8 @@
       "next_walk_guidance": "The oak grove is just ahead—about eighty seconds. You'll feel the trees before you see them. That's where we're heading."
     },
     {
-      "id": 4,
-      "order": 4,
+      "id": 3,
+      "order": 3,
       "name": "Live Oak Grove",
       "lat": 32.065995,
       "lng": -81.096799,
@@ -175,9 +176,9 @@
       "walking_time_seconds": 130,
       "tags": ["history", "nature", "witness"],
       "audio": {
-        "early": "SAV_STOP_04_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_04_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_04_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_03_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_03_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_03_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Look up. One hundred twenty to one hundred fifty years old. The trees remember everything.",
       "on_time": "You are now beneath the oldest living witnesses in Savannah. <break time=\"600ms\"/> These live oaks have stood for one hundred twenty to one hundred fifty years. <break time=\"500ms\"/> Longer than any building. Longer than any person who has walked beneath them. <break time=\"700ms\"/> The moss — pronounced 'maws' — hangs like memory — <emphasis level=\"strong\">draped, heavy, silver-gray.</emphasis> <break time=\"600ms\"/> These trees remember everything. Every secret spoken in their shade. <break time=\"500ms\"/> Every sorrow hidden beneath their canopy. Every love that bloomed and died here. Every bargain made. Every promise broken. <break time=\"700ms\"/> The Spanish moss is not a parasite. It's a record. <break time=\"600ms\"/> The homes around us are beautiful, but they are temporary. The trees are what endure. They remember what the buildings forgot.",
@@ -189,8 +190,8 @@
       "next_walk_guidance": "Head north toward the monument area. About two minutes walk. As you go, notice how the city changes—more grand, more formal. That's where we're heading."
     },
     {
-      "id": 5,
-      "order": 5,
+      "id": 4,
+      "order": 4,
       "name": "Monument Area",
       "lat": 32.067261,
       "lng": -81.096343,
@@ -199,9 +200,9 @@
       "walking_time_seconds": 225,
       "tags": ["history", "conflict", "memory"],
       "audio": {
-        "early": "SAV_STOP_05_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_05_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_05_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_04_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_04_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_04_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Two men in stone. Look at them. See the contradiction.",
       "on_time": "This square holds two figures in bronze. <break time=\"600ms\"/> Francois Benton, who loved Savannah. And behind him, a towering monument to Confederate dead — <break time=\"500ms\"/> men who died defending an institution that was already collapsing. <break time=\"700ms\"/> These monuments stand as Savannah stands: <emphasis level=\"strong\">containing contradictions.</emphasis> <break time=\"600ms\"/> Beauty built on injustice. Honor tangled with grief. Intention mixed with outcome. <break time=\"500ms\"/> The city does not erase these contradictions. It holds them. It remembers them. <break time=\"800ms\"/> Some of those who died here still cannot rest. They linger in the shadow of stone. Not angry. Not peaceful. <break time=\"600ms\"/> <emphasis level=\"strong\">Unresolved.</emphasis> <break time=\"500ms\"/> This is Savannah's way — not to choose, but to witness all of it. <break time=\"900ms\"/> As you walk toward the park, notice the forts that once stood here — earthworks and bastions where soldiers watched the river. The geometry of defense. The architecture of loss.",
@@ -213,9 +214,10 @@
       "next_walk_guidance": "The fountain is ahead—about three and a half minutes. This is Savannah's most photographed place. But you'll understand, as you approach, that beauty here holds a secret."
     },
     {
-      "id": 6,
-      "order": 6,
+      "id": 5,
+      "order": 5,
       "name": "Forsyth Fountain",
+      "designation": "emotional_core",
       "lat": 32.069243,
       "lng": -81.095589,
       "radius": 70,
@@ -223,9 +225,9 @@
       "walking_time_seconds": 160,
       "tags": ["ghost", "female", "sorrow"],
       "audio": {
-        "early": "SAV_STOP_06_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_06_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_06_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_05_LOTTIE_EARLY.mp3",
+        "on": "SAV_STOP_05_LOTTIE_ON.mp3",
+        "late": "SAV_STOP_05_LOTTIE_LATE.mp3"
       },
       "character_voice": "lottie",
       "early_arrival": "You're approaching the fountain. The most photographed place in Savannah. But beauty here holds a secret.",
@@ -238,8 +240,8 @@
       "next_walk_guidance": "Continue north. Kessler Mansion is about ninety seconds ahead. A place where hope lived, and then was lost."
     },
     {
-      "id": 7,
-      "order": 7,
+      "id": 6,
+      "order": 6,
       "name": "Kessler Mansion / Armstrong College",
       "lat": 32.070506,
       "lng": -81.095168,
@@ -248,9 +250,9 @@
       "walking_time_seconds": 90,
       "tags": ["history", "memory", "institution"],
       "audio": {
-        "early": "SAV_STOP_07_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_07_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_07_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_06_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_06_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_06_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Kessler Mansion. Where Armstrong College once shaped the dreams of young people.",
       "on_time": "This mansion once housed Armstrong College — a place of learning and aspiration. <break time=\"600ms\"/> The walls remember students who studied here. Who believed their education would transform their lives. <break time=\"600ms\"/> Some of those dreams were realized. <break time=\"500ms\"/> Many were not. <break time=\"700ms\"/> The building stands now as a reminder of institutional transience. <emphasis level=\"strong\">What seemed permanent is now memory.</emphasis> <break time=\"600ms\"/> What bustled with intellectual life is now quiet. <break time=\"700ms\"/> Yet the echoes of ambition still linger here. The spirits of young people who believed in the power of knowledge. <break time=\"600ms\"/> Maybe their faith was justified. Maybe it wasn't. <break time=\"500ms\"/> The building remembers both the hope and the disappointment equally. <break time=\"800ms\"/> Some nights, visitors report the sound of turning pages, quiet conversation, the scratch of pen on paper. <emphasis level=\"strong\">Ghosts studying still.</emphasis>",
@@ -262,8 +264,8 @@
       "next_walk_guidance": "Monterey Square is just ahead—about a minute walk. A place where someone finally found rest."
     },
     {
-      "id": 8,
-      "order": 8,
+      "id": 7,
+      "order": 7,
       "name": "Monterey Square / Pulaski Monument",
       "lat": 32.071356,
       "lng": -81.094825,
@@ -272,9 +274,9 @@
       "walking_time_seconds": 110,
       "tags": ["history", "soldier", "peace"],
       "audio": {
-        "early": "SAV_STOP_08_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_08_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_08_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_07_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_07_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_07_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Monterey Square. A place where rest is possible.",
       "on_time": "Casimir Pulaski — a Polish general who died defending American independence — <break time=\"700ms\"/> was mortally wounded here in seventeen seventy-nine. <break time=\"700ms\"/> His remains rest beneath this monument. <break time=\"600ms\"/> Unlike so many others we have encountered, Pulaski has found peace. <break time=\"800ms\"/> Colonial soldiers sometimes appear around this square at dusk. Standing at attention. Saluting their commander with quiet loyalty. <break time=\"700ms\"/> Not every memory in Savannah remains broken. <emphasis level=\"strong\">Some have earned rest.</emphasis> <break time=\"600ms\"/> Some have found forgiveness. <break time=\"600ms\"/> Some have learned that honor, finally and completely, is enough.",
@@ -286,8 +288,8 @@
       "next_walk_guidance": "You're halfway through your walk. The next stop is just ninety seconds ahead—an intersection where countless lives have crossed."
     },
     {
-      "id": 9,
-      "order": 9,
+      "id": 8,
+      "order": 8,
       "name": "Jones & Bull Corner",
       "lat": 32.072461,
       "lng": -81.094387,
@@ -296,9 +298,9 @@
       "walking_time_seconds": 90,
       "tags": ["history", "memory", "intersection"],
       "audio": {
-        "early": "SAV_STOP_09_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_09_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_09_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_08_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_08_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_08_NARRATOR_LATE.mp3"
       },
       "early_arrival": "An intersection. A corner where lives have crossed for two centuries.",
       "on_time": "This corner is an intersection — a place where countless lives have crossed paths for two hundred years. <break time=\"700ms\"/> Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. <break time=\"600ms\"/> All have stood exactly where you're standing. <break time=\"500ms\"/> All were changed by this moment of crossing. <break time=\"800ms\"/> Intersections are liminal spaces. <break time=\"600ms\"/> They belong to no one. They hold the accumulated energy of countless meetings. Partings. Collisions. <break time=\"700ms\"/> Some people return to the places where their lives changed forever. <emphasis level=\"strong\">This corner holds many such returns.</emphasis> <break time=\"700ms\"/> The spirits here are not restless. They are simply <emphasis level=\"strong\">present.</emphasis> Witnessing. Remembering. The corner itself is sacred.",
@@ -310,8 +312,8 @@
       "next_walk_guidance": "Madison Square is just a minute ahead. Three different histories converge there. Three different stories. All true at once."
     },
     {
-      "id": 10,
-      "order": 10,
+      "id": 9,
+      "order": 9,
       "name": "Madison Square",
       "lat": 32.073547,
       "lng": -81.093961,
@@ -320,9 +322,9 @@
       "walking_time_seconds": 160,
       "tags": ["history", "memory", "convergence"],
       "audio": {
-        "early": "SAV_STOP_10_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_10_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_10_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_09_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_09_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_09_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Madison Square. Three different histories stand here together.",
       "on_time": "Madison Square holds three distinct voices in conversation. <break time=\"700ms\"/> The church stands as sanctuary — <emphasis level=\"strong\">a place where people have always sought safety and prayer.</emphasis> <break time=\"700ms\"/> The Sorrel Weed House holds the memory of bondage and survival — of people whose names were erased but whose spirits endure. <break time=\"800ms\"/> The Green-Meldrim House holds the memory of occupation and resistance — of a city conquered and refusing to be broken. <break time=\"700ms\"/> All three stand here together. <emphasis level=\"strong\">In one square.</emphasis> <break time=\"600ms\"/> The church does not erase the history of the houses. The houses do not negate the sanctity of the church. <break time=\"600ms\"/> They exist together. They remember together. <break time=\"800ms\"/> And in this convergence, we understand: <emphasis level=\"strong\">Savannah's memory is not simple.</emphasis> It is layered. Tragic and sacred at once. <break time=\"700ms\"/> The city holds all of it.",
@@ -334,8 +336,8 @@
       "next_walk_guidance": "Chippewa Square is about ninety seconds ahead. But be warned: there's a wound there that won't close. A story that refuses to end."
     },
     {
-      "id": 11,
-      "order": 11,
+      "id": 10,
+      "order": 10,
       "name": "Chippewa Square",
       "lat": 32.075797,
       "lng": -81.093164,
@@ -344,9 +346,9 @@
       "walking_time_seconds": 76,
       "tags": ["ghost", "male", "unresolution"],
       "audio": {
-        "early": "SAV_STOP_11_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_11_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_11_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_10_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_10_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_10_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Chippewa Square. Where unresolved stories live.",
       "on_time": "Chippewa Square holds a memory that will not rest. <break time=\"700ms\"/> Inside the Foley House Inn, workers discovered a human skeleton sealed inside a wall in nineteen eighty-seven. <break time=\"800ms\"/> A man had entered Honoria Foley's room with harm in his heart. She defended herself. <break time=\"700ms\"/> Rather than face the truth, they sealed his body inside the wall. <break time=\"600ms\"/> They call him Wally. <break time=\"700ms\"/> Guests still see him — <emphasis level=\"strong\">a figure in nineteenth-century clothes who vanishes when looked at directly.</emphasis> <break time=\"800ms\"/> Some wounds in Savannah refuse to close. <emphasis level=\"strong\">Some stories refuse to end.</emphasis> <break time=\"700ms\"/> Some ghosts cannot rest because their stories were never truly told. <break time=\"600ms\"/> And the city remembers this wound. Sealed in a wall. Hidden. But present.",
@@ -358,8 +360,8 @@
       "next_walk_guidance": "Oglethorpe Church is nearby—just a short walk. A place to breathe. A moment of sacred rest before we continue deeper."
     },
     {
-      "id": 12,
-      "order": 12,
+      "id": 11,
+      "order": 11,
       "name": "Oglethorpe Church",
       "lat": 32.076643,
       "lng": -81.092872,
@@ -368,9 +370,9 @@
       "walking_time_seconds": 108,
       "tags": ["history", "sacred", "pause"],
       "audio": {
-        "early": "SAV_STOP_12_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_12_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_12_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_11_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_11_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_11_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Oglethorpe Church. A safe space where breath returns.",
       "on_time": "This church stands on the southwest corner of Oglethorpe and Bull — <emphasis level=\"strong\">a quiet sanctuary in the midst of Savannah's story.</emphasis> <break time=\"700ms\"/> Like Madison's church before it, this is a place where prayer has anchored people. Where the sacred persists. <break time=\"700ms\"/> Pause here for a moment. <break time=\"800ms\"/> Feel the solidity of stone and faith. <break time=\"600ms\"/> Not all of Savannah's memory is haunted. <emphasis level=\"strong\">Some of it is held in silence,</emphasis> in the steady presence of belief. <break time=\"800ms\"/> This church remains. As it has for generations. <break time=\"700ms\"/> Some spirits here are restful. Some are protective. All are present. <break time=\"900ms\"/> Breathe with them for a moment. This is the city's own breath.",
@@ -382,8 +384,8 @@
       "next_walk_guidance": "You're nearing the older part of the city. Wright Square is about a minute ahead. The city's self-image is written there in stone."
     },
     {
-      "id": 13,
-      "order": 13,
+      "id": 12,
+      "order": 12,
       "name": "Wright Square",
       "lat": 32.077943,
       "lng": -81.092341,
@@ -392,9 +394,9 @@
       "walking_time_seconds": 108,
       "tags": ["history", "civic", "founding"],
       "audio": {
-        "early": "SAV_STOP_13_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_13_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_13_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_12_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_12_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_12_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Wright Square. Where the city began to imagine itself.",
       "on_time": "Wright Square holds the statue of William Washington — <break time=\"600ms\"/> a figure caught between soldier and civilian, between duty and conscience. <break time=\"700ms\"/> But more than one man's story, this square represents something deeper: <emphasis level=\"strong\">the moment Savannah began to shape its own narrative.</emphasis> <break time=\"700ms\"/> The buildings around this square were constructed to last. They were built with intention, with permanence in mind. <break time=\"600ms\"/> Different from the hauntings we've encountered — these are not broken spirits but <emphasis level=\"strong\">unfinished stories</emphasis> about power, ambition, and the city's vision of itself. <break time=\"700ms\"/> Some visitors report a sense of expectation here, as if the square is still waiting for something to be completed. <break time=\"600ms\"/> Perhaps the city's own understanding of who it is.",
@@ -406,8 +408,8 @@
       "next_walk_guidance": "Johnson Square is next—the deepest roots. About a minute walk. This is where everything began."
     },
     {
-      "id": 14,
-      "order": 14,
+      "id": 13,
+      "order": 13,
       "name": "Johnson Square",
       "lat": 32.079943,
       "lng": -81.091558,
@@ -416,9 +418,9 @@
       "walking_time_seconds": 75,
       "tags": ["history", "founding", "roots"],
       "audio": {
-        "early": "SAV_STOP_14_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_14_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_14_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_13_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_13_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_13_NARRATOR_LATE.mp3"
       },
       "early_arrival": "Johnson Square. The deepest roots of Savannah begin here.",
       "on_time": "Johnson Square is where Savannah remembers its founding. <break time=\"600ms\"/> The monument to General Nathaniel Green stands as a reminder of the Revolutionary War's grip on this city. <break time=\"700ms\"/> But the church here — Christ Church — <emphasis level=\"strong\">reaches back even deeper.</emphasis> <break time=\"700ms\"/> It was here that George Washington himself attended services. <break time=\"600ms\"/> These stories layer upon each other: founding, faith, patriotic duty. <break time=\"700ms\"/> <emphasis level=\"strong\">The square holds the weight of all these origins.</emphasis> <break time=\"700ms\"/> Standing here, you stand where the city's first imagining of itself crystallized into stone and memory.",
@@ -430,8 +432,8 @@
       "next_walk_guidance": "Bay Street is ahead now—about ninety seconds. The boundary between memory and commerce. Be mindful of traffic as you approach."
     },
     {
-      "id": 15,
-      "order": 15,
+      "id": 14,
+      "order": 14,
       "name": "Bay & Bull / City Hall",
       "lat": 32.080879,
       "lng": -81.091268,
@@ -440,9 +442,9 @@
       "walking_time_seconds": 140,
       "tags": ["history", "civic", "authority"],
       "audio": {
-        "early": "SAV_STOP_15_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_15_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_15_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_14_NARRATOR_EARLY.mp3",
+        "on": "SAV_STOP_14_NARRATOR_ON.mp3",
+        "late": "SAV_STOP_14_NARRATOR_LATE.mp3"
       },
       "early_arrival": "You're at Bay Street. The city's official face. Be careful—this is a busy crossing.",
       "on_time": "You stand at a threshold now. <break time=\"600ms\"/> Bay Street — <emphasis level=\"strong\">the boundary between Savannah's memory and its commerce.</emphasis> <break time=\"700ms\"/> The street flows with traffic, with the rhythms of the working city. This is an active crossing with traffic. Mind your surroundings. Wait for the light. Look both ways. <break time=\"800ms\"/> City Hall stands here as the city's face to the world. <break time=\"600ms\"/> The seat of governance. The machinery of order. <break time=\"700ms\"/> This is where the city formally organizes itself. Where decisions are made, laws are written, the business of a city is conducted. <break time=\"700ms\"/> But even here, in the official chambers and marble halls, memory persists. <break time=\"600ms\"/> The spirits of mayors and officials, the echoes of contentious debates, the weight of decisions made and unmade. <break time=\"700ms\"/> Some of Savannah's ghosts wear suits and ties. They linger in corridors, still attending to the city's business. <break time=\"800ms\"/> When the way is clear, the economic foundation that built and sustained this city lies ahead.",
@@ -454,8 +456,8 @@
       "next_walk_guidance": "The Cotton Exchange is about a minute away. Where wealth was built. And where the deepest wound was created."
     },
     {
-      "id": 16,
-      "order": 16,
+      "id": 15,
+      "order": 15,
       "name": "Cotton Exchange",
       "lat": 32.080711,
       "lng": -81.090099,
@@ -464,9 +466,9 @@
       "walking_time_seconds": 90,
       "tags": ["history", "commerce", "memory"],
       "audio": {
-        "early": "SAV_STOP_16_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_16_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_16_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_15_ELDERON_EARLY.mp3",
+        "on": "SAV_STOP_15_ELDERON_ON.mp3",
+        "late": "SAV_STOP_15_ELDERON_LATE.mp3"
       },
       "character_voice": "elderon",
       "early_arrival": "The Cotton Exchange. Where Savannah's wealth was built.",
@@ -479,8 +481,8 @@
       "next_walk_guidance": "The river access ramp is just ahead—ninety seconds. Where enslaved Africans arrived. Where the city's deepest truths are held in water."
     },
     {
-      "id": 17,
-      "order": 17,
+      "id": 16,
+      "order": 16,
       "name": "River Access Ramp",
       "lat": 32.08057,
       "lng": -81.089315,
@@ -489,9 +491,9 @@
       "walking_time_seconds": 110,
       "tags": ["history", "water", "threshold"],
       "audio": {
-        "early": "SAV_STOP_17_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_17_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_17_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_16_ELDERON_EARLY.mp3",
+        "on": "SAV_STOP_16_ELDERON_ON.mp3",
+        "late": "SAV_STOP_16_ELDERON_LATE.mp3"
       },
       "character_voice": "elderon",
       "early_arrival": "The river. This is where all the layers come together.",
@@ -504,9 +506,10 @@
       "next_walk_guidance": "The Sea Merchants statue is right ahead. The final stop. Where everything converges."
     },
     {
-      "id": 18,
-      "order": 18,
+      "id": 17,
+      "order": 17,
       "name": "Final Anchor - Sea Merchants Statue",
+      "designation": "tour_conclusion",
       "lat": 32.080981,
       "lng": -81.088771,
       "radius": 80,
@@ -514,9 +517,9 @@
       "walking_time_seconds": 180,
       "tags": ["ghost", "river", "release"],
       "audio": {
-        "early": "SAV_STOP_18_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_18_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_18_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_17_ELDERON_EARLY.mp3",
+        "on": "SAV_STOP_17_ELDERON_ON.mp3",
+        "late": "SAV_STOP_17_ELDERON_LATE.mp3"
       },
       "character_voice": "elderon",
       "early_arrival": "You've arrived at the river. The sea merchants stand eternal.",

@@ -18,7 +18,7 @@
 - ✅ Character voice specifications (Lottie, Elderon)
 - ✅ Expression intensity values (0.6-0.85)
 - ✅ Pronunciation guides embedded (Savannah, Telfair, Pulaski, Gullah, etc.)
-- ✅ Walking times accurate (240 sec for Stop 1, 76 sec for Stop 11, etc.)
+- ✅ Walking times accurate (240 sec for Stop 0, 76 sec for Stop 10, etc.)
 - ✅ Historical corrections verified (oak grove age, Telfair babies, etc.)
 - ✅ Late arrival variations customized per stop
 - ✅ Opening frame narration written
@@ -91,8 +91,8 @@
 - ✅ Voice IDs confirmed:
   - Woman: 0rEo3eAjssGDUCXHYENf (72 files)
   - Man: dtVZnErhiiosqofxDzSH (56 files - Phase 2)
-  - Lottie: I571sUNz6E53D5YaJgVg (3 files at Stop 6)
-  - Elderon: NwyAvGnfbFoNNEi4UuTq (9 files at Stops 16-18)
+  - Lottie: I571sUNz6E53D5YaJgVg (3 files at Stop 5)
+  - Elderon: NwyAvGnfbFoNNEi4UuTq (9 files at Stops 15-17)
 
 **Status**: ✅ READY
 
@@ -207,11 +207,11 @@
 ```
 /audio/
   /woman/
-    /stop_01/ ... /stop_18/
+    /stop_00/ ... /stop_17/
     /opening/
     /closing/
   /man/ (Phase 2)
-    /stop_01/ ... /stop_18/
+    /stop_00/ ... /stop_17/
     /opening/
     /closing/
 ```
@@ -229,7 +229,7 @@
 - ✅ Examples verified
 - ✅ Voice codes defined (NARRATOR, LOTTIE, ELDERON)
 - ✅ Variant codes defined (EARLY, ON, LATE)
-- ✅ ID padding verified (01-18, with opening/closing exceptions)
+- ✅ ID padding verified (00-17, with opening/closing exceptions)
 
 **Status**: ✅ LOCKED
 
@@ -237,22 +237,22 @@
 
 ## SECTION 6b: PILOT PHASE SCOPE (Finalized)
 
-### Pilot Scope: Stops 1-6 (Wilder House → Forsyth Fountain)
+### Pilot Scope: Stops 0-5 (Wilder House Gateway → Forsyth Fountain)
 
 **Files**: 18 (6 stops × 3 variants)
-- Stop 1: Wilder House (guest-only entry point)
-- Stop 2: Telfair Hospital (REAL public tour start)
-- Stop 3: Spanish War Veteran Statue
-- Stop 4: Live Oak Grove
-- Stop 5: Monument Area
-- Stop 6: Forsyth Fountain with Lottie character voice
+- Stop 0: Wilder House (gateway entry point — guest only)
+- Stop 1: Telfair Hospital (REAL public tour start)
+- Stop 2: Spanish War Veteran Statue
+- Stop 3: Live Oak Grove
+- Stop 4: Monument Area
+- Stop 5: Forsyth Fountain with Lottie character voice (emotional core)
 
 **Narrator**: Female (Grandma Rachel) ONLY
-**Character Voices**: Lottie at Stop 6 ONLY
-**No More After Pilot**: No opening/closing frames, no other character voices, no other stops
+**Character Voices**: Lottie at Stop 5 ONLY
+**No More After Pilot**: No opening/closing frames, no Elderon, no other character voices, no other stops
 
-**Duration**: ~15.7 minutes (complete threshold through emotional peak)
-**Why This Scope**: Tests full emotional arc including protective threshold (Stop 1, guest-only) and real public start (Stop 2, Telfair) through emotional peak (Stop 6, with character voice). Validates both guest and public pathways.
+**Duration**: ~13.2 minutes (gateway threshold through emotional peak)
+**Why This Scope**: Tests full emotional arc including protective gateway threshold (Stop 0, guest-only) and real public start (Stop 1, Telfair) through emotional peak (Stop 5, with character voice Lottie). Validates both gateway and public tour pathways.
 
 **Status**: ✅ DEFINED
 
@@ -316,28 +316,28 @@ These are helpful reference documents but don't need to be committed:
 
 ## SECTION 10: TESTING PLAN ✅ DEFINED
 
-### 10.1 Pilot Phase Testing (18 Files: Stops 1-6)
+### 10.1 Pilot Phase Testing (18 Files: Stops 0-5)
 
-**Scope**: Wilder House → Forsyth Fountain (6 stops × 3 variants = 18 files)
-**Note**: Stop 1 is guest-only. Stop 2 (Telfair) is REAL public tour start.
-- Stop 1: Wilder House (guest-only entry)
-- Stop 2: Telfair Hospital (public tour start)
-- Stop 3: Spanish War Veteran Statue (early/on/late)
-- Stop 4: Live Oak Grove (early/on/late)
-- Stop 5: Monument Area (early/on/late)
-- Stop 6: Forsyth Fountain with Lottie character voice (early/on/late)
+**Scope**: Wilder House Gateway → Forsyth Fountain (6 stops × 3 variants = 18 files)
+**Note**: Stop 0 is guest-only gateway. Stop 1 (Telfair) is REAL public tour start.
+- Stop 0: Wilder House (gateway-only entry)
+- Stop 1: Telfair Hospital (public tour start)
+- Stop 2: Spanish War Veteran Statue (early/on/late)
+- Stop 3: Live Oak Grove (early/on/late)
+- Stop 4: Monument Area (early/on/late)
+- Stop 5: Forsyth Fountain with Lottie character voice (early/on/late)
 
 **Narrator**: Female (Grandma Rachel) only
-**Character Voices**: Lottie at Stop 6 only
+**Character Voices**: Lottie at Stop 5 only
 **Timeline**: Immediately after generation
 
 Tests to perform:
 - ✅ Technical validation (format, duration, bitrate)
 - ✅ Audio quality listening (room, car, outdoor)
-- ✅ Emotional delivery validation (threshold → strength → vigilance → witness → contradiction → emotional peak)
+- ✅ Emotional delivery validation (gateway → strength → vigilance → witness → contradiction → emotional peak)
 - ✅ Loudness measurement (-14 LUFS ±2)
 - ✅ SSML/Audio Tags rendering
-- ✅ Character voice (Lottie at Stop 6) validation
+- ✅ Character voice (Lottie at Stop 5) validation
 - ✅ Field test in Savannah (all 6 stops, complete walk)
 - ✅ 1-3 independent listener feedback
 - ✅ Emotional transformation confirmation (listeners see Savannah differently)

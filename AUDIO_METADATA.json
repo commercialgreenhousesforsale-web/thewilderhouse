@@ -10,50 +10,50 @@
         "status": "READY FOR GENERATION",
         "files_count": 18,
         "narrator": "woman",
-        "description": "18 pilot files (Stops 1-6, all 3 variants) for field testing",
-        "scope": "Wilder House → Forsyth Fountain (threshold through emotional peak)",
-        "note": "Stop 1 (Wilder House) is guest-only. Stop 2 (Telfair) is REAL public tour start.",
+        "description": "18 pilot files (Stops 0-5, all 3 variants) for field testing",
+        "scope": "Wilder House (Gateway) → Forsyth Fountain (gateway threshold through emotional peak)",
+        "note": "Stop 0 (Wilder House) is guest-only gateway. Stop 1 (Telfair) is REAL public tour start.",
         "files": {
-          "stop_1": {
+          "stop_0": {
             "name": "Wilder House",
-            "variants": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"],
+            "variants": ["SAV_STOP_00_NARRATOR_EARLY.mp3", "SAV_STOP_00_NARRATOR_ON.mp3", "SAV_STOP_00_NARRATOR_LATE.mp3"],
             "duration_seconds": 240,
             "audio_tags": "[grounding, protective, sacred, present]",
             "character_voice": null,
-            "note": "Guest-only entry point"
+            "note": "Guest-only gateway entry point"
           },
-          "stop_2": {
+          "stop_1": {
             "name": "Telfair Hospital",
-            "variants": ["SAV_STOP_02_NARRATOR_EARLY.mp3", "SAV_STOP_02_NARRATOR_ON.mp3", "SAV_STOP_02_NARRATOR_LATE.mp3"],
+            "variants": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"],
             "duration_seconds": 105,
             "audio_tags": "[strong, authoritative, protective, impressed]",
             "character_voice": null,
             "note": "REAL public tour start"
           },
-          "stop_3": {
+          "stop_2": {
             "name": "Spanish War Veteran Statue",
-            "variants": ["SAV_STOP_03_NARRATOR_EARLY.mp3", "SAV_STOP_03_NARRATOR_ON.mp3", "SAV_STOP_03_NARRATOR_LATE.mp3"],
+            "variants": ["SAV_STOP_02_NARRATOR_EARLY.mp3", "SAV_STOP_02_NARRATOR_ON.mp3", "SAV_STOP_02_NARRATOR_LATE.mp3"],
             "duration_seconds": 80,
             "audio_tags": "[melancholic, respectful, haunted, witnessing]",
             "character_voice": null
           },
-          "stop_4": {
+          "stop_3": {
             "name": "Live Oak Grove",
-            "variants": ["SAV_STOP_04_NARRATOR_EARLY.mp3", "SAV_STOP_04_NARRATOR_ON.mp3", "SAV_STOP_04_NARRATOR_LATE.mp3"],
+            "variants": ["SAV_STOP_03_NARRATOR_EARLY.mp3", "SAV_STOP_03_NARRATOR_ON.mp3", "SAV_STOP_03_NARRATOR_LATE.mp3"],
             "duration_seconds": 130,
             "audio_tags": "[awed, reverent, slow, meditative]",
             "character_voice": null
           },
-          "stop_5": {
+          "stop_4": {
             "name": "Monument Area",
-            "variants": ["SAV_STOP_05_NARRATOR_EARLY.mp3", "SAV_STOP_05_NARRATOR_ON.mp3", "SAV_STOP_05_NARRATOR_LATE.mp3"],
+            "variants": ["SAV_STOP_04_NARRATOR_EARLY.mp3", "SAV_STOP_04_NARRATOR_ON.mp3", "SAV_STOP_04_NARRATOR_LATE.mp3"],
             "duration_seconds": 225,
             "audio_tags": "[clear-eyed, witnessing, holding-space, unflinching]",
             "character_voice": null
           },
-          "stop_6": {
+          "stop_5": {
             "name": "Forsyth Fountain",
-            "variants": ["SAV_STOP_06_LOTTIE_EARLY.mp3", "SAV_STOP_06_LOTTIE_ON.mp3", "SAV_STOP_06_LOTTIE_LATE.mp3"],
+            "variants": ["SAV_STOP_05_LOTTIE_EARLY.mp3", "SAV_STOP_05_LOTTIE_ON.mp3", "SAV_STOP_05_LOTTIE_LATE.mp3"],
             "duration_seconds": 160,
             "audio_tags": "[vulnerable, intimate, confessional, heartbroken, regretful]",
             "character_voice": "lottie",
@@ -87,24 +87,24 @@
     "file_naming_convention": {
       "format": "SAV_[LOCATION]_[NARRATOR]_[VARIANT].mp3",
       "location_codes": {
-        "STOP_01": "Wilder House",
-        "STOP_02": "Telfair Hospital",
-        "STOP_03": "Spanish War Veteran Statue",
-        "STOP_04": "Live Oak Grove",
-        "STOP_05": "Monument Area",
-        "STOP_06": "Forsyth Fountain",
-        "STOP_07": "Kessler Mansion",
-        "STOP_08": "Monterey Square",
-        "STOP_09": "Jones & Bull Corner",
-        "STOP_10": "Madison Square",
-        "STOP_11": "Chippewa Square",
-        "STOP_12": "Oglethorpe Church",
-        "STOP_13": "Wright Square",
-        "STOP_14": "Johnson Square",
-        "STOP_15": "Bay & Bull / City Hall",
-        "STOP_16": "Cotton Exchange",
-        "STOP_17": "River Access Ramp",
-        "STOP_18": "Final Anchor - Sea Merchants Statue",
+        "STOP_00": "Wilder House (Gateway)",
+        "STOP_01": "Telfair Hospital",
+        "STOP_02": "Spanish War Veteran Statue",
+        "STOP_03": "Live Oak Grove",
+        "STOP_04": "Monument Area",
+        "STOP_05": "Forsyth Fountain",
+        "STOP_06": "Kessler Mansion",
+        "STOP_07": "Monterey Square",
+        "STOP_08": "Jones & Bull Corner",
+        "STOP_09": "Madison Square",
+        "STOP_10": "Chippewa Square",
+        "STOP_11": "Oglethorpe Church",
+        "STOP_12": "Wright Square",
+        "STOP_13": "Johnson Square",
+        "STOP_14": "Bay & Bull / City Hall",
+        "STOP_15": "Cotton Exchange",
+        "STOP_16": "River Access Ramp",
+        "STOP_17": "Final Anchor - Sea Merchants Statue",
         "OPENING_FRAME": "Tour Opening",
         "CLOSING_FRAME": "Tour Closing"
       },
@@ -119,9 +119,9 @@
         "LATE": "User arrived late (GPS confidence > 70%)"
       },
       "examples": {
-        "example_1": "SAV_STOP_01_NARRATOR_ON.mp3",
-        "example_2": "SAV_STOP_06_LOTTIE_ON.mp3",
-        "example_3": "SAV_STOP_18_ELDERON_ON.mp3",
+        "example_1": "SAV_STOP_00_NARRATOR_ON.mp3",
+        "example_2": "SAV_STOP_05_LOTTIE_ON.mp3",
+        "example_3": "SAV_STOP_17_ELDERON_ON.mp3",
         "example_4": "SAV_OPENING_FRAME_NARRATOR.mp3"
       }
     },
@@ -160,8 +160,8 @@
         "character": "Spirit at Forsyth Fountain",
         "tier": "Creator Plan Premium",
         "files": 3,
-        "stops": [6],
-        "note": "Appears at Stop 6 for emotional peak (on_time, early, late variants)"
+        "stops": [5],
+        "note": "Appears at Stop 5 for emotional peak (on_time, early, late variants)"
       },
       "character_elderon": {
         "id": "NwyAvGnfbFoNNEi4UuTq",
@@ -169,8 +169,8 @@
         "character": "River witness at Cotton Exchange, River Ramp, Final Anchor",
         "tier": "Creator Plan Premium",
         "files": 9,
-        "stops": [16, 17, 18],
-        "note": "Appears at Stops 16, 17, 18 for final integration (on_time, early, late variants)"
+        "stops": [15, 16, 17],
+        "note": "Appears at Stops 15, 16, 17 for final integration (on_time, early, late variants)"
       }
     },
     "storage_structure": {
@@ -181,14 +181,14 @@
         "description": "Complete directory structure for all 128 files",
         "structure": [
           {
+            "path": "/audio/woman/stop_00/",
+            "files": ["SAV_STOP_00_NARRATOR_EARLY.mp3", "SAV_STOP_00_NARRATOR_ON.mp3", "SAV_STOP_00_NARRATOR_LATE.mp3"]
+          },
+          {
             "path": "/audio/woman/stop_01/",
             "files": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"]
           },
-          {
-            "path": "/audio/woman/stop_02/",
-            "files": ["SAV_STOP_02_NARRATOR_EARLY.mp3", "SAV_STOP_02_NARRATOR_ON.mp3", "SAV_STOP_02_NARRATOR_LATE.mp3"]
-          },
-          "... (stop_03 through stop_18)",
+          "... (stop_02 through stop_17)",
           {
             "path": "/audio/woman/opening/",
             "files": ["SAV_OPENING_FRAME_WOMAN.mp3"]
@@ -198,10 +198,11 @@
             "files": ["SAV_CLOSING_FRAME_WOMAN.mp3"]
           },
           {
-            "path": "/audio/man/stop_01/",
-            "files": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"],
+            "path": "/audio/man/stop_00/",
+            "files": ["SAV_STOP_00_NARRATOR_EARLY.mp3", "SAV_STOP_00_NARRATOR_ON.mp3", "SAV_STOP_00_NARRATOR_LATE.mp3"],
             "status": "Phase 2"
-          }
+          },
+          "... (man/stop_01 through man/stop_17 for Phase 2)"
         ]
       }
     },
@@ -209,9 +210,10 @@
       "description": "How FINAL_APP.js references audio files",
       "base_url": "/audio/",
       "example_references": {
+        "stop_0_on_time": "/audio/woman/stop_00/SAV_STOP_00_NARRATOR_ON.mp3",
         "stop_1_on_time": "/audio/woman/stop_01/SAV_STOP_01_NARRATOR_ON.mp3",
-        "stop_6_character": "/audio/woman/stop_06/SAV_STOP_06_LOTTIE_ON.mp3",
-        "stop_18_elderon": "/audio/woman/stop_18/SAV_STOP_18_ELDERON_ON.mp3",
+        "stop_5_character": "/audio/woman/stop_05/SAV_STOP_05_LOTTIE_ON.mp3",
+        "stop_17_elderon": "/audio/woman/stop_17/SAV_STOP_17_ELDERON_ON.mp3",
         "opening": "/audio/woman/opening/SAV_OPENING_FRAME_WOMAN.mp3",
         "closing": "/audio/woman/closing/SAV_CLOSING_FRAME_WOMAN.mp3"
       },

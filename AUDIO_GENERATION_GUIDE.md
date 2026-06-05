@@ -2,8 +2,8 @@
 
 **Status**: Production-Ready Specification (Audio files NOT yet generated)  
 **Model**: ElevenLabs Eleven v3  
-**Total Files**: 128 (18 stops × 3 variants × 2 narrators)  
-**Phase 1 Pilot**: 6 files (Stops 1, 6, 11, 18 — woman narrator only)
+**Total Files**: 128 (18 public stops × 3 variants × 2 narrators + 1 gateway stop)  
+**Phase 1 Pilot**: 18 files (Stops 0-5 — woman narrator only, Lottie character at Stop 5)
 
 ---
 
@@ -26,15 +26,15 @@ Create this folder structure locally before generation:
 ```
 /audio/
   /woman/
+    /stop_00/
+      SAV_STOP_00_NARRATOR_EARLY.mp3
+      SAV_STOP_00_NARRATOR_ON.mp3
+      SAV_STOP_00_NARRATOR_LATE.mp3
     /stop_01/
       SAV_STOP_01_NARRATOR_EARLY.mp3
       SAV_STOP_01_NARRATOR_ON.mp3
       SAV_STOP_01_NARRATOR_LATE.mp3
-    /stop_02/
-      SAV_STOP_02_NARRATOR_EARLY.mp3
-      SAV_STOP_02_NARRATOR_ON.mp3
-      SAV_STOP_02_NARRATOR_LATE.mp3
-    ... (through stop_18)
+    ... (through stop_17)
   /man/
     (same structure — Phase 2 only)
   /opening/
@@ -67,37 +67,37 @@ Sample Rate:           44100 Hz
 
 Each stop has specific Audio Tags for the narrator. Apply these as voice settings/emotional context:
 
-#### Stop 1 (Wilder House)
+#### Stop 0 (Wilder House) — GATEWAY ONLY
 - **Audio Tags**: [grounding, protective, sacred, present]
 - **Delivery**: Calm, anchor-like, creating safety
 - **Pace**: Slow, grounded, meditative
 - **Emphasis**: Protection and blessing are real
 
-#### Stop 2 (Telfair Hospital)
+#### Stop 1 (Telfair Hospital) — PUBLIC TOUR START
 - **Audio Tags**: [strong, authoritative, protective, impressed]
 - **Delivery**: Quiet authority, respect for Mary's will
 - **Pace**: Steady, strong, unyielding
 - **Emphasis**: Strength without harshness
 
-#### Stop 3 (Spanish War Veteran Statue)
+#### Stop 2 (Spanish War Veteran Statue)
 - **Audio Tags**: [melancholic, respectful, haunted, witnessing]
 - **Delivery**: Somber, respectful, tender
 - **Pace**: Slower than normal, gentle
 - **Emphasis**: Sadness mixed with respect
 
-#### Stop 4 (Live Oak Grove)
+#### Stop 3 (Live Oak Grove)
 - **Audio Tags**: [awed, reverent, slow, meditative]
 - **Delivery**: Awe in the presence of ancient time
 - **Pace**: Slowest of tour, almost liturgical
 - **Emphasis**: Reverence for witness and memory
 
-#### Stop 5 (Monument Area)
+#### Stop 4 (Monument Area)
 - **Audio Tags**: [clear-eyed, witnessing, holding-space, unflinching]
 - **Delivery**: Clear truth-telling, compassionate
 - **Pace**: Steady, grounded, making space for complexity
 - **Emphasis**: Witness without judgment
 
-#### Stop 6 (Forsyth Fountain) — CHARACTER VOICE: LOTTIE
+#### Stop 5 (Forsyth Fountain) — CHARACTER VOICE: LOTTIE / EMOTIONAL CORE
 - **Audio Tags**: [vulnerable, intimate, confessional, heartbroken, regretful]
 - **Voice ID**: I571sUNz6E53D5YaJgVg (Lottie)
 - **Delivery**: As if confessing a centuries-old secret
@@ -105,75 +105,75 @@ Each stop has specific Audio Tags for the narrator. Apply these as voice setting
 - **Emphasis**: Regret and sorrow that isn't yours but feels like it is
 - **Special Note**: This is the emotional heart. Prioritize this file in pilot testing.
 
-#### Stop 7 (Kessler Mansion / Armstrong College)
+#### Stop 6 (Kessler Mansion / Armstrong College)
 - **Audio Tags**: [melancholic, reflective, understanding, accepting]
 - **Delivery**: Mourning what was beautiful and temporary
 - **Pace**: Meditative, wise
 - **Emphasis**: Acceptance of transience
 
-#### Stop 8 (Monterey Square / Pulaski Monument)
+#### Stop 7 (Monterey Square / Pulaski Monument)
 - **Audio Tags**: [peaceful, resolved, hopeful, dignified]
 - **Delivery**: Calm reprieve, proof not everything stays broken
 - **Pace**: Slower, restorative
 - **Emphasis**: Peace and earned rest
 
-#### Stop 9 (Jones & Bull Corner)
+#### Stop 8 (Jones & Bull Corner)
 - **Audio Tags**: [reverent, meditative, grounding, present]
 - **Delivery**: Standing on holy ground
 - **Pace**: Slow, contemplative
 - **Emphasis**: Sacred presence of accumulated lives
 
-#### Stop 10 (Madison Square)
+#### Stop 9 (Madison Square)
 - **Audio Tags**: [integrating, clear-eyed, holding-space, compassionate]
 - **Delivery**: Witnessing complexity with compassion
 - **Pace**: Spacious, making room for multiple truths
 - **Emphasis**: Multiple histories coexisting
 
-#### Stop 11 (Chippewa Square)
+#### Stop 10 (Chippewa Square)
 - **Audio Tags**: [serious, unflinching, sorrowful, witnessing]
 - **Delivery**: Serious, clear, respectful of wound
 - **Pace**: Steady, not sensationalized
 - **Emphasis**: Wound that won't close, story that won't end
 
-#### Stop 12 (Oglethorpe Church)
+#### Stop 11 (Oglethorpe Church)
 - **Audio Tags**: [calm, meditative, restorative, grounding]
 - **Delivery**: Slowest delivery of tour, genuine rest
 - **Pace**: Slowest, deepest breaths
 - **Emphasis**: Silence as sacred
 
-#### Stop 13 (Wright Square)
+#### Stop 12 (Wright Square)
 - **Audio Tags**: [thoughtful, philosophical, observant, curious]
 - **Delivery**: Intellectual curiosity about mythology
 - **Pace**: Thoughtful, inviting listener to think
 - **Emphasis**: How cities create narratives
 
-#### Stop 14 (Johnson Square)
+#### Stop 13 (Johnson Square)
 - **Audio Tags**: [grounded, foundational, ancestral, steadfast]
 - **Delivery**: Touching bedrock, speaking of origins
 - **Pace**: Steady, rooted, ancient
 - **Emphasis**: Weight and steadiness of origins
 
-#### Stop 15 (Bay & Bull / City Hall)
+#### Stop 14 (Bay & Bull / City Hall)
 - **Audio Tags**: [alert, clear, protective, pragmatic]
 - **Delivery**: Alert presence, safety-focused
 - **Pace**: Slightly faster, practical
 - **Emphasis**: Balance alert and grounded
 
-#### Stop 16 (Cotton Exchange)
+#### Stop 15 (Cotton Exchange) — CHARACTER VOICE: ELDERON BEGINS
 - **Audio Tags**: [ancestral, witnessing, direct, sorrowful]
-- **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon begins)
+- **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
 - **Delivery**: Ancient witness speaking from river perspective
 - **Pace**: Slow, weighted with history
 - **Emphasis**: Unflinching truth about commerce and suffering
 
-#### Stop 17 (River Access Ramp)
+#### Stop 16 (River Access Ramp) — CHARACTER VOICE: ELDERON
 - **Audio Tags**: [ancestral, patient, witnessing, calling]
 - **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
 - **Delivery**: River speaking, patient and deep
 - **Pace**: Very slow, ceremonial
 - **Emphasis**: Voices rising from water, call to remember
 
-#### Stop 18 (Final Anchor - Sea Merchants Statue)
+#### Stop 17 (Final Anchor - Sea Merchants Statue) — CHARACTER VOICE: ELDERON / TOUR CONCLUSION
 - **Audio Tags**: [integrating, releasing, peaceful, eternal]
 - **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
 - **Delivery**: Voice of Savannah itself at end of time
@@ -270,56 +270,56 @@ else:
 
 ---
 
-## PART 4: PILOT PHASE (18 Files - Woman Narrator Only: Stops 1-6)
+## PART 4: PILOT PHASE (18 Files - Woman Narrator Only: Stops 0-5)
 
 ### 4.1 Pilot Files to Generate First
 
 Generate these 18 files (6 stops × 3 variants each) for field testing:
 
-**NOTE**: Stop 1 (Wilder House) is guest-only entry point. Stop 2 (Telfair Hospital) is the REAL public tour start.
+**NOTE**: Stop 0 (Wilder House) is guest-only entry point. Stop 1 (Telfair Hospital) is the REAL public tour start.
 
-**Stop 1: Wilder House** (Threshold, protection - guest only)
+**Stop 0: Wilder House** (Threshold, protection - gateway only)
+- SAV_STOP_00_NARRATOR_EARLY.mp3
+- SAV_STOP_00_NARRATOR_ON.mp3
+- SAV_STOP_00_NARRATOR_LATE.mp3
+
+**Stop 1: Telfair Hospital** (Strength, will - REAL public start)
 - SAV_STOP_01_NARRATOR_EARLY.mp3
 - SAV_STOP_01_NARRATOR_ON.mp3
 - SAV_STOP_01_NARRATOR_LATE.mp3
 
-**Stop 2: Telfair Hospital** (Strength, will - REAL public start)
+**Stop 2: Spanish War Veteran Statue** (Vigilance, watch)
 - SAV_STOP_02_NARRATOR_EARLY.mp3
 - SAV_STOP_02_NARRATOR_ON.mp3
 - SAV_STOP_02_NARRATOR_LATE.mp3
 
-**Stop 3: Spanish War Veteran Statue** (Vigilance, watch)
+**Stop 3: Live Oak Grove** (Witness, memory)
 - SAV_STOP_03_NARRATOR_EARLY.mp3
 - SAV_STOP_03_NARRATOR_ON.mp3
 - SAV_STOP_03_NARRATOR_LATE.mp3
 
-**Stop 4: Live Oak Grove** (Witness, memory)
+**Stop 4: Monument Area** (Contradiction, complexity)
 - SAV_STOP_04_NARRATOR_EARLY.mp3
 - SAV_STOP_04_NARRATOR_ON.mp3
 - SAV_STOP_04_NARRATOR_LATE.mp3
 
-**Stop 5: Monument Area** (Contradiction, complexity)
-- SAV_STOP_05_NARRATOR_EARLY.mp3
-- SAV_STOP_05_NARRATOR_ON.mp3
-- SAV_STOP_05_NARRATOR_LATE.mp3
-
-**Stop 6: Forsyth Fountain** (Emotional peak — with Lottie character voice)
-- SAV_STOP_06_LOTTIE_EARLY.mp3 (Character voice: Lottie)
-- SAV_STOP_06_LOTTIE_ON.mp3 (Character voice: Lottie)
-- SAV_STOP_06_LOTTIE_LATE.mp3 (Character voice: Lottie)
+**Stop 5: Forsyth Fountain** (Emotional peak — with Lottie character voice)
+- SAV_STOP_05_LOTTIE_EARLY.mp3 (Character voice: Lottie)
+- SAV_STOP_05_LOTTIE_ON.mp3 (Character voice: Lottie)
+- SAV_STOP_05_LOTTIE_LATE.mp3 (Character voice: Lottie)
 
 **Total Pilot Files: 18**
-**Total Duration: ~15.7 minutes (threshold through emotional peak)**
+**Total Duration: ~13.2 minutes (gateway threshold through emotional peak)**
 **Narrator: Woman (Grandma Rachel) only**
-**Character Voices: Lottie at Stop 6 only**
+**Character Voices: Lottie at Stop 5 only**
 
 **Why this scope?**
-- Stop 1: Guest entry point (protective threshold)
-- Stop 2: REAL public tour start (strength, will)
-- Stops 3-5: Tests emotional arc (vigilance → witness → contradiction)
-- Stop 6: Tests character voice (Lottie) at emotional peak
+- Stop 0: Guest entry point (protective threshold gateway)
+- Stop 1: REAL public tour start (strength, will)
+- Stops 2-4: Tests emotional arc (vigilance → witness → contradiction)
+- Stop 5: Tests character voice (Lottie) at emotional peak
 - All 3 variants: Tests early/on/late GPS confidence variations
-- Complete arc: Tests full journey from threshold through emotional transformation
+- Complete arc: Tests full journey from gateway through emotional transformation
 
 ### 4.2 Pilot Testing Protocol
 
@@ -400,12 +400,12 @@ After generation, validate each file:
 
 **File Naming Convention**:
 ```
-SAV_STOP_[ID]_NARRATOR_[VARIANT].mp3
+SAV_STOP_[ID]_[VOICE]_[VARIANT].mp3
 
 Examples:
-- SAV_STOP_01_NARRATOR_EARLY.mp3
-- SAV_STOP_06_NARRATOR_ON.mp3
-- SAV_STOP_18_NARRATOR_LATE.mp3
+- SAV_STOP_00_NARRATOR_EARLY.mp3 (Wilder House, woman narrator)
+- SAV_STOP_05_LOTTIE_ON.mp3 (Forsyth Fountain, Lottie character)
+- SAV_STOP_17_ELDERON_LATE.mp3 (Sea Merchants, Elderon character)
 ```
 
 **File Metadata Validation**:
