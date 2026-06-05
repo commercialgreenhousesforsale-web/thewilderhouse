@@ -10,10 +10,10 @@
     "estimated_duration_minutes": 30,
     "audio_base_path": "/audio/",
     "production_notes": {
-      "voice_model": "ElevenLabs Turbo v2.5",
+      "voice_model": "ElevenLabs Eleven v3 (most expressive flagship model)",
       "generation_settings": {
-        "stability": 75,
-        "clarity": 25,
+        "stability": 70,
+        "similarity_boost": 75,
         "bitrate_kbps": 192,
         "format": "MP3"
       },
@@ -41,7 +41,7 @@
         "name": "Grandma Rachel",
         "description": "Wise Southern senior, warm companion, witnessing guide",
         "voiceId": "0rEo3eAjssGDUCXHYENf",
-        "model": "turbo-v2.5",
+        "model": "eleven_v3",
         "status": "production-ready",
         "voice_tier": "Creator Plan Premium"
       },
@@ -49,7 +49,7 @@
         "name": "Havoc",
         "description": "Deep Southern Gothic, gritty, haunting, protective",
         "voiceId": "dtVZnErhiiosqofxDzSH",
-        "model": "turbo-v2.5",
+        "model": "eleven_v3",
         "status": "planned-phase-2",
         "voice_tier": "Creator Plan Premium"
       }
