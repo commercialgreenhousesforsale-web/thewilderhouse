@@ -6,7 +6,7 @@
     "total_distance_minutes": "~30 minutes walking",
     "total_narration_minutes": "~20 minutes",
     "voice": "Guide narrator with character moments",
-    "note": "Self-guided, GPS-triggered. Each narration in 3 variants: early/on-time/late arrival. Coordinates field-verified by Travis."
+    "note": "Self-guided, GPS-triggered. Production-polished narratives following master prompt standards. Field-verified coordinates."
   },
   "stops": [
     {
@@ -19,10 +19,10 @@
       "walking_time_to_next": "4:00",
       "narration_target": "3:10",
       "theme": "Threshold, sacred ground, protection",
-      "voice_type": "Reverend Wilder (opening), then Guide",
+      "voice_type": "Guide",
       "early_arrival": "You're early. Take a breath. This is a threshold — a protected place where nothing dark can follow. Wait here. Settle yourself.",
-      "on_time": "Welcome to the Wilder House. Before we step into Savannah's memory tonight, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. [pause 2s] That blessing still holds. [pause 1s] Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. [pause 2s] Breathe. Ground yourself. When you're ready, we'll walk west along Park Avenue — just four minutes — and begin where Savannah starts to open its memory to us. [pause 1s] The city is waiting.",
-      "late_arrival": "You've found the threshold. The Wilder House. A protected place before the memory begins. Take one breath here. Then we'll walk into the city."
+      "on_time": "Welcome to the Wilder House. Before we step into Savannah's memory, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. [pause 2s] That blessing still holds. [pause 1s] Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. [pause 2s] Breathe. Ground yourself. The city is waiting.",
+      "late_arrival": "You've found the threshold. The Wilder House. A protected place before memory begins. Take one breath here."
     },
     {
       "id": 1,
@@ -34,10 +34,10 @@
       "walking_time_to_next": "1:45",
       "narration_target": "1:20",
       "theme": "Strength, unyielding will, boundaries",
-      "voice_type": "Spirit (Mary Telfair presence), Guide",
+      "voice_type": "Guide",
       "early_arrival": "You're approaching Telfair Hospital. Something strong lives here. A will that never bent. Wait for it.",
       "on_time": "Our journey begins with a memory of will. [pause 2s] Strong. Unyielding. Absolute. [pause 1s] Mary Telfair built this hospital as a sanctuary for women only. No man was permitted to cross its threshold. That was her law. Unbreakable. [pause 2s] When she died, she chose to remain. She still walks these halls — a tall figure in a long brown dress, moving with purpose. Her lavender perfume announces her without warning. [pause 1s] Doors close behind visitors with quiet authority. Men who enter report her presence: gentle but firm. A boundary being held. [pause 2s] Even now, Mary protects what she built. [pause 1s] This is how Savannah remembers strength. Not as conquest. But as protection. As will made into law.",
-      "late_arrival": "Mary Telfair's will still guards this hospital. You can feel it. Some boundaries, once set, hold forever."
+      "late_arrival": "Mary Telfair's will still guards this hospital. Some boundaries, once set, hold forever."
     },
     {
       "id": 2,
@@ -50,7 +50,7 @@
       "narration_target": "1:00",
       "theme": "Vigilance, eternal watch, transformation",
       "voice_type": "Guide",
-      "early_arrival": "You're near the statue. A soldier watching over the park. Bronze. Eternal. Unchanging.",
+      "early_arrival": "A statue stands here. Bronze. Watching. Eternal.",
       "on_time": "A soldier stands here, cast in bronze. [pause 2s] He was sent to fight in a foreign war — Spain, the Caribbean, places that had nothing to do with Savannah. He fought for reasons he didn't fully understand. [pause 2s] But he came home. Changed. Haunted. [pause 1s] He chose this spot — overlooking Forsyth Park, the place he knew as a boy. [pause 2s] Now he stands watch. Forever. [pause 1s] Some soldiers never truly leave their post. The war ends, their bodies return, but some part of them stays vigilant. [pause 2s] That's what lives in this statue. Not rest. But eternal attention. A man transformed by what he saw, watching over the city that sent him away.",
       "late_arrival": "The soldier statue watches over Forsyth Park. He came home changed and never stopped keeping watch."
     },
@@ -65,7 +65,7 @@
       "narration_target": "1:45",
       "theme": "Ancient witness, nature as memory, moss as record",
       "voice_type": "Guide",
-      "early_arrival": "You're under the oldest living things in Savannah. Three hundred years old. Stop here. Feel the age.",
+      "early_arrival": "Look up. Three hundred years old. The trees remember everything.",
       "on_time": "You are now beneath the oldest living witnesses in Savannah. [pause 2s] These live oaks have stood for three centuries. Longer than any building. Longer than any person who has walked beneath them. [pause 1s] The moss hangs like memory — draped, heavy, silver-gray. [pause 2s] These trees remember everything. Every secret spoken in their shade. Every sorrow hidden beneath their canopy. Every love that bloomed and died here. Every bargain made. Every promise broken. [pause 2s] The Spanish moss is not a parasite. It's a record. [pause 1s] The homes around us are beautiful, but they are temporary. The trees are what endure. [pause 2s] They remember what the buildings forgot.",
       "late_arrival": "The oak trees have stood three hundred years. They remember everything Savannah tried to forget."
     },
@@ -80,7 +80,7 @@
       "narration_target": "2:50",
       "theme": "Contradiction, unresolved grief, holding complexity",
       "voice_type": "Guide",
-      "early_arrival": "You're approaching monuments. Two men in stone. Look at them. See the contradiction.",
+      "early_arrival": "Two men in stone. Look at them. See the contradiction.",
       "on_time": "This square holds two figures in bronze. [pause 2s] Francois Benton, who loved Savannah. And behind him, a towering monument to Confederate dead — men who died defending an institution that was already collapsing. [pause 2s] These monuments stand as Savannah stands: containing contradictions. [pause 1s] Beauty built on injustice. Honor tangled with grief. Intention mixed with outcome. [pause 2s] The city does not erase these contradictions. It holds them. [pause 1s] It remembers them. [pause 2s] Some of those who died here still cannot rest. They linger in the shadow of stone. Not angry. Not peaceful. Unresolved. [pause 2s] This is Savannah's way — not to choose, but to witness all of it.",
       "late_arrival": "Two monuments here. Two different histories. Savannah doesn't erase the contradiction — it holds both."
     },
@@ -94,11 +94,11 @@
       "walking_time_to_next": "3:45",
       "narration_target": "2:50",
       "theme": "Hidden tragedy, beauty as mask, regret",
-      "voice_type": "Spirit (Lottie), Guide",
+      "voice_type": "Guide",
       "special_note": "Split narration — mention old forts @ 1:30, garden layout & spooky element @ 3:30",
       "early_arrival": "You're approaching the fountain. The most photographed place in Savannah. But beauty here holds a secret.",
       "on_time": "Here, strength gives way to sorrow. [pause 2s] This fountain is Savannah's most beloved image. Iconic. Graceful. Beautiful. [pause 2s] But beauty in this city often masks what lies beneath. [pause 2s] Before this park was park, old forts stood here — earthworks and bastions where soldiers watched the river. [pause 2s] But that's not what lingers. [pause 3s] A girl named Lottie once carried a terrible secret. In desperation and confusion, she poisoned a woman she believed was her rival. [pause 3s] Only to discover, too late, that it was her own mother. [pause 2s] The truth shattered her completely. She could not survive the knowing. [pause 2s] Her spirit returned to this fountain — the most beautiful place she had known. [pause 1s] The garden layout here is deliberate, mathematical, almost ceremonial. Visitors still feel it — the geometry of grief. [pause 2s] People still see her. A young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. [pause 2s] Many report sudden waves of sadness not their own. Guilt for things they didn't do. Remorse that isn't theirs to carry. [pause 1s] The fountain is beautiful. But it remembers loss.",
-      "late_arrival": "This is Forsyth Fountain. The most beautiful place in Savannah. It holds the saddest secret. A girl named Lottie still grieves here."
+      "late_arrival": "Forsyth Fountain. The most beautiful place in Savannah holds the saddest secret."
     },
     {
       "id": 6,
@@ -111,7 +111,7 @@
       "narration_target": "2:00",
       "theme": "Lost institutional hopes, transience, echoes of ambition",
       "voice_type": "Guide",
-      "early_arrival": "You've reached Kessler Mansion. Where Armstrong College once shaped the dreams of young people.",
+      "early_arrival": "Kessler Mansion. Where Armstrong College once shaped the dreams of young people.",
       "on_time": "This mansion once housed Armstrong College — a place of learning and aspiration. [pause 2s] The walls remember students who studied here. Who believed their education would transform their lives. Some of those dreams were realized. [pause 2s] Many were not. [pause 1s] The building stands now as a reminder of institutional transience. What seemed permanent is now memory. What bustled with intellectual life is now quiet. [pause 2s] Yet the echoes of ambition still linger here. [pause 1s] The spirits of young people who believed in the power of knowledge. [pause 2s] Maybe their faith was justified. Maybe it wasn't. [pause 1s] The building remembers both the hope and the disappointment equally. [pause 2s] Some nights, visitors report the sound of turning pages, quiet conversation, the scratch of pen on paper. Ghosts studying still.",
       "late_arrival": "Armstrong College is gone, but the dreams of its students never left this mansion."
     },
@@ -126,9 +126,9 @@
       "narration_target": "1:25",
       "theme": "Honor, peace earned, rest possible",
       "voice_type": "Guide",
-      "early_arrival": "You're at Monterey Square. This is a place where rest is possible. You'll understand in a moment.",
-      "on_time": "Casimir Pulaski was mortally wounded here in 1779. The Revolutionary War's end, perhaps, for Savannah. [pause 2s] His remains rest beneath this monument. [pause 1s] Unlike so many others we have encountered, Pulaski has found peace. [pause 2s] Colonial soldiers sometimes appear around this square at dusk. Standing at attention. Saluting their commander with quiet loyalty. [pause 2s] Not every memory in Savannah remains broken. Some have earned rest. [pause 1s] Some have found forgiveness. [pause 2s] Some have learned that honor, finally and completely, is enough. [pause 1s] This place holds that possibility.",
-      "late_arrival": "Pulaski earned rest. Not all of Savannah's ghosts are restless. Some have found peace."
+      "early_arrival": "Monterey Square. A place where rest is possible.",
+      "on_time": "Casimir Pulaski was mortally wounded here in 1779. The Revolutionary War's end, perhaps, for Savannah. [pause 2s] His remains rest beneath this monument. [pause 1s] Unlike so many others we have encountered, Pulaski has found peace. [pause 2s] Colonial soldiers sometimes appear around this square at dusk. Standing at attention. Saluting their commander with quiet loyalty. [pause 2s] Not every memory in Savannah remains broken. Some have earned rest. [pause 1s] Some have found forgiveness. [pause 2s] Some have learned that honor, finally and completely, is enough.",
+      "late_arrival": "Pulaski earned rest. Not all of Savannah's ghosts are restless."
     },
     {
       "id": 8,
@@ -141,8 +141,8 @@
       "narration_target": "1:10",
       "theme": "Intersection as liminal space, invisible lives, countless crossings",
       "voice_type": "Guide",
-      "early_arrival": "You're at an intersection. A corner where lives have crossed for two centuries.",
-      "on_time": "This corner is an intersection — a place where countless lives have crossed paths for two hundred years. [pause 2s] Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. [pause 1s] All have stood exactly where you're standing. [pause 2s] All were changed by this moment of crossing. [pause 2s] Intersections are liminal spaces. They belong to no one. [pause 1s] They hold the accumulated energy of countless meetings. Partings. Collisions. [pause 2s] Some people return to the places where their lives changed forever. This corner holds many such returns. [pause 1s] You might feel them if you stand here long enough and listen.",
+      "early_arrival": "An intersection. A corner where lives have crossed for two centuries.",
+      "on_time": "This corner is an intersection — a place where countless lives have crossed paths for two hundred years. [pause 2s] Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. [pause 1s] All have stood exactly where you're standing. [pause 2s] All were changed by this moment of crossing. [pause 2s] Intersections are liminal spaces. They belong to no one. [pause 1s] They hold the accumulated energy of countless meetings. Partings. Collisions. [pause 2s] Some people return to the places where their lives changed forever. This corner holds many such returns.",
       "late_arrival": "Intersections are sacred. This corner remembers two hundred years of crossing paths."
     },
     {
@@ -156,9 +156,9 @@
       "narration_target": "2:00",
       "theme": "Multiple voices converging, integration, holding contradiction",
       "voice_type": "Guide",
-      "early_arrival": "You've reached Madison Square. Three different histories stand here together.",
+      "early_arrival": "Madison Square. Three different histories stand here together.",
       "on_time": "Madison Square holds three distinct voices. [pause 2s] The church stands as sanctuary — a place where people have always sought safety and prayer. [pause 2s] The Sorrel Weed House holds the memory of bondage and survival — of people whose names were erased but whose spirits endure. [pause 2s] The Green-Meldrim House holds the memory of occupation and resistance — of a city conquered and refusing to be broken. [pause 2s] All three stand here together. In one square. [pause 1s] The church does not erase the history of the houses. The houses do not negate the sanctity of the church. [pause 2s] They exist together. They remember together. [pause 2s] And in this convergence, we understand: Savannah's memory is not simple. It is layered. Tragic and sacred at once. [pause 1s] The city holds all of it.",
-      "late_arrival": "Madison Square. Where Savannah's different histories come together. The city's memory becomes whole here."
+      "late_arrival": "Madison Square. Where Savannah's different histories come together."
     },
     {
       "id": 10,
@@ -170,10 +170,10 @@
       "walking_time_to_next": "1:16",
       "narration_target": "1:00",
       "theme": "Unresolution, wounds that refuse to close, untold stories",
-      "voice_type": "Spirit (Wally, hesitant), Guide",
-      "early_arrival": "You're approaching Chippewa Square. This is where the unresolved stories live.",
+      "voice_type": "Guide",
+      "early_arrival": "Chippewa Square. Where unresolved stories live.",
       "on_time": "Chippewa Square holds a memory that will not rest. [pause 2s] Inside the Foley House Inn, workers discovered a human skeleton sealed inside a wall in 1987. [pause 2s] A man had entered Honoria Foley's room with harm in his heart. [pause 2s] She defended herself. Rather than face the truth, they sealed his body inside the wall. [pause 2s] They call him Wally. [pause 1s] Guests still see him — a figure in 19th-century clothes who vanishes when looked at directly. [pause 2s] Across the square, actress Betty still watches performances at the Savannah Theatre. She loved the stage so deeply she could never truly leave it. [pause 2s] Some wounds in Savannah refuse to close. Some stories refuse to end. [pause 1s] Some ghosts cannot rest because their stories were never truly told.",
-      "late_arrival": "Chippewa Square. Where unresolved stories linger. Some ghosts can't rest because the truth was never spoken."
+      "late_arrival": "Chippewa Square holds wounds that will not close. Stories that will not end."
     },
     {
       "id": 11,
@@ -186,9 +186,9 @@
       "narration_target": "1:20",
       "theme": "Sacred pause, refuge in the journey, acknowledgment of transition",
       "voice_type": "Guide",
-      "early_arrival": "You're approaching Oglethorpe Church. A safe space where breath returns.",
-      "on_time": "This church stands on the southwest corner of Oglethorpe and Bull — a quiet sanctuary in the midst of Savannah's story. [pause 2s] Like Madison's church before it, this is a place where prayer has anchored people. Where the sacred persists. [pause 2s] Before we turn our footsteps to the city's founding, to its civic face and memory, pause here for a moment. [pause 3s] Feel the solidity of stone and faith. [pause 2s] Not all of Savannah's memory is haunted. Some of it is held in silence, in the steady presence of belief. [pause 2s] This church remains. As it has for generations. [pause 1s] Some spirits here are restful. Some are protective. All are present. [pause 2s] When you're ready, we move north into the streets where the city was built and governed.",
-      "late_arrival": "Oglethorpe Church. A safe space. A moment of peace before we continue deeper into Savannah's memory."
+      "early_arrival": "Oglethorpe Church. A safe space where breath returns.",
+      "on_time": "This church stands on the southwest corner of Oglethorpe and Bull — a quiet sanctuary in the midst of Savannah's story. [pause 2s] Like Madison's church before it, this is a place where prayer has anchored people. Where the sacred persists. [pause 2s] Pause here for a moment. [pause 3s] Feel the solidity of stone and faith. [pause 2s] Not all of Savannah's memory is haunted. Some of it is held in silence, in the steady presence of belief. [pause 2s] This church remains. As it has for generations. [pause 1s] Some spirits here are restful. Some are protective. All are present.",
+      "late_arrival": "Oglethorpe Church. A moment of peace before we continue deeper into Savannah's memory."
     },
     {
       "id": 12,
@@ -201,9 +201,9 @@
       "narration_target": "1:10",
       "theme": "Civic memory, monuments to founders, order and structure",
       "voice_type": "Guide",
-      "early_arrival": "You're at Wright Square. This is where the city began to imagine itself.",
-      "on_time": "Wright Square holds the statue of William Washington — a figure caught between soldier and civilian, between duty and conscience. [pause 2s] But more than one man's story, this square represents something deeper: the moment Savannah began to shape its own narrative. [pause 2s] The buildings around this square were constructed to last. They were built with intention, with permanence in mind. [pause 2s] Different from the hauntings we've encountered — these are not broken spirits but unfinished stories about power, ambition, and the city's vision of itself. [pause 2s] Some visitors report a sense of expectation here, as if the square is still waiting for something to be completed. [pause 1s] Perhaps the city's own understanding of who it is. [pause 2s] We stand in the space between the Savannah that was and the Savannah that imagined itself into being.",
-      "late_arrival": "Wright Square. Where civic memory is carved into stone and the city's image of itself takes shape."
+      "early_arrival": "Wright Square. Where the city began to imagine itself.",
+      "on_time": "Wright Square holds the statue of William Washington — a figure caught between soldier and civilian, between duty and conscience. [pause 2s] But more than one man's story, this square represents something deeper: the moment Savannah began to shape its own narrative. [pause 2s] The buildings around this square were constructed to last. They were built with intention, with permanence in mind. [pause 2s] Different from the hauntings we've encountered — these are not broken spirits but unfinished stories about power, ambition, and the city's vision of itself. [pause 2s] Some visitors report a sense of expectation here, as if the square is still waiting for something to be completed. [pause 1s] Perhaps the city's own understanding of who it is.",
+      "late_arrival": "Wright Square. Where civic memory is carved into stone and the city's image takes shape."
     },
     {
       "id": 13,
@@ -216,9 +216,9 @@
       "narration_target": "0:55",
       "theme": "Founding roots, deep memory, origins that shaped everything",
       "voice_type": "Guide",
-      "early_arrival": "You're at Johnson Square. The deepest roots of Savannah begin here.",
-      "on_time": "Johnson Square is where Savannah remembers its founding. [pause 2s] The monument to General Nathaniel Green stands as a reminder of the Revolutionary War's grip on this city. [pause 2s] But the church here — Christ Church — reaches back even deeper. [pause 2s] It was here that George Washington himself attended services. [pause 2s] These stories layer upon each other: founding, faith, patriotic duty. [pause 1s] The square holds the weight of all these origins. [pause 2s] Standing here, you stand where the city's first imagining of itself crystallized into stone and memory. [pause 1s] Long before the hauntings, before the tragedies, before the contradictions — there was this place, where people gathered and decided: this will be our home.",
-      "late_arrival": "Johnson Square. Where Savannah's deepest roots lie. The founding moment, crystallized in stone and prayer."
+      "early_arrival": "Johnson Square. The deepest roots of Savannah begin here.",
+      "on_time": "Johnson Square is where Savannah remembers its founding. [pause 2s] The monument to General Nathaniel Green stands as a reminder of the Revolutionary War's grip on this city. [pause 2s] But the church here — Christ Church — reaches back even deeper. [pause 2s] It was here that George Washington himself attended services. [pause 2s] These stories layer upon each other: founding, faith, patriotic duty. [pause 1s] The square holds the weight of all these origins. [pause 2s] Standing here, you stand where the city's first imagining of itself crystallized into stone and memory.",
+      "late_arrival": "Johnson Square. Where Savannah's deepest roots lie. The founding moment, crystallized in stone."
     },
     {
       "id": 14,
@@ -231,9 +231,9 @@
       "narration_target": "1:45",
       "theme": "Authority and power, civic infrastructure, the city's face",
       "voice_type": "Guide",
-      "early_arrival": "You're approaching Bay Street and Bull. The city's official face. Power and governance.",
-      "on_time": "You've reached Bay Street — the boundary. [pause 2s] Everything to the west was Savannah's past: hauntings, founders, memory layered upon memory. [pause 2s] City Hall stands here as the city's face to the world. The seat of governance. The machinery of order. [pause 2s] This is where the city formally organizes itself. Where decisions are made, laws are written, the business of a city is conducted. [pause 2s] But even here, in the official chambers and marble halls, memory persists. [pause 1s] The spirits of mayors and officials, the echoes of contentious debates, the weight of decisions made and unmade. [pause 2s] Some of Savannah's ghosts wear suits and ties. They linger in corridors, still attending to the city's business. [pause 2s] Cross Bay Street now. [pause 1s] We're moving toward the water, toward the economic foundation that built and sustained this city.",
-      "late_arrival": "City Hall. Where authority governs. Where the city's official memory is written and rewritten."
+      "early_arrival": "You're at Bay Street. The city's official face.",
+      "on_time": "You stand at a threshold now. Bay Street — the boundary between Savannah's memory and its commerce. [pause 2s] The street flows with traffic, with the rhythms of the working city. [pause 2s] City Hall stands here as the city's face to the world. The seat of governance. The machinery of order. [pause 2s] This is where the city formally organizes itself. Where decisions are made, laws are written, the business of a city is conducted. [pause 2s] But even here, in the official chambers and marble halls, memory persists. [pause 1s] The spirits of mayors and officials, the echoes of contentious debates, the weight of decisions made and unmade. [pause 2s] Some of Savannah's ghosts wear suits and ties. They linger in corridors, still attending to the city's business. [pause 2s] When the way is clear, the economic foundation that built and sustained this city lies ahead.",
+      "late_arrival": "City Hall. Where authority governs. Where the city's official memory is written."
     },
     {
       "id": 15,
@@ -246,8 +246,8 @@
       "narration_target": "1:10",
       "theme": "Commerce, economic foundation, the bridge between past and future",
       "voice_type": "Guide",
-      "early_arrival": "You're approaching the Cotton Exchange. This is where Savannah's wealth was built.",
-      "on_time": "The Cotton Exchange. [pause 2s] This building represents the economic engine that transformed Savannah from a settlement into a city of consequence. [pause 2s] Cotton was bought and sold here. Fortunes were made and lost. [pause 2s] But cotton also carried with it the weight of human suffering — the enslaved labor, the broken families, the systems of bondage that generated those profits. [pause 3s] The spirits here are conflicted. Merchants still count their gains. But beneath that, there's a deeper presence — the voices of those whose labor filled the coffers. [pause 2s] Commerce and tragedy are inseparable here. [pause 1s] As we move toward the river, remember: this exchange is the bridge between the city's official story and the story it has often tried to forget. [pause 1s] The water ahead holds both.",
+      "early_arrival": "The Cotton Exchange. Where Savannah's wealth was built.",
+      "on_time": "The Cotton Exchange. [pause 2s] This building represents the economic engine that transformed Savannah from a settlement into a city of consequence. [pause 2s] Cotton was bought and sold here. Fortunes were made and lost. [pause 2s] But cotton also carried with it the weight of human suffering — the enslaved labor, the broken families, the systems of bondage that generated those profits. [pause 3s] The spirits here are conflicted. Merchants still count their gains. But beneath that, there's a deeper presence — the voices of those whose labor filled the coffers. [pause 2s] Commerce and tragedy are inseparable here. [pause 1s] This exchange is the bridge between the city's official story and the story it has often tried to forget. [pause 1s] The water ahead holds both.",
       "late_arrival": "Cotton Exchange. Savannah's wealth was built here. And so was the foundation of its deepest wound."
     },
     {
@@ -261,9 +261,9 @@
       "narration_target": "1:20",
       "theme": "Threshold revisited, liminal space, final approach to water",
       "voice_type": "Guide",
-      "early_arrival": "You're approaching the river. This is where all the layers come together. Where memory becomes water.",
-      "on_time": "The ramp descends toward the water. [pause 2s] This threshold is different from where we began. [pause 1s] Then, we were protected by the Wilder House's blessing. [pause 2s] Now, we approach the river itself — where Savannah's deepest truths are held. [pause 2s] For nearly three hundred years, this water carried the arrival of tens of thousands of enslaved Africans. [pause 2s] They came through these waters in chains. [pause 3s] But the river is also renewal. It flows. It moves. It does not hold grudges, only memory. [pause 2s] At twilight, many hear voices rising from the water. [pause 2s] Fragments of African languages. Gullah. [pause 2s] Not in rage. But quietly insisting: Remember us. [pause 2s] You are nearly at the water's edge now. [pause 1s] Prepare yourself for the final speaking.",
-      "late_arrival": "The river access ramp. The threshold to Savannah's deepest memory. The water is ahead."
+      "early_arrival": "The river. This is where all the layers come together.",
+      "on_time": "The ramp descends toward the water. [pause 2s] This threshold is different from where we began. [pause 1s] Then, we were protected by the Wilder House's blessing. [pause 2s] Now, we approach the river itself — where Savannah's deepest truths are held. [pause 2s] For nearly three hundred years, this water carried the arrival of tens of thousands of enslaved Africans. [pause 2s] They came through these waters in chains. [pause 3s] But the river is also renewal. It flows. It moves. It does not hold grudges, only memory. [pause 2s] At twilight, many hear voices rising from the water. [pause 2s] Fragments of African languages. Gullah. [pause 2s] Not in rage. But quietly insisting: Remember us. [pause 2s] The water's edge awaits.",
+      "late_arrival": "The river access ramp. The threshold to Savannah's deepest memory."
     },
     {
       "id": 17,
@@ -275,10 +275,10 @@
       "walking_time_to_next": "0:00",
       "narration_target": "2:30",
       "theme": "Dissolution, release, return to water, integration of all stories",
-      "voice_type": "Guide (softer, more distant)",
-      "early_arrival": "You've arrived at the river. The sea merchants stand eternal. This is the end and the beginning.",
-      "on_time": "And now you have reached the place where all the layers become one. [pause 3s] The statue of the sea merchants stands at the water's edge — men and women who built their lives on trade, on commerce, on the movement of goods and ships across the ocean. [pause 2s] But they also stand as witnesses. [pause 2s] For nearly three hundred years, this river carried Savannah's deepest wound — the arrival and forced passage of countless enslaved Africans. [pause 2s] Tens of thousands passed through these docks in chains. [pause 3s] And yet. [pause 2s] The river does not separate the stories. [pause 1s] Mary's iron will. The soldier's eternal watch. The oak trees' witness. The monuments' contradiction. The fountain's hidden grief. The college's lost hopes. Pulaski's earned peace. The intersections' countless crossings. Madison's convergence. Chippewa's unresolved wound. The church's refuge. The founding myths. The city's civic face. The cotton's terrible exchange. [pause 3s] The river holds them all. [pause 2s] You have walked through the living memory of Savannah tonight. [pause 2s] You have witnessed how a city remembers — not erasing the broken parts, but honoring them. [pause 2s] Not forgetting the beauty, but understanding its cost. [pause 3s] And now that memory walks with you. [pause 2s] Carry these stories gently. [pause 1s] Speak them when you can. [pause 2s] That is all the city asks. [pause 3s] The water flows. And Savannah remembers.",
-      "late_arrival": "The river. Savannah's deepest memory. You have walked through the city's remembering. That memory continues with you now."
+      "voice_type": "Guide",
+      "early_arrival": "You've arrived at the river. The sea merchants stand eternal.",
+      "on_time": "And now you have reached the place where all the layers become one. [pause 3s] The statue of the sea merchants stands at the water's edge — men and women who built their lives on trade, on commerce, on the movement of goods and ships across the ocean. [pause 2s] But they also stand as witnesses. [pause 2s] For nearly three hundred years, this river carried Savannah's deepest wound — the arrival and forced passage of countless enslaved Africans. [pause 2s] Tens of thousands passed through these docks in chains. [pause 3s] And yet. [pause 2s] The river does not separate the stories. [pause 1s] Mary's iron will. The soldier's eternal watch. The oak trees' witness. The monuments' contradiction. The fountain's hidden grief. The college's lost hopes. Pulaski's earned peace. The intersections' countless crossings. Madison's convergence. Chippewa's unresolved wound. The church's refuge. The founding myths. The city's civic face. The cotton's terrible exchange. [pause 3s] The river holds them all. [pause 2s] You have walked through the living memory of Savannah. [pause 2s] You have witnessed how a city remembers — not erasing the broken parts, but honoring them. [pause 2s] Not forgetting the beauty, but understanding its cost. [pause 3s] And now that memory walks with you. [pause 2s] Carry these stories gently. [pause 1s] Speak them when you can. [pause 2s] That is all the city asks. [pause 3s] The water flows. And Savannah remembers.",
+      "late_arrival": "The river. Savannah's deepest memory. You have walked through the city's remembering."
     }
   ]
 }
