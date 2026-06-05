@@ -15,7 +15,7 @@
 - ✅ Audio Tags specified for every stop ([grounding], [vulnerable], etc.)
 - ✅ Narrator direction included (how voice actor should deliver)
 - ✅ v3 optimization notes (how to leverage v3 fidelity)
-- ✅ Character voice specifications (Lottie, Elderon)
+- ✅ Character voice specifications (Lottie at Stop 5 - emotional core, Elderon at Stops 15-17 - sea merchant witness)
 - ✅ Expression intensity values (0.6-0.85)
 - ✅ Pronunciation guides embedded (Savannah, Telfair, Pulaski, Gullah, etc.)
 - ✅ Walking times accurate (240 sec for Stop 0, 76 sec for Stop 10, etc.)
@@ -89,10 +89,10 @@
 - ✅ Sample Rate: 44100 Hz
 - ✅ Format: MP3
 - ✅ Voice IDs confirmed:
-  - Woman: 0rEo3eAjssGDUCXHYENf (72 files)
-  - Man: dtVZnErhiiosqofxDzSH (56 files - Phase 2)
-  - Lottie: I571sUNz6E53D5YaJgVg (3 files at Stop 5)
-  - Elderon: NwyAvGnfbFoNNEi4UuTq (9 files at Stops 15-17)
+  - Woman: 0rEo3eAjssGDUCXHYENf (woman narrator, all 18 stops + opening/closing)
+  - Man: dtVZnErhiiosqofxDzSH (man narrator, Phase 2 only)
+  - Lottie: I571sUNz6E53D5YaJgVg (character voice at Stop 5 - emotional core)
+  - Elderon: NwyAvGnfbFoNNEi4UuTq (character voice at Stops 15-17 - sea merchant witness)
 
 **Status**: ✅ READY
 

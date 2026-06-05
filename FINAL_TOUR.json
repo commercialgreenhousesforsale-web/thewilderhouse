@@ -79,14 +79,14 @@
       "elderon": {
         "name": "Elderon",
         "voiceId": "NwyAvGnfbFoNNEi4UuTq",
-        "character": "Elderon — Witnessing voice at river",
+        "character": "Elderon — A Sea Merchant",
         "stop_ids": [15, 16, 17],
-        "description": "Ancient presence, speaks from water itself, integration and release",
-        "expression_intensity": 0.65,
+        "description": "A merchant who lived through the cotton trade, witnessed the river arrivals, built his life on commerce. Now a ghost who remembers what he saw.",
+        "expression_intensity": 0.70,
         "voice_tier": "Creator Plan Premium",
-        "audio_tags": "[ancestral, patient, witnessing, ancient, peaceful]",
-        "v3_optimization": "At v3's highest fidelity, Elderon should sound like the river itself—patient, having seen everything, at peace with the weight of history. Audio Tags should convey both the burden of witness and the freedom of flowing water.",
-        "delivery_note": "Calm, slow, as if the river itself is speaking—patient, holding wisdom from centuries. Speak as though you have time itself available to you. This is peace after pain."
+        "audio_tags": "[direct, witnessed, grounded, unflinching]",
+        "v3_optimization": "At v3's highest fidelity, Elderon should sound like a real person—someone who was there, who saw what happened, who knows what the river carried. Grounded and honest, not mystical.",
+        "delivery_note": "Direct, matter-of-fact, as someone speaking from lived experience. Not poetic—real. You were there. You saw the ships, the arrivals, the commerce. Speak what you know."
       }
     }
   },

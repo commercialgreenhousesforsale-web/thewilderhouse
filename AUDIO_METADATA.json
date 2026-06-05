@@ -166,12 +166,12 @@
       "character_elderon": {
         "id": "NwyAvGnfbFoNNEi4UuTq",
         "name": "Elderon",
-        "character": "River witness at Cotton Exchange, River Ramp, Final Anchor",
+        "character": "A Sea Merchant — lived through the trade, witnessed the river",
         "tier": "Creator Plan Premium",
         "files": 9,
         "stops": [15, 16, 17],
-        "note": "Appears at Stops 15, 16, 17 for final integration (on_time, early, late variants)"
-      }
+        "note": "Appears at Stops 15-17 (Cotton Exchange, River Ramp, Sea Merchants Statue) — merchant witness to commerce and what the river carried"
+      },
     },
     "storage_structure": {
       "base_path": "/audio/",
@@ -213,7 +213,8 @@
         "stop_0_on_time": "/audio/woman/stop_00/SAV_STOP_00_NARRATOR_ON.mp3",
         "stop_1_on_time": "/audio/woman/stop_01/SAV_STOP_01_NARRATOR_ON.mp3",
         "stop_5_character": "/audio/woman/stop_05/SAV_STOP_05_LOTTIE_ON.mp3",
-        "stop_17_elderon": "/audio/woman/stop_17/SAV_STOP_17_ELDERON_ON.mp3",
+        "stop_15_character": "/audio/woman/stop_15/SAV_STOP_15_ELDERON_ON.mp3",
+        "stop_17_character": "/audio/woman/stop_17/SAV_STOP_17_ELDERON_ON.mp3",
         "opening": "/audio/woman/opening/SAV_OPENING_FRAME_WOMAN.mp3",
         "closing": "/audio/woman/closing/SAV_CLOSING_FRAME_WOMAN.mp3"
       },

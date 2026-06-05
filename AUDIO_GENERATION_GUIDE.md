@@ -159,26 +159,26 @@ Each stop has specific Audio Tags for the narrator. Apply these as voice setting
 - **Pace**: Slightly faster, practical
 - **Emphasis**: Balance alert and grounded
 
-#### Stop 15 (Cotton Exchange) — CHARACTER VOICE: ELDERON BEGINS
-- **Audio Tags**: [ancestral, witnessing, direct, sorrowful]
+#### Stop 15 (Cotton Exchange) — CHARACTER VOICE: ELDERON (Sea Merchant)
+- **Audio Tags**: [direct, witnessed, grounded, unflinching]
 - **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
-- **Delivery**: Ancient witness speaking from river perspective
-- **Pace**: Slow, weighted with history
-- **Emphasis**: Unflinching truth about commerce and suffering
+- **Delivery**: A merchant speaking from lived experience about the cotton trade
+- **Pace**: Steady, direct, matter-of-fact
+- **Emphasis**: What he saw, what he knew, what the commerce meant
 
-#### Stop 16 (River Access Ramp) — CHARACTER VOICE: ELDERON
-- **Audio Tags**: [ancestral, patient, witnessing, calling]
+#### Stop 16 (River Access Ramp) — CHARACTER VOICE: ELDERON (Sea Merchant)
+- **Audio Tags**: [direct, witnessed, grounded, honest]
 - **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
-- **Delivery**: River speaking, patient and deep
-- **Pace**: Very slow, ceremonial
-- **Emphasis**: Voices rising from water, call to remember
+- **Delivery**: A merchant witnessing what arrived and departed at the ramp
+- **Pace**: Measured, real, grounded in memory
+- **Emphasis**: The arrivals, the departures, what he knew was happening
 
 #### Stop 17 (Final Anchor - Sea Merchants Statue) — CHARACTER VOICE: ELDERON / TOUR CONCLUSION
-- **Audio Tags**: [integrating, releasing, peaceful, eternal]
+- **Audio Tags**: [direct, witnessed, grounded, unflinching]
 - **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
-- **Delivery**: Voice of Savannah itself at end of time
-- **Pace**: Slow, completing, integrating
-- **Emphasis**: Everything held, nothing separated
+- **Delivery**: One of the merchants the statue represents, speaking his truth
+- **Pace**: Steady, final, complete
+- **Emphasis**: All the stories, all witnessed, all part of his life and memory
 
 #### Opening Frame
 - **Audio Tags**: [grounding, protective, sacred, present]
