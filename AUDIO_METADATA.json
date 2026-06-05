@@ -166,11 +166,11 @@
       "character_elderon": {
         "id": "NwyAvGnfbFoNNEi4UuTq",
         "name": "Elderon",
-        "character": "A Sea Merchant — lived through the trade, witnessed the river",
+        "character": "A Sea Merchant — final witness",
         "tier": "Creator Plan Premium",
-        "files": 9,
-        "stops": [15, 16, 17],
-        "note": "Appears at Stops 15-17 (Cotton Exchange, River Ramp, Sea Merchants Statue) — merchant witness to commerce and what the river carried"
+        "files": 3,
+        "stops": [17],
+        "note": "Appears at Stop 17 only (Sea Merchants Statue) — merchant testimony at the tour's end (on_time, early, late variants)"
       },
     },
     "storage_structure": {
