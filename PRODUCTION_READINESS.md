@@ -235,24 +235,24 @@
 
 ---
 
-## SECTION 6b: PILOT PHASE SCOPE (Updated)
+## SECTION 6b: PILOT PHASE SCOPE (Finalized)
 
 ### Pilot Scope: Stops 1-6 (Wilder House → Forsyth Fountain)
 
 **Files**: 18 (6 stops × 3 variants)
-- Stop 1: Wilder House (early/on/late)
-- Stop 2: Telfair Hospital (early/on/late)
-- Stop 3: Spanish War Veteran Statue (early/on/late)
-- Stop 4: Live Oak Grove (early/on/late)
-- Stop 5: Monument Area (early/on/late)
-- Stop 6: Forsyth Fountain with Lottie character voice (early/on/late)
+- Stop 1: Wilder House (guest-only entry point)
+- Stop 2: Telfair Hospital (REAL public tour start)
+- Stop 3: Spanish War Veteran Statue
+- Stop 4: Live Oak Grove
+- Stop 5: Monument Area
+- Stop 6: Forsyth Fountain with Lottie character voice
 
 **Narrator**: Female (Grandma Rachel) ONLY
 **Character Voices**: Lottie at Stop 6 ONLY
 **No More After Pilot**: No opening/closing frames, no other character voices, no other stops
 
-**Duration**: ~15.7 minutes (complete mini-journey)
-**Why This Scope**: Tests full emotional arc (threshold → strength → vigilance → witness → contradiction → emotional peak) with character voice integration
+**Duration**: ~15.7 minutes (complete threshold through emotional peak)
+**Why This Scope**: Tests full emotional arc including protective threshold (Stop 1, guest-only) and real public start (Stop 2, Telfair) through emotional peak (Stop 6, with character voice). Validates both guest and public pathways.
 
 **Status**: ✅ DEFINED
 
@@ -319,8 +319,9 @@ These are helpful reference documents but don't need to be committed:
 ### 10.1 Pilot Phase Testing (18 Files: Stops 1-6)
 
 **Scope**: Wilder House → Forsyth Fountain (6 stops × 3 variants = 18 files)
-- Stop 1: Wilder House (early/on/late)
-- Stop 2: Telfair Hospital (early/on/late)
+**Note**: Stop 1 is guest-only. Stop 2 (Telfair) is REAL public tour start.
+- Stop 1: Wilder House (guest-only entry)
+- Stop 2: Telfair Hospital (public tour start)
 - Stop 3: Spanish War Veteran Statue (early/on/late)
 - Stop 4: Live Oak Grove (early/on/late)
 - Stop 5: Monument Area (early/on/late)

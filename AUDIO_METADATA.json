@@ -11,21 +11,24 @@
         "files_count": 18,
         "narrator": "woman",
         "description": "18 pilot files (Stops 1-6, all 3 variants) for field testing",
-        "scope": "Wilder House → Forsyth Fountain (complete emotional arc: threshold → strength → vigilance → witness → contradiction → emotional peak)",
+        "scope": "Wilder House → Forsyth Fountain (threshold through emotional peak)",
+        "note": "Stop 1 (Wilder House) is guest-only. Stop 2 (Telfair) is REAL public tour start.",
         "files": {
           "stop_1": {
             "name": "Wilder House",
             "variants": ["SAV_STOP_01_NARRATOR_EARLY.mp3", "SAV_STOP_01_NARRATOR_ON.mp3", "SAV_STOP_01_NARRATOR_LATE.mp3"],
             "duration_seconds": 240,
             "audio_tags": "[grounding, protective, sacred, present]",
-            "character_voice": null
+            "character_voice": null,
+            "note": "Guest-only entry point"
           },
           "stop_2": {
             "name": "Telfair Hospital",
             "variants": ["SAV_STOP_02_NARRATOR_EARLY.mp3", "SAV_STOP_02_NARRATOR_ON.mp3", "SAV_STOP_02_NARRATOR_LATE.mp3"],
             "duration_seconds": 105,
             "audio_tags": "[strong, authoritative, protective, impressed]",
-            "character_voice": null
+            "character_voice": null,
+            "note": "REAL public tour start"
           },
           "stop_3": {
             "name": "Spanish War Veteran Statue",
@@ -56,7 +59,7 @@
             "character_voice": "lottie",
             "character_voice_id": "I571sUNz6E53D5YaJgVg",
             "note": "EMOTIONAL CORE & CHARACTER VOICE TEST"
-          }
+          },
         },
         "narrator_info": {
           "name": "Grandma Rachel",

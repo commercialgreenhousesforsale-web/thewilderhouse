@@ -276,12 +276,14 @@ else:
 
 Generate these 18 files (6 stops × 3 variants each) for field testing:
 
-**Stop 1: Wilder House** (Threshold, protection)
+**NOTE**: Stop 1 (Wilder House) is guest-only entry point. Stop 2 (Telfair Hospital) is the REAL public tour start.
+
+**Stop 1: Wilder House** (Threshold, protection - guest only)
 - SAV_STOP_01_NARRATOR_EARLY.mp3
 - SAV_STOP_01_NARRATOR_ON.mp3
 - SAV_STOP_01_NARRATOR_LATE.mp3
 
-**Stop 2: Telfair Hospital** (Strength, will)
+**Stop 2: Telfair Hospital** (Strength, will - REAL public start)
 - SAV_STOP_02_NARRATOR_EARLY.mp3
 - SAV_STOP_02_NARRATOR_ON.mp3
 - SAV_STOP_02_NARRATOR_LATE.mp3
@@ -307,16 +309,17 @@ Generate these 18 files (6 stops × 3 variants each) for field testing:
 - SAV_STOP_06_LOTTIE_LATE.mp3 (Character voice: Lottie)
 
 **Total Pilot Files: 18**
-**Total Duration: ~15.7 minutes (complete mini-journey)**
+**Total Duration: ~15.7 minutes (threshold through emotional peak)**
 **Narrator: Woman (Grandma Rachel) only**
 **Character Voices: Lottie at Stop 6 only**
 
 **Why this scope?**
-- Stop 1: Sets narrator tone and protects listener (threshold)
-- Stops 2-5: Tests emotional arc (strength → vigilance → witness → contradiction)
+- Stop 1: Guest entry point (protective threshold)
+- Stop 2: REAL public tour start (strength, will)
+- Stops 3-5: Tests emotional arc (vigilance → witness → contradiction)
 - Stop 6: Tests character voice (Lottie) at emotional peak
 - All 3 variants: Tests early/on/late GPS confidence variations
-- Complete journey: Tests listener transformation arc (15 minutes walking)
+- Complete arc: Tests full journey from threshold through emotional transformation
 
 ### 4.2 Pilot Testing Protocol
 
