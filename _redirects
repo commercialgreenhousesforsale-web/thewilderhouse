@@ -1,37 +1,11 @@
-# Legacy short URLs — .html versions
-/314A.html /forsyth-park-vacation-rental-savannah-314a 301
-/314a.html /forsyth-park-vacation-rental-savannah-314a 301
-/316A.html /savannah-victorian-district-vacation-rental-316a 301
-/316a.html /savannah-victorian-district-vacation-rental-316a 301
-/both.html /savannah-group-vacation-rental-4-bedroom 301
-/both /savannah-group-vacation-rental-4-bedroom 301
-/units.html /savannah-group-vacation-rental-4-bedroom 301
-/about.html /wilder-house-savannah-vacation-rental 301
-/wilder-house.html /wilder-house-savannah-vacation-rental 301
-/home.html / 301
+# Clean URL redirects for Cloudflare Pages
+# Redirect .html extensions to clean URLs
 
-# Short branded URL used in the embeddable widget code
-/right-now /right-now-savannah 301
-
-# Planner rebranded — old "Savannah Day Planner" slug folds into "Savannah by the Hour"
-/savannah-day-planner /savannah-by-the-hour 301
-/savannah-day-planner.html /savannah-by-the-hour 301
-
-# Retired pages — redirect to group rental
-/savannah-bachelorette-party-rental /savannah-group-vacation-rental-4-bedroom 301
-/savannah-bachelorette-party-rental.html /savannah-group-vacation-rental-4-bedroom 301
-
-# Consolidate near-duplicate twin — thin plural page folds into the stronger singular page
-/historic-savannah-vacation-rentals /historic-savannah-vacation-rental 301
-/historic-savannah-vacation-rentals.html /historic-savannah-vacation-rental 301
-
-# Legacy short URLs — clean path versions (orphan pages without .html extension)
-/314A /forsyth-park-vacation-rental-savannah-314a 301
-/316A /savannah-victorian-district-vacation-rental-316a 301
-/wilder-house /wilder-house-savannah-vacation-rental 301
-/units /savannah-group-vacation-rental-4-bedroom 301
-
-
-# Cloudflare Pages — redirect .html URLs to clean paths
+/savannah-ghost-tour.html /savannah-ghost-tour 301
 /index.html / 301
+
+# Catch-all for .html files
 /*.html /:splat 301
+
+# Service worker must be at root
+/service-worker.js /service-worker.js 200

@@ -1,0 +1,35 @@
+{
+  "name": "Forsyth Ghost Tour — Savannah Remembers",
+  "short_name": "Ghost Tour",
+  "description": "A self-guided GPS walking tour through Savannah's haunted history and memory",
+  "start_url": "/savannah-ghost-tour",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0805",
+  "theme_color": "#e7c389",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230a0805' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='%23e7c389' text-anchor='middle' dominant-baseline='middle'>۰</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230a0805' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='%23e7c389' text-anchor='middle' dominant-baseline='middle'>۰</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230a0805' width='540' height='720'/><text x='50%' y='50%' font-size='60' fill='%23e7c389' text-anchor='middle' dominant-baseline='middle'>Forsyth Ghost Tour</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "categories": ["travel", "navigation"],
+  "screenshots_purpose": "any"
+}
