@@ -159,24 +159,26 @@ Each stop has specific Audio Tags for the narrator. Apply these as voice setting
 - **Pace**: Slightly faster, practical
 - **Emphasis**: Balance alert and grounded
 
-#### Stop 15 (Cotton Exchange)
-- **Audio Tags**: [ancestral, witnessing, direct, sorrowful]
-- **Delivery**: Woman narrator, unflinching truth about commerce and suffering
-- **Pace**: Slow, weighted with history
-- **Emphasis**: The wound beneath the exchange
+#### Stop 15 (Cotton Exchange) — CHARACTER VOICE: ELDERON (Begins)
+- **Audio Tags**: [direct, witnessed, grounded, unflinching]
+- **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
+- **Delivery**: A merchant speaking about the cotton exchange as the beating heart of the wound he witnessed daily
+- **Pace**: Steady, grounded, lived experience
+- **Emphasis**: Commerce. Arrivals. The world he knew.
 
-#### Stop 16 (River Access Ramp)
-- **Audio Tags**: [ancestral, patient, witnessing, calling]
-- **Delivery**: Woman narrator witnessing the threshold where arrivals happened
-- **Pace**: Very slow, ceremonial
-- **Emphasis**: What the river carried, what was witnessed
+#### Stop 16 (River Access Ramp) — CHARACTER VOICE: ELDERON
+- **Audio Tags**: [direct, witnessed, grounded, honest]
+- **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
+- **Delivery**: The exact place of arrivals — what he saw from the decks and docks
+- **Pace**: Measured, real, grounded in lived memory
+- **Emphasis**: The arrivals, the departures, what happened here.
 
 #### Stop 17 (Final Anchor - Sea Merchants Statue) — CHARACTER VOICE: ELDERON / TOUR CONCLUSION
 - **Audio Tags**: [direct, witnessed, grounded, unflinching]
 - **Voice ID**: NwyAvGnfbFoNNEi4UuTq (Elderon)
-- **Delivery**: One of the merchants the statue represents, speaking at the end
+- **Delivery**: One of the merchants the statue represents, complete testimony at the end
 - **Pace**: Steady, final, complete
-- **Emphasis**: A merchant's testimony. Everything witnessed. The end.
+- **Emphasis**: All the stories, all witnessed, all part of his life and memory
 
 #### Opening Frame
 - **Audio Tags**: [grounding, protective, sacred, present]

@@ -80,13 +80,13 @@
         "name": "Elderon",
         "voiceId": "NwyAvGnfbFoNNEi4UuTq",
         "character": "Elderon — A Sea Merchant",
-        "stop_ids": [17],
-        "description": "A merchant who lived through the cotton trade, witnessed the river arrivals, built his life on commerce. Now speaks at his statue—the final anchor.",
+        "stop_ids": [15, 16, 17],
+        "description": "A merchant who lived through the cotton trade, witnessed the river arrivals, built his life on commerce. Takes the final act at the Cotton Exchange, River Ramp, and Sea Merchants Statue.",
         "expression_intensity": 0.70,
         "voice_tier": "Creator Plan Premium",
         "audio_tags": "[direct, witnessed, grounded, unflinching]",
         "v3_optimization": "At v3's highest fidelity, Elderon should sound like a real person—someone who was there, who saw what happened, who knows what the river carried. Grounded and honest, not mystical.",
-        "delivery_note": "Direct, matter-of-fact, as someone speaking from lived experience. Not poetic—real. You were there. You saw the ships, the arrivals, the commerce. This is the end. Speak what you know."
+        "delivery_note": "Direct, matter-of-fact, as someone speaking from lived experience. Not poetic—real. You were there. You saw the ships, the arrivals, the commerce. This is your world. Speak what you know."
       }
     }
   },
@@ -466,10 +466,11 @@
       "walking_time_seconds": 90,
       "tags": ["history", "commerce", "memory"],
       "audio": {
-        "early": "SAV_STOP_15_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_15_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_15_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_15_ELDERON_EARLY.mp3",
+        "on": "SAV_STOP_15_ELDERON_ON.mp3",
+        "late": "SAV_STOP_15_ELDERON_LATE.mp3"
       },
+      "character_voice": "elderon",
       "early_arrival": "The Cotton Exchange. Where Savannah's wealth was built.",
       "on_time": "The Cotton Exchange. This building represents the economic engine that transformed Savannah from a settlement into a city of consequence. <break time=\"700ms\"/> Cotton was bought and sold here. Fortunes were made and lost. <break time=\"600ms\"/> But cotton also carried with it the weight of human suffering — <emphasis level=\"strong\">the enslaved labor, the broken families, the systems of bondage that generated those profits.</emphasis> <break time=\"800ms\"/> The spirits here are conflicted. Merchants still count their gains. <break time=\"700ms\"/> But beneath that, there's a deeper presence — <break time=\"600ms\"/> the voices of those whose labor filled the coffers. <break time=\"700ms\"/> Commerce and tragedy are inseparable here. <break time=\"600ms\"/> This exchange is the bridge between the city's official story and the story it has often tried to forget. <break time=\"800ms\"/> The building still stands. <emphasis level=\"strong\">Savannah never forgets it.</emphasis> <break time=\"700ms\"/> The water ahead holds both the wound and the witness.",
       "late_arrival": "Cotton Exchange. Savannah's wealth was built here. And its deepest wound.",
@@ -490,10 +491,11 @@
       "walking_time_seconds": 110,
       "tags": ["history", "water", "threshold"],
       "audio": {
-        "early": "SAV_STOP_16_NARRATOR_EARLY.mp3",
-        "on": "SAV_STOP_16_NARRATOR_ON.mp3",
-        "late": "SAV_STOP_16_NARRATOR_LATE.mp3"
+        "early": "SAV_STOP_16_ELDERON_EARLY.mp3",
+        "on": "SAV_STOP_16_ELDERON_ON.mp3",
+        "late": "SAV_STOP_16_ELDERON_LATE.mp3"
       },
+      "character_voice": "elderon",
       "early_arrival": "The river. This is where all the layers come together.",
       "on_time": "The ramp descends toward the water. <break time=\"700ms\"/> This threshold is different from where we began. <break time=\"600ms\"/> Then, we were protected by the Wilder House's blessing. <break time=\"700ms\"/> <emphasis level=\"strong\">Now, we approach the river itself</emphasis> — where Savannah's deepest truths are held. <break time=\"800ms\"/> For nearly three hundred years, this water carried the arrival of tens of thousands of enslaved Africans. <break time=\"700ms\"/> They came through these waters in chains. <break time=\"600ms\"/> But the river is also renewal. <break time=\"500ms\"/> <emphasis level=\"strong\">It flows. It moves. It does not hold grudges, only memory.</emphasis> <break time=\"800ms\"/> At twilight, many hear voices rising from the water. <break time=\"600ms\"/> Fragments of African languages. Gullah — pronounced 'ɡʊlə. <break time=\"700ms\"/> Not in rage. But quietly insisting: <emphasis level=\"strong\">Remember us.</emphasis> <break time=\"800ms\"/> The water's edge awaits.",
       "late_arrival": "The river access ramp. The threshold to Savannah's deepest memory.",
