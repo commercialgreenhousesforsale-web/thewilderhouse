@@ -11,17 +11,19 @@
     "audio_base_path": "/audio/",
     "production_notes": "All scripts optimized for ElevenLabs Turbo v2.5. Use SSML markup, expression intensity (0.5-0.95), pronunciation guides (Savannah /sə'vænə/, Telfair /tel'fɛər/, Pulaski /pə'læski/). Generate with stability 75%, clarity 25%, 192 kbps MP3 bitrate.",
     "narrators": {
-      "havoc": {
-        "name": "Havoc",
-        "description": "Deep Southern Gothic, gritty, haunting, protective",
-        "voiceId": "dtVZnErhiiosqofxDzSH",
-        "model": "turbo-v2.5"
-      },
-      "grandma_rachel": {
+      "woman": {
         "name": "Grandma Rachel",
         "description": "Wise Southern senior, warm companion, witnessing guide",
         "voiceId": "0rEo3eAjssGDUCXHYENf",
-        "model": "turbo-v2.5"
+        "model": "turbo-v2.5",
+        "status": "production-ready"
+      },
+      "man": {
+        "name": "Havoc",
+        "description": "Deep Southern Gothic, gritty, haunting, protective",
+        "voiceId": "dtVZnErhiiosqofxDzSH",
+        "model": "turbo-v2.5",
+        "status": "planned-phase-2"
       }
     },
     "character_voices": {
@@ -60,7 +62,7 @@
         "late": "SAV_STOP_01_NARRATOR_LATE.mp3"
       },
       "early_arrival": "You're early. Take a breath. This is a threshold — a protected place where nothing dark can follow. Wait here. Settle yourself.",
-      "on_time": "Welcome to the Wilder House. <break time=\"500ms\"/> Before we step into Savannah's memory, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. <break time=\"600ms\"/> That blessing still holds. <break time=\"400ms\"/> Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. <break time=\"800ms\"/> Breathe. Ground yourself. <break time=\"500ms\"/> The city is waiting.",
+      "on_time": "Welcome to the Wilder House. <break time=\"500ms\"/> Before we step into Savannah's memory, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. <break time=\"600ms\"/> His father had a grocery store on this very block. <break time=\"500ms\"/> This house became sanctuary. <break time=\"600ms\"/> That blessing still holds. <break time=\"400ms\"/> Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. <break time=\"800ms\"/> Breathe. Ground yourself. <break time=\"500ms\"/> The city is waiting.",
       "late_arrival": "You've found the threshold. The Wilder House. A protected place before memory begins. Take one breath here.",
       "expression_intensity": 0.6
     },
@@ -80,7 +82,7 @@
         "late": "SAV_STOP_02_NARRATOR_LATE.mp3"
       },
       "early_arrival": "You're approaching Telfair Hospital. Something strong lives here. A will that never bent. Wait for it.",
-      "on_time": "Our journey begins with a memory of will. <break time=\"700ms\"/> Strong. <break time=\"400ms\"/> Unyielding. <break time=\"400ms\"/> Absolute. Mary Telfair built this hospital as a sanctuary for women only. <emphasis level=\"strong\">Only for women.</emphasis> <break time=\"600ms\"/> No man was permitted to cross its threshold. That was her law. <break time=\"500ms\"/> When she died, she chose to remain. She still walks these halls — a tall figure in a long brown dress, moving with purpose. Her lavender perfume announces her without warning. <break time=\"700ms\"/> Doors close behind visitors with quiet authority. Men who enter report her presence: gentle but firm. A boundary being held. <break time=\"500ms\"/> Even now, Mary protects what she built. This is how Savannah remembers strength. Not as conquest. But as protection. As will made into law.",
+      "on_time": "Our journey begins with a memory of will. <break time=\"700ms\"/> Strong. <break time=\"400ms\"/> Unyielding. <break time=\"400ms\"/> Absolute. Mary Telfair built this hospital as a sanctuary for women only. <emphasis level=\"strong\">Only for women.</emphasis> <break time=\"600ms\"/> No man was permitted to cross its threshold. <break time=\"500ms\"/> Only babies born there were allowed to stay. <break time=\"600ms\"/> That was her law. Unbreakable. <break time=\"500ms\"/> When she died, she chose to remain. She still walks these halls — a tall figure in a long brown dress, moving with purpose. Her lavender perfume announces her without warning. <break time=\"700ms\"/> Doors close behind visitors with quiet authority. Men who enter report her presence: gentle but firm. A boundary being held. <break time=\"500ms\"/> Even now, Mary protects what she built. This is how Savannah remembers strength. Not as conquest. But as protection. As will made into law.",
       "late_arrival": "Mary Telfair's will still guards this hospital. Some boundaries, once set, hold forever.",
       "expression_intensity": 0.72
     },
