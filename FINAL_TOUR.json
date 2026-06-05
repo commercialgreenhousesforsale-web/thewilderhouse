@@ -1,22 +1,25 @@
 {
   "tour": {
-    "id": "forsyth_ghost_v2.2",
+    "id": "forsyth_ghost_v3.0",
     "name": "Forsyth Ghost Tour",
     "subtitle": "Savannah Remembers",
     "type": "ghost",
     "version": "3.0",
-    "description": "Forsyth Ghost Tour v3.0: World-class GPS-guided walking tour through Savannah's memory. Full narrator direction, pronunciation guides, SSML optimization, audio mastering strategy, and narrative framing for emotional transformation.",
+    "description": "Forsyth Ghost Tour v3.0: World-class GPS-guided walking tour through Savannah's memory. Full narrator direction, Audio Tags emotion control, pronunciation guides, SSML optimization, and narrative framing for emotional transformation. Powered by ElevenLabs Eleven v3.",
     "total_stops": 18,
     "estimated_duration_minutes": 30,
     "audio_base_path": "/audio/",
     "production_notes": {
       "voice_model": "ElevenLabs Eleven v3 (most expressive flagship model)",
+      "api_model_id": "eleven_v3",
       "generation_settings": {
         "stability": 70,
         "similarity_boost": 75,
         "bitrate_kbps": 192,
-        "format": "MP3"
+        "format": "MP3",
+        "use_audio_tags": true
       },
+      "audio_tags_philosophy": "Audio Tags provide emotional context at v3's highest fidelity. Use them to specify narrator's emotional state, pacing, and presence at key moments. Format: [emotion1, emotion2, quality]. Example: [vulnerable, intimate, confessional] or [ancestral, patient, witnessing].",
       "audio_mastering_outdoor": {
         "target_loudness": "-14 LUFS (measured LKFS)",
         "compression_ratio": "4:1 with gentle knee for traffic noise resilience",
@@ -32,9 +35,11 @@
         "Gullah": "'ɡʊlə",
         "Forsyth": "'fɔrsaɪθ",
         "Oglethorpe": "'oʊɡəlθɔrp",
-        "Casimir": "'kæzɪmɪr"
+        "Casimir": "'kæzɪmɪr",
+        "Francois": "fræn'swɑ",
+        "Benton": "'bentən"
       },
-      "narrator_delivery_philosophy": "Speak as though you're walking beside the listener—intimate, observant, present. Not theatrical. Not educational. Like a trusted friend who sees the city the way you're learning to see it. Pauses are breath moments, not dead air."
+      "narrator_delivery_philosophy": "Speak as though you're walking beside the listener—intimate, observant, present. Not theatrical. Not educational. Like a trusted friend who sees the city the way you're learning to see it. Pauses are breath moments, not dead air. Let emotion drive pacing. Let the city speak through you."
     },
     "narrators": {
       "woman": {
@@ -43,7 +48,9 @@
         "voiceId": "0rEo3eAjssGDUCXHYENf",
         "model": "eleven_v3",
         "status": "production-ready",
-        "voice_tier": "Creator Plan Premium"
+        "voice_tier": "Creator Plan Premium",
+        "default_audio_tags": "[present, observant, grounded]",
+        "v3_optimization": "Use Audio Tags to modulate between observant (intellectual), emotional (vulnerable), and protective (grounded) states across the 18 stops."
       },
       "man": {
         "name": "Havoc",
@@ -51,7 +58,9 @@
         "voiceId": "dtVZnErhiiosqofxDzSH",
         "model": "eleven_v3",
         "status": "planned-phase-2",
-        "voice_tier": "Creator Plan Premium"
+        "voice_tier": "Creator Plan Premium",
+        "default_audio_tags": "[gothic, protective, witnessing]",
+        "v3_optimization": "Use Audio Tags to modulate between protective (strong), haunting (vulnerable), and gothic (atmospheric) states."
       }
     },
     "character_voices": {
@@ -63,29 +72,22 @@
         "description": "Young woman, haunted, regretful, carries unresolved grief",
         "expression_intensity": 0.85,
         "voice_tier": "Creator Plan Premium",
-        "delivery_note": "Vulnerable, intimate, as if confessing something you never knew about yourself"
+        "audio_tags": "[vulnerable, intimate, confessional, haunted, regretful]",
+        "v3_optimization": "At v3's highest fidelity, Lottie's regret should feel like someone confessing a secret they've held for centuries. Use Audio Tags to create emotional intimacy—the listener should feel her sorrow as their own.",
+        "delivery_note": "Vulnerable, intimate, as if confessing something you never knew about yourself. Speak slowly. Let each word carry the weight of regret. This is the emotional heart of the tour."
       },
       "elderon": {
         "name": "Elderon",
         "voiceId": "NwyAvGnfbFoNNEi4UuTq",
         "character": "Elderon — Witnessing voice at river",
-        "stop_ids": [17, 18],
+        "stop_ids": [16, 17, 18],
         "description": "Ancient presence, speaks from water itself, integration and release",
         "expression_intensity": 0.65,
         "voice_tier": "Creator Plan Premium",
-        "delivery_note": "Calm, slow, as if the river itself is speaking—patient, holding wisdom from centuries"
+        "audio_tags": "[ancestral, patient, witnessing, ancient, peaceful]",
+        "v3_optimization": "At v3's highest fidelity, Elderon should sound like the river itself—patient, having seen everything, at peace with the weight of history. Audio Tags should convey both the burden of witness and the freedom of flowing water.",
+        "delivery_note": "Calm, slow, as if the river itself is speaking—patient, holding wisdom from centuries. Speak as though you have time itself available to you. This is peace after pain."
       }
-    },
-    "opening_frame": {
-      "title": "Savannah Remembers",
-      "subtitle": "A Walking Ghost Tour of Memory and Hauntings",
-      "opening_narration": "You're about to walk through the living memory of Savannah. For nearly three hundred years, this city has held secrets. Hidden stories. Spirits that refuse to rest. Some are beautiful. Some are broken. All are true. This tour will take thirty minutes. You'll visit eighteen locations—squares, fountains, churches, monuments. At each stop, you'll hear a story. Listen while you walk. The city is waiting.",
-      "narrator_direction": "Warm, grounding, present. Set the listener's intention. Make them feel safe but also alert. This is an invitation, not a warning."
-    },
-    "closing_frame": {
-      "title": "End of Tour",
-      "closing_narration": "You have walked through Savannah's living memory. You have heard stories the city usually hides. You have witnessed how a community remembers—not by erasing the broken parts, but by honoring them. Not by forgetting the beauty, but by understanding its cost. That memory is now part of you. Speak it when you can. Write it if you're able. Carry these stories gently. Savannah is grateful. And the city will remember that you remembered.",
-      "narrator_direction": "Gratitude and release. Speak as if saying goodbye to someone you've grown close to over the past hour."
     }
   },
   "stops": [
@@ -108,7 +110,9 @@
       "on_time": "Welcome to the Wilder House. <break time=\"500ms\"/> Before we step into Savannah's memory, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. <break time=\"600ms\"/> His father had a grocery store on this very block. <break time=\"500ms\"/> This house became sanctuary. <break time=\"600ms\"/> That blessing still holds. <break time=\"400ms\"/> Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. <break time=\"800ms\"/> Breathe. Ground yourself. <break time=\"500ms\"/> The city is waiting.",
       "late_arrival": "You've found the threshold. The Wilder House. A protected place before memory begins. Take one breath here.",
       "expression_intensity": 0.6,
-      "narrator_direction": "Calm, protective, grounding. You are an anchor. Speak with the certainty of someone who knows this blessing is real.",
+      "audio_tags": "[grounding, protective, sacred, present]",
+      "narrator_direction": "Calm, protective, grounding. You are an anchor. Speak with the certainty of someone who knows this blessing is real. Use Audio Tags to create a sense of safety and presence.",
+      "v3_optimization": "At the tour's opening, establish a calm, grounded presence. Your voice should feel like a sanctuary itself—safe, centered, trustworthy. Let the listener feel protected before we begin.",
       "next_walk_guidance": "Head east toward Telfair Hospital. The walk is about four minutes. As you go, notice the city around you—the oaks, the squares, the weight of time."
     },
     {
@@ -131,7 +135,9 @@
       "on_time": "Our journey begins with a memory of will. <break time=\"700ms\"/> Strong. <break time=\"400ms\"/> Unyielding. <break time=\"400ms\"/> Absolute. Mary Telfair built this hospital as a sanctuary for women only. <emphasis level=\"strong\">Only for women.</emphasis> <break time=\"600ms\"/> No man was permitted to cross its threshold. <break time=\"500ms\"/> Only babies born there were allowed to stay. <break time=\"600ms\"/> That was her law. Unbreakable. <break time=\"500ms\"/> When she died, she chose to remain. She still walks these halls — a tall figure in a long brown dress, moving with purpose. Her lavender perfume announces her without warning. <break time=\"700ms\"/> Doors close behind visitors with quiet authority. Men who enter report her presence: gentle but firm. A boundary being held. <break time=\"500ms\"/> Even now, Mary protects what she built. This is how Savannah remembers strength. Not as conquest. But as protection. As will made into law.",
       "late_arrival": "Mary Telfair's boundary still guards this hospital. Some laws, once set, hold forever.",
       "expression_intensity": 0.72,
-      "narrator_direction": "Speak with quiet authority. You're not angry—you're impressed. Mary's strength should feel like iron wrapped in velvet. Respect her.",
+      "audio_tags": "[strong, authoritative, protective, impressed]",
+      "narrator_direction": "Speak with quiet authority. You're not angry—you're impressed. Mary's strength should feel like iron wrapped in velvet. Respect her. Use Audio Tags to convey strength without harshness.",
+      "v3_optimization": "At v3's fidelity, your admiration for Mary should be audible. The Audio Tags [strong, authoritative, protective] should guide the voice to sound grounded, steady, and impressed—like you're witnessing a force of nature.",
       "next_walk_guidance": "Keep walking north. The Spanish War Veteran statue is about ninety seconds ahead, overlooking Forsyth Park."
     },
     {
@@ -153,7 +159,9 @@
       "on_time": "A soldier stands here, cast in bronze. <break time=\"600ms\"/> He was sent to fight in a foreign war — Spain, the Caribbean, places that had nothing to do with Savannah. <break time=\"500ms\"/> He fought for reasons he didn't fully understand. <break time=\"700ms\"/> But he came home. Changed. Haunted. <break time=\"600ms\"/> He chose this spot — overlooking Forsyth Park, the place he knew as a boy. <break time=\"500ms\"/> Now he stands watch. Forever. <break time=\"600ms\"/> Some soldiers never truly leave their post. The war ends, their bodies return, but some part of them stays vigilant. <break time=\"700ms\"/> That's what lives in this statue. Not rest. But <emphasis level=\"strong\">eternal attention.</emphasis> A man transformed by what he saw, watching over the city that sent him away.",
       "late_arrival": "The soldier statue watches Forsyth Park. He came home changed and never stopped keeping watch.",
       "expression_intensity": 0.68,
-      "narrator_direction": "Somber, respectful, a touch melancholic. This is a man who paid a price. Speak it gently.",
+      "audio_tags": "[melancholic, respectful, haunted, witnessing]",
+      "narrator_direction": "Somber, respectful, a touch melancholic. This is a man who paid a price. Speak it gently. Use Audio Tags to convey sadness mixed with respect—this is someone you feel for.",
+      "v3_optimization": "Let the Audio Tags [melancholic, respectful] guide your pace and tone to slow, gentle delivery. This soldier's story is sad, but his vigilance is noble. Balance both.",
       "next_walk_guidance": "The oak grove is just ahead—about eighty seconds. You'll feel the trees before you see them. That's where we're heading."
     },
     {
@@ -175,7 +183,9 @@
       "on_time": "You are now beneath the oldest living witnesses in Savannah. <break time=\"600ms\"/> These live oaks have stood for one hundred twenty to one hundred fifty years. <break time=\"500ms\"/> Longer than any building. Longer than any person who has walked beneath them. <break time=\"700ms\"/> The moss — pronounced 'maws' — hangs like memory — <emphasis level=\"strong\">draped, heavy, silver-gray.</emphasis> <break time=\"600ms\"/> These trees remember everything. Every secret spoken in their shade. <break time=\"500ms\"/> Every sorrow hidden beneath their canopy. Every love that bloomed and died here. Every bargain made. Every promise broken. <break time=\"700ms\"/> The Spanish moss is not a parasite. It's a record. <break time=\"600ms\"/> The homes around us are beautiful, but they are temporary. The trees are what endure. They remember what the buildings forgot.",
       "late_arrival": "The oak trees have stood one hundred fifty years. They remember everything Savannah tried to forget.",
       "expression_intensity": 0.75,
-      "narrator_direction": "Awed, reverent, as if standing in a cathedral. Let the trees be majestic. Speak slowly here—let silence be part of the story.",
+      "audio_tags": "[awed, reverent, slow, meditative]",
+      "narrator_direction": "Awed, reverent, as if standing in a cathedral. You are an observer of sacred time. Speak slowly here—let silence be part of the story. Use Audio Tags to create a meditative, almost liturgical quality.",
+      "v3_optimization": "At v3's highest fidelity, your awe should be almost palpable. The Audio Tags [awed, reverent, slow, meditative] should guide pauses to be deeper, breaths to be more intentional. You're speaking about time itself.",
       "next_walk_guidance": "Head north toward the monument area. About two minutes walk. As you go, notice how the city changes—more grand, more formal. That's where we're heading."
     },
     {
@@ -197,7 +207,9 @@
       "on_time": "This square holds two figures in bronze. <break time=\"600ms\"/> Francois Benton, who loved Savannah. And behind him, a towering monument to Confederate dead — <break time=\"500ms\"/> men who died defending an institution that was already collapsing. <break time=\"700ms\"/> These monuments stand as Savannah stands: <emphasis level=\"strong\">containing contradictions.</emphasis> <break time=\"600ms\"/> Beauty built on injustice. Honor tangled with grief. Intention mixed with outcome. <break time=\"500ms\"/> The city does not erase these contradictions. It holds them. It remembers them. <break time=\"800ms\"/> Some of those who died here still cannot rest. They linger in the shadow of stone. Not angry. Not peaceful. <break time=\"600ms\"/> <emphasis level=\"strong\">Unresolved.</emphasis> <break time=\"500ms\"/> This is Savannah's way — not to choose, but to witness all of it. <break time=\"900ms\"/> As you walk toward the park, notice the forts that once stood here — earthworks and bastions where soldiers watched the river. The geometry of defense. The architecture of loss.",
       "late_arrival": "Two monuments. Two histories. Savannah doesn't erase the contradiction—it holds both.",
       "expression_intensity": 0.78,
-      "narrator_direction": "This is hard truth. Speak it clearly but not harshly. You're not judging—you're witnessing. Make space for the listener's own feelings.",
+      "audio_tags": "[clear-eyed, witnessing, holding-space, unflinching]",
+      "narrator_direction": "This is hard truth. Speak it clearly but not harshly. You're not judging—you're witnessing. Use Audio Tags to convey the ability to hold multiple truths at once. Make space for the listener's own feelings.",
+      "v3_optimization": "At v3's fidelity, your clarity should feel compassionate. The Audio Tags [clear-eyed, witnessing, holding-space] should guide steady, grounded delivery that doesn't shy away from difficulty but also doesn't sensationalize it.",
       "next_walk_guidance": "The fountain is ahead—about three and a half minutes. This is Savannah's most photographed place. But you'll understand, as you approach, that beauty here holds a secret."
     },
     {
@@ -220,7 +232,9 @@
       "on_time": "Here, strength gives way to sorrow. <break time=\"600ms\"/> This fountain is Savannah's most beloved image. <emphasis level=\"strong\">Iconic. Graceful. Beautiful.</emphasis> <break time=\"700ms\"/> But beauty in this city often masks what lies beneath. <break time=\"800ms\"/> A girl named Lottie once carried a terrible secret. In desperation and confusion, she poisoned a woman she believed was her rival. <break time=\"700ms\"/> Only to discover, too late, that it was her own mother. <break time=\"900ms\"/> The truth shattered her completely. She could not survive the knowing. <break time=\"700ms\"/> Her spirit returned to this fountain — the most beautiful place she had known. <break time=\"600ms\"/> The garden layout here is deliberate, mathematical, almost ceremonial. Visitors still feel it — <emphasis level=\"strong\">the geometry of grief.</emphasis> <break time=\"700ms\"/> People still see her. A young girl near the water. Sometimes peaceful. Sometimes overwhelmed with regret. <break time=\"600ms\"/> Many report sudden waves of sadness not their own. Guilt for things they didn't do. Remorse that isn't theirs to carry. <break time=\"800ms\"/> The fountain is beautiful. But it remembers loss.",
       "late_arrival": "Forsyth Fountain. The most beautiful place in Savannah holds the saddest secret.",
       "expression_intensity": 0.85,
-      "narrator_direction": "You are Lottie. Speak her regret as if it's your own. Vulnerable, intimate, as if confessing something you never knew about yourself. This is the emotional heart of the tour.",
+      "audio_tags": "[vulnerable, intimate, confessional, heartbroken, regretful]",
+      "narrator_direction": "You ARE Lottie. Speak her regret as if it's your own. This is vulnerability at its deepest. Use Audio Tags [vulnerable, intimate, confessional] to create emotional resonance—the listener should feel her sorrow as their own. Speak slowly. Let each word carry the weight of a secret held for centuries.",
+      "v3_optimization": "This is the emotional heart of the tour. At v3's highest fidelity, Lottie's voice should feel like someone confessing what they've never spoken aloud. The Audio Tags should guide intimate, slow delivery with breath and pauses that let emotion settle. This is where transformation begins.",
       "next_walk_guidance": "Continue north. Kessler Mansion is about ninety seconds ahead. A place where hope lived, and then was lost."
     },
     {
@@ -242,7 +256,9 @@
       "on_time": "This mansion once housed Armstrong College — a place of learning and aspiration. <break time=\"600ms\"/> The walls remember students who studied here. Who believed their education would transform their lives. <break time=\"600ms\"/> Some of those dreams were realized. <break time=\"500ms\"/> Many were not. <break time=\"700ms\"/> The building stands now as a reminder of institutional transience. <emphasis level=\"strong\">What seemed permanent is now memory.</emphasis> <break time=\"600ms\"/> What bustled with intellectual life is now quiet. <break time=\"700ms\"/> Yet the echoes of ambition still linger here. The spirits of young people who believed in the power of knowledge. <break time=\"600ms\"/> Maybe their faith was justified. Maybe it wasn't. <break time=\"500ms\"/> The building remembers both the hope and the disappointment equally. <break time=\"800ms\"/> Some nights, visitors report the sound of turning pages, quiet conversation, the scratch of pen on paper. <emphasis level=\"strong\">Ghosts studying still.</emphasis>",
       "late_arrival": "Armstrong College is gone, but the dreams of its students never left this mansion.",
       "expression_intensity": 0.70,
-      "narrator_direction": "Melancholic but not sad. Speak as if mourning something beautiful that was temporary. There's wisdom in understanding transience.",
+      "audio_tags": "[melancholic, reflective, understanding, accepting]",
+      "narrator_direction": "Melancholic but not sad. Speak as if mourning something beautiful that was temporary. There's wisdom in understanding transience. Use Audio Tags to convey acceptance mixed with gentle sorrow.",
+      "v3_optimization": "The Audio Tags [melancholic, reflective, understanding] should guide a tone that honors loss while also understanding its inevitability. This is a meditation on time itself.",
       "next_walk_guidance": "Monterey Square is just ahead—about a minute walk. A place where someone finally found rest."
     },
     {
@@ -264,7 +280,9 @@
       "on_time": "Casimir Pulaski — a Polish general who died defending American independence — <break time=\"700ms\"/> was mortally wounded here in seventeen seventy-nine. <break time=\"700ms\"/> His remains rest beneath this monument. <break time=\"600ms\"/> Unlike so many others we have encountered, Pulaski has found peace. <break time=\"800ms\"/> Colonial soldiers sometimes appear around this square at dusk. Standing at attention. Saluting their commander with quiet loyalty. <break time=\"700ms\"/> Not every memory in Savannah remains broken. <emphasis level=\"strong\">Some have earned rest.</emphasis> <break time=\"600ms\"/> Some have found forgiveness. <break time=\"600ms\"/> Some have learned that honor, finally and completely, is enough.",
       "late_arrival": "Pulaski earned rest. Not all of Savannah's ghosts are restless.",
       "expression_intensity": 0.65,
-      "narrator_direction": "Peaceful, resolved. This is a reprieve in the tour. Speak with quiet respect and maybe a hint of relief—proof that not everything stays broken.",
+      "audio_tags": "[peaceful, resolved, hopeful, dignified]",
+      "narrator_direction": "Peaceful, resolved. This is a reprieve in the tour. Speak with quiet respect and maybe a hint of relief—proof that not everything stays broken. Use Audio Tags to convey calm acceptance.",
+      "v3_optimization": "The Audio Tags [peaceful, resolved, hopeful] should guide a tone shift—the listener should feel a moment of ease. This is where the tour catches its breath.",
       "next_walk_guidance": "You're halfway through your walk. The next stop is just ninety seconds ahead—an intersection where countless lives have crossed."
     },
     {
@@ -286,7 +304,9 @@
       "on_time": "This corner is an intersection — a place where countless lives have crossed paths for two hundred years. <break time=\"700ms\"/> Merchants and enslaved people. Soldiers and civilians. The wealthy and the desperate. <break time=\"600ms\"/> All have stood exactly where you're standing. <break time=\"500ms\"/> All were changed by this moment of crossing. <break time=\"800ms\"/> Intersections are liminal spaces. <break time=\"600ms\"/> They belong to no one. They hold the accumulated energy of countless meetings. Partings. Collisions. <break time=\"700ms\"/> Some people return to the places where their lives changed forever. <emphasis level=\"strong\">This corner holds many such returns.</emphasis> <break time=\"700ms\"/> The spirits here are not restless. They are simply <emphasis level=\"strong\">present.</emphasis> Witnessing. Remembering. The corner itself is sacred.",
       "late_arrival": "Intersections are sacred. This corner remembers two hundred years of crossing paths.",
       "expression_intensity": 0.72,
-      "narrator_direction": "Reverent, almost meditative. Speak as if standing on holy ground. Let the weight of human connection settle into this moment.",
+      "audio_tags": "[reverent, meditative, grounding, present]",
+      "narrator_direction": "Reverent, almost meditative. Speak as if standing on holy ground. Let the weight of human connection settle into this moment. Use Audio Tags to convey sacred presence.",
+      "v3_optimization": "The Audio Tags [reverent, meditative] should slow your pacing and deepen your presence. The listener should feel the accumulation of all those lives in this one corner.",
       "next_walk_guidance": "Madison Square is just a minute ahead. Three different histories converge there. Three different stories. All true at once."
     },
     {
@@ -308,7 +328,9 @@
       "on_time": "Madison Square holds three distinct voices in conversation. <break time=\"700ms\"/> The church stands as sanctuary — <emphasis level=\"strong\">a place where people have always sought safety and prayer.</emphasis> <break time=\"700ms\"/> The Sorrel Weed House holds the memory of bondage and survival — of people whose names were erased but whose spirits endure. <break time=\"800ms\"/> The Green-Meldrim House holds the memory of occupation and resistance — of a city conquered and refusing to be broken. <break time=\"700ms\"/> All three stand here together. <emphasis level=\"strong\">In one square.</emphasis> <break time=\"600ms\"/> The church does not erase the history of the houses. The houses do not negate the sanctity of the church. <break time=\"600ms\"/> They exist together. They remember together. <break time=\"800ms\"/> And in this convergence, we understand: <emphasis level=\"strong\">Savannah's memory is not simple.</emphasis> It is layered. Tragic and sacred at once. <break time=\"700ms\"/> The city holds all of it.",
       "late_arrival": "Madison Square. Where Savannah's different histories come together.",
       "expression_intensity": 0.75,
-      "narrator_direction": "Thoughtful, integrating. You're not explaining—you're witnessing how different truths can exist in the same space. Speak with understanding, not judgment.",
+      "audio_tags": "[integrating, clear-eyed, holding-space, compassionate]",
+      "narrator_direction": "Thoughtful, integrating. You're not explaining—you're witnessing how different truths can exist in the same space. Speak with the understanding of someone watching a story being written. Use Audio Tags to hold multiple truths simultaneously.",
+      "v3_optimization": "The Audio Tags [integrating, holding-space] should guide your delivery to feel spacious—like you're making room for multiple truths to coexist. This is where the tour shows Savannah's complexity.",
       "next_walk_guidance": "Chippewa Square is about ninety seconds ahead. But be warned: there's a wound there that won't close. A story that refuses to end."
     },
     {
@@ -330,7 +352,9 @@
       "on_time": "Chippewa Square holds a memory that will not rest. <break time=\"700ms\"/> Inside the Foley House Inn, workers discovered a human skeleton sealed inside a wall in nineteen eighty-seven. <break time=\"800ms\"/> A man had entered Honoria Foley's room with harm in his heart. She defended herself. <break time=\"700ms\"/> Rather than face the truth, they sealed his body inside the wall. <break time=\"600ms\"/> They call him Wally. <break time=\"700ms\"/> Guests still see him — <emphasis level=\"strong\">a figure in nineteenth-century clothes who vanishes when looked at directly.</emphasis> <break time=\"800ms\"/> Some wounds in Savannah refuse to close. <emphasis level=\"strong\">Some stories refuse to end.</emphasis> <break time=\"700ms\"/> Some ghosts cannot rest because their stories were never truly told. <break time=\"600ms\"/> And the city remembers this wound. Sealed in a wall. Hidden. But present.",
       "late_arrival": "Chippewa Square holds wounds that will not close. Stories that will not end.",
       "expression_intensity": 0.80,
-      "narrator_direction": "Serious, unflinching. This is a difficult truth. Speak it plainly. Wally deserves to be acknowledged, even if his story is uncomfortable.",
+      "audio_tags": "[serious, unflinching, sorrowful, witnessing]",
+      "narrator_direction": "Serious, unflinching. This is a difficult truth. Speak it plainly. Wally deserves to be acknowledged, even if his story is uncomfortable. Use Audio Tags to convey respect mixed with sadness.",
+      "v3_optimization": "The Audio Tags [serious, unflinching, sorrowful] should guide steady, clear delivery. This is not sensationalism—this is honoring a wound that refuses to close. Wally's presence should feel real.",
       "next_walk_guidance": "Oglethorpe Church is nearby—just a short walk. A place to breathe. A moment of sacred rest before we continue deeper."
     },
     {
@@ -352,7 +376,9 @@
       "on_time": "This church stands on the southwest corner of Oglethorpe and Bull — <emphasis level=\"strong\">a quiet sanctuary in the midst of Savannah's story.</emphasis> <break time=\"700ms\"/> Like Madison's church before it, this is a place where prayer has anchored people. Where the sacred persists. <break time=\"700ms\"/> Pause here for a moment. <break time=\"800ms\"/> Feel the solidity of stone and faith. <break time=\"600ms\"/> Not all of Savannah's memory is haunted. <emphasis level=\"strong\">Some of it is held in silence,</emphasis> in the steady presence of belief. <break time=\"800ms\"/> This church remains. As it has for generations. <break time=\"700ms\"/> Some spirits here are restful. Some are protective. All are present. <break time=\"900ms\"/> Breathe with them for a moment. This is the city's own breath.",
       "late_arrival": "Oglethorpe Church. A moment of peace before we continue deeper into Savannah's memory.",
       "expression_intensity": 0.62,
-      "narrator_direction": "Calm, meditative, restorative. Let your pace slow. Let silence be sacred. This is an intermission—a moment for the listener to integrate what they've heard.",
+      "audio_tags": "[calm, meditative, restorative, grounding]",
+      "narrator_direction": "Calm, meditative, restorative. Let your pace slow. Let silence be sacred. This is an intermission—a moment for the listener to integrate what they've heard. Use Audio Tags to create genuine rest.",
+      "v3_optimization": "The Audio Tags [calm, meditative, restorative] should guide the slowest delivery of the tour so far. This is where the listener's nervous system resets. Breath matters here more than words.",
       "next_walk_guidance": "You're nearing the older part of the city. Wright Square is about a minute ahead. The city's self-image is written there in stone."
     },
     {
@@ -374,7 +400,9 @@
       "on_time": "Wright Square holds the statue of William Washington — <break time=\"600ms\"/> a figure caught between soldier and civilian, between duty and conscience. <break time=\"700ms\"/> But more than one man's story, this square represents something deeper: <emphasis level=\"strong\">the moment Savannah began to shape its own narrative.</emphasis> <break time=\"700ms\"/> The buildings around this square were constructed to last. They were built with intention, with permanence in mind. <break time=\"600ms\"/> Different from the hauntings we've encountered — these are not broken spirits but <emphasis level=\"strong\">unfinished stories</emphasis> about power, ambition, and the city's vision of itself. <break time=\"700ms\"/> Some visitors report a sense of expectation here, as if the square is still waiting for something to be completed. <break time=\"600ms\"/> Perhaps the city's own understanding of who it is.",
       "late_arrival": "Wright Square. Where civic memory is carved into stone and the city's image takes shape.",
       "expression_intensity": 0.70,
-      "narrator_direction": "Thoughtful, almost philosophical. You're speaking about how cities create their own mythology. Speak with the understanding of someone watching a story being written.",
+      "audio_tags": "[thoughtful, philosophical, observant, curious]",
+      "narrator_direction": "Thoughtful, almost philosophical. You're speaking about how cities create their own mythology. Speak with the understanding of someone watching a story being written. Use Audio Tags to convey intellectual curiosity.",
+      "v3_optimization": "The Audio Tags [thoughtful, philosophical] should guide a tone that invites the listener to think alongside you. This is where abstraction enters—help them see it.",
       "next_walk_guidance": "Johnson Square is next—the deepest roots. About a minute walk. This is where everything began."
     },
     {
@@ -396,7 +424,9 @@
       "on_time": "Johnson Square is where Savannah remembers its founding. <break time=\"600ms\"/> The monument to General Nathaniel Green stands as a reminder of the Revolutionary War's grip on this city. <break time=\"700ms\"/> But the church here — Christ Church — <emphasis level=\"strong\">reaches back even deeper.</emphasis> <break time=\"700ms\"/> It was here that George Washington himself attended services. <break time=\"600ms\"/> These stories layer upon each other: founding, faith, patriotic duty. <break time=\"700ms\"/> <emphasis level=\"strong\">The square holds the weight of all these origins.</emphasis> <break time=\"700ms\"/> Standing here, you stand where the city's first imagining of itself crystallized into stone and memory.",
       "late_arrival": "Johnson Square. Where Savannah's deepest roots lie. The founding moment, crystallized in stone.",
       "expression_intensity": 0.68,
-      "narrator_direction": "Grounded, foundational. Speak as if touching bedrock. This is where the city began. Honor that.",
+      "audio_tags": "[grounded, foundational, ancestral, steadfast]",
+      "narrator_direction": "Grounded, foundational. Speak as if touching bedrock. This is where the city began. Honor that. Use Audio Tags to convey the weight and steadiness of origins.",
+      "v3_optimization": "The Audio Tags [grounded, foundational, ancestral] should guide a tone that feels ancient yet present. This is where the past literally built the present.",
       "next_walk_guidance": "Bay Street is ahead now—about ninety seconds. The boundary between memory and commerce. Be mindful of traffic as you approach."
     },
     {
@@ -418,7 +448,9 @@
       "on_time": "You stand at a threshold now. <break time=\"600ms\"/> Bay Street — <emphasis level=\"strong\">the boundary between Savannah's memory and its commerce.</emphasis> <break time=\"700ms\"/> The street flows with traffic, with the rhythms of the working city. This is an active crossing with traffic. Mind your surroundings. Wait for the light. Look both ways. <break time=\"800ms\"/> City Hall stands here as the city's face to the world. <break time=\"600ms\"/> The seat of governance. The machinery of order. <break time=\"700ms\"/> This is where the city formally organizes itself. Where decisions are made, laws are written, the business of a city is conducted. <break time=\"700ms\"/> But even here, in the official chambers and marble halls, memory persists. <break time=\"600ms\"/> The spirits of mayors and officials, the echoes of contentious debates, the weight of decisions made and unmade. <break time=\"700ms\"/> Some of Savannah's ghosts wear suits and ties. They linger in corridors, still attending to the city's business. <break time=\"800ms\"/> When the way is clear, the economic foundation that built and sustained this city lies ahead.",
       "late_arrival": "City Hall. Where authority governs. Where the city's official memory is written.",
       "expression_intensity": 0.72,
-      "narrator_direction": "Alert, present. You're a guide helping someone cross a threshold. Be protective and clear about safety while honoring the weight of this place.",
+      "audio_tags": "[alert, clear, protective, pragmatic]",
+      "narrator_direction": "Alert, present. You're a guide helping someone cross a threshold. Be protective and clear about safety while honoring the weight of this place. Use Audio Tags to balance alertness with groundedness.",
+      "v3_optimization": "The Audio Tags [alert, clear, protective] should guide a shift toward practical presence. This is where the tour touches the contemporary—traffic, crossing, official order.",
       "next_walk_guidance": "The Cotton Exchange is about a minute away. Where wealth was built. And where the deepest wound was created."
     },
     {
@@ -441,7 +473,9 @@
       "on_time": "The Cotton Exchange. This building represents the economic engine that transformed Savannah from a settlement into a city of consequence. <break time=\"700ms\"/> Cotton was bought and sold here. Fortunes were made and lost. <break time=\"600ms\"/> But cotton also carried with it the weight of human suffering — <emphasis level=\"strong\">the enslaved labor, the broken families, the systems of bondage that generated those profits.</emphasis> <break time=\"800ms\"/> The spirits here are conflicted. Merchants still count their gains. <break time=\"700ms\"/> But beneath that, there's a deeper presence — <break time=\"600ms\"/> the voices of those whose labor filled the coffers. <break time=\"700ms\"/> Commerce and tragedy are inseparable here. <break time=\"600ms\"/> This exchange is the bridge between the city's official story and the story it has often tried to forget. <break time=\"800ms\"/> The building still stands. <emphasis level=\"strong\">Savannah never forgets it.</emphasis> <break time=\"700ms\"/> The water ahead holds both the wound and the witness.",
       "late_arrival": "Cotton Exchange. Savannah's wealth was built here. And its deepest wound.",
       "expression_intensity": 0.78,
-      "narrator_direction": "Direct, unflinching, respectful. This is Elderon speaking—ancient, witnessing, holding hard truths. Speak from the perspective of the river itself, which has seen everything.",
+      "audio_tags": "[ancestral, witnessing, direct, sorrowful]",
+      "narrator_direction": "Direct, unflinching, respectful. This is Elderon speaking—ancient, witnessing, holding hard truths. Speak from the perspective of the river itself, which has seen everything. Use Audio Tags to convey the weight of witness.",
+      "v3_optimization": "The Audio Tags [ancestral, witnessing, direct] should guide a tone that speaks truth with the authority of someone who has watched centuries pass. This is where Elderon's voice begins to emerge.",
       "next_walk_guidance": "The river access ramp is just ahead—ninety seconds. Where enslaved Africans arrived. Where the city's deepest truths are held in water."
     },
     {
@@ -464,7 +498,9 @@
       "on_time": "The ramp descends toward the water. <break time=\"700ms\"/> This threshold is different from where we began. <break time=\"600ms\"/> Then, we were protected by the Wilder House's blessing. <break time=\"700ms\"/> <emphasis level=\"strong\">Now, we approach the river itself</emphasis> — where Savannah's deepest truths are held. <break time=\"800ms\"/> For nearly three hundred years, this water carried the arrival of tens of thousands of enslaved Africans. <break time=\"700ms\"/> They came through these waters in chains. <break time=\"600ms\"/> But the river is also renewal. <break time=\"500ms\"/> <emphasis level=\"strong\">It flows. It moves. It does not hold grudges, only memory.</emphasis> <break time=\"800ms\"/> At twilight, many hear voices rising from the water. <break time=\"600ms\"/> Fragments of African languages. Gullah — pronounced 'ɡʊlə. <break time=\"700ms\"/> Not in rage. But quietly insisting: <emphasis level=\"strong\">Remember us.</emphasis> <break time=\"800ms\"/> The water's edge awaits.",
       "late_arrival": "The river access ramp. The threshold to Savannah's deepest memory.",
       "expression_intensity": 0.75,
-      "narrator_direction": "Ancestral, witnessing, patient. You are the river speaking. You have seen everything. Speak with the weight and peace of water that moves regardless of human history.",
+      "audio_tags": "[ancestral, patient, witnessing, calling]",
+      "narrator_direction": "Ancestral, witnessing, patient. You are the river speaking. You have seen everything. Speak with the weight and peace of water that moves regardless of human history. Use Audio Tags to convey both sorrow and flow.",
+      "v3_optimization": "The Audio Tags [ancestral, patient, witnessing] should guide Elderon's voice to feel like time itself—patient, deep, having seen centuries. This is where the tour's deepest truth lives.",
       "next_walk_guidance": "The Sea Merchants statue is right ahead. The final stop. Where everything converges."
     },
     {
@@ -487,11 +523,15 @@
       "on_time": "And now you have reached the place where all the layers become one. <break time=\"800ms\"/> The statue of the sea merchants stands at the water's edge — <emphasis level=\"strong\">men and women who built their lives on trade, on commerce, on the movement of goods and ships across the ocean.</emphasis> <break time=\"800ms\"/> But they also stand as witnesses. <break time=\"700ms\"/> For nearly three hundred years, this river carried Savannah's deepest wound — <emphasis level=\"strong\">the arrival and forced passage of countless enslaved Africans.</emphasis> <break time=\"800ms\"/> Tens of thousands passed through these docks in chains. <break time=\"700ms\"/> And yet. <break time=\"600ms\"/> <emphasis level=\"strong\">The river does not separate the stories.</emphasis> <break time=\"900ms\"/> Mary's iron will. The soldier's eternal watch. The oak trees' witness. The monuments' contradiction. The fountain's hidden grief. The college's lost hopes. Pulaski's earned peace. The intersections' countless crossings. Madison's convergence. Chippewa's unresolved wound. The church's refuge. The founding myths. The city's civic face. The cotton's terrible exchange. <break time=\"1000ms\"/> The river holds them all. <break time=\"900ms\"/> <emphasis level=\"strong\">You have walked through the living memory of Savannah.</emphasis> <break time=\"800ms\"/> You have witnessed how a city remembers — <break time=\"600ms\"/> not erasing the broken parts, but honoring them. <break time=\"700ms\"/> Not forgetting the beauty, but understanding its cost. <break time=\"800ms\"/> And now that memory walks with you. <break time=\"900ms\"/> Carry these stories gently. <break time=\"700ms\"/> Speak them when you can. <break time=\"700ms\"/> <emphasis level=\"strong\">That is all the city asks.</emphasis> <break time=\"1000ms\"/> The water flows. <break time=\"600ms\"/> And Savannah remembers.",
       "late_arrival": "The river. Savannah's deepest memory. You have walked through the city's remembering.",
       "expression_intensity": 0.72,
-      "narrator_direction": "Integration, release, peace. You are the river speaking at the end of time. Everything has been witnessed. Everything is held. Speak with the calm of someone who has seen it all and is at peace."
+      "audio_tags": "[integrating, releasing, peaceful, eternal]",
+      "narrator_direction": "Integration, release, peace. You are the river speaking at the end of time. Everything has been witnessed. Everything is held. Speak with the calm of someone who has seen it all and is at peace. Use Audio Tags to convey completion without closure—the story goes on.",
+      "v3_optimization": "The Audio Tags [integrating, releasing, peaceful] should guide the tour's final delivery to feel like coming home. This is where all the threads weave together. Elderon's voice here is the voice of Savannah itself, finally speaking its whole truth."
     }
   ],
   "tour_closing": {
     "text": "Thank you for walking through Savannah's memory. If you found this experience meaningful, share it. Tell the stories. Post your photos. Tag us. Comment. The city grows stronger when its truth is spoken aloud.",
-    "narrator_direction": "Warm, genuine, inviting community. You've guided someone on a profound journey. Thank them."
+    "audio_tags": "[grateful, inviting, community]",
+    "narrator_direction": "Warm, genuine, inviting community. You've guided someone on a profound journey. Thank them. Use Audio Tags to create genuine gratitude and invitation.",
+    "v3_optimization": "The closing should feel like the moment after a meaningful conversation—warmth, openness, invitation. Let the listener know they're part of something larger."
   }
 }
