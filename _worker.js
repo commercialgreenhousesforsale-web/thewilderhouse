@@ -119,6 +119,64 @@ export default {
       }
     }
 
+    if (url.pathname === '/wx-forecast') {
+      // NWS hourly forecast for Savannah — sharper precip *timing* than
+      // open-meteo's model. Fetched server-side so no browser CSP change is
+      // needed. Two hops (points -> forecastHourly); cached 30 min.
+      const UA = 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)';
+      const ok = (obj, age) => new Response(JSON.stringify(obj), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 300) }
+      });
+      try {
+        const pts = await fetch('https://api.weather.gov/points/32.0809,-81.0912', { headers: { 'User-Agent': UA, 'Accept': 'application/geo+json' } });
+        if (!pts.ok) return ok({ periods: [] }, 300);
+        const pd = await pts.json();
+        const hourlyUrl = pd && pd.properties && pd.properties.forecastHourly;
+        if (!hourlyUrl) return ok({ periods: [] }, 300);
+        const hr = await fetch(hourlyUrl, { headers: { 'User-Agent': UA, 'Accept': 'application/geo+json' } });
+        if (!hr.ok) return ok({ periods: [] }, 300);
+        const hd = await hr.json();
+        const periods = ((hd && hd.properties && hd.properties.periods) || []).slice(0, 18).map(function (p) {
+          return { t: p.startTime, pop: (p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0, short: p.shortForecast || '' };
+        });
+        return ok({ periods: periods }, 1800);
+      } catch (e) {
+        return ok({ periods: [] }, 300);
+      }
+    }
+
+    if (url.pathname === '/events-proxy') {
+      // Live local events via the Ticketmaster Discovery API. Lights up only when
+      // a TICKETMASTER_KEY secret is configured; otherwise returns an empty list
+      // and the page falls back to its curated recurring-events calendar.
+      const ok = (obj, age) => new Response(JSON.stringify(obj), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 300) }
+      });
+      if (!env.TICKETMASTER_KEY) return ok({ events: [], source: 'unconfigured' }, 300);
+      try {
+        const api = 'https://app.ticketmaster.com/discovery/v2/events.json?city=Savannah&stateCode=GA&radius=20&unit=miles&size=25&sort=date,asc&apikey=' + env.TICKETMASTER_KEY;
+        const r = await fetch(api);
+        if (!r.ok) return ok({ events: [], source: 'error' }, 300);
+        const d = await r.json();
+        const raw = (d && d._embedded && d._embedded.events) || [];
+        const events = raw.map(function (e) {
+          const dt = (e.dates && e.dates.start) || {};
+          const ven = (e._embedded && e._embedded.venues && e._embedded.venues[0]) || {};
+          const cls = (e.classifications && e.classifications[0]) || {};
+          const seg = (cls.segment && cls.segment.name) || '';
+          const g = /Music/i.test(seg) ? '🎵' : /Sports/i.test(seg) ? '🏟' : /Arts|Theatre|Theater/i.test(seg) ? '🎭' : '🎟';
+          return {
+            name: e.name || 'Event', g: g,
+            place: ven.name || 'Savannah', date: dt.localDate || '', time: dt.localTime || '',
+            url: e.url || '', price: 'Tickets', live: true
+          };
+        }).filter(function (e) { return e.date; });
+        return ok({ events: events, source: 'ticketmaster' }, 1800);
+      } catch (e) {
+        return ok({ events: [], source: 'error' }, 300);
+      }
+    }
+
     return env.ASSETS.fetch(request);
   }
 };

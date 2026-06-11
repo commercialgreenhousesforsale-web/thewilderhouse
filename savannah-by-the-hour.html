@@ -374,6 +374,14 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .refresh-control{padding:13px 36px;background:linear-gradient(135deg,var(--g) 0%,var(--g2) 100%);color:#fff;border:1px solid rgba(232,201,106,.3);border-radius:8px;font-family:var(--serif);font-weight:500;font-size:1rem;letter-spacing:.02em;box-shadow:0 10px 30px rgba(42,60,48,.3),inset 0 1px 0 rgba(255,255,255,.15);cursor:pointer;transition:transform .25s cubic-bezier(.2,.68,.88,1),box-shadow .25s ease,background .25s;will-change:transform;transform:translateZ(0)}
 .refresh-control:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(42,60,48,.4),inset 0 1px 0 rgba(255,255,255,.2);background:linear-gradient(135deg,#3d5444 0%,#2a3c30 100%)}
 .refresh-control:active{transform:translateY(-1px);box-shadow:0 6px 16px rgba(42,60,48,.25),inset 0 1px 2px rgba(0,0,0,.2)}
+.geo-control{padding:13px 28px;background:transparent;color:var(--g);border:1.5px solid var(--g);border-radius:8px;font-family:var(--serif);font-weight:500;font-size:1rem;letter-spacing:.02em;cursor:pointer;transition:all .25s cubic-bezier(.2,.68,.88,1)}
+.geo-control:hover{background:var(--g);color:#fff;transform:translateY(-2px)}
+.geo-control.on{background:var(--g);color:#fff;border-color:var(--g)}
+.geo-control:disabled{opacity:.6;cursor:default}
+@media(prefers-color-scheme:dark){.geo-control{color:var(--gol);border-color:var(--gol)}.geo-control:hover,.geo-control.on{background:var(--gol);color:#1a2b1a}}
+/* Answer-first: compact header on repeat mobile visits */
+.page-header.compact .ph-intro{display:none}
+.page-header.compact .ph-tagline{margin-bottom:10px}
 
 /* ── BACK TO TOP ──────────────────────────────────── */
 #btt{position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--g);color:#fff;border:none;font-size:18px;display:none;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:500;transition:.2s}
@@ -523,9 +531,12 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 
 <main class="planner" id="main">
   <!-- MANUAL REFRESH BUTTON -->
-  <div style="text-align:center;margin-bottom:24px">
+  <div style="text-align:center;margin-bottom:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
     <button id="refreshBtn" class="refresh-control" aria-label="Update data">
       🔄 Update Now
+    </button>
+    <button id="geoBtn" class="geo-control" aria-label="Use my location for walk times">
+      📍 Use my location
     </button>
   </div>
 
@@ -1204,19 +1215,47 @@ function evMatchesDate(ev,d){
 }
 function fmtHR(a,b){const f=h=>h===0?'12am':h===12?'12pm':h>12?(h-12)+'pm':h+'am';return f(a)+'–'+f(b);}
 
+/* ── LIVE EVENTS (Ticketmaster via Worker) ──────── */
+let liveEvents=[]; // today's real ticketed events, fetched from /events-proxy
+async function loadEvents(){
+  try{
+    const j=await fetchT('/events-proxy',6000);
+    liveEvents=Array.isArray(j&&j.events)?j.events:[];
+  }catch{liveEvents=[];}
+  renderEvents();
+}
+function liveToday(){
+  const key=dk(today);
+  return liveEvents.filter(e=>e.date===key).map(e=>{
+    let sh=null;
+    if(e.time&&/^\d{2}:\d{2}/.test(e.time)){sh=parseInt(e.time.slice(0,2),10)+parseInt(e.time.slice(3,5),10)/60;}
+    return{g:e.g||'🎟',name:e.name,place:e.place,price:e.price||'Tickets',sh,url:e.url,live:true};
+  });
+}
+
 /* ── RENDER EVENTS ──────────────────────────────── */
 function renderEvents(){
   const list=document.getElementById('evList');if(!list)return;
-  const evs=EVENTS.filter(ev=>evMatchesDate(ev,today));
   const h=today.getHours()+today.getMinutes()/60;
-  if(!evs.length){list.innerHTML='<p class="ev-none">No recurring events today — a perfect day to follow your own pace.</p>';return;}
-  list.innerHTML=evs.map(ev=>{
+  const curated=EVENTS.filter(ev=>evMatchesDate(ev,today));
+  const tickets=liveToday();
+  if(!curated.length&&!tickets.length){list.innerHTML='<p class="ev-none">No recurring events today — a perfect day to follow your own pace.</p>';return;}
+  const ticketRows=tickets.map(ev=>{
+    const live=ev.sh!=null&&h>=ev.sh&&h<ev.sh+3;
+    const minU=ev.sh!=null?Math.round((ev.sh-h)*60):null;
+    const soon=!live&&minU!=null&&minU>0&&minU<=180;
+    const when=ev.sh==null?'Today':live?'Happening now':soon?(minU<60?`In ${minU} min`:`In ~${Math.ceil(minU/60)} hr`):`Tonight ${hLabel(ev.sh)}`;
+    const inner=`<div class="ev-g">${ev.g}</div><div class="ev-b"><div class="ev-when">${when} · live</div><div class="ev-name">${ev.name}</div><div class="ev-place">${ev.place}</div><span class="ev-tag">${ev.price}</span></div>`;
+    return ev.url?`<a class="ev-row${live||soon?' ev-live':''}" href="${ev.url}" target="_blank" rel="noopener noreferrer">${inner}</a>`:`<div class="ev-row${live||soon?' ev-live':''}">${inner}</div>`;
+  });
+  const curatedRows=curated.map(ev=>{
     const live=h>=ev.sh&&h<ev.eh;
     const minU=Math.round((ev.sh-h)*60);
     const soon=!live&&minU>0&&minU<=120;
     const when=live?'Happening now':soon?(minU<60?`In ${minU} min`:`In ~${Math.ceil(minU/60)} hr`):fmtHR(ev.sh,ev.eh);
     return`<div class="ev-row${live||soon?' ev-live':''}"><div class="ev-g">${ev.g}</div><div class="ev-b"><div class="ev-when">${when}</div><div class="ev-name">${ev.name}</div><div class="ev-place">${ev.place}</div><span class="ev-tag">${ev.price}</span></div></div>`;
-  }).join('');
+  });
+  list.innerHTML=ticketRows.concat(curatedRows).join('');
 }
 
 /* ── FILTER HELPERS ─────────────────────────────── */
@@ -1265,10 +1304,47 @@ function buildCtx(){
 }
 const MARSH=['kayaking','wildlife-refuge','skidaway-state-park'];
 
+/* ── GEO / DISTANCE ─────────────────────────────── */
+/* Approximate coordinates for distance + personalized walk times. Downtown
+   spots are accurate to a block or so; the default origin is Forsyth Park. */
+const ORIGIN=[32.0709,-81.0959]; // Forsyth Park / The Wilder House
+let userPos=null;
+const GEO={
+  'forsyth-fountain':[32.0709,-81.0959],'picnic':[32.0709,-81.0959],'playground':[32.0725,-81.0975],
+  'river-stroll':[32.0809,-81.0905],'farmers-market':[32.0690,-81.0959],'broughton':[32.0790,-81.0920],
+  'city-market':[32.0808,-81.0930],'plant-riverside':[32.0830,-81.0992],'carriage':[32.0808,-81.0930],
+  'ghost-tour':[32.0775,-81.0935],'jazz':[32.0758,-81.0928],'telfair':[32.0786,-81.0944],
+  'cathedral':[32.0747,-81.0925],'colonial-cemetery':[32.0739,-81.0908],'ships-sea':[32.0815,-81.0975],
+  'history-museum':[32.0772,-81.0998],'scad-museum':[32.0760,-81.1005],'prohibition':[32.0808,-81.0930],
+  'pirates-house':[32.0800,-81.0870],'mrs-wilkes':[32.0730,-81.0960],'leopolds':[32.0790,-81.0905],
+  'trolley':[32.0809,-81.0912],'graveface':[32.0820,-81.0900],'savannah-candy-kitchen':[32.0810,-81.0905],
+  'river-street-sweets':[32.0812,-81.0890],'lulus-chocolate':[32.0800,-81.0990],'byrd-cookie-company':[32.0808,-81.0930],
+  'peregrin-rooftop':[32.0745,-81.0905],'stars-rooftop':[32.0815,-81.0935],'top-deck-bar':[32.0830,-81.0992],
+  'bar-julian':[32.0810,-81.0925],'savannah-theatre':[32.0760,-81.0930],'lucas-theatre':[32.0810,-81.0890],
+  'club-one':[32.0815,-81.0905],'collins-quarter':[32.0725,-81.0945],'the-grey':[32.0775,-81.1000],
+  'olde-pink-house':[32.0808,-81.0900],'crystal-beer-parlor':[32.0728,-81.0975],'zunzis':[32.0760,-81.0920],
+  'kevin-barrys':[32.0815,-81.0920],'belles-ferry':[32.0815,-81.0910],'squares-walk':[32.0730,-81.0935],
+  'e-shaver-books':[32.0762,-81.0945],'paris-market':[32.0795,-81.0945],'shopscad':[32.0760,-81.0945],
+  'savannah-bee':[32.0792,-81.0950],'wet-willies':[32.0812,-81.0900],'juliette-gordon-low':[32.0760,-81.0918],
+  'davenport-house':[32.0792,-81.0888],'railroad-museum':[32.0758,-81.1010],'civil-rights-museum':[32.0760,-81.0998],
+  'savannah-children-museum':[32.0772,-81.0998],
+  /* drive-out spots */
+  'wormsloe':[31.9560,-81.0560],'bonaventure':[32.0380,-81.0430],'tybee':[32.0000,-80.8450],
+  'wildlife-refuge':[32.1900,-81.1500],'skidaway-state-park':[31.9430,-81.0440],'fort-pulaski':[32.0270,-80.8900],
+  'fort-jackson':[32.0810,-81.0360],'mighty8':[32.1200,-81.2200],'pin-point':[31.9460,-81.0840],
+  'kayaking':[32.0150,-80.8900],'starland':[32.0570,-81.0950],'back-in-day-bakery':[32.0560,-81.0945],'aqua-star':[32.0850,-81.0950]
+};
+function haversine(a,b,c,d){const R=3958.8,toR=x=>x*Math.PI/180;const dLat=toR(c-a),dLng=toR(d-b);const s=Math.sin(dLat/2)**2+Math.cos(toR(a))*Math.cos(toR(c))*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
+
 /* ── TRAVEL TIME / DWELL / MAPS ─────────────────── */
-/* Minutes from The Wilder House (Forsyth Park). Parse "N min" out of the place
-   string when present, else estimate from the reach flags. */
+/* Minutes to get there. With the visitor's location known, compute it from
+   their actual position; otherwise estimate from the place string / flags. */
 function travelMins(e){
+  if(userPos&&GEO[e.id]){
+    const mi=haversine(userPos.lat,userPos.lng,GEO[e.id][0],GEO[e.id][1]);
+    if(e.walk||mi<0.9)return Math.max(2,Math.round(mi*20)); // ~3 mph on foot
+    if(e.drive)return Math.round(mi*2.5+5);
+  }
   const m=(e.place||'').match(/(\d+)\s*min/);
   if(m)return +m[1];
   if(e.walk)return 12;
@@ -1675,6 +1751,20 @@ async function loadData(){
       renderWeather();renderAll();
     }
   }catch{}
+  // Sharper precip *timing*: NWS hourly forecast (via Worker, no CSP change).
+  // Only refines an otherwise-dry forecast — never overrides observed rain.
+  try{
+    if(weather&&!weather.observedRain&&(!weather.rain||weather.rain.state==='dry')){
+      const f=await fetchT('/wx-forecast',6000);
+      const ps=(f&&f.periods)||[];
+      for(const p of ps){
+        const t=toSav(new Date(p.t));
+        if(t<today)continue;
+        if(p.pop>=55){weather.rain={state:'incoming',at:t,prob:p.pop};renderWeather();renderAll();break;}
+        if(t-today>6*3600*1000)break; // only look ~6h ahead
+      }
+    }
+  }catch{}
   try{
     const j=await fetchT(`https://api.sunrise-sunset.org/json?lat=${SAV.lat}&lng=${SAV.lng}&date=${ds}&formatted=0&tzid=${encodeURIComponent(SAV.tz)}`);
     const r=j.results;
@@ -1748,12 +1838,39 @@ function showToast(msg){
   t.textContent=msg;t.style.display='block';
   clearTimeout(showToast._t);showToast._t=setTimeout(()=>t.style.display='none',2200);
 }
+/* Permission-gated: use the visitor's real position for walk times. */
+function useMyLocation(){
+  const btn=document.getElementById('geoBtn');
+  if(!navigator.geolocation){showToast('Location not available on this device');return;}
+  if(btn){btn.disabled=true;btn.textContent='📍 Locating…';}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userPos={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    const mi=haversine(userPos.lat,userPos.lng,ORIGIN[0],ORIGIN[1]);
+    if(btn){btn.disabled=false;btn.textContent='📍 Using your location';btn.classList.add('on');}
+    showToast(mi<8?'Walk times now measured from you':'Set — though you look far from downtown');
+    renderAll();
+  },err=>{
+    if(btn){btn.disabled=false;btn.textContent='📍 Use my location';}
+    showToast(err.code===1?'Location permission denied':'Could not get your location');
+  },{enableHighAccuracy:false,timeout:8000,maximumAge:120000});
+}
+/* Answer-first: on repeat mobile visits, collapse the intro prose so the live
+   pick is the first thing on screen. Content stays in the DOM for crawlers. */
+function answerFirst(){
+  try{
+    if(localStorage.getItem('sbh_seen')&&window.innerWidth<=600){
+      document.querySelector('.page-header')?.classList.add('compact');
+    }
+    localStorage.setItem('sbh_seen','1');
+  }catch(e){}
+}
 
 /* ── INIT ───────────────────────────────────────── */
 function init(){
   document.getElementById('heroDate').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('heroDay').textContent=today.toLocaleDateString('en-US',{weekday:'long'});
   document.getElementById('heroTime').textContent=ft(today);
+  answerFirst();
   restoreFilter();
   renderHoliday();
   renderEvents();
@@ -1762,8 +1879,10 @@ function init(){
   syncChips();
   upgradeTips();
   const sb=document.getElementById('shareBtn');if(sb)sb.addEventListener('click',shareCurrentPick);
+  const gb=document.getElementById('geoBtn');if(gb)gb.addEventListener('click',useMyLocation);
   loadData();
   loadTide();
+  loadEvents();
 }
 
 /* ── LIVE SAVANNAH CLOCK ────────────────────────── */
@@ -1775,13 +1894,13 @@ setInterval(()=>{
   document.getElementById('heroTime').textContent=ft(today);
   document.getElementById('heroDate').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('heroDay').textContent=today.toLocaleDateString('en-US',{weekday:'long'});
-  if(today.getHours()!==lastHour){lastHour=today.getHours();renderHoliday();renderEvents();loadData();loadTide();}
+  if(today.getHours()!==lastHour){lastHour=today.getHours();renderHoliday();renderEvents();loadData();loadTide();loadEvents();}
   else renderAll();
 },60000);
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='visible')return;
   const now=savNow();
-  if(now-today>5*60000){today=now;lastHour=today.getHours();document.getElementById('heroTime').textContent=ft(today);renderHoliday();renderEvents();loadData();loadTide();}
+  if(now-today>5*60000){today=now;lastHour=today.getHours();document.getElementById('heroTime').textContent=ft(today);renderHoliday();renderEvents();loadData();loadTide();loadEvents();}
 });
 
 /* ── NAV TOGGLE ─────────────────────────────────── */
