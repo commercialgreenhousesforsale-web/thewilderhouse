@@ -148,9 +148,6 @@ body{background:var(--cr);color:var(--ink);font-family:var(--sans);font-size:15p
   .rn-cond{background:linear-gradient(180deg,#1e1e1e,#1a1a1a);border-top-color:rgba(255,255,255,.12);color:#b0b0b0}
   .rn-cond .rc-i b{color:#e0e0e0}
   .rc-sep{background:rgba(255,255,255,.2)}
-  .tmpl-card{background:linear-gradient(135deg,#1e1e1e 0%,#1a1a1a 100%);border-color:rgba(232,201,106,.2);color:#d0d0d0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-  .tmpl-card:hover{border-color:rgba(232,201,106,.4);box-shadow:0 6px 20px rgba(232,201,106,.12);background:linear-gradient(135deg,#252525 0%,#1f1f1f 100%)}
-  .tmpl-card.active{background:linear-gradient(135deg,var(--gol) 0%,#d4af5a 100%);color:#1a2b1a;border-color:rgba(194,160,50,.5);box-shadow:0 8px 24px rgba(232,201,106,.3),inset 0 1px 0 rgba(255,255,255,.3)}
   input,textarea,select{background:#2a2a2a;color:#e0e0e0;border-color:rgba(255,255,255,.2)}
   #toast{background:#0f0f0f;color:#e0e0e0;border:1px solid rgba(232,201,106,.3)}
   .refresh-control{background:linear-gradient(135deg,var(--gol) 0%,#b8a520 100%);color:#1a2b1a;border-color:rgba(194,160,50,.5);box-shadow:0 10px 30px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.2)}
@@ -402,18 +399,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .qchip:active{transform:translateY(-1px) scale(.97);box-shadow:0 3px 10px rgba(42,60,48,.15),inset 0 1px 2px rgba(0,0,0,.1)}
 .qchip.active{background:linear-gradient(135deg,var(--g) 0%,#3d5444 50%,var(--g2) 100%);color:#fff;border-color:rgba(232,201,106,.5);box-shadow:0 8px 28px rgba(42,60,48,.3),inset 0 2px 6px rgba(232,201,106,.15),inset 0 -2px 6px rgba(0,0,0,.2);text-shadow:0 1px 2px rgba(0,0,0,.3)}
 
-/* ── TEMPLATES ────────────────────────────────────── */
-.templates-row{max-width:1200px;margin:0 auto;padding:16px 20px 0;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.templates-row::-webkit-scrollbar{display:none}
-.tmpl-card{flex:0 0 auto;background:linear-gradient(135deg,#fff 0%,#faf9f7 100%);border:1.5px solid rgba(42,60,48,.15);border-radius:12px;padding:clamp(12px,2vw,18px);cursor:pointer;transition:all .25s cubic-bezier(.2,.68,.88,1);min-width:120px;text-align:center;font-family:inherit;will-change:transform,box-shadow,border-color;transform:translateZ(0);min-height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:0 2px 8px rgba(42,60,48,.06)}
-.tmpl-card:hover{border-color:var(--gold);box-shadow:0 6px 20px rgba(194,160,50,.15);transform:translateY(-3px)}
-.tmpl-card:active{transform:scale(.97);box-shadow:0 2px 6px rgba(42,60,48,.1)}
-.tmpl-card.active{background:linear-gradient(135deg,var(--g) 0%,var(--g2) 100%);border-color:rgba(232,201,106,.4);color:#fff;box-shadow:0 8px 24px rgba(42,60,48,.25),inset 0 1px 0 rgba(255,255,255,.15)}
-.tmpl-card.active .tmpl-desc{color:rgba(255,255,255,.62)}
-.tmpl-icon{font-size:1.25rem;line-height:1;margin-bottom:4px;display:block}
-.tmpl-name{font-family:var(--serif);font-size:.9rem;font-weight:500;line-height:1.2;display:block}
-.tmpl-desc{font-size:10px;color:var(--mu);margin-top:2px;font-family:var(--mono);letter-spacing:.04em;display:block}
-
 /* ── OPEN-NOW / WALK CHIPS ────────────────────────── */
 .act-status{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:3px}
 .s-open{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#2a6e34;background:rgba(42,110,52,.1);padding:2px 7px;border-radius:4px}
@@ -443,17 +428,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .tip-body a{color:var(--g);text-decoration:underline}
 .tip-body strong{color:var(--ink);font-weight:600}
 
-/* ── TIDE CARD ────────────────────────────────────── */
-.tide-card{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:14px 16px}
-.tide-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-.tide-state{font-family:var(--serif);font-size:1.1rem;font-weight:500;display:flex;align-items:center;gap:7px}
-.tide-arrow{font-size:.85rem}
-.tide-arrow.up{color:var(--sky)}.tide-arrow.down{color:var(--terra)}
-.tide-next{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid var(--rule);padding-top:10px}
-.tide-blk .tl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);display:block}
-.tide-blk .tv{font-family:var(--serif);font-size:13.5px;font-weight:500;display:block;line-height:1.1}
-.tide-blk .ts{font-size:10px;color:var(--mu)}
-
 /* ── HOLIDAY BANNER ───────────────────────────────── */
 .holiday-banner{background:linear-gradient(90deg,rgba(194,160,50,.16),rgba(187,106,61,.1));border:1px solid rgba(194,160,50,.35);border-radius:12px;padding:11px 15px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);line-height:1.45}
 .holiday-banner .hb-g{font-size:20px;flex-shrink:0}
@@ -476,21 +450,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .itin-meta{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);margin-top:5px;display:flex;gap:12px;flex-wrap:wrap}
 .itin-foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:11.5px;color:var(--mu);font-style:italic;line-height:1.45}
 
-/* ── RAIN TIMER ───────────────────────────────────── */
-.rain-timer{margin-top:8px;font-size:12px;color:var(--sky);font-weight:500;display:flex;align-items:flex-start;gap:6px;line-height:1.4}
-.rain-timer:empty{display:none}
-.rain-timer .rt-g{font-size:14px;flex-shrink:0}
-.rain-timer b{color:var(--terra)}
-
-/* ── STICKY CTA ───────────────────────────────────── */
-.sticky-cta{position:fixed;bottom:0;left:0;right:0;background:var(--g);color:#fff;padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:14px;z-index:300;transform:translateY(100%);transition:transform .35s ease;box-shadow:0 -3px 20px rgba(42,60,48,.25)}
-.sticky-cta.vis{transform:translateY(0)}
-.sticky-cta-text{font-size:.8rem;color:rgba(255,255,255,.65);white-space:nowrap}
-.sticky-cta-link{background:#fff;color:var(--g);padding:7px 18px;border-radius:3px;font-size:.8rem;font-weight:700;letter-spacing:.03em;white-space:nowrap;text-decoration:none;transition:.15s;flex-shrink:0}
-.sticky-cta-link:hover{background:var(--cd);color:var(--g)}
-.sticky-x{background:none;border:none;color:rgba(255,255,255,.45);font-size:1rem;cursor:pointer;padding:2px 6px;line-height:1;margin-left:4px}
-.sticky-x:hover{color:#fff}
-@media(max-width:540px){.sticky-cta-text{display:none}}
 </style>
 </head>
 <body>
@@ -1283,6 +1242,32 @@ function buildCtx(){
   return{h,wc,isRainy,riseH,setH,inMornGold,inEveGold,hot,uvHigh,lowSoon,highSoon,holiday:currentHoliday()};
 }
 const MARSH=['kayaking','wildlife-refuge','skidaway-state-park'];
+
+/* ── TRAVEL TIME / DWELL / MAPS ─────────────────── */
+/* Minutes from The Wilder House (Forsyth Park). Parse "N min" out of the place
+   string when present, else estimate from the reach flags. */
+function travelMins(e){
+  const m=(e.place||'').match(/(\d+)\s*min/);
+  if(m)return +m[1];
+  if(e.walk)return 12;
+  if(e.shut&&!e.walk)return 20;
+  if(e.drive)return 25;
+  return 12;
+}
+/* Minimum sensible time spent on site, by category. */
+const DWELL={'Park':40,'Museum':75,'History':45,'Restaurant':75,'Food':60,'Food & History':75,'Food & Culture':45,'Brunch':60,'Rooftop Bar':60,'Bar':60,'Bar & Music':75,'Tour':90,'Walking Tour':90,'Beach':150,'Nature':90,'Outdoors':75,'Theater':120,'Nightlife':90,'Music':45,'Sweet Shop':15,'Bakery':15,'Dessert Bar':45,'Shopping':30,'Market':40,'Free Experience':30,'Entertainment':60,'Neighborhood':75};
+const dwellOf=e=>DWELL[e.cat]||45;
+/* Can you still get there and have a real visit? */
+function timing(e,h){
+  const spec=OPEN[e.id];const w=spec===undefined?undefined:todayWindow(spec,today.getDay());
+  if(!w||w==='always')return{};
+  const[o,c]=w;const tv=travelMins(e)/60;const arrive=h+tv;
+  return{open:o,close:c,arrive,leaveBy:c-tv,tooLate:arrive>=c,tight:arrive>=c-Math.min(dwellOf(e),60)/60};
+}
+const stripTags=s=>(s||'').replace(/<[^>]+>/g,'');
+const mapsUrl=e=>`https://maps.google.com/?q=${encodeURIComponent(stripTags(e.mapsQuery||e.title)+' Savannah GA')}`;
+const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+
 function scoreOf(e,ctx){
   const h=ctx.h;const[a,b]=e.hours;let s=0;
   if(h>=a&&h<=b)s=100-Math.abs((a+b)/2-h)*5;else if(h<a)s=60-(a-h)*8;else s=40-(h-b)*10;
@@ -1303,6 +1288,9 @@ function scoreOf(e,ctx){
   const oa=openAtHour(e,h);
   if(oa===false)s-=70;
   else if(oa==='closing')s-=8;
+  const tm=timing(e,h);
+  if(tm.tooLate)s-=55;        // closes before you could even arrive
+  else if(tm.tight)s-=10;     // you'd make it but with a rushed visit
   return s;
 }
 function openAtHour(e,h){
@@ -1315,24 +1303,43 @@ function openAtHour(e,h){
   if((c-h)*60<=45)return 'closing';
   return true;
 }
+/* The closing phrase — what to actually do, given the pick and conditions. */
+function actionFor(pick,ctx,h){
+  const tm=timing(pick,h);
+  if(tm.tight&&tm.leaveBy>h)return `leave by ${hLabel(tm.leaveBy)} to make it before they close`;
+  if(ctx.inEveGold&&!pick.indoor)return 'go now while the light still holds';
+  if(ctx.inMornGold&&!pick.indoor)return 'catch it before the crowds and the heat';
+  if(pick.indoor&&ctx.hot)return 'a cool, air-conditioned break from the heat';
+  if(pick.free&&pick.walk)return 'free, walkable, and open right now';
+  if(pick.walk)return 'an easy walk from the park';
+  if(pick.drive)return 'worth the short drive at this hour';
+  return 'open and at its best right about now';
+}
+/* Compose a reason that cites at least two real, current conditions. */
 function reasonFor(pick,ctx){
   const h=ctx.h;const r=weather&&weather.rain;
   if(ctx.holiday)return ctx.holiday.reason;
   if(ctx.isRainy){
-    if(r&&r.state==='clearing'&&r.at)return `Rain eases by ${fts(r.at)} — duck into this indoor pick now, then the patios reopen.`;
-    return "Rain is falling — showing the best Savannah indoors has to offer.";
+    if(r&&r.state==='clearing'&&r.at)return `Rain eases by ${fts(r.at)} — duck into ${stripTags(pick.title)} now, then the patios reopen.`;
+    return `Rain's falling — ${stripTags(pick.title)} is the best of indoor Savannah right now.`;
   }
-  if(r&&r.state==='incoming'&&r.at&&!pick.indoor)return `Clear window now — showers roll in around ${fts(r.at)} (${r.prob}%). Get this in before the rain.`;
-  if(ctx.hot&&h>=11&&h<=17)return `Feels like ${weather.feelsF}° out — steering you to shade, A/C and indoor picks until it cools off.`;
-  if(ctx.lowSoon&&MARSH.includes(pick.id))return `Low tide ${tide?fts(tide.nextLow.t):''} — the marsh is draining, prime window for wildlife and paddling.`;
-  if(ctx.inEveGold)return `Golden hour — ~${Math.max(5,Math.round((ctx.setH-h)*60))} min of soft light left.`;
-  if(ctx.inMornGold)return "Morning golden light is on right now. Best 30 minutes of the day.";
-  if(h<9)return "Quiet hour. The squares are empty and the bakeries are open.";
-  if(h<12)return "Mid-morning — markets and oak avenues at their best.";
-  if(h<15)return "Midday. Lean toward shade, or the radar says clear.";
-  if(h<18)return "Afternoon — heading toward magic hour.";
-  if(h<21)return "Evening — Savannah comes alive after the sun drops.";
-  return "Late night — ghost stories and warm Savannah dark.";
+  if(ctx.lowSoon&&MARSH.includes(pick.id))return `Low tide at ${tide?fts(tide.nextLow.t):'soon'} — the marsh is draining, the prime window for wildlife and paddling.`;
+  const bits=[];
+  if(weather)bits.push(`${weather.tempF}° and ${label(weather.code).toLowerCase()}`);
+  if(ctx.hot)bits.push(`feels like ${weather.feelsF}°`);
+  let timeBit='';
+  if(ctx.inEveGold)timeBit=`golden hour has about ${Math.max(5,Math.round((ctx.setH-h)*60))} minutes of soft light left`;
+  else if(ctx.inMornGold)timeBit='the morning light is at its best';
+  else if(sun&&h<ctx.setH&&ctx.setH-h<=2.5)timeBit=`golden hour starts around ${fts(addMin(sun.set,-60))}`;
+  else if(r&&r.state==='incoming'&&r.at)timeBit=`showers roll in around ${fts(r.at)} (${r.prob}%)`;
+  if(timeBit)bits.push(timeBit);
+  if(bits.length<2&&tide){
+    if(tide.nextLow&&tide.rising===false)bits.push(`tide falling toward low at ${fts(tide.nextLow.t)}`);
+    else if(tide.nextHigh)bits.push(`tide rising toward high at ${fts(tide.nextHigh.t)}`);
+  }
+  const lead=bits.slice(0,2).join(', ');
+  const action=actionFor(pick,ctx,h);
+  return lead?`${cap(lead)} — ${action}.`:`${cap(action)}.`;
 }
 
 /* ── RENDER RIGHT NOW ───────────────────────────── */
@@ -1353,8 +1360,11 @@ function renderRightNow(){
   document.getElementById('rnTitle').innerHTML=`<span>${pick.g}</span> ${pick.title}`;
   document.getElementById('rnBgGlyph').textContent=pick.g;
   document.getElementById('rnReason').textContent=reason;
-  const dist=pick.walk?'~10 min walk':pick.shut?'Free DOT shuttle':pick.drive?'~10 min drive':'Check transport';
-  document.getElementById('rnMeta').innerHTML=`<div class="rn-mi"><b>Where</b><span>${pick.place}</span></div><div class="rn-mi"><b>Travel</b><span>${dist}</span></div><div class="rn-mi"><b>Cost</b><span>${pick.price}</span></div>`;
+  const tmins=travelMins(pick);
+  const dist=pick.walk?`~${tmins} min walk`:pick.shut&&!pick.walk?'Free DOT shuttle':pick.drive?`~${tmins} min drive`:'Check transport';
+  const ptm=timing(pick,ctx.h);
+  const leaveCell=(ptm.leaveBy&&!ptm.tooLate&&ptm.leaveBy>ctx.h&&ptm.leaveBy-ctx.h<=2)?`<div class="rn-mi"><b>Leave by</b><span>${hLabel(ptm.leaveBy)}</span></div>`:'';
+  document.getElementById('rnMeta').innerHTML=`<div class="rn-mi"><b>Where</b><span>${pick.place} · <a href="${mapsUrl(pick)}" target="_blank" rel="noopener noreferrer" style="color:var(--g);border-bottom:1px solid var(--g)">Map&nbsp;↗</a></span></div><div class="rn-mi"><b>Travel</b><span>${dist}</span></div>${leaveCell}<div class="rn-mi"><b>Cost</b><span>${pick.price}</span></div>`;
   const bdg=[];
   const pst=openStatus(pick);
   if(pst)bdg.push(`<span class="${pst.cls}">${pst.txt}</span>`);
@@ -1385,7 +1395,7 @@ function renderActivities(){
       <h3 class="act-title"><span style="margin-right:6px">${e.g}</span>${e.title}</h3>
       <div class="act-place">${e.place}</div>
       <p class="act-desc">${e.desc}${e.book?` <em style="color:var(--terra);font-size:12px">${e.bookNote}.</em>`:''}</p>
-      <div class="act-foot"><span class="act-price${e.free?' free':''}">${e.price}</span><div class="act-badges">${bdg.join('')}</div></div>
+      <div class="act-foot"><span class="act-price${e.free?' free':''}">${e.price}</span><div class="act-badges"><a class="act-badge" href="${mapsUrl(e)}" target="_blank" rel="noopener noreferrer" style="background:rgba(42,60,48,.1);color:var(--g)">📍 Map</a>${bdg.join('')}</div></div>
     </article>`;
   }).join('');
   document.getElementById('actsCount').textContent=`${scored.length} picks for right now. `;
@@ -1453,15 +1463,6 @@ function parseRain(hourly,code){
   }
   return{state:'dry'};
 }
-function renderRainTimer(){
-  const el=document.getElementById('rainTimer');if(!el)return;
-  const r=weather&&weather.rain;
-  if(!r||r.state==='dry'){el.innerHTML='';return;}
-  if(r.state==='clearing'&&r.at)el.innerHTML=`<span class="rt-g">🌤</span><span>Rain easing by <b>${fts(r.at)}</b> — stay indoors till then, patios reopen after.</span>`;
-  else if(r.state==='wet')el.innerHTML=`<span class="rt-g">🌧</span><span>Wet through the evening — lean on the indoor picks.</span>`;
-  else if(r.state==='incoming'&&r.at)el.innerHTML=`<span class="rt-g">🌦</span><span>Dry now — showers likely around <b>${fts(r.at)}</b> (${r.prob}%). Front-load the outdoor plans.</span>`;
-  else el.innerHTML='';
-}
 
 /* ── ITINERARY (NEXT FEW HOURS) ─────────────────── */
 function buildItinerary(ctx){
@@ -1521,19 +1522,6 @@ function parseTide(ps){
     events:ps
   };
 }
-function renderTide(){
-  const el=document.getElementById('tideBody');if(!el)return;
-  if(!tide){el.innerHTML='<span style="font-size:12px;color:var(--mu)">Tide data unavailable right now.</span>';return;}
-  const arrow=tide.rising?'<span class="tide-arrow up">▲</span>':'<span class="tide-arrow down">▼</span>';
-  const state=tide.rising?'Incoming · rising':'Outgoing · falling';
-  const hi=tide.nextHigh,lo=tide.nextLow;
-  el.innerHTML=`
-    <div class="tide-top"><span class="tide-state">${arrow}${state}</span></div>
-    <div class="tide-next">
-      <div class="tide-blk"><span class="tl">Next high</span><span class="tv">${hi?fts(hi.t):'—'}</span><span class="ts">${hi?hi.v.toFixed(1)+' ft':''}</span></div>
-      <div class="tide-blk"><span class="tl">Next low</span><span class="tv">${lo?fts(lo.t):'—'}</span><span class="ts">${lo?lo.v.toFixed(1)+' ft':''}</span></div>
-    </div>`;
-}
 async function loadTide(){
   const ds=dk(today).replace(/-/g,'');
   try{
@@ -1541,7 +1529,7 @@ async function loadTide(){
     const ps=(j.predictions||[]).map(p=>({t:new Date(p.t.replace(' ','T')),type:p.type,v:parseFloat(p.v)}));
     tide=parseTide(ps);
   }catch{tide=null;}
-  renderTide();renderAll();
+  renderAll();
 }
 
 /* ── RENDER ALL ─────────────────────────────────── */
@@ -1581,7 +1569,6 @@ async function loadData(){
 }
 
 /* ── INTERACTIVE CONTROLS ───────────────────────── */
-function clearTmpl(){document.querySelectorAll('.tmpl-card').forEach(x=>x.classList.remove('active'));}
 function syncChips(){
   document.querySelectorAll('#qArea .qchip').forEach(x=>x.classList.toggle('active',x.dataset.val===(FILTER.area||'any')));
   document.querySelectorAll('#qWho .qchip').forEach(x=>x.classList.toggle('active',x.dataset.val===FILTER.who));
@@ -1590,20 +1577,8 @@ function syncChips(){
 function bindChips(group,key){
   document.querySelectorAll(`#${group} .qchip`).forEach(c=>c.addEventListener('click',()=>{
     FILTER.indoorOnly=false;FILTER.timeBias=null;FILTER[key]=c.dataset.val;
-    clearTmpl();document.querySelector('.tmpl-card[data-tmpl="clear"]')?.classList.add('active');
     syncChips();renderAll();
   }));
-}
-function applyTemplate(name){
-  FILTER={who:'any',vibe:'any',area:'any',indoorOnly:false,timeBias:null};
-  if(name==='rainy')FILTER.indoorOnly=true;
-  else if(name==='romantic')FILTER.who='romantic';
-  else if(name==='family')FILTER.who='family';
-  else if(name==='free')FILTER.vibe='free';
-  else if(name==='morning')FILTER.timeBias='morning';
-  else if(name==='evening')FILTER.timeBias='evening';
-  else if(name==='shopping')FILTER.vibe='shopping';
-  syncChips();renderAll();
 }
 function toggleTip(el){el.parentElement.classList.toggle('open');}
 
@@ -1616,9 +1591,6 @@ function init(){
   renderEvents();
   renderAll();
   bindChips('qArea','area');bindChips('qWho','who');bindChips('qVibe','vibe');
-  document.querySelectorAll('.tmpl-card').forEach(t=>t.addEventListener('click',()=>{
-    clearTmpl();t.classList.add('active');applyTemplate(t.dataset.tmpl);
-  }));
   loadData();
   loadTide();
 }
