@@ -851,7 +851,7 @@ const A=[
    hours:[9,13],wfit:['clear','cloudy'],who:['solo','family','romantic'],days:[6]},
   {id:'broughton',cat:'Shopping',g:'🛍',indoor:false,walk:true,shut:true,free:true,price:'Free to browse',
    title:'Broughton Street',place:'Historic District · walkable',
-   desc:"Savannah's main street — local boutiques, galleries, bookstores, and <a href="https://www.leopoldsicecream.com/" target="_blank">Leopold's Ice Cream</a> at 212 E. Broughton (since 1919, order the Rum Bisque). Always a line. Always worth it.",
+   desc:'Savannah&rsquo;s main street — local boutiques, galleries, bookstores, and <a href="https://www.leopoldsicecream.com/" target="_blank">Leopold&rsquo;s Ice Cream</a> at 212 E. Broughton (since 1919, order the Rum Bisque). Always a line. Always worth it.',
    hours:[10,19],wfit:['clear','cloudy'],who:['solo','family','romantic']},
   {id:'city-market',cat:'Food & Culture',g:'🏪',indoor:false,walk:true,shut:true,free:true,price:'Free entry',
    title:'City Market',place:'Historic District · walkable',
@@ -946,7 +946,7 @@ const A=[
    desc:"Family-style Southern dining since the 1940s. Fried chicken, biscuits, collard greens, mac and cheese — platters keep coming. No reservations. Arrive 45 minutes before 11am opening. Closed weekends.",
    hours:[10,14],wfit:['clear','cloudy','rain'],who:['solo','family'],days:[1,2,3,4,5],book:true,bookNote:'Arrive 45 min before 11am open · Closed weekends'},
   {id:'leopolds',cat:'Food',g:'🍦',indoor:true,walk:true,shut:true,free:false,price:'From $4',
-   title:"<a href="https://www.leopoldsicecream.com/" target="_blank">Leopold's Ice Cream</a>",place:'212 E. Broughton St · walkable',
+   title:"Leopold's Ice Cream",place:'212 E. Broughton St · walkable',
    desc:"Scooping since 1919. Owner Stratton Leopold is a Hollywood film producer with a Ted Turner connection — the shop is full of memorabilia. Order the Rum Bisque. There is always a line and it is always worth it.",
    hours:[11,22],wfit:['clear','cloudy','rain'],who:['solo','family','romantic']},
   {id:'trolley',cat:'Tour',g:'🚋',indoor:true,walk:false,shut:false,drive:false,free:false,price:'From $34',
@@ -1108,8 +1108,13 @@ const A=[
 ];
 
 /* ── STATE ──────────────────────────────────────── */
-const today=new Date();
 const SAV={lat:32.0809,lng:-81.0912,tz:'America/New_York'};
+/* Savannah wall-clock: a Date whose local getters (getHours, getDay…) return
+   Savannah (Eastern) time regardless of the visitor's timezone. All scoring,
+   open-now logic and displayed times run on this clock. */
+const toSav=(d)=>new Date(d.toLocaleString('en-US',{timeZone:SAV.tz}));
+const savNow=()=>toSav(new Date());
+let today=savNow();
 let weather=null,sun=null,tide=null;
 let FILTER={who:'any',vibe:'any',area:'any',indoorOnly:false,timeBias:null};
 
@@ -1141,7 +1146,7 @@ function currentHoliday(){
 const ft=(d)=>{if(!d)return'—';return d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).replace(' AM',' am').replace(' PM',' pm');};
 const fts=(d)=>{if(!d)return'—';return d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).toLowerCase().replace(' ','');};
 const addMin=(d,m)=>new Date(d.getTime()+m*60000);
-const dk=(d)=>d.toISOString().slice(0,10);
+const dk=(d)=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const wcat=(code)=>{if(code==null)return'cloudy';if(code<=1)return'clear';if(code<=48)return'cloudy';if(code>=51)return'rain';return'cloudy';};
 const glyph=(c)=>({0:'☀',1:'🌤',2:'⛅',3:'☁',45:'🌫',51:'🌦',53:'🌦',61:'🌦',63:'🌧',65:'🌧',80:'🌦',82:'⛈',95:'⛈'}[c]||'🌤');
 const label=(c)=>({0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',53:'Drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Rain showers',82:'Heavy showers',95:'Thunderstorm'}[c]||'Variable');
@@ -1570,7 +1575,7 @@ async function loadData(){
   try{
     const j=await fetchT(`https://api.sunrise-sunset.org/json?lat=${SAV.lat}&lng=${SAV.lng}&date=${ds}&formatted=0&tzid=${encodeURIComponent(SAV.tz)}`);
     const r=j.results;
-    sun={rise:new Date(r.sunrise),set:new Date(r.sunset),noon:new Date(r.solar_noon)};
+    sun={rise:toSav(new Date(r.sunrise)),set:toSav(new Date(r.sunset)),noon:toSav(new Date(r.solar_noon))};
   }catch{sun={rise:new Date(new Date(today).setHours(6,30)),set:new Date(new Date(today).setHours(20,10)),noon:new Date(new Date(today).setHours(13,20)),fallback:true};}
   renderSun();renderAll();
 }
@@ -1618,6 +1623,24 @@ function init(){
   loadTide();
 }
 
+/* ── LIVE SAVANNAH CLOCK ────────────────────────── */
+/* Tick every minute: advance the Savannah clock and re-score. Refetch data
+   when the hour rolls over or the tab returns after being backgrounded. */
+let lastHour=today.getHours();
+setInterval(()=>{
+  today=savNow();
+  document.getElementById('heroTime').textContent=ft(today);
+  document.getElementById('heroDate').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('heroDay').textContent=today.toLocaleDateString('en-US',{weekday:'long'});
+  if(today.getHours()!==lastHour){lastHour=today.getHours();renderHoliday();renderEvents();loadData();loadTide();}
+  else renderAll();
+},60000);
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible')return;
+  const now=savNow();
+  if(now-today>5*60000){today=now;lastHour=today.getHours();document.getElementById('heroTime').textContent=ft(today);renderHoliday();renderEvents();loadData();loadTide();}
+});
+
 /* ── NAV TOGGLE ─────────────────────────────────── */
 document.getElementById('navToggle').addEventListener('click',function(){
   const links=document.getElementById('navLinks');
@@ -1636,7 +1659,7 @@ document.getElementById('refreshBtn').addEventListener('click',()=>{
   const btn=document.getElementById('refreshBtn');
   btn.disabled=true;
   btn.style.opacity='0.6';
-  today=new Date();
+  today=savNow();
   document.getElementById('heroTime').textContent=ft(today);
   renderHoliday();
   renderEvents();
