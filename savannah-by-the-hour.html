@@ -551,6 +551,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
       <div class="rn-cond" id="rnCond"></div>
     </div>
     <p class="rn-sync" id="rnSync"><span class="rn-sync-dot"></span>Live tool &middot; data synced <time id="rnSyncTime" datetime="2026-06-03">June 3, 2026</time> &middot; weather, tide &amp; golden hour refresh every hour</p>
+    <div id="whyNot"></div>
   </section>
 
   <noscript>
@@ -636,6 +637,23 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
   .rn-sync time{color:rgba(255,255,255,.74);font-weight:600}
   .rn-sync-dot{width:7px;height:7px;border-radius:50%;background:#5fbf7a;box-shadow:0 0 0 0 rgba(95,191,122,.6);animation:rnSyncPulse 2.4s infinite}
   @keyframes rnSyncPulse{0%{box-shadow:0 0 0 0 rgba(95,191,122,.5)}70%{box-shadow:0 0 0 7px rgba(95,191,122,0)}100%{box-shadow:0 0 0 0 rgba(95,191,122,0)}}
+  .whynot{margin:14px auto 0;max-width:760px;border:1px solid var(--rule);border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 2px 8px rgba(42,60,48,.05)}
+  .whynot summary{font-family:var(--sans);font-size:.84rem;font-weight:600;color:var(--g);cursor:pointer;padding:12px 16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .whynot summary::-webkit-details-marker{display:none}
+  .whynot summary::after{content:"▾";color:var(--mu);font-size:.7rem}
+  .whynot[open] summary::after{content:"▴"}
+  .whynot-body{padding:0 16px 12px}
+  .whynot-row{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-top:1px dashed var(--rule)}
+  .whynot-g{font-size:16px;flex-shrink:0;line-height:1}
+  .whynot-t{font-family:var(--serif);font-weight:500;font-size:.98rem;flex-shrink:0}
+  .whynot-w{font-size:12.5px;color:var(--mu);font-style:italic;line-height:1.4}
+  @media(prefers-color-scheme:dark){
+    .whynot{background:#1e1e1e;border-color:rgba(255,255,255,.12);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .whynot summary{color:var(--gol)}
+    .whynot-row{border-top-color:rgba(255,255,255,.1)}
+    .whynot-t{color:#e0e0e0}
+    .whynot-w{color:#999}
+  }
   .rn-fallback{max-width:760px;margin:0 auto 26px;padding:20px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:14px;font-family:var(--sans);color:rgba(255,255,255,.72);line-height:1.6;font-size:.95rem}
   .rn-fallback strong{color:#fff}
   .rn-fallback ul{margin:14px 0 0;padding-left:20px}
@@ -1268,6 +1286,34 @@ const stripTags=s=>(s||'').replace(/<[^>]+>/g,'');
 const mapsUrl=e=>`https://maps.google.com/?q=${encodeURIComponent(stripTags(e.mapsQuery||e.title)+' Savannah GA')}`;
 const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
 
+/* ── CROWD CURVES ───────────────────────────────── */
+/* Local knowledge the guide already describes in prose, taught to the engine.
+   Returns {p:scoreDelta, why:''} for the given Savannah hour h. */
+function crowdHit(e,h){
+  switch(e.id){
+    case 'wormsloe':
+      if(h>=10.5)return{p:-16,why:'tour buses pack the oak avenue after 10:30am'};
+      if(h<9.5)return{p:10,why:''};
+      break;
+    case 'tybee':
+      if(h>=10&&h<=16)return{p:-10,why:'beach parking is usually gone by mid-morning'};
+      break;
+    case 'mrs-wilkes':
+      if(h>=11.5)return{p:-12,why:'the line wraps the block once it opens at 11am'};
+      break;
+    case 'leopolds':
+      if(h>=19&&h<=22)return{p:-7,why:'the ice-cream line is longest 7–10pm'};
+      break;
+    case 'wildlife-refuge':
+      if(h>=9&&h<11)return{p:8,why:''};
+      break;
+    case 'bonaventure':
+      if(h>=10&&h<=14)return{p:-6,why:'midday light is flat — it shines at golden hour'};
+      break;
+  }
+  return{p:0,why:''};
+}
+
 function scoreOf(e,ctx){
   const h=ctx.h;const[a,b]=e.hours;let s=0;
   if(h>=a&&h<=b)s=100-Math.abs((a+b)/2-h)*5;else if(h<a)s=60-(a-h)*8;else s=40-(h-b)*10;
@@ -1291,6 +1337,7 @@ function scoreOf(e,ctx){
   const tm=timing(e,h);
   if(tm.tooLate)s-=55;        // closes before you could even arrive
   else if(tm.tight)s-=10;     // you'd make it but with a rushed visit
+  s+=crowdHit(e,h).p;         // local crowd-timing knowledge
   return s;
 }
 function openAtHour(e,h){
@@ -1353,6 +1400,7 @@ function renderRightNow(){
     document.getElementById('rnMeta').innerHTML='';document.getElementById('rnBadges').innerHTML='';document.getElementById('rnRunners').innerHTML='';
     return;
   }
+  window.__rnPickId=pick.id;
   const reason=reasonFor(pick,ctx);
   document.getElementById('rnTime').textContent=`Right now · ${ft(today)}`;
   try{const sd=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});const stEl=document.getElementById('rnSyncTime');if(stEl){stEl.textContent=`${sd} at ${fts(today)} ET`;stEl.setAttribute('datetime',today.toISOString());}}catch(e){}
@@ -1373,6 +1421,39 @@ function renderRightNow(){
   if(pick.book)bdg.push(`<span class="rn-badge bookahead">⏰ ${pick.bookNote}</span>`);
   document.getElementById('rnBadges').innerHTML=bdg.join('');
   document.getElementById('rnRunners').innerHTML=scored.slice(1,3).map(e=>`<div class="rn-runner"><div class="rn-runner-icon">${e.g}</div><div><div class="rn-runner-title">${e.title}</div><div class="rn-runner-sub">${e.place}</div></div></div>`).join('');
+}
+
+/* ── WHY NOT X? ─────────────────────────────────── */
+/* Notable spots a visitor might expect — explain why each isn't the pick now. */
+const NOTABLE=['wormsloe','bonaventure','tybee','mrs-wilkes','telfair','forsyth-fountain','river-stroll','leopolds','ghost-tour','belles-ferry','squares-walk','farmers-market','wildlife-refuge'];
+function whyNot(e,ctx){
+  const h=ctx.h;
+  const os=openStatus(e);
+  if(os&&!os.open){
+    if(/^Opens/.test(os.txt))return os.txt.replace('Opens','opens')+' — not open yet';
+    return 'closed right now';
+  }
+  const tm=timing(e,h);
+  if(tm.tooLate)return 'closes before you could get there';
+  if(ctx.isRainy&&!e.indoor&&!e.wfit.includes('rain'))return 'better saved for dry weather';
+  if(ctx.hot&&!e.indoor&&h>=11&&h<=17)return `too exposed in the ${weather.feelsF}° heat right now`;
+  const ch=crowdHit(e,h);
+  if(ch.p<0&&ch.why)return ch.why;
+  return null;
+}
+function renderWhyNot(){
+  const el=document.getElementById('whyNot');if(!el)return;
+  const ctx=buildCtx();const pickId=window.__rnPickId;
+  const rows=[];
+  for(const id of NOTABLE){
+    if(id===pickId)continue;
+    const e=A.find(x=>x.id===id);if(!e)continue;
+    const why=whyNot(e,ctx);
+    if(why)rows.push({e,why});
+    if(rows.length>=3)break;
+  }
+  if(!rows.length){el.innerHTML='';return;}
+  el.innerHTML=`<details class="whynot"><summary>Why not somewhere else right now?</summary><div class="whynot-body">${rows.map(r=>`<div class="whynot-row"><span class="whynot-g">${r.e.g}</span><span class="whynot-t">${stripTags(r.e.title)}</span><span class="whynot-w">${r.why}</span></div>`).join('')}</div></details>`;
 }
 
 /* ── RENDER ACTIVITIES ──────────────────────────── */
@@ -1533,7 +1614,7 @@ async function loadTide(){
 }
 
 /* ── RENDER ALL ─────────────────────────────────── */
-function renderAll(){renderRightNow();renderActivities();renderItinerary();renderConditions();}
+function renderAll(){renderRightNow();renderWhyNot();renderActivities();renderItinerary();renderConditions();}
 
 /* ── LOAD DATA ──────────────────────────────────── */
 async function loadData(){
