@@ -6,7 +6,9 @@
   wrapper refuses to deploy unless index.html still looks like the real
   vacation-rental homepage, then always pins --branch=main (production).
 
-  Usage:  pwsh ./deploy.ps1        (from the project root)
+  Usage:  powershell -File .\deploy.ps1   (or pwsh ./deploy.ps1, from project root)
+  NOTE: keep this file ASCII-only. Windows PowerShell 5.1 reads .ps1 as ANSI
+  unless it has a BOM, and non-ASCII characters break parsing.
 #>
 
 $ErrorActionPreference = 'Stop'
@@ -22,13 +24,15 @@ $required = @('The Wilder House', 'Forsyth Park Vacation Rental', 'listing-card'
 $missing  = $required | Where-Object { $content -notmatch [regex]::Escape($_) }
 
 $problems = @()
-if ($bytes -lt 50000) { $problems += "index.html is only $bytes bytes (expected > 50,000 — the real homepage is ~73 KB)." }
+if ($bytes -lt 50000) { $problems += "index.html is only $bytes bytes (expected over 50,000 - the real homepage is about 73 KB)." }
 if ($missing)         { $problems += "index.html is missing required homepage markers: $($missing -join ', ')." }
 
 if ($problems) {
-  Write-Host "`nDEPLOY BLOCKED — index.html does not look like the real homepage:" -ForegroundColor Red
+  Write-Host ""
+  Write-Host "DEPLOY BLOCKED - index.html does not look like the real homepage:" -ForegroundColor Red
   $problems | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
-  Write-Host "`nIf this is intentional, fix index.html or deploy manually. Nothing was uploaded.`n" -ForegroundColor Yellow
+  Write-Host ""
+  Write-Host "If this is intentional, fix index.html or deploy manually. Nothing was uploaded." -ForegroundColor Yellow
   exit 1
 }
 
