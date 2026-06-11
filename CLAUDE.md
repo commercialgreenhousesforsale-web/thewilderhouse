@@ -42,10 +42,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Deployment Workflow
 
+> 🛑 **NEVER overwrite `index.html` with tour/landing/experiment content.**
+> `index.html` is the vacation-rental homepage (~73 KB, contains the suites
+> grid, booking links, and full schema). It has twice been gutted by sessions
+> pasting other content into it, then pushed live by a deploy. If a task needs a
+> new page, create a NEW `.html` file — do not repurpose `index.html`.
+
 ### Deploy Changes
 ```bash
-# From project root
-npx wrangler pages deploy . --project-name=thewilderhouse
+# PREFERRED: guarded deploy — refuses to publish a gutted homepage, then pins --branch=main
+pwsh ./deploy.ps1
+```
+The `deploy.ps1` wrapper validates that `index.html` is still the real homepage
+(>50 KB and contains the suites/booking markers) before uploading. Always prefer
+it over a raw `wrangler` call. If you must deploy manually, first confirm the
+homepage is intact:
+```bash
+curl -sL https://forsythparkvacationrentals.com/ | grep -c "Our Suites"   # must be >= 1
+```
+```bash
+# Raw deploy (only if you've verified index.html yourself)
+npx wrangler pages deploy . --project-name=thewilderhouse --branch=main --commit-dirty=true
 ```
 - Uploads all files (caches unchanged ones)
 - Recompiles Worker bundle
