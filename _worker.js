@@ -186,6 +186,33 @@ export default {
       }
     }
 
+    if (url.pathname === '/nara-proxy') {
+      // Server-side proxy for the National Archives Catalog API (v2).
+      // Keeps the API key off the client — the page calls same-origin /nara-proxy,
+      // so it also satisfies connect-src 'self' with no CSP change needed.
+      const target = 'https://catalog.archives.gov/api/v2/records/search' + url.search;
+      try {
+        const resp = await fetch(target, {
+          headers: {
+            'Accept': 'application/json',
+            'x-api-key': env.NARA_API_KEY || 'i7WeD8TGJi2i03zuvDo1I3v07TEDlfZm5gA3dX2H'
+          }
+        });
+        const body = await resp.text();
+        return new Response(body, {
+          status: resp.status,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=300'
+          }
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+          status: 502, headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
     return env.ASSETS.fetch(request);
   }
 };

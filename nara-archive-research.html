@@ -281,8 +281,9 @@
     </div>
 
     <script>
-        const API_KEY = 'i7WeD8TGJi2i03zuvDo1I3v07TEDlfZm5gA3dX2H';
-        const API_BASE = 'https://catalog.archives.gov/api/v2/records/search';
+        // API key is injected server-side by the /nara-proxy Worker endpoint,
+        // so it is never exposed in the page. Calls are same-origin.
+        const API_BASE = '/nara-proxy';
         const MAX_CALLS = 10000;
 
         // Load from localStorage
@@ -344,12 +345,7 @@
                 let url = `${API_BASE}?q=${encodeURIComponent(query)}&rows=${rows}`;
                 if (yearFrom) url += `&sort=naIdSort&page=1`;
 
-                const response = await fetch(url, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY
-                    }
-                });
+                const response = await fetch(url);
 
                 if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
