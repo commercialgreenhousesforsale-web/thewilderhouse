@@ -6,6 +6,14 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: no-referrer-when-downgrade
 
+# Keep the internal NARA research page out of search indexes (belt-and-suspenders
+# alongside the in-page <meta name="robots" content="noindex, nofollow">).
+/nara-archive-research
+  X-Robots-Tag: noindex, nofollow
+
+/nara-archive-research.html
+  X-Robots-Tag: noindex, nofollow
+
 /data/*
   Cache-Control: public, max-age=86400
   Content-Type: application/json
