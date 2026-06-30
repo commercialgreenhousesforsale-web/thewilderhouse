@@ -3,7 +3,7 @@
  * Caches: app shell, tour.json, audio files
  */
 
-const CACHE_NAME = 'forsyth-tour-v2.2';
+const CACHE_NAME = 'forsyth-tour-v2.3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -50,10 +50,10 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // HTML: Network first, cache fallback
+  // HTML: Network first (always fresh — never the HTTP-cached copy), cache fallback
   if (request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: 'no-store' })
         .then((response) => {
           if (response.ok) {
             const cache = caches.open(CACHE_NAME);
