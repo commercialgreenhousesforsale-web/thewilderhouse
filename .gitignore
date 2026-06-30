@@ -1,0 +1,16 @@
+# Confidential / internal — NEVER commit (keeps AI-tooling tells out of the repo).
+CLAUDE.md
+CLAUDE.local.md
+*.local.md
+
+# AI/editor tooling directories and configs
+.claude/
+.cursor/
+.aider*
+
+# Internal dev notes, briefs, prompts, and helper scripts
+*_BRIEF.md
+*_CHECKLIST.md
+*_PROMPT.md
+SESSION_*.md
+*.py

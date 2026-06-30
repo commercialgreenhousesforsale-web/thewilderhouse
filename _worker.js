@@ -2,6 +2,15 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Never serve internal/dev files publicly, even if they get uploaded by
+    // `wrangler pages deploy .`. Markdown notes, Python/PowerShell scripts, and
+    // dot-directories (config/tooling, version control) are never legitimate
+    // public assets on this static site.
+    if (/\.(md|py|ps1|local\.md)$/i.test(url.pathname) ||
+        /(^|\/)\.(?!well-known\/)[^/]+/.test(url.pathname)) {
+      return new Response('Not found', { status: 404 });
+    }
+
     if (url.pathname === '/ical-proxy') {
       const target = url.searchParams.get('url');
       if (!target || !target.startsWith('https://www.airbnb.com/calendar/ical/')) {

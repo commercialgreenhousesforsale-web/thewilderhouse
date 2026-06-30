@@ -341,12 +341,12 @@ address a:hover{color:#fff}
     </div>
   </section>
 
-  <!-- AI CHAT -->
+  <!-- ASK A LOCAL -->
   <section class="ai-section" aria-label="Ask a local">
     <div class="ai-inner">
-      <span class="ai-kicker">Powered by Claude AI</span>
+      <span class="ai-kicker">Your Savannah Concierge</span>
       <h2 class="ai-title">Ask a Savannah local.</h2>
-      <p class="ai-desc">Real questions. Real answers. This AI knows today's weather, what's open right now, walking distances, and every square in the city.</p>
+      <p class="ai-desc">Real questions. Real answers — today's weather, what's open right now, walking distances, and every square in the city.</p>
       <div class="ai-window">
         <div class="ai-prompts" id="aiPrompts"></div>
         <div class="ai-messages" id="aiMessages">
@@ -750,7 +750,7 @@ function sendAI(e){
   msgs.appendChild(typingMsg);
   msgs.scrollTop=msgs.scrollHeight;
 
-  // Simulate AI response (in production, call Claude API)
+  // Canned local response (placeholder for a future server-side endpoint)
   setTimeout(()=>{
     typingMsg.remove();
     const response='That\'s a great question! Based on what I know about Savannah right now, here\'s what I\'d suggest...';
