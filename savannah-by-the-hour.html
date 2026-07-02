@@ -461,21 +461,12 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 
 <a class="skip-nav" href="#main">Skip to main content</a>
 
-<!-- NAV -->
+<!-- NAV — deliberately minimal. This page is a tool for every Savannah visitor,
+     not a brochure: one brand link home, zero distractions. Conversion happens
+     contextually in the stay-band after the tool has delivered value. -->
 <nav aria-label="Main navigation">
   <div class="nav-inner">
     <a href="/" class="logo" aria-label="The Wilder House home"><span class="logo-name">The Wilder House</span><em class="logo-est">Est. 1898</em></a>
-    <ul class="nav-links" id="navLinks" role="list">
-      <li><a href="/">Home</a></li>
-      <li><a href="/#suites">Our Suites</a></li>
-      <li><a href="savannah-victorian-district">Location</a></li>
-      <li><a href="contact">Contact</a></li>
-      <li><a href="savannah-by-the-hour" class="active" aria-current="page">Savannah by the Hour</a></li>
-      <li><a href="https://www.airbnb.com/h/forsyth-park-vacation-rental-savannah" rel="nofollow noopener noreferrer" target="_blank" class="nav-cta">Book Now</a></li>
-    </ul>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </nav>
 
@@ -606,7 +597,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 
 <!-- IMMUTABLE ATTRIBUTION LAYER: Structurally bound to widget layout -->
 <div id="wilderHouseCredit" style="background:linear-gradient(135deg,#1a2b1a 0%,#2a3c30 100%);padding:16px 24px;text-align:center;border-top:2px solid rgba(232,201,106,.3);box-shadow:0 -2px 12px rgba(42,60,48,.15);margin-top:40px;">
-  <a href="https://thewilderhouse.com" target="_blank" rel="noopener noreferrer" style="color:#e8c96a;font-family:var(--serif);font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.5px;display:inline-block;transition:all .2s ease;border-bottom:1px solid rgba(232,201,106,.4);">
+  <a href="https://forsythparkvacationrentals.com" target="_blank" rel="noopener noreferrer" style="color:#e8c96a;font-family:var(--serif);font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.5px;display:inline-block;transition:all .2s ease;border-bottom:1px solid rgba(232,201,106,.4);">
     📍 Real-Time Guide by The Wilder House
   </a>
   <p style="color:rgba(255,255,255,.5);font-size:11px;margin-top:8px;font-family:var(--sans);letter-spacing:.05em;">Historic District • Forsyth Park • Savannah, Georgia</p>
@@ -836,12 +827,12 @@ const EVENTS=[
 /* ── ACTIVITIES ─────────────────────────────────── */
 const A=[
   {id:'forsyth-fountain',cat:'Park',g:'⛲',indoor:false,walk:true,shut:true,free:true,price:'Free',
-   title:'Forsyth Park & the Fountain',place:'4 min walk from The Wilder House',
-   desc:'Step outside and you are there. The iconic 1858 cast-iron fountain just restored in 2025 — same design exists in New York, Peru, and France. Thirty acres of live oaks and Spanish moss. Your front yard.',
+   title:'Forsyth Park & the Fountain',place:'Forsyth Park · Historic District',
+   desc:'The iconic 1858 cast-iron fountain, just restored in 2025 — same design exists in New York, Peru, and France. Thirty acres of live oaks and Spanish moss — the green heart of the city.',
    hours:[7,20],wfit:['clear','cloudy'],who:['solo','family','romantic']},
   {id:'picnic',cat:'Park',g:'🧺',indoor:false,walk:true,shut:true,free:true,price:'Free',
-   title:'Picnic in Forsyth Park',place:'Forsyth Park · 4 min walk',
-   desc:'Grab a bottle from <a href="https://brighterdayfoods.com/" target="_blank">Brighter Day Natural Foods</a> (your block, 1102 Bull St), spread a blanket under the live oaks. Open container is legal in Savannah. The park was designed for exactly this. Your picnic basket is in the suite.',
+   title:'Picnic in Forsyth Park',place:'Forsyth Park · Historic District',
+   desc:'Grab a bottle from <a href="https://brighterdayfoods.com/" target="_blank">Brighter Day Natural Foods</a> (1102 Bull St, by the park), spread a blanket under the live oaks. Open container is legal in Savannah. The park was designed for exactly this.',
    hours:[9,20],wfit:['clear','cloudy'],who:['solo','family','romantic']},
   {id:'playground',cat:'Family',g:'🛝',indoor:false,walk:true,shut:true,free:true,price:'Free',
    title:'Forsyth Park Playground',place:'Forsyth Park · west side',
@@ -974,11 +965,11 @@ const A=[
    desc:'The original Savannah praline company since 1973. Free samples at the door every few minutes. Watch candy makers work through the window. Pralines, pecan logs, and fudge sliced to your thickness. The River Street institution that started the city\'s praline obsession.',
    hours:[10,21],wfit:['clear','cloudy','rain'],who:['solo','family','romantic']},
   {id:'lulus-chocolate',cat:'Dessert Bar',g:'🍫',indoor:true,walk:true,shut:true,free:false,price:'From $8',
-   title:"Lulu's Chocolate Bar",place:'42 MLK Blvd · 20 min walk',
+   title:"Lulu's Chocolate Bar",place:'42 MLK Blvd',
    desc:'Savannah\'s best-kept secret for after-dinner. Chocolate martinis, warm fondue, decadent cakes, and truffles in a low-lit intimate setting. The locals send every couple here on their first night. Nothing else in the city quite like it.',
    hours:[17,23],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'back-in-day-bakery',cat:'Bakery',g:'🧁',indoor:true,walk:false,shut:false,drive:true,free:false,price:'From $4',
-   title:'Back in the Day Bakery',place:'2403 Bull St · Starland District · car or 25 min walk',
+   title:'Back in the Day Bakery',place:'2403 Bull St · Starland District · car or rideshare',
    desc:'Southern Living, Food Network, and Bon Appétit have all sent writers here. Old-fashioned layer cakes, morning buns, cupcakes, and seasonal specials that locals consider non-negotiable. Closes when they sell out — go early.',
    hours:[8,15],wfit:['clear','cloudy','rain'],who:['solo','family','romantic']},
   {id:'byrd-cookie-company',cat:'Shopping',g:'🍪',indoor:true,walk:true,shut:true,free:false,price:'From $8',
@@ -988,59 +979,59 @@ const A=[
 
   /* ── ROOFTOP BARS ── */
   {id:'peregrin-rooftop',cat:'Rooftop Bar',g:'🍸',indoor:false,walk:true,shut:true,free:false,price:'Cocktails $14–18',
-   title:'Peregrin Rooftop',place:'Perry Lane Hotel · 256 E. Perry St · 14 min walk',
+   title:'Peregrin Rooftop',place:'Perry Lane Hotel · 256 E. Perry St',
    desc:'The most intimate rooftop in Savannah. Panoramic views of church steeples and live oak canopy across the entire Historic District. Craft cocktails, small bites, and the kind of sunset view that makes people book return trips. Best before 9pm when it fills up.',
    hours:[16,23],wfit:['clear','cloudy'],who:['solo','romantic']},
   {id:'stars-rooftop',cat:'Rooftop Bar',g:'🌇',indoor:false,walk:true,shut:true,free:false,price:'Cocktails $13–17',
-   title:'Stars Rooftop',place:'Bohemian Hotel · 102 W. Bay St · 20 min walk',
+   title:'Stars Rooftop',place:'Bohemian Hotel · 102 W. Bay St',
    desc:'The river view rooftop. Massive container ships pass at eye level while you hold a drink. Watch the sun set over the Savannah River from here and you\'ll understand why people never stop talking about this city. Best river view in Savannah, full stop.',
    hours:[17,23],wfit:['clear','cloudy'],who:['solo','romantic','family']},
   {id:'top-deck-bar',cat:'Rooftop Bar',g:'🏙',indoor:false,walk:true,shut:true,free:false,price:'Cocktails $12–16',
-   title:'Top Deck Bar',place:'Plant Riverside District · West River St · 25 min walk',
+   title:'Top Deck Bar',place:'Plant Riverside District · West River St',
    desc:'Open-air rooftop within the Plant Riverside entertainment complex. River views, live music some nights, and the Savannah skyline behind you. Walk through the free fossil museum lobby on your way up — a life-sized chrome dinosaur greets you at the door.',
    hours:[16,24],wfit:['clear','cloudy'],who:['solo','romantic','family']},
   {id:'bar-julian',cat:'Rooftop Bar',g:'🍹',indoor:false,walk:true,shut:true,free:false,price:'Cocktails $14–18',
-   title:'Bar Julian Rooftop',place:'Thompson Savannah · 35 W. Congress St · 18 min walk',
+   title:'Bar Julian Rooftop',place:'Thompson Savannah · 35 W. Congress St',
    desc:'Where Savannah locals actually go for a rooftop drink. Less touristy than the river options, better craft cocktails, and a crowd that lives here. The ideal spot for a pre-dinner drink before walking to The Grey or the Olde Pink House.',
    hours:[16,23],wfit:['clear','cloudy'],who:['solo','romantic']},
 
   /* ── THEATERS & NIGHTLIFE ── */
   {id:'savannah-theatre',cat:'Theater',g:'🎭',indoor:true,walk:true,shut:true,free:false,price:'From $35',
-   title:'Savannah Theatre',place:'222 Bull St · Historic District · 10 min walk',
+   title:'Savannah Theatre',place:'222 Bull St · Historic District',
    desc:'One of the oldest continuously operating theaters in America — built in 1818 on one of Savannah\'s original squares. Nightly variety musical revues and entertainment shows. A classic American theater experience in a genuinely historic building. Book tickets in advance.',
    hours:[19,22],wfit:['clear','cloudy','rain'],who:['solo','family','romantic'],book:true,bookNote:'Reserve tickets in advance — shows fill up'},
   {id:'lucas-theatre',cat:'Theater',g:'🎬',indoor:true,walk:true,shut:true,free:false,price:'Varies by show',
-   title:'Lucas Theatre for the Arts',place:'32 Abercorn St · Historic District · 16 min walk',
+   title:'Lucas Theatre for the Arts',place:'32 Abercorn St · Historic District',
    desc:'A 1921 movie palace so gorgeous that standing in the lobby is worth visiting even without a show. Soaring ornate ceilings, restored by SCAD to perfection. Concerts, film screenings, and live performances year-round. Check the calendar — something is almost always scheduled.',
    hours:[18,22],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'club-one',cat:'Nightlife',g:'💃',indoor:true,walk:true,shut:true,free:false,price:'$10 cover',
-   title:'Club One Cabaret',place:'1 Jefferson St · Historic District · 18 min walk',
+   title:'Club One Cabaret',place:'1 Jefferson St · Historic District',
    desc:'Savannah\'s legendary cabaret — where Lady Chablis performed in Midnight in the Garden of Good and Evil. Drag shows most nights, dancing, three floors of bars. Nothing else like it in the city. The authentic late-night Savannah experience that guidebooks don\'t fully capture.',
    hours:[21,24],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
 
   /* ── RESTAURANTS ── */
   {id:'collins-quarter',cat:'Brunch',g:'☕',indoor:true,walk:true,shut:true,free:false,price:'$14–22 per person',
-   title:'Collins Quarter',place:'151 Bull St · on Forsyth Park · 5 min walk',
+   title:'Collins Quarter',place:'151 Bull St · on Forsyth Park',
    desc:'Savannah\'s best brunch, literally on Forsyth Park. The lavender latte and French toast are the most-photographed plates in the city. Tables open onto the park in good weather. Put your name in, walk the park fountain, come back — the wait is worth it.',
    hours:[8,15],wfit:['clear','cloudy','rain'],who:['solo','family','romantic']},
   {id:'the-grey',cat:'Restaurant',g:'🍽',indoor:true,walk:true,shut:true,free:false,price:'Entrees $32–58',
-   title:'The Grey',place:'109 MLK Blvd · former Greyhound terminal · 22 min walk',
+   title:'The Grey',place:'109 MLK Blvd · former Greyhound terminal',
    desc:'The most acclaimed restaurant in the South. Inside a stunning 1938 Greyhound bus terminal with the original lunch counter and terrazzo floors. Chef Mashama Bailey won the James Beard Award here. Georgia shrimp, rotisserie chicken, and a wine list that takes an hour to read. Reserve 2–3 weeks ahead.',
    hours:[17,22],wfit:['clear','cloudy','rain'],who:['solo','romantic'],book:true,bookNote:'Reserve 2–3 weeks ahead — consistently full'},
   {id:'olde-pink-house',cat:'Restaurant',g:'🌸',indoor:true,walk:true,shut:true,free:false,price:'Entrees $24–42',
-   title:'The Olde Pink House',place:'23 Abercorn St · Reynolds Square · 16 min walk',
+   title:'The Olde Pink House',place:'23 Abercorn St · Reynolds Square',
    desc:'One of the most photographed buildings in Savannah — a 1771 Georgian mansion that turned pink when red brick bled through the white plaster. Planters Tavern downstairs for cocktails, full Southern restaurant upstairs. The fried chicken and collard greens have a forty-year following.',
    hours:[17,22],wfit:['clear','cloudy','rain'],who:['solo','romantic','family']},
   {id:'crystal-beer-parlor',cat:'Restaurant',g:'🍺',indoor:true,walk:true,shut:true,free:false,price:'$12–22',
-   title:'Crystal Beer Parlor',place:'301 W. Jones St · 12 min walk',
+   title:'Crystal Beer Parlor',place:'301 W. Jones St',
    desc:'Open since 1933 — the oldest bar in Savannah. Cold beer, thick burgers, and the she-crab stew that regulars order without looking at the menu. Dark wood, old photographs, neighborhood locals on every barstool. Every Savannahian sends every visitor here.',
    hours:[11,22],wfit:['clear','cloudy','rain'],who:['solo','family','romantic']},
   {id:'zunzis',cat:'Restaurant',g:'🥙',indoor:false,walk:true,shut:true,free:false,price:'$9–14',
-   title:"Zunzi's Takeout",place:'236 Drayton St · 16 min walk',
+   title:"Zunzi's Takeout",place:'236 Drayton St',
    desc:'A Savannah institution. South African-inspired subs — the Conquistador chicken sandwich is what regulars drive back to Savannah for. Order at the window, eat on the steps of a nearby square. Cash preferred. Closes when they run out — go before 2pm.',
    hours:[11,15],wfit:['clear','cloudy'],who:['solo','family','romantic']},
   {id:'kevin-barrys',cat:'Bar & Music',g:'🎵',indoor:true,walk:true,shut:true,free:false,price:'$8–16',
-   title:"Kevin Barry's Irish Pub",place:'117 W. River St · River Street · 22 min walk',
+   title:"Kevin Barry's Irish Pub",place:'117 W. River St · River Street',
    desc:'Live Irish traditional music every single night since 1980. Not a tourist gimmick — real musicians, real sessions, genuine Guinness poured right. The best-run bar on River Street. Go after 9pm, find a seat near the stage, and let Savannah\'s Irish soul take over.',
    hours:[11,24],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'aqua-star',cat:'Restaurant',g:'⛵',indoor:true,walk:false,shut:false,drive:false,free:false,price:'Entrees $28–48',
@@ -1050,45 +1041,45 @@ const A=[
 
   /* ── FREE EXPERIENCES ── */
   {id:'belles-ferry',cat:'Free Experience',g:'⛴',indoor:false,walk:true,shut:true,free:true,price:'Free',
-   title:'Savannah Belles Ferry',place:'City Hall Landing · River Street · 22 min walk',
+   title:'Savannah Belles Ferry',place:'City Hall Landing · River Street',
    desc:'Board the free water taxi at River Street and cross the Savannah River in 5 minutes to Hutchinson Island. On the return trip at night, the Savannah skyline reflected on the water is genuinely breathtaking. Runs every 15–20 minutes until 11pm. Free. Almost no tourists know it exists.',
    hours:[7,23],wfit:['clear','cloudy'],who:['solo','family','romantic']},
   {id:'squares-walk',cat:'Walking Tour',g:'🌳',indoor:false,walk:true,shut:true,free:true,price:'Free',
-   title:'Walk the 22 Historic Squares',place:'Throughout Historic District · starts at your door',
+   title:'Walk the 22 Historic Squares',place:'Throughout Historic District · start at any square',
    desc:'Savannah\'s most iconic feature — 22 landscaped squares each with a different monument, church, or story. Start at Forsyth Park, walk north through Whitefield, Monterey (Midnight in the Garden), Madison (Sherman\'s HQ), Lafayette (Cathedral), Chippewa (Forrest Gump filmed here), Ellis (Johnny Mercer statue), down to Johnson (city\'s first square, 1733). Every square is different. Budget 3 hours.',
    hours:[7,20],wfit:['clear','cloudy'],who:['solo','family','romantic']},
 
   /* ── MUSEUMS (MISSING) ── */
   {id:'juliette-gordon-low',cat:'Museum',g:'🍀',indoor:true,walk:true,shut:true,free:false,price:'$20 adults · $12 children',
-   title:'Juliette Gordon Low Birthplace',place:'10 E. Oglethorpe Ave · 14 min walk',
+   title:'Juliette Gordon Low Birthplace',place:'10 E. Oglethorpe Ave',
    desc:'The birthplace of the founder of the Girl Scouts of America. A magnificent 1821 Regency mansion with original family furnishings. Millions make this a pilgrimage — Girl Scout troops travel across the country specifically to stand in this building. One of the most visited historic homes in the American South.',
    hours:[10,17],wfit:['clear','cloudy','rain'],who:['solo','family'],book:true,bookNote:'Book tickets online — fills quickly in summer'},
   {id:'railroad-museum',cat:'Museum',g:'🚂',indoor:true,walk:true,shut:true,free:false,price:'$10 adults · $7 children',
-   title:'Georgia State Railroad Museum',place:'601 W. Harris St · 20 min walk',
+   title:'Georgia State Railroad Museum',place:'601 W. Harris St',
    desc:'One of the largest antebellum railroad facilities in the country — a working 1853 roundhouse with a 120-foot turntable still rotating today. Locomotive rides on weekends. The engineering scale alone is jaw-dropping. Equally compelling for adults and children.',
    hours:[9,17],wfit:['clear','cloudy','rain'],who:['solo','family']},
   {id:'civil-rights-museum',cat:'Museum',g:'✊',indoor:true,walk:true,shut:true,free:false,price:'$8 adults',
-   title:'Ralph Mark Gilbert Civil Rights Museum',place:'460 MLK Blvd · 22 min walk',
+   title:'Ralph Mark Gilbert Civil Rights Museum',place:'460 MLK Blvd',
    desc:"Savannah's civil rights history told through photographs, oral histories, and artifacts. Named for the NAACP leader who organized Savannah's movement. Inside the building where Black Savannahians organized bus boycotts and lunch-counter sit-ins. Rarely crowded — one of the most genuine experiences in Georgia.",
    hours:[9,17],wfit:['clear','cloudy','rain'],who:['solo','family']},
   {id:'davenport-house',cat:'Museum',g:'🏛',indoor:true,walk:true,shut:true,free:false,price:'$12 adults',
-   title:'Isaiah Davenport House Museum',place:'324 E. State St · Columbia Square · 16 min walk',
+   title:'Isaiah Davenport House Museum',place:'324 E. State St · Columbia Square',
    desc:'A perfectly preserved 1820 Federal mansion — and the building that saved Savannah. When the city tried to demolish it in 1955 for a parking lot, seven women formed the Historic Savannah Foundation to stop it. That act saved over 1,000 buildings. The story of why this city looks the way it does begins here.',
    hours:[10,16],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'first-african-baptist',cat:'History',g:'⛪',indoor:true,walk:true,shut:true,free:false,price:'$15 tour',
-   title:'First African Baptist Church',place:'23 Montgomery St · Franklin Square · 22 min walk',
+   title:'First African Baptist Church',place:'23 Montgomery St · Franklin Square',
    desc:'One of the oldest Black congregations in North America, organized in the 1770s. The 1859 sanctuary was built by its own members — many enslaved, laying bricks after full days in the fields. Look down: the diamond-pattern air holes in the floor are tied by tradition to the Underground Railroad. The ceiling is a nine-patch quilt pattern. History you can stand inside.',
    hours:[11,15],wfit:['clear','cloudy','rain'],who:['solo','family','romantic'],days:[2,3,4,5,6],book:true,bookNote:'Tour times vary — check firstafricanbc.com before you walk over'},
   {id:'mercer-williams',cat:'Museum',g:'🏠',indoor:true,walk:true,shut:true,free:false,price:'~$14 tour',
-   title:'Mercer Williams House',place:'429 Bull St · Monterey Square · 8 min walk',
+   title:'Mercer Williams House',place:'429 Bull St · Monterey Square',
    desc:'The house at the center of Midnight in the Garden of Good and Evil. Begun in 1860 for Johnny Mercer’s great-grandfather — though no Mercer ever lived in it; the Civil War interrupted construction. Restored by preservationist and antiques dealer Jim Williams, whose trial made it famous. The carriage-house shop and Monterey Square outside are as photogenic as the tour.',
    hours:[10.5,16],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'flannery-oconnor',cat:'Museum',g:'🦚',indoor:true,walk:true,shut:true,free:false,price:'~$12',
-   title:"Flannery O'Connor Childhood Home",place:'207 E. Charlton St · Lafayette Square · 10 min walk',
+   title:"Flannery O'Connor Childhood Home",place:'207 E. Charlton St · Lafayette Square',
    desc:'The Savannah rowhouse where one of America’s greatest short-story writers spent her first 13 years — she claimed she taught a chicken to walk backwards here, and the newsreel exists. Small, personal, and steps from the Cathedral on Lafayette Square. For book lovers this half-hour beats any trolley loop.',
    hours:[10,16],wfit:['clear','cloudy','rain'],who:['solo','romantic'],days:[0,1,2,3,5,6]},
   {id:'green-meldrim',cat:'History',g:'🎖',indoor:true,walk:true,shut:true,free:false,price:'$15 tour',
-   title:'Green-Meldrim House · Sherman’s HQ',place:'14 W. Macon St · Madison Square · 10 min walk',
+   title:'Green-Meldrim House · Sherman’s HQ',place:'14 W. Macon St · Madison Square',
    desc:'The Gothic Revival mansion where General Sherman headquartered in December 1864 — and telegraphed Lincoln offering Savannah as a Christmas gift. Weeks later, the meeting with twenty Black ministers held here led to Special Field Order No. 15: the origin of “forty acres and a mule.” One of the most consequential rooms in American history, and most visitors walk right past it.',
    hours:[10,16],wfit:['clear','cloudy','rain'],who:['solo','family'],days:[2,4,5,6],book:true,bookNote:'Limited tour days — confirm hours before visiting'},
   {id:'fort-pulaski',cat:'History',g:'🏰',indoor:false,walk:false,shut:false,drive:true,free:false,price:'$10 adults · free under 15',
@@ -1096,29 +1087,29 @@ const A=[
    desc:'The Civil War fort where rifled cannon fire breached masonry walls in 30 hours — making every existing fort in the world obsolete and changing warfare forever. Robert E. Lee helped build it. The original cannon holes are still in the wall. Combine with Tybee in one day trip east.',
    hours:[9,17],wfit:['clear','cloudy'],who:['solo','family']},
   {id:'savannah-children-museum',cat:'Museum',g:'🎪',indoor:true,walk:true,shut:true,free:false,price:'$10 children · $8 adults',
-   title:"Savannah Children's Museum",place:'303 MLK Blvd · Railroad Museum complex · 20 min walk',
+   title:"Savannah Children's Museum",place:'303 MLK Blvd · Railroad Museum complex',
    desc:'Outdoor and indoor interactive exhibits built inside the 1860 Central of Georgia Railway complex — train-themed play structures, a butterfly garden, water table, and exhibits scaled for ages 2–10. Right next to the Railroad Museum. A full morning for families with young kids.',
    hours:[10,16],wfit:['clear','cloudy','rain'],who:['family']},
 
   /* ── SHOPPING ── */
   {id:'paris-market',cat:'Shopping',g:'🛒',indoor:true,walk:true,shut:true,free:false,price:'Browse free',
-   title:'Paris Market & Brocante',place:'36 W. Broughton St · 14 min walk',
+   title:'Paris Market & Brocante',place:'36 W. Broughton St',
    desc:'The most beautiful shop in Savannah. A French-inspired brocante stuffed with antiques, curiosities, Parisian stationery, artisan chocolate, and home goods. The scent inside — rose, cedar, old books — is an experience on its own. You do not need to buy anything. You will.',
    hours:[10,18],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'shopscad',cat:'Shopping',g:'🎨',indoor:true,walk:true,shut:true,free:false,price:'Browse free',
-   title:'shopSCAD',place:'340 Bull St · 12 min walk',
+   title:'shopSCAD',place:'340 Bull St',
    desc:"SCAD students and alumni sell their original art, jewelry, ceramics, prints, and design objects here. Every piece is unique, made by someone who trained at one of the world's top art schools. The only place in Savannah where your souvenir was made by a future name you'll recognize.",
    hours:[10,18],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'savannah-bee',cat:'Shopping',g:'🐝',indoor:true,walk:true,shut:true,free:false,price:'Browse free · tasting from $5',
-   title:'Savannah Bee Company',place:'104 W. Broughton St · 14 min walk',
+   title:'Savannah Bee Company',place:'104 W. Broughton St',
    desc:'Georgia\'s famous honey company with a flagship tasting room on Broughton. Sample 12+ honey varieties — tupelo, orange blossom, raw wildflower — and learn why Georgia honey is different from anything in a grocery store. The mead tasting is the hidden gem. The honeycomb lip balm is what every repeat visitor comes back for.',
    hours:[10,18],wfit:['clear','cloudy','rain'],who:['solo','family','romantic']},
   {id:'e-shaver-books',cat:'Shopping',g:'📚',indoor:true,walk:true,shut:true,free:false,price:'Browse free',
-   title:'E. Shaver Bookseller',place:'326 Bull St · Madison Square · 12 min walk',
+   title:'E. Shaver Bookseller',place:'326 Bull St · Madison Square',
    desc:"Savannah's oldest independent bookshop inside an 1870s townhouse. Twelve rooms organized by subject with low ceilings and creaky floors. The Savannah history and Southern literature sections are extraordinary. The owner has been answering questions about this city for 40 years.",
    hours:[9,17],wfit:['clear','cloudy','rain'],who:['solo','romantic']},
   {id:'wet-willies',cat:'Bar',g:'🍹',indoor:false,walk:true,shut:true,free:false,price:'From $7',
-   title:"Wet Willie's Frozen Daiquiris",place:'101 E. River St · River Street · 22 min walk',
+   title:"Wet Willie's Frozen Daiquiris",place:'101 E. River St · River Street',
    desc:'Georgia open container law plus frozen daiquiris plus River Street equals a Savannah tradition. Order the Call-a-Cab. Carry it out onto River Street. Watch a container ship pass. This is not sophisticated. It is completely essential.',
    hours:[11,23],wfit:['clear','cloudy'],who:['solo','romantic']},
 
@@ -1506,7 +1497,7 @@ function actionFor(pick,ctx,h){
   if(ctx.inMornGold&&!pick.indoor)return 'catch it before the crowds and the heat';
   if(pick.indoor&&ctx.hot)return 'a cool, air-conditioned break from the heat';
   if(pick.free&&pick.walk)return 'free, walkable, and open right now';
-  if(pick.walk)return 'an easy walk from the park';
+  if(pick.walk)return 'an easy walk within the Historic District';
   if(pick.drive)return 'worth the short drive at this hour';
   return 'open and at its best right about now';
 }
@@ -1561,10 +1552,9 @@ function renderRightNow(){
   document.getElementById('rnBgGlyph').textContent=pick.g;
   document.getElementById('rnReason').textContent=reason;
   const tmins=travelMins(pick);
-  /* Walk times are anchored to Forsyth Park unless the visitor shares their
-     location — say so, since this tool serves all of Savannah, not one address. */
-  const anchor=userPos?'from you':'from Forsyth Park';
-  const dist=pick.walk?`~${tmins} min walk ${anchor}`:pick.shut&&!pick.walk?'Free DOT shuttle':pick.drive?`~${tmins} min drive`:'Check transport';
+  /* No fixed-anchor walk minutes — this tool serves ALL Savannah visitors, who
+     could be anywhere. Minutes appear only once the visitor shares location. */
+  const dist=pick.walk?(userPos?`~${tmins} min walk from you`:'Walkable · Historic District'):pick.shut&&!pick.walk?'Free DOT shuttle':pick.drive?(userPos?`~${tmins} min drive from you`:'Short drive from downtown'):'Check transport';
   const ptm=timing(pick,ctx.h);
   const leaveCell=(ptm.leaveBy&&!ptm.tooLate&&ptm.leaveBy>ctx.h&&ptm.leaveBy-ctx.h<=2)?`<div class="rn-mi"><b>Leave by</b><span>${hLabel(ptm.leaveBy)}</span></div>`:'';
   document.getElementById('rnMeta').innerHTML=`<div class="rn-mi"><b>Where</b><span>${pick.place} · <a href="${mapsUrl(pick)}" target="_blank" rel="noopener noreferrer" style="color:var(--g);border-bottom:1px solid var(--g)">Map&nbsp;↗</a></span></div><div class="rn-mi"><b>Travel</b><span>${dist}</span></div>${leaveCell}<div class="rn-mi"><b>Cost</b><span>${pick.price}</span></div>`;
@@ -1639,7 +1629,7 @@ function renderActivities(){
       <div class="act-foot"><span class="act-price${e.free?' free':''}">${e.price}</span><div class="act-badges"><a class="act-badge" href="${mapsUrl(e)}" target="_blank" rel="noopener noreferrer" style="background:rgba(42,60,48,.1);color:var(--g)">📍 Map</a>${bdg.join('')}</div></div>
     </article>`;
   }).join('');
-  document.getElementById('actsCount').textContent=`${scored.length} picks for right now. ${userPos?'Distances measured from your location. ':'Walk times are from Forsyth Park — tap “📍 Use my location” above to measure from wherever you are. '}`;
+  document.getElementById('actsCount').textContent=`${scored.length} picks for right now. ${userPos?'Walk times measured from your location. ':'Tap “📍 Use my location” above for walk times from wherever you are. '}`;
 }
 
 /* ── RENDER WEATHER ─────────────────────────────── */
@@ -1996,13 +1986,6 @@ document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='visible')return;
   const now=savNow();
   if(now-today>5*60000){today=now;lastHour=today.getHours();document.getElementById('heroTime').textContent=ft(today);renderHoliday();renderEvents();loadData();loadTide();loadEvents();}
-});
-
-/* ── NAV TOGGLE ─────────────────────────────────── */
-document.getElementById('navToggle').addEventListener('click',function(){
-  const links=document.getElementById('navLinks');
-  const open=links.classList.toggle('open');
-  this.setAttribute('aria-expanded',open);
 });
 
 /* ── BACK TO TOP ─────────────────────────────────── */
