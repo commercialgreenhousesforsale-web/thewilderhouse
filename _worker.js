@@ -186,6 +186,49 @@ export default {
       }
     }
 
+    if (url.pathname === '/meteo-proxy') {
+      // Same-origin proxy for Open-Meteo. The live CSP connect-src does not
+      // include api.open-meteo.com, so the day planner's direct fetch is
+      // blocked in production — this keeps the weather genuinely live.
+      try {
+        const resp = await fetch('https://api.open-meteo.com/v1/forecast' + url.search);
+        const body = await resp.text();
+        return new Response(body, {
+          status: resp.status,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=600'
+          }
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+          status: 502, headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname === '/tide-proxy') {
+      // Same-origin proxy for NOAA CO-OPS tide predictions (Fort Pulaski
+      // station) — api.tidesandcurrents.noaa.gov is also CSP-blocked client-side.
+      try {
+        const resp = await fetch('https://api.tidesandcurrents.noaa.gov/api/prod/datagetter' + url.search);
+        const body = await resp.text();
+        return new Response(body, {
+          status: resp.status,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=3600'
+          }
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+          status: 502, headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
     if (url.pathname === '/nara-proxy') {
       // Server-side proxy for the National Archives Catalog API (v2).
       // Keeps the API key off the client — the page calls same-origin /nara-proxy,
