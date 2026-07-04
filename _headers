@@ -11,6 +11,13 @@
 /nara-archive-research
   X-Robots-Tag: noindex, nofollow
 
+# Internal ghost-tour coordinate editor — never index
+/ghost-tour-editor
+  X-Robots-Tag: noindex, nofollow
+
+/ghost-tour-editor.html
+  X-Robots-Tag: noindex, nofollow
+
 /nara-archive-research.html
   X-Robots-Tag: noindex, nofollow
 

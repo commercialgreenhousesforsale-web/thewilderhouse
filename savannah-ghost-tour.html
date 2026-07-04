@@ -2,579 +2,267 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
-<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Free Self-Guided Savannah Ghost Tour — Forsyth Park to the River</title>
+<meta name="description" content="A free, self-guided ghost tour of Savannah — 18 narrated stops from Forsyth Park to the river. GPS-triggered audio, no app, no ticket. By The Wilder House.">
+<link rel="canonical" href="https://forsythparkvacationrentals.com/savannah-ghost-tour"/>
+<meta property="og:title" content="Forsyth Ghost Tour — A Free Self-Guided Audio Walk Through Savannah"/>
+<meta property="og:description" content="18 narrated stops from Forsyth Park to the river. GPS-triggered stories, or listen from anywhere. Free — no app, no ticket."/>
+<meta property="og:url" content="https://forsythparkvacationrentals.com/savannah-ghost-tour"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://forsythparkvacationrentals.com/wilder-house-forsyth-park-savannah-vacation-rental.jpg"/>
+<meta property="og:site_name" content="The Wilder House | Forsyth Park Vacation Rentals"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Forsyth Ghost Tour — Free Self-Guided Audio Walk"/>
+<meta name="twitter:description" content="18 narrated stops, Forsyth Park to the river. GPS-triggered stories or listen from anywhere. Free."/>
+<meta name="twitter:image" content="https://forsythparkvacationrentals.com/wilder-house-forsyth-park-savannah-vacation-rental.jpg"/>
+<meta name="robots" content="index, follow"/>
+<meta name="theme-color" content="#0a0805">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Forsyth Ghost Tour — Fine-Tune All 17 Stops</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<meta name="geo.region" content="US-GA">
+<meta name="geo.placename" content="Savannah, Georgia">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TouristTrip","name":"Forsyth Ghost Tour — Self-Guided Savannah Audio Walk","description":"A free, self-guided audio ghost tour of Savannah's Historic District: 18 narrated stops from Forsyth Park north to the Savannah River, triggered by GPS as you walk, or playable from anywhere. About 90 minutes on foot.","touristType":["Ghost tour","Walking tour","History enthusiasts"],"isAccessibleForFree":true,"provider":{"@type":"LodgingBusiness","name":"The Wilder House","url":"https://forsythparkvacationrentals.com"},"itinerary":{"@type":"ItemList","numberOfItems":18,"itemListElement":[{"@type":"ListItem","position":1,"name":"Wilder House"},{"@type":"ListItem","position":2,"name":"Telfair Hospital"},{"@type":"ListItem","position":3,"name":"Spanish War Veteran Statue"},{"@type":"ListItem","position":4,"name":"Live Oak Grove"},{"@type":"ListItem","position":5,"name":"Monument Area"},{"@type":"ListItem","position":6,"name":"Forsyth Fountain"},{"@type":"ListItem","position":7,"name":"Kessler Mansion"},{"@type":"ListItem","position":8,"name":"Monterey Square"},{"@type":"ListItem","position":9,"name":"Jones & Bull Corner"},{"@type":"ListItem","position":10,"name":"Madison Square"},{"@type":"ListItem","position":11,"name":"Chippewa Square"},{"@type":"ListItem","position":12,"name":"Oglethorpe Church"},{"@type":"ListItem","position":13,"name":"Wright Square"},{"@type":"ListItem","position":14,"name":"Johnson Square"},{"@type":"ListItem","position":15,"name":"Bay & Bull / City Hall"},{"@type":"ListItem","position":16,"name":"Cotton Exchange"},{"@type":"ListItem","position":17,"name":"River Access Ramp"},{"@type":"ListItem","position":18,"name":"Sea Merchants Statue"}]},"url":"https://forsythparkvacationrentals.com/savannah-ghost-tour"}</script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Georgia', serif;
-  background: #0a0805;
-  color: #e9dcc6;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-.memory-container {
-  display: flex;
-  height: 100vh;
-  background: #0a0805;
-}
-
-#map {
-  flex: 1;
-  background: #1a1410;
-  z-index: 1;
-  cursor: crosshair;
-}
-
-.story-panel {
-  width: 100%;
-  max-width: 520px;
-  background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
-  border-left: 1px solid rgba(233, 220, 198, 0.1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.7);
-}
-
-.story-header {
-  background: rgba(10, 8, 6, 0.95);
-  border-bottom: 1px solid rgba(233, 220, 198, 0.15);
-  padding: 16px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-}
-
-.story-header h1 {
-  font-size: 20px;
-  color: #e7c389;
-  margin-bottom: 4px;
-  font-weight: 400;
-}
-
-.story-header p {
-  font-size: 10px;
-  color: #8b7d60;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.story-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.stop-card {
-  background: rgba(42, 37, 32, 0.5);
-  border: 1px solid rgba(233, 220, 198, 0.1);
-  border-radius: 6px;
-  padding: 12px;
-}
-
-.stop-card.modified {
-  border-color: rgba(232, 201, 106, 0.6);
-  background: rgba(232, 201, 106, 0.05);
-}
-
-.stop-number {
-  font-size: 9px;
-  color: #8b7d60;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.stop-name {
-  font-size: 16px;
-  color: #e7c389;
-  font-weight: 400;
-  margin-bottom: 6px;
-}
-
-.coords-group {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-size: 10px;
-}
-
-.coord-input {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-  padding: 4px 6px;
-  border-radius: 3px;
-  font-family: monospace;
-  font-size: 11px;
-}
-
-.coord-input:focus {
-  outline: none;
-  border-color: rgba(102, 187, 106, 0.7);
-  background: rgba(102, 187, 106, 0.1);
-}
-
-.radius-group {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 10px;
-}
-
-.radius-input {
-  width: 50px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-  padding: 4px 6px;
-  border-radius: 3px;
-  font-family: monospace;
-  font-size: 11px;
-}
-
-.radius-input:focus {
-  outline: none;
-  border-color: rgba(102, 187, 106, 0.7);
-  background: rgba(102, 187, 106, 0.1);
-}
-
-.narration-text {
-  font-size: 10px;
-  color: #d4c5b9;
-  line-height: 1.3;
-  padding: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 2px solid rgba(232, 201, 106, 0.4);
-  border-radius: 3px;
-  max-height: 80px;
-  overflow-y: auto;
-}
-
-.nav-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(10, 8, 6, 0.95);
-  border-top: 1px solid rgba(233, 220, 198, 0.1);
-}
-
-.nav-row {
-  display: flex;
-  gap: 8px;
-}
-
-.nav-btn {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-}
-
-.nav-btn-prev {
-  background: rgba(139, 115, 85, 0.3);
-  color: #a89968;
-  border: 1px solid rgba(139, 115, 85, 0.5);
-}
-
-.nav-btn-next {
-  background: rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-  border: 1px solid rgba(102, 187, 106, 0.5);
-}
-
-.nav-btn-export {
-  background: rgba(156, 39, 176, 0.3);
-  color: #ce93d8;
-  border: 1px solid rgba(156, 39, 176, 0.5);
-}
-
-.nav-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.nav-btn:hover:not(:disabled) {
-  opacity: 1;
-  filter: brightness(1.1);
-}
-
-.stop-marker {
-  opacity: 0.7;
-  transition: all 0.3s;
-  cursor: grab;
-}
-
-.stop-marker.active {
-  opacity: 1;
-  filter: drop-shadow(0 0 10px rgba(232, 201, 106, 0.8));
-}
-
-.stop-marker.dragging {
-  cursor: grabbing;
-}
-
-.marker-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  background: #e8c96a;
-  box-sizing: border-box;
-  box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
-}
-
-.marker-dot.modified {
-  background: #ff9800;
-  border-color: #fff;
-  box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
-}
-
-.instructions {
-  font-size: 9px;
-  color: #8b7d60;
-  padding: 6px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  margin-bottom: 8px;
-  line-height: 1.3;
-}
-
-.stop-selector {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 8px;
-  max-height: 120px;
-  overflow-y: auto;
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.stop-selector-btn {
-  padding: 6px 8px;
-  background: rgba(139, 115, 85, 0.2);
-  border: 1px solid rgba(139, 115, 85, 0.4);
-  color: #a89968;
-  border-radius: 3px;
-  font-size: 9px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.stop-selector-btn:hover {
-  background: rgba(139, 115, 85, 0.4);
-}
-
-.stop-selector-btn.active {
-  background: rgba(232, 201, 106, 0.3);
-  border-color: rgba(232, 201, 106, 0.6);
-  color: #e7c389;
-}
-
-@media (max-width: 1024px) {
-  .memory-container {
-    flex-direction: column;
-  }
-  #map {
-    height: 50%;
-    order: 2;
-  }
-  .story-panel {
-    height: 50%;
-    max-width: 100%;
-    border-left: none;
-    border-top: 1px solid rgba(233, 220, 198, 0.1);
-    order: 1;
-  }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,serif;background:#0a0805;color:#e9dcc6;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:#e7c389}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 40px;min-height:100vh;display:flex;flex-direction:column}
+.header{padding:18px 0 12px;text-align:center;border-bottom:1px solid rgba(233,220,198,.12)}
+.header .brand{font-size:11px;color:#8b7d60;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;margin-bottom:8px}
+.header h1{font-size:26px;color:#e7c389;font-weight:400}
+.header .sub{font-size:10px;color:#8b7d60;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.status{font-size:11px;color:#9db98a;margin-top:10px;min-height:15px}
+/* begin overlay */
+#beginOverlay{position:fixed;inset:0;background:linear-gradient(180deg,#0a0805 0%,#151009 100%);z-index:1000;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}
+#beginOverlay h1{color:#e7c389;font-size:32px;font-weight:400;margin-bottom:6px}
+#beginOverlay .ov-sub{color:#8b7d60;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:26px}
+#beginOverlay .ov-desc{color:#d4c5a9;font-size:14.5px;line-height:1.7;max-width:420px;margin-bottom:30px}
+.ov-btn{display:block;width:100%;max-width:380px;margin:0 auto 14px;background:rgba(232,201,106,.14);border:2px solid rgba(232,201,106,.35);color:#e7c389;padding:16px 20px;border-radius:8px;cursor:pointer;font-family:Georgia,serif;font-size:16px;transition:background .2s}
+.ov-btn:hover{background:rgba(232,201,106,.24)}
+.ov-btn small{display:block;font-size:11.5px;color:#8b7d60;margin-top:5px}
+.ov-note{color:#6b604a;font-size:11px;max-width:380px;line-height:1.6;margin-top:10px}
+/* now playing card */
+.now{background:linear-gradient(180deg,#1a1410,#0d0a08);border:1px solid rgba(233,220,198,.14);border-radius:10px;padding:18px;margin:18px 0 14px}
+.now .lbl{font-size:9px;color:#8b7d60;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.now h2{font-size:20px;color:#e7c389;font-weight:400}
+.now .dist{font-size:12px;color:#9db98a;margin-top:4px;min-height:16px}
+.narration{font-size:13.5px;line-height:1.7;color:#d4c5a9;font-style:italic;margin:12px 0;max-height:180px;overflow-y:auto}
+.controls{display:flex;gap:8px}
+.controls button{flex:1;background:rgba(232,201,106,.14);border:1px solid rgba(232,201,106,.3);color:#e7c389;padding:11px;border-radius:5px;cursor:pointer;font-family:Georgia,serif;font-size:13px;min-height:44px}
+.controls button:hover{background:rgba(232,201,106,.24)}
+.pbar{width:100%;height:4px;background:rgba(233,220,198,.1);border-radius:2px;overflow:hidden;margin-top:10px}
+.pfill{height:100%;background:rgba(232,201,106,.6);width:0%}
+.tdisp{font-size:10px;color:#8b7d60;margin-top:4px;text-align:center}
+#errorContainer .error-message{background:rgba(229,57,53,.1);border:1px solid rgba(229,57,53,.3);color:#ff9999;padding:10px;border-radius:4px;font-size:12px;margin:8px 0}
+/* stop list */
+.list-h{font-size:10px;color:#8b7d60;letter-spacing:2px;text-transform:uppercase;margin:16px 0 8px}
+.stop-row{display:flex;align-items:center;gap:12px;padding:11px 10px;border-bottom:1px solid rgba(233,220,198,.07);cursor:pointer;border-radius:6px}
+.stop-row:hover{background:rgba(232,201,106,.06)}
+.stop-row .num{width:26px;height:26px;border-radius:50%;border:1px solid rgba(232,201,106,.35);color:#e7c389;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stop-row.done .num{background:rgba(157,185,138,.18);border-color:rgba(157,185,138,.5);color:#9db98a}
+.stop-row .sn{font-size:14px;color:#d4c5a9;flex:1}
+.stop-row.active .sn{color:#e7c389}
+.stop-row.active{background:rgba(232,201,106,.08)}
+.stop-row .play-ic{color:#8b7d60;font-size:12px}
+.foot{margin-top:auto;padding-top:26px;text-align:center;font-size:11px;color:#6b604a;line-height:1.7}
+.foot a{color:#8b7d60}
 </style>
 </head>
 <body>
 
-<div class="memory-container">
-  <div id="map"></div>
+<!-- BEGIN OVERLAY: one tap = audio unlock + mode choice -->
+<div id="beginOverlay">
+  <h1>Forsyth Ghost Tour</h1>
+  <div class="ov-sub">Savannah Remembers · The Wilder House</div>
+  <p class="ov-desc">A free, self-guided audio walk through Savannah's Historic District — 18 narrated stops from Forsyth Park north to the river. About 90 minutes on foot, best after dark. No app. No ticket. Just walk, and the stories find you.</p>
+  <button class="ov-btn" id="startGpsBtn">🚶 I'm in Savannah — guide me
+    <small>GPS plays each story automatically as you arrive</small>
+  </button>
+  <button class="ov-btn" id="startBrowseBtn">🎧 Listen from anywhere
+    <small>Browse the 18 stops and play any story now</small>
+  </button>
+  <p class="ov-note">Headphones recommended. Stay aware of traffic and your surroundings — the ghosts can wait for the crosswalk.</p>
+</div>
 
-  <div class="story-panel">
-    <div class="story-header">
-      <h1>Forsyth Ghost Tour</h1>
-      <p>Fine-Tune All 17 Stops — Drag Markers or Edit Coordinates</p>
-    </div>
+<div class="wrap">
+  <div class="header">
+    <a class="brand" href="/">The Wilder House · Est. 1898</a>
+    <h1>Forsyth Ghost Tour</h1>
+    <div class="sub">Savannah Remembers</div>
+    <div class="status" id="status">Loading the tour…</div>
+  </div>
 
-    <div class="story-content" id="storyContent">
-      <p style="color: #8b7d60; text-align: center; padding: 20px 10px; font-size: 11px;">
-        Loading 17 stops...
-      </p>
+  <div class="now">
+    <div class="lbl" id="nowLabel">Now</div>
+    <h2 id="stopName">Choose how to begin</h2>
+    <div class="dist" id="stopDistance"></div>
+    <div id="errorContainer"></div>
+    <div class="narration" id="narrationText">Eighteen stops. One narrator who has been here longer than the streetlights. Tap a stop below, or let GPS guide you.</div>
+    <div class="controls">
+      <button id="playBtn">▶ Play</button>
+      <button id="pauseBtn">⏸ Pause</button>
+      <button id="replayBtn">⟲ Replay</button>
     </div>
+    <div class="pbar"><div class="pfill" id="progressFill"></div></div>
+    <div class="tdisp"><span id="currentTime">0:00</span> / <span id="duration">0:00</span></div>
+  </div>
 
-    <div class="nav-controls">
-      <div class="nav-row">
-        <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="previousStop()">← Prev</button>
-        <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStop()">Next →</button>
-      </div>
-      <button class="nav-btn nav-btn-export" onclick="exportCoordinates()">📋 Copy JSON</button>
-    </div>
+  <div class="list-h">The Route · Forsyth Park → the River</div>
+  <div id="stopList"></div>
+
+  <div class="foot">
+    Free, from the hosts of <a href="/">The Wilder House</a> — two 1898 suites three blocks from Forsyth Park.<br>
+    Walk at night with care: use crosswalks, mind the cobblestones near the river, and keep the volume low enough to hear the city.
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-
 <script>
-let TOUR_DATA = null;
-let ORIGINAL_COORDS = {};
+/* FORSYTH GHOST TOUR — guest engine (field-hardened GPS + browse-anywhere mode) */
+let state='IDLE',currentStop=null,audio=new Audio(),positionBuffer=[],lastTriggerTime=0,gpsConfidence=0,tourData=null,watchId=null,mode=null,wakeLock=null;
+const CONFIG={APPROACH_MULTIPLIER:1.8,CONFIRM_SAMPLES:6,CONFIRM_THRESHOLD:0.72,MIN_SPEED:1.5,COOLDOWN:10000,GPS_STALE_LIMIT:12000};
+const $=id=>document.getElementById(id);
+const statusEl=$('status'),stopNameEl=$('stopName'),stopDistanceEl=$('stopDistance'),narrationTextEl=$('narrationText'),errorContainerEl=$('errorContainer'),progressFillEl=$('progressFill'),currentTimeEl=$('currentTime'),durationEl=$('duration');
 
-let map;
-let currentStopIndex = 0;
-let markers = [];
-let routePolyline = null;
-let draggingMarkerIndex = null;
+/* progress persistence */
+let played={};
+try{played=JSON.parse(localStorage.getItem('sgt_played')||'{}');}catch(e){}
+function markPlayed(id){played[id]=1;try{localStorage.setItem('sgt_played',JSON.stringify(played));}catch(e){}renderList();}
 
-// Load JSON data
-fetch('/FORSYTH_GHOST_TOUR_17_STOPS.json?v=' + Date.now())
-  .then(res => res.json())
-  .then(data => {
-    TOUR_DATA = data.stops;
-    ORIGINAL_COORDS = JSON.parse(JSON.stringify(TOUR_DATA));
-    initApp();
-  })
-  .catch(err => {
-    console.error('Error loading tour data:', err);
-    document.getElementById('storyContent').innerHTML = '<p style="color: #ff6b6b;">Error loading tour data. Make sure FORSYTH_GHOST_TOUR_17_STOPS.json exists.</p>';
-  });
+function setStatus(msg,ok){statusEl.textContent=msg;statusEl.style.color=ok===false?'#ff9999':'#9db98a';}
 
-function initApp() {
-  initMap();
-  renderCurrentStop();
-}
-
-function initMap() {
-  map = L.map('map').setView([32.0730, -81.0900], 13);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OSM &copy; CARTO',
-    maxZoom: 19
-  }).addTo(map);
-  map.attributionControl.setPrefix(false);
-
-  for (let idx = 0; idx < TOUR_DATA.length; idx++) {
-    const stop = TOUR_DATA[idx];
-
-    const icon = L.divIcon({
-      className: `stop-marker`,
-      html: `<div class="marker-dot"></div>`,
-      iconSize: [14, 14],
-      iconAnchor: [7, 7]
-    });
-
-    const marker = L.marker([stop.lat, stop.lng], {
-      icon,
-      draggable: true
-    }).addTo(map);
-
-    marker.bindTooltip(`${stop.order}. ${stop.name}`, {
-      permanent: false,
-      direction: 'top',
-      offset: [0, -10]
-    });
-
-    // Use closure to capture idx
-    marker.on('click', (function(index) {
-      return function() { jumpToStop(index); };
-    })(idx));
-
-    marker.on('dragstart', (function(index) {
-      return function() {
-        draggingMarkerIndex = index;
-        if (marker._icon) marker._icon.classList.add('dragging');
-      };
-    })(idx));
-
-    marker.on('drag', (function(index, m) {
-      return function() {
-        const pos = m.getLatLng();
-        TOUR_DATA[index].lat = parseFloat(pos.lat.toFixed(6));
-        TOUR_DATA[index].lng = parseFloat(pos.lng.toFixed(6));
-        updateRoutePolyline();
-        if (index === currentStopIndex) {
-          renderCurrentStop();
-        }
-      };
-    })(idx, marker));
-
-    marker.on('dragend', (function(index, m) {
-      return function() {
-        draggingMarkerIndex = null;
-        if (m._icon) m._icon.classList.remove('dragging');
-        updateMarkerStyles();
-      };
-    })(idx, marker));
-
-    markers.push(marker);
+/* ---------- init ---------- */
+async function init(){
+  try{
+    const r=await fetch('/data/tour.json');
+    tourData=await r.json();
+    setStatus('Ready — '+tourData.stops.length+' stops loaded');
+    renderList();
+  }catch(e){
+    showError('Could not load the tour. Check your connection and refresh.');
+    setStatus('Tour failed to load',false);
+    return;
   }
-
-  updateRoutePolyline();
+  attachAudioControls();
+  $('startGpsBtn').addEventListener('click',()=>begin('gps'));
+  $('startBrowseBtn').addEventListener('click',()=>begin('browse'));
+}
+function begin(m){
+  mode=m;
+  /* unlock audio inside the user gesture (required on iOS/Android) */
+  try{audio.play().catch(()=>{});audio.pause();}catch(e){}
+  $('beginOverlay').style.display='none';
+  requestWakeLock();
+  if(m==='gps'){startGPS();}
+  else{setStatus('Browse mode — tap any stop to hear its story');stopNameEl.textContent='Pick a stop below';}
 }
 
-function updateRoutePolyline() {
-  if (routePolyline) map.removeLayer(routePolyline);
-  const routeCoords = TOUR_DATA.map(stop => [stop.lat, stop.lng]);
-  routePolyline = L.polyline(routeCoords, {
-    color: '#c9a876',
-    weight: 2,
-    opacity: 0.3,
-    dashArray: '5,5'
-  }).addTo(map);
+/* keep the screen awake during the walk; re-acquire when tab returns */
+async function requestWakeLock(){
+  try{if('wakeLock' in navigator){wakeLock=await navigator.wakeLock.request('screen');}}catch(e){}
 }
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&mode)requestWakeLock();});
 
-function renderCurrentStop() {
-  const stop = TOUR_DATA[currentStopIndex];
-  const orig = ORIGINAL_COORDS[currentStopIndex];
-  const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
-
-  const container = document.getElementById('storyContent');
-
-  let html = `<div class="stop-card ${isModified ? 'modified' : ''}">`;
-  html += `<div class="stop-number">Stop ${stop.order} of ${TOUR_DATA.length}</div>`;
-  html += `<div class="stop-name">${stop.name}</div>`;
-
-  html += `<div class="instructions">💡 Drag marker on map or edit below. Orange highlight = changed.</div>`;
-
-  html += `<div class="coords-group">`;
-  html += `<input type="number" class="coord-input" id="latInput" step="0.000001" placeholder="Latitude" value="${stop.lat.toFixed(6)}" onchange="updateStopFromInput('lat')">`;
-  html += `<input type="number" class="coord-input" id="lngInput" step="0.000001" placeholder="Longitude" value="${stop.lng.toFixed(6)}" onchange="updateStopFromInput('lng')">`;
-  html += `</div>`;
-
-  html += `<div class="radius-group">`;
-  html += `<label style="color: #8b7d60;">Radius (m):</label>`;
-  html += `<input type="number" class="radius-input" id="radiusInput" min="20" max="200" value="${stop.radius_m}" onchange="updateStopFromInput('radius')">`;
-  html += `</div>`;
-
-  if (isModified) {
-    html += `<div style="font-size: 9px; color: #ff9800; padding: 6px; background: rgba(255, 152, 0, 0.1); border-radius: 3px; margin-bottom: 6px;">✎ Modified from original</div>`;
+/* ---------- GPS engine ---------- */
+function startGPS(){
+  state='SEARCHING';
+  if(!navigator.geolocation){setStatus('GPS unavailable — browse mode instead',false);mode='browse';return;}
+  setStatus('Finding you…');
+  watchId=navigator.geolocation.watchPosition(handlePosition,err=>{
+    setStatus(err.code===1?'Location denied — tap any stop to play instead':'GPS trouble — tap stops to play manually',false);
+    mode='browse';
+  },{enableHighAccuracy:true,maximumAge:1000,timeout:8000});
+}
+function handlePosition(pos){
+  const{latitude,longitude,speed}=pos.coords;const now=Date.now();
+  if(pos.timestamp&&now-pos.timestamp>CONFIG.GPS_STALE_LIMIT){positionBuffer=[];gpsConfidence=0;return;}
+  positionBuffer.push({latitude,longitude,timestamp:now});
+  if(positionBuffer.length>CONFIG.CONFIRM_SAMPLES)positionBuffer.shift();
+  const avg=avgPos(positionBuffer);
+  const stop=nearestUnplayed(avg.latitude,avg.longitude)||nearestStop(avg.latitude,avg.longitude);
+  if(!stop)return;
+  const d=dist(avg.latitude,avg.longitude,stop.lat,stop.lng);
+  const inRadius=d<stop.radius,inApproach=d<stop.radius*CONFIG.APPROACH_MULTIPLIER;
+  const movingSlow=!speed||speed<CONFIG.MIN_SPEED;
+  if(state==='SEARCHING'&&inApproach&&!inRadius){state='APPROACHING';preload(stop,'on');}
+  if((state==='SEARCHING'||state==='APPROACHING')&&inRadius){
+    gpsConfidence=confidence(positionBuffer,stop);
+    if(gpsConfidence>CONFIG.CONFIRM_THRESHOLD&&movingSlow){trigger(stop);return;}
   }
-
-  html += `<div style="font-size: 9px; color: #8b7d60; margin-bottom: 6px;">Walk time: ${stop.walking_time_to_next} | Target narration: ${stop.narration_target}</div>`;
-  html += `<div class="narration-text"><strong>Theme:</strong> ${stop.theme}</div>`;
-
-  html += `</div>`;
-
-  container.innerHTML = html;
-
-  document.getElementById('prevBtn').disabled = currentStopIndex === 0;
-  document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.length - 1;
-
-  map.setView([stop.lat, stop.lng], 15);
-  updateMarkerStyles();
+  if(state==='SEARCHING'||state==='APPROACHING')guide(stop,d,avg);
+}
+function guide(stop,d,from){
+  stopNameEl.textContent=stop.name;
+  const b=bearing(from.latitude,from.longitude,stop.lat,stop.lng);
+  stopDistanceEl.textContent=Math.round(d)+' m — head '+b;
+  $('nowLabel').textContent='Next stop · '+stop.order+' of '+tourData.stops.length;
+  setStatus('Guiding you — audio starts by itself when you arrive');
+}
+function trigger(stop){
+  const now=Date.now();
+  if(now-lastTriggerTime<CONFIG.COOLDOWN)return;
+  currentStop=stop;lastTriggerTime=now;state='PLAYING';
+  $('nowLabel').textContent='Stop '+stop.order+' of '+tourData.stops.length;
+  stopNameEl.textContent=stop.name;stopDistanceEl.textContent='You are here.';
+  narrationTextEl.textContent=stop.on_time||'';
+  playFile(stop,'on');
 }
 
-function updateMarkerStyles() {
-  markers.forEach((marker, idx) => {
-    const stop = TOUR_DATA[idx];
-    const orig = ORIGINAL_COORDS[idx];
-    const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
-
-    marker.setIcon(L.divIcon({
-      className: `stop-marker ${idx === currentStopIndex ? 'active' : ''}`,
-      html: `<div class="marker-dot ${isModified ? 'modified' : ''}"></div>`,
-      iconSize: [14, 14],
-      iconAnchor: [7, 7]
-    }));
-  });
+/* ---------- audio ---------- */
+function playFile(stop,which){
+  const f=stop.audio&&stop.audio[which];
+  if(!f){showError('No recording for this stop yet.');return;}
+  audio.src='/audio/'+f;audio.preload='auto';
+  audio.play().then(()=>{errorContainerEl.innerHTML='';}).catch(()=>{showError('Tap ▶ Play to start the story.');});
+  audio.onended=()=>{
+    markPlayed(stop.id);
+    if(mode==='gps'){state='COOLDOWN';setStatus('Story finished — walk on to the next stop');setTimeout(()=>{state='SEARCHING';positionBuffer=[];},CONFIG.COOLDOWN);}
+    else setStatus('Story finished — pick another stop');
+  };
+  audio.ontimeupdate=()=>{const p=(audio.currentTime/audio.duration)*100||0;progressFillEl.style.width=p+'%';currentTimeEl.textContent=fmt(audio.currentTime);};
+  audio.onloadedmetadata=()=>{durationEl.textContent=fmt(audio.duration);};
+}
+function preload(stop,which){const f=stop.audio&&stop.audio[which];if(!f)return;const a=new Audio();a.src='/audio/'+f;a.preload='auto';}
+function attachAudioControls(){
+  $('playBtn').addEventListener('click',()=>audio.play().catch(()=>{}));
+  $('pauseBtn').addEventListener('click',()=>audio.pause());
+  $('replayBtn').addEventListener('click',()=>{audio.currentTime=0;audio.play().catch(()=>{});});
 }
 
-function updateStopFromInput(field) {
-  const stop = TOUR_DATA[currentStopIndex];
-
-  if (field === 'lat') {
-    const val = parseFloat(document.getElementById('latInput').value);
-    if (!isNaN(val)) {
-      stop.lat = val;
-      markers[currentStopIndex].setLatLng([val, stop.lng]);
-      updateRoutePolyline();
-    }
-  } else if (field === 'lng') {
-    const val = parseFloat(document.getElementById('lngInput').value);
-    if (!isNaN(val)) {
-      stop.lng = val;
-      markers[currentStopIndex].setLatLng([stop.lat, val]);
-      updateRoutePolyline();
-    }
-  } else if (field === 'radius') {
-    const val = parseInt(document.getElementById('radiusInput').value);
-    if (!isNaN(val)) {
-      stop.radius_m = val;
-    }
-  }
-
-  updateMarkerStyles();
-  renderCurrentStop();
+/* ---------- browse mode / stop list ---------- */
+function renderList(){
+  const el=$('stopList');if(!el||!tourData)return;
+  el.innerHTML=tourData.stops.map(s=>`<div class="stop-row${played[s.id]?' done':''}${currentStop&&currentStop.id===s.id?' active':''}" data-id="${s.id}" role="button" tabindex="0" aria-label="Play stop ${s.order}: ${s.name}"><span class="num">${played[s.id]?'✓':s.order}</span><span class="sn">${s.name}</span><span class="play-ic">▶</span></div>`).join('');
 }
-
-function nextStop() {
-  if (currentStopIndex < TOUR_DATA.length - 1) {
-    currentStopIndex++;
-    renderCurrentStop();
-  }
-}
-
-function previousStop() {
-  if (currentStopIndex > 0) {
-    currentStopIndex--;
-    renderCurrentStop();
-  }
-}
-
-function jumpToStop(idx) {
-  currentStopIndex = idx;
-  renderCurrentStop();
-}
-
-function exportCoordinates() {
-  const output = TOUR_DATA.map(stop => ({
-    order: stop.order,
-    name: stop.name,
-    lat: stop.lat,
-    lng: stop.lng,
-    radius_m: stop.radius_m
-  }));
-
-  const json = JSON.stringify(output, null, 2);
-  navigator.clipboard.writeText(json).then(() => {
-    alert('✓ Coordinates copied to clipboard!\n\nPaste into your editor or share with the team.');
-  }).catch(() => {
-    const textarea = document.createElement('textarea');
-    textarea.value = json;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    alert('✓ Coordinates copied to clipboard!');
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  // App will start once JSON loads
+document.addEventListener('click',e=>{
+  const row=e.target.closest('.stop-row');if(!row||!tourData)return;
+  const stop=tourData.stops.find(s=>String(s.id)===row.dataset.id);if(!stop)return;
+  currentStop=stop;
+  $('nowLabel').textContent='Stop '+stop.order+' of '+tourData.stops.length;
+  stopNameEl.textContent=stop.name;stopDistanceEl.textContent='';
+  narrationTextEl.textContent=stop.on_time||'';
+  renderList();
+  playFile(stop,'on');
 });
-</script>
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  const row=e.target.closest&&e.target.closest('.stop-row');
+  if(row){e.preventDefault();row.click();}
+});
 
+/* ---------- helpers ---------- */
+function avgPos(b){return{latitude:b.reduce((s,p)=>s+p.latitude,0)/b.length,longitude:b.reduce((s,p)=>s+p.longitude,0)/b.length};}
+function nearestStop(lat,lng){let n=null,m=Infinity;tourData.stops.forEach(s=>{const d=dist(lat,lng,s.lat,s.lng);if(d<m){m=d;n=s;}});return n;}
+function nearestUnplayed(lat,lng){let n=null,m=Infinity;tourData.stops.forEach(s=>{if(played[s.id])return;const d=dist(lat,lng,s.lat,s.lng);if(d<m){m=d;n=s;}});return n;}
+function confidence(buf,stop){let k=0;for(const p of buf){if(dist(p.latitude,p.longitude,stop.lat,stop.lng)<stop.radius)k++;}return k/buf.length;}
+function dist(a,b,c,d){const R=6371e3,r=x=>x*Math.PI/180;const dp=r(c-a),dl=r(d-b);const s=Math.sin(dp/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));}
+function bearing(a,b,c,d){const r=x=>x*Math.PI/180;const y=Math.sin(r(d-b))*Math.cos(r(c));const x=Math.cos(r(a))*Math.sin(r(c))-Math.sin(r(a))*Math.cos(r(c))*Math.cos(r(d-b));const deg=(Math.atan2(y,x)*180/Math.PI+360)%360;return['north','northeast','east','southeast','south','southwest','west','northwest'][Math.round(deg/45)%8];}
+function fmt(s){if(!s||isNaN(s))return'0:00';const m=Math.floor(s/60),x=Math.floor(s%60);return m+':'+(x<10?'0':'')+x;}
+function showError(msg){errorContainerEl.innerHTML='<div class="error-message">'+msg+'</div>';}
+
+window.addEventListener('load',init);
+window.addEventListener('beforeunload',()=>{if(watchId!==null)navigator.geolocation.clearWatch(watchId);});
+</script>
 </body>
 </html>

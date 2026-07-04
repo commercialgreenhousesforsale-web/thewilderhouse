@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Forsyth Ghost Tour — Fine-Tune All 17 Stops</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Georgia', serif;
+  background: #0a0805;
+  color: #e9dcc6;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.memory-container {
+  display: flex;
+  height: 100vh;
+  background: #0a0805;
+}
+
+#map {
+  flex: 1;
+  background: #1a1410;
+  z-index: 1;
+  cursor: crosshair;
+}
+
+.story-panel {
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
+  border-left: 1px solid rgba(233, 220, 198, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.7);
+}
+
+.story-header {
+  background: rgba(10, 8, 6, 0.95);
+  border-bottom: 1px solid rgba(233, 220, 198, 0.15);
+  padding: 16px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.story-header h1 {
+  font-size: 20px;
+  color: #e7c389;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.story-header p {
+  font-size: 10px;
+  color: #8b7d60;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.story-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stop-card {
+  background: rgba(42, 37, 32, 0.5);
+  border: 1px solid rgba(233, 220, 198, 0.1);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.stop-card.modified {
+  border-color: rgba(232, 201, 106, 0.6);
+  background: rgba(232, 201, 106, 0.05);
+}
+
+.stop-number {
+  font-size: 9px;
+  color: #8b7d60;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stop-name {
+  font-size: 16px;
+  color: #e7c389;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.coords-group {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 10px;
+}
+
+.coord-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(102, 187, 106, 0.3);
+  color: #66bb6a;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.coord-input:focus {
+  outline: none;
+  border-color: rgba(102, 187, 106, 0.7);
+  background: rgba(102, 187, 106, 0.1);
+}
+
+.radius-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 10px;
+}
+
+.radius-input {
+  width: 50px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(102, 187, 106, 0.3);
+  color: #66bb6a;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.radius-input:focus {
+  outline: none;
+  border-color: rgba(102, 187, 106, 0.7);
+  background: rgba(102, 187, 106, 0.1);
+}
+
+.narration-text {
+  font-size: 10px;
+  color: #d4c5b9;
+  line-height: 1.3;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 2px solid rgba(232, 201, 106, 0.4);
+  border-radius: 3px;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.nav-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(10, 8, 6, 0.95);
+  border-top: 1px solid rgba(233, 220, 198, 0.1);
+}
+
+.nav-row {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+
+.nav-btn-prev {
+  background: rgba(139, 115, 85, 0.3);
+  color: #a89968;
+  border: 1px solid rgba(139, 115, 85, 0.5);
+}
+
+.nav-btn-next {
+  background: rgba(102, 187, 106, 0.3);
+  color: #66bb6a;
+  border: 1px solid rgba(102, 187, 106, 0.5);
+}
+
+.nav-btn-export {
+  background: rgba(156, 39, 176, 0.3);
+  color: #ce93d8;
+  border: 1px solid rgba(156, 39, 176, 0.5);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-btn:hover:not(:disabled) {
+  opacity: 1;
+  filter: brightness(1.1);
+}
+
+.stop-marker {
+  opacity: 0.7;
+  transition: all 0.3s;
+  cursor: grab;
+}
+
+.stop-marker.active {
+  opacity: 1;
+  filter: drop-shadow(0 0 10px rgba(232, 201, 106, 0.8));
+}
+
+.stop-marker.dragging {
+  cursor: grabbing;
+}
+
+.marker-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #e8c96a;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
+}
+
+.marker-dot.modified {
+  background: #ff9800;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
+}
+
+.instructions {
+  font-size: 9px;
+  color: #8b7d60;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.stop-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.stop-selector-btn {
+  padding: 6px 8px;
+  background: rgba(139, 115, 85, 0.2);
+  border: 1px solid rgba(139, 115, 85, 0.4);
+  color: #a89968;
+  border-radius: 3px;
+  font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stop-selector-btn:hover {
+  background: rgba(139, 115, 85, 0.4);
+}
+
+.stop-selector-btn.active {
+  background: rgba(232, 201, 106, 0.3);
+  border-color: rgba(232, 201, 106, 0.6);
+  color: #e7c389;
+}
+
+@media (max-width: 1024px) {
+  .memory-container {
+    flex-direction: column;
+  }
+  #map {
+    height: 50%;
+    order: 2;
+  }
+  .story-panel {
+    height: 50%;
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(233, 220, 198, 0.1);
+    order: 1;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="memory-container">
+  <div id="map"></div>
+
+  <div class="story-panel">
+    <div class="story-header">
+      <h1>Forsyth Ghost Tour</h1>
+      <p>Fine-Tune All 17 Stops — Drag Markers or Edit Coordinates</p>
+    </div>
+
+    <div class="story-content" id="storyContent">
+      <p style="color: #8b7d60; text-align: center; padding: 20px 10px; font-size: 11px;">
+        Loading 17 stops...
+      </p>
+    </div>
+
+    <div class="nav-controls">
+      <div class="nav-row">
+        <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="previousStop()">← Prev</button>
+        <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStop()">Next →</button>
+      </div>
+      <button class="nav-btn nav-btn-export" onclick="exportCoordinates()">📋 Copy JSON</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<script>
+let TOUR_DATA = null;
+let ORIGINAL_COORDS = {};
+
+let map;
+let currentStopIndex = 0;
+let markers = [];
+let routePolyline = null;
+let draggingMarkerIndex = null;
+
+// Load JSON data
+fetch('/FORSYTH_GHOST_TOUR_17_STOPS.json?v=' + Date.now())
+  .then(res => res.json())
+  .then(data => {
+    TOUR_DATA = data.stops;
+    ORIGINAL_COORDS = JSON.parse(JSON.stringify(TOUR_DATA));
+    initApp();
+  })
+  .catch(err => {
+    console.error('Error loading tour data:', err);
+    document.getElementById('storyContent').innerHTML = '<p style="color: #ff6b6b;">Error loading tour data. Make sure FORSYTH_GHOST_TOUR_17_STOPS.json exists.</p>';
+  });
+
+function initApp() {
+  initMap();
+  renderCurrentStop();
+}
+
+function initMap() {
+  map = L.map('map').setView([32.0730, -81.0900], 13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OSM &copy; CARTO',
+    maxZoom: 19
+  }).addTo(map);
+  map.attributionControl.setPrefix(false);
+
+  for (let idx = 0; idx < TOUR_DATA.length; idx++) {
+    const stop = TOUR_DATA[idx];
+
+    const icon = L.divIcon({
+      className: `stop-marker`,
+      html: `<div class="marker-dot"></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    });
+
+    const marker = L.marker([stop.lat, stop.lng], {
+      icon,
+      draggable: true
+    }).addTo(map);
+
+    marker.bindTooltip(`${stop.order}. ${stop.name}`, {
+      permanent: false,
+      direction: 'top',
+      offset: [0, -10]
+    });
+
+    // Use closure to capture idx
+    marker.on('click', (function(index) {
+      return function() { jumpToStop(index); };
+    })(idx));
+
+    marker.on('dragstart', (function(index) {
+      return function() {
+        draggingMarkerIndex = index;
+        if (marker._icon) marker._icon.classList.add('dragging');
+      };
+    })(idx));
+
+    marker.on('drag', (function(index, m) {
+      return function() {
+        const pos = m.getLatLng();
+        TOUR_DATA[index].lat = parseFloat(pos.lat.toFixed(6));
+        TOUR_DATA[index].lng = parseFloat(pos.lng.toFixed(6));
+        updateRoutePolyline();
+        if (index === currentStopIndex) {
+          renderCurrentStop();
+        }
+      };
+    })(idx, marker));
+
+    marker.on('dragend', (function(index, m) {
+      return function() {
+        draggingMarkerIndex = null;
+        if (m._icon) m._icon.classList.remove('dragging');
+        updateMarkerStyles();
+      };
+    })(idx, marker));
+
+    markers.push(marker);
+  }
+
+  updateRoutePolyline();
+}
+
+function updateRoutePolyline() {
+  if (routePolyline) map.removeLayer(routePolyline);
+  const routeCoords = TOUR_DATA.map(stop => [stop.lat, stop.lng]);
+  routePolyline = L.polyline(routeCoords, {
+    color: '#c9a876',
+    weight: 2,
+    opacity: 0.3,
+    dashArray: '5,5'
+  }).addTo(map);
+}
+
+function renderCurrentStop() {
+  const stop = TOUR_DATA[currentStopIndex];
+  const orig = ORIGINAL_COORDS[currentStopIndex];
+  const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
+
+  const container = document.getElementById('storyContent');
+
+  let html = `<div class="stop-card ${isModified ? 'modified' : ''}">`;
+  html += `<div class="stop-number">Stop ${stop.order} of ${TOUR_DATA.length}</div>`;
+  html += `<div class="stop-name">${stop.name}</div>`;
+
+  html += `<div class="instructions">💡 Drag marker on map or edit below. Orange highlight = changed.</div>`;
+
+  html += `<div class="coords-group">`;
+  html += `<input type="number" class="coord-input" id="latInput" step="0.000001" placeholder="Latitude" value="${stop.lat.toFixed(6)}" onchange="updateStopFromInput('lat')">`;
+  html += `<input type="number" class="coord-input" id="lngInput" step="0.000001" placeholder="Longitude" value="${stop.lng.toFixed(6)}" onchange="updateStopFromInput('lng')">`;
+  html += `</div>`;
+
+  html += `<div class="radius-group">`;
+  html += `<label style="color: #8b7d60;">Radius (m):</label>`;
+  html += `<input type="number" class="radius-input" id="radiusInput" min="20" max="200" value="${stop.radius_m}" onchange="updateStopFromInput('radius')">`;
+  html += `</div>`;
+
+  if (isModified) {
+    html += `<div style="font-size: 9px; color: #ff9800; padding: 6px; background: rgba(255, 152, 0, 0.1); border-radius: 3px; margin-bottom: 6px;">✎ Modified from original</div>`;
+  }
+
+  html += `<div style="font-size: 9px; color: #8b7d60; margin-bottom: 6px;">Walk time: ${stop.walking_time_to_next} | Target narration: ${stop.narration_target}</div>`;
+  html += `<div class="narration-text"><strong>Theme:</strong> ${stop.theme}</div>`;
+
+  html += `</div>`;
+
+  container.innerHTML = html;
+
+  document.getElementById('prevBtn').disabled = currentStopIndex === 0;
+  document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.length - 1;
+
+  map.setView([stop.lat, stop.lng], 15);
+  updateMarkerStyles();
+}
+
+function updateMarkerStyles() {
+  markers.forEach((marker, idx) => {
+    const stop = TOUR_DATA[idx];
+    const orig = ORIGINAL_COORDS[idx];
+    const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
+
+    marker.setIcon(L.divIcon({
+      className: `stop-marker ${idx === currentStopIndex ? 'active' : ''}`,
+      html: `<div class="marker-dot ${isModified ? 'modified' : ''}"></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    }));
+  });
+}
+
+function updateStopFromInput(field) {
+  const stop = TOUR_DATA[currentStopIndex];
+
+  if (field === 'lat') {
+    const val = parseFloat(document.getElementById('latInput').value);
+    if (!isNaN(val)) {
+      stop.lat = val;
+      markers[currentStopIndex].setLatLng([val, stop.lng]);
+      updateRoutePolyline();
+    }
+  } else if (field === 'lng') {
+    const val = parseFloat(document.getElementById('lngInput').value);
+    if (!isNaN(val)) {
+      stop.lng = val;
+      markers[currentStopIndex].setLatLng([stop.lat, val]);
+      updateRoutePolyline();
+    }
+  } else if (field === 'radius') {
+    const val = parseInt(document.getElementById('radiusInput').value);
+    if (!isNaN(val)) {
+      stop.radius_m = val;
+    }
+  }
+
+  updateMarkerStyles();
+  renderCurrentStop();
+}
+
+function nextStop() {
+  if (currentStopIndex < TOUR_DATA.length - 1) {
+    currentStopIndex++;
+    renderCurrentStop();
+  }
+}
+
+function previousStop() {
+  if (currentStopIndex > 0) {
+    currentStopIndex--;
+    renderCurrentStop();
+  }
+}
+
+function jumpToStop(idx) {
+  currentStopIndex = idx;
+  renderCurrentStop();
+}
+
+function exportCoordinates() {
+  const output = TOUR_DATA.map(stop => ({
+    order: stop.order,
+    name: stop.name,
+    lat: stop.lat,
+    lng: stop.lng,
+    radius_m: stop.radius_m
+  }));
+
+  const json = JSON.stringify(output, null, 2);
+  navigator.clipboard.writeText(json).then(() => {
+    alert('✓ Coordinates copied to clipboard!\n\nPaste into your editor or share with the team.');
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = json;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('✓ Coordinates copied to clipboard!');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // App will start once JSON loads
+});
+</script>
+
+</body>
+</html>
