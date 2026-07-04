@@ -4,6 +4,10 @@
 /savannah-ghost-tour.html /savannah-ghost-tour 301
 /index.html / 301
 
+# Legacy/mistyped planner URL -> the real planner
+/savannah-day-planner /savannah-by-the-hour 301
+/savannah-day-planner.html /savannah-by-the-hour 301
+
 # Catch-all for .html files
 /*.html /:splat 301
 
