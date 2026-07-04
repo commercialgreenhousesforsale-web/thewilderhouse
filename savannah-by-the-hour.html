@@ -533,8 +533,9 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
         <div class="rn-meta" id="rnMeta"></div>
         <div class="rn-badges" id="rnBadges"></div>
         <div class="rn-actions">
-          <button id="altBtn" class="rn-share" type="button" aria-label="Show me a different pick">🔁 Show me another</button>
-          <button id="shareBtn" class="rn-share" type="button" aria-label="Share this pick">📤 Share this pick</button>
+          <button id="altBtn" class="rn-primary" type="button" aria-label="Show me a different pick">🔁 Show me another</button>
+          <button id="geoBtn" class="rn-share" type="button" aria-label="Show walk times measured from my location">📍 Walk times from me</button>
+          <button id="shareBtn" class="rn-share" type="button" aria-label="Share this pick">📤 Share</button>
         </div>
       </div>
       <div class="rn-right">
@@ -546,10 +547,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
     </div>
     <p class="rn-sync" id="rnSync"><span class="rn-sync-dot"></span>Live tool &middot; data synced <time id="rnSyncTime" datetime="2026-06-03">June 3, 2026</time> &middot; weather, tide &amp; golden hour refresh every hour</p>
     <div id="whyNot"></div>
-    <div class="page-controls">
-      <button id="refreshBtn" class="refresh-control" aria-label="Update data">🔄 Update Now</button>
-      <button id="geoBtn" class="geo-control" aria-label="Use my location for walk times">📍 Use my location</button>
-    </div>
   </section>
 
   <noscript>
@@ -638,8 +635,11 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
   .rn-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
   .rn-share{background:transparent;border:1.5px solid var(--g);color:var(--g);font-family:var(--serif);font-size:.92rem;padding:9px 20px;border-radius:6px;cursor:pointer;transition:all .2s;min-height:auto}
   .rn-share:hover{background:var(--g);color:#fff}
-  @media(prefers-color-scheme:dark){.rn-share{border-color:var(--gol);color:var(--gol)}.rn-share:hover{background:var(--gol);color:#1a2b1a}}
-  .page-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px auto 0}
+  .rn-share.on{background:var(--g);color:#fff}
+  .rn-share:disabled{opacity:.6;cursor:default}
+  .rn-primary{background:var(--g);border:1.5px solid var(--g);color:#fff;font-family:var(--serif);font-size:.92rem;font-weight:600;padding:9px 22px;border-radius:6px;cursor:pointer;transition:all .2s;min-height:auto}
+  .rn-primary:hover{background:var(--g2);border-color:var(--g2)}
+  @media(prefers-color-scheme:dark){.rn-share{border-color:var(--gol);color:var(--gol)}.rn-share:hover,.rn-share.on{background:var(--gol);color:#1a2b1a}.rn-primary{background:var(--gol);border-color:var(--gol);color:#1a2b1a}.rn-primary:hover{background:#d4af5a;border-color:#d4af5a}}
   .rn-runner{cursor:pointer;border-radius:8px;transition:background .15s;position:relative;padding-right:18px}
   .rn-runner:hover,.rn-runner:focus-visible{background:rgba(194,160,50,.08)}
   .rn-runner-go{position:absolute;right:4px;top:50%;transform:translateY(-40%);font-size:1.2rem;color:var(--gold);opacity:.7}
@@ -1925,11 +1925,11 @@ function useMyLocation(){
   navigator.geolocation.getCurrentPosition(pos=>{
     userPos={lat:pos.coords.latitude,lng:pos.coords.longitude};
     const mi=haversine(userPos.lat,userPos.lng,ORIGIN[0],ORIGIN[1]);
-    if(btn){btn.disabled=false;btn.textContent='📍 Using your location';btn.classList.add('on');}
+    if(btn){btn.disabled=false;btn.textContent='📍 From your location';btn.classList.add('on');}
     showToast(mi<8?'Walk times now measured from you':'Set — though you look far from downtown');
     renderAll();
   },err=>{
-    if(btn){btn.disabled=false;btn.textContent='📍 Use my location';}
+    if(btn){btn.disabled=false;btn.textContent='📍 Walk times from me';}
     showToast(err.code===1?'Location permission denied':'Could not get your location');
   },{enableHighAccuracy:false,timeout:8000,maximumAge:120000});
 }
@@ -1992,24 +1992,6 @@ document.addEventListener('visibilitychange',()=>{
 window.addEventListener('scroll',()=>{
   const b=document.getElementById('btt');
   b.className=window.scrollY>400?'show':'';
-});
-
-/* ── MANUAL REFRESH BUTTON ──────────────────────── */
-document.getElementById('refreshBtn').addEventListener('click',()=>{
-  const btn=document.getElementById('refreshBtn');
-  btn.disabled=true;
-  btn.style.opacity='0.6';
-  today=savNow();
-  document.getElementById('heroTime').textContent=ft(today);
-  renderHoliday();
-  renderEvents();
-  renderAll();
-  loadData();
-  loadTide();
-  setTimeout(()=>{
-    btn.disabled=false;
-    btn.style.opacity='1';
-  },800);
 });
 
 /* ── ANDROID BACK BUTTON HANDLER ────────────────── */
