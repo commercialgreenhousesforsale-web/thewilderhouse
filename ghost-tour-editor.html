@@ -349,8 +349,11 @@ let markers = [];
 let routePolyline = null;
 let draggingMarkerIndex = null;
 
-// Load JSON data
-fetch('/FORSYTH_GHOST_TOUR_17_STOPS.json?v=' + Date.now())
+// Load JSON data. Default: the legacy working file. With ?tour={slug} in the
+// URL, edit any tour's live data instead (e.g. ?tour=tour loads /data/tour.json).
+const TOUR_PARAM = (new URLSearchParams(location.search).get('tour') || '').replace(/[^a-z0-9_-]/gi, '');
+const DATA_URL = TOUR_PARAM ? ('/data/' + TOUR_PARAM + '.json') : '/FORSYTH_GHOST_TOUR_17_STOPS.json';
+fetch(DATA_URL + '?v=' + Date.now())
   .then(res => res.json())
   .then(data => {
     TOUR_DATA = data.stops;
@@ -359,7 +362,7 @@ fetch('/FORSYTH_GHOST_TOUR_17_STOPS.json?v=' + Date.now())
   })
   .catch(err => {
     console.error('Error loading tour data:', err);
-    document.getElementById('storyContent').innerHTML = '<p style="color: #ff6b6b;">Error loading tour data. Make sure FORSYTH_GHOST_TOUR_17_STOPS.json exists.</p>';
+    document.getElementById('storyContent').innerHTML = '<p style="color: #ff6b6b;">Error loading tour data from ' + DATA_URL + '.</p>';
   });
 
 function initApp() {
@@ -369,9 +372,10 @@ function initApp() {
 
 function initMap() {
   map = L.map('map').setView([32.0730, -81.0900], 13);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OSM &copy; CARTO',
-    maxZoom: 19
+  // OSM tiles — the live CSP allows {s}.tile.openstreetmap.org and blocks CARTO
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 19, subdomains: 'abc'
   }).addTo(map);
   map.attributionControl.setPrefix(false);
 

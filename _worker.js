@@ -7,7 +7,8 @@ export default {
     // dot-directories (config/tooling, version control) are never legitimate
     // public assets on this static site.
     if (/\.(md|py|ps1|local\.md)$/i.test(url.pathname) ||
-        /(^|\/)\.(?!well-known\/)[^/]+/.test(url.pathname)) {
+        /(^|\/)\.(?!well-known\/)[^/]+/.test(url.pathname) ||
+        /^\/tour-engine-template(\.html)?$/i.test(url.pathname)) {
       return new Response('Not found', { status: 404 });
     }
 
