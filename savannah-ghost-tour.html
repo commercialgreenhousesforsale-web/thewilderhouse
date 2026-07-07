@@ -73,6 +73,37 @@ a{color:#e7c389}
 .about a{color:#e7c389}
 .foot{margin-top:auto;padding-top:26px;text-align:center;font-size:11px;color:#6b604a;line-height:1.7}
 .foot a{color:#8b7d60}
+/* waiver gate */
+.wv-row{display:flex;align-items:flex-start;gap:10px;max-width:380px;margin:0 auto 14px;text-align:left;color:#d4c5a9;font-size:12.5px;line-height:1.55;cursor:pointer}
+.wv-row input{margin-top:2px;width:18px;height:18px;accent-color:#e7c389;flex-shrink:0}
+.wv-link{background:none;border:none;color:#e7c389;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.wv-text{max-width:420px;max-height:190px;overflow-y:auto;text-align:left;font-size:11.5px;line-height:1.6;color:#a89a7e;border:1px solid rgba(233,220,198,.15);border-radius:8px;padding:12px 14px;margin:0 auto 14px}
+.wv-text h3{color:#c9b795;font-size:11.5px;margin:9px 0 3px;font-weight:700}
+.wv-text p{margin-bottom:6px}
+.ov-btn:disabled{opacity:.35;cursor:not-allowed}
+.ov-btn:disabled:hover{background:rgba(232,201,106,.14)}
+/* map — OWNER RULE: the GPS map and directional cone are permanent. Do not remove. */
+.map-toggle{display:block;width:100%;background:rgba(232,201,106,.08);border:1px solid rgba(233,220,198,.14);color:#c9b795;padding:10px;border-radius:8px;cursor:pointer;font-family:Georgia,serif;font-size:12.5px;margin:0 0 12px;min-height:44px}
+.map-toggle:hover{background:rgba(232,201,106,.15)}
+#mapPanel{position:relative;border:1px solid rgba(233,220,198,.14);border-radius:10px;overflow:hidden;margin-bottom:14px;background:#11100c}
+#map{height:320px;background:#11100c}
+.map-hint{font-size:10px;color:#8b7d60;padding:7px 10px;text-align:center;border-top:1px solid rgba(233,220,198,.1)}
+.recenter{position:absolute;right:10px;bottom:44px;z-index:800;background:rgba(15,15,20,.92);border:1px solid rgba(232,201,106,.4);color:#e7c389;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;display:none;min-height:40px}
+.leaflet-container{font-family:Georgia,serif}
+.leaflet-tile{filter:grayscale(.25) brightness(.85) sepia(.15)}
+.stop-pin div{width:18px;height:18px;border-radius:50%;background:#2a2317;border:2px solid rgba(232,201,106,.75);box-shadow:0 0 6px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font-size:9px;color:#e7c389}
+.stop-pin.done div{border-color:rgba(157,185,138,.85);background:#1c241a;color:#9db98a}
+.stop-pin.active div{background:#e7c389;border-color:#fff;color:#10210f}
+.user-puck{pointer-events:none}
+.user-rot{position:absolute;left:-44px;top:-76px;width:88px;height:80px;transform-origin:44px 76px;transition:transform .35s ease-out;will-change:transform}
+.user-dot2{position:absolute;left:-8px;top:-8px;width:16px;height:16px;border-radius:50%;background:#7CFC8A;border:2.5px solid #fff;box-shadow:0 0 10px rgba(124,252,138,.8)}
+/* finale + share */
+#finale{display:none;background:linear-gradient(180deg,#1a1410,#0d0a08);border:1px solid rgba(232,201,106,.35);border-radius:10px;padding:18px;margin:0 0 14px;text-align:center}
+#finale p{font-size:13.5px;line-height:1.7;color:#d4c5a9;font-style:italic;margin-bottom:12px}
+#finale a{display:inline-block;background:rgba(232,201,106,.16);border:1px solid rgba(232,201,106,.4);color:#e7c389;padding:11px 22px;border-radius:6px;text-decoration:none;font-size:13px}
+.share-row{text-align:center;margin:6px 0 2px}
+.share-btn{background:none;border:1px solid rgba(233,220,198,.2);color:#8b7d60;font-family:Georgia,serif;font-size:11.5px;padding:8px 16px;border-radius:6px;cursor:pointer;min-height:40px}
+.share-btn:hover{color:#e7c389;border-color:rgba(232,201,106,.4)}
 </style>
 </head>
 <body>
@@ -82,13 +113,27 @@ a{color:#e7c389}
   <h1>Forsyth Ghost Tour</h1>
   <div class="ov-sub">Savannah Remembers · The Wilder House</div>
   <p class="ov-desc">A free, self-guided audio walk through Savannah's Historic District — 17 narrated stops from Forsyth Park north to the river. About 90 minutes on foot, best after dark. No app. No ticket. Just walk, and the stories find you.</p>
-  <button class="ov-btn" id="startGpsBtn">🚶 I'm in Savannah — guide me
+  <label class="wv-row"><input type="checkbox" id="waiverCheck"><span>One housekeeping matter before the city speaks: I have read and accept <button type="button" class="wv-link" id="waiverToggle">the terms</button> — for myself and everyone walking with me.</span></label>
+  <div class="wv-text" id="waiverText" hidden>
+    <p>The Forsyth Ghost Tour is a free, self-guided audio experience provided by The Wilder House ("the Provider"). By accepting, you agree:</p>
+    <h3>1. Assumption of Risk</h3><p>The tour takes place on public streets, sidewalks, squares, and riverfront areas the Provider does not control. Surfaces may be uneven, poorly lit, wet, or under repair — including brick sidewalks, tree roots, curbs, and the historic cobblestones and steep ramps near River Street. You voluntarily assume all risks of participation, including trips, slips, falls, and other injury.</p>
+    <h3>2. Traffic &amp; Awareness</h3><p>You are solely responsible for your own safety. Obey all traffic signals and laws, use marked crosswalks, and stay aware of vehicles, cyclists, and pedestrians. Keep audio volume low enough to hear your surroundings. Never look at your screen while crossing a street.</p>
+    <h3>3. Weather &amp; Conditions</h3><p>You are responsible for judging weather and environmental conditions (heat, storms, lightning, flooding, darkness) and for stopping the tour if conditions become unsafe.</p>
+    <h3>4. Private Property</h3><p>The tour is designed to be experienced entirely from public rights-of-way. Do not enter private property, gated areas, construction zones, or any posted or closed area. You are responsible for complying with all laws and City of Savannah ordinances.</p>
+    <h3>5. Emergencies</h3><p>In any emergency, call 911. The Provider does not monitor tour participation and cannot dispatch or provide assistance.</p>
+    <h3>6. Health</h3><p>The route covers roughly 1.5 miles over about 90 minutes. Consult your physician if you have any condition affected by walking, heat, or exertion. Carry water in warm months.</p>
+    <h3>7. Minors</h3><p>Minors must be accompanied and supervised by a parent or legal guardian at all times.</p>
+    <h3>8. Release &amp; Waiver</h3><p>To the fullest extent permitted by Georgia law, you — for yourself and on behalf of every member of your group — release, waive, and discharge the Provider, its owners, hosts, and affiliates from any and all claims, liabilities, damages, or causes of action arising out of or related to participation in the tour, including those alleging ordinary negligence.</p>
+    <h3>9. Group Authority</h3><p>By accepting, you represent that you are at least 18 years old and have the authority to accept these terms on behalf of every person in your group, including minors for whom you are parent or legal guardian.</p>
+    <h3>10. Severability &amp; Governing Law</h3><p>If any provision is held unenforceable, the remainder stays in effect. These terms are governed by the laws of the State of Georgia. This experience is provided free of charge, as-is, with no warranties of any kind.</p>
+  </div>
+  <button class="ov-btn" id="startGpsBtn" disabled>🚶 I'm in Savannah — guide me
     <small>GPS plays each story automatically as you arrive</small>
   </button>
-  <button class="ov-btn" id="startBrowseBtn">🎧 Listen from anywhere
+  <button class="ov-btn" id="startBrowseBtn" disabled>🎧 Listen from anywhere
     <small>Browse the 17 stops and play any story now</small>
   </button>
-  <p class="ov-note">Headphones recommended. Stay aware of traffic and your surroundings — the ghosts can wait for the crosswalk.</p>
+  <p class="ov-note">Headphones recommended. Stay aware of traffic and your surroundings — the ghosts can wait for the crosswalk. GPS mode keeps your screen on for the walk, so start with a good charge.</p>
 </div>
 
 <div class="wrap">
@@ -114,12 +159,27 @@ a{color:#e7c389}
     <div class="tdisp"><span id="currentTime">0:00</span> / <span id="duration">0:00</span></div>
   </div>
 
+  <div id="finale">
+    <p>Savannah remembers — and now you carry a little of it with you. If you'd like to sleep where the tour begins, The Wilder House keeps two suites, three blocks from the park.</p>
+    <a href="wilder-house-savannah-vacation-rental">See the house</a>
+  </div>
+
+  <!-- OWNER RULE: the map and directional cone ship in every version of this tour. Do not remove. -->
+  <button class="map-toggle" id="mapToggle" aria-expanded="false">🗺 Show the map</button>
+  <div id="mapPanel" hidden>
+    <div id="map" role="application" aria-label="Tour map showing your position and every stop"></div>
+    <button class="recenter" id="recenterBtn">⌖ Recenter</button>
+    <div class="map-hint" id="mapHint">Pins are stops · the green beam points the way</div>
+  </div>
+
   <div class="list-h">The Route · Forsyth Park → the River</div>
   <div id="stopList"></div>
+  <div class="share-row"><button class="share-btn" id="shareBtn">Share this tour with someone who'd walk it</button></div>
 
   <section class="about" aria-label="About the Forsyth Ghost Tour">
     <h2>A free, self-guided ghost tour of Savannah — built by locals</h2>
     <p>The Forsyth Ghost Tour is a free audio walking tour of Savannah's Historic District: 17 narrated stops that begin near Forsyth Park and end at the Savannah River. Stories of the city's remembered dead — told at the places they happened — play automatically by GPS as you walk, or on demand from anywhere. No ticket, no app, no sign-up.</p>
+    <p>Every stop includes a full written transcript alongside the narration, so the tour works for deaf and hard-of-hearing walkers too. A live map with a direction beam shows where you are and where the next story waits. One honest note: the last stretch near the river crosses historic cobblestones and a steep ramp — wheelchair users and strollers can hear those final stops from the Bay Street sidewalk above.</p>
     <p>The route runs north along Bull Street through Savannah's most storied squares — Monterey, Madison, Chippewa, Wright, Johnson — past the old Telfair Hospital, the Kessler Mansion, and the Cotton Exchange, finishing at the river where the city's memory runs deepest. It was written and built by the hosts of <a href="/">The Wilder House</a>, an 1898 home three blocks from the park, in the neighborhood where the tour begins. Planning the rest of your day? Our free <a href="savannah-by-the-hour">live Savannah planner</a> reads the weather and the hour and names the best thing to do right now. And if you want to sleep where the tour begins &mdash; <a href="wilder-house-savannah-vacation-rental">see the house</a>: two suites, private parking, three blocks from the park.</p>
 <h2>Is the Forsyth Ghost Tour really free?</h2>
 <p>Yes — completely free. No ticket, no account, no app download. It runs in your phone's browser. It was built by the hosts of The Wilder House, an 1898 vacation rental three blocks from Forsyth Park, as a gift to anyone visiting Savannah.</p>
@@ -144,6 +204,11 @@ a{color:#e7c389}
 <script>
 /* FORSYTH GHOST TOUR — guest engine (field-hardened GPS + browse-anywhere mode) */
 let state='IDLE',currentStop=null,audio=new Audio(),positionBuffer=[],lastTriggerTime=0,gpsConfidence=0,tourData=null,watchId=null,mode=null,wakeLock=null;
+/* map + compass state — OWNER RULE: the GPS map and directional cone are
+   permanent fixtures of every tour. Do not remove them in any revision. */
+let map=null,userMarker=null,pinById={},routeLine=null,leafletReady=null,follow=true,
+    compassHeading=null,lastBrg=0,beamRot=0,earlyDone={};
+const WAIVER_KEY='sgt_waiver_v1';
 const CONFIG={APPROACH_MULTIPLIER:1.8,CONFIRM_SAMPLES:6,CONFIRM_THRESHOLD:0.72,MIN_SPEED:1.5,COOLDOWN:10000,GPS_STALE_LIMIT:12000};
 const $=id=>document.getElementById(id);
 const statusEl=$('status'),stopNameEl=$('stopName'),stopDistanceEl=$('stopDistance'),narrationTextEl=$('narrationText'),errorContainerEl=$('errorContainer'),progressFillEl=$('progressFill'),currentTimeEl=$('currentTime'),durationEl=$('duration');
@@ -156,7 +221,7 @@ const IS_GUEST=new URLSearchParams(location.search).has('guest');
 let POOL=[];
 let played={};
 try{played=JSON.parse(localStorage.getItem('sgt_played')||'{}');}catch(e){}
-function markPlayed(id){played[id]=1;try{localStorage.setItem('sgt_played',JSON.stringify(played));}catch(e){}renderList();}
+function markPlayed(id){played[id]=1;try{localStorage.setItem('sgt_played',JSON.stringify(played));}catch(e){}renderList();syncPins();}
 
 function setStatus(msg,ok){statusEl.textContent=msg;statusEl.style.color=ok===false?'#ff9999':'#9db98a';}
 
@@ -175,16 +240,28 @@ async function init(){
     return;
   }
   attachAudioControls();
+  waiverInit();
   $('startGpsBtn').addEventListener('click',()=>begin('gps'));
   $('startBrowseBtn').addEventListener('click',()=>begin('browse'));
+  $('mapToggle').addEventListener('click',()=>{$('mapPanel').hidden?openMap():closeMap();});
+  $('shareBtn').addEventListener('click',shareTour);
+}
+/* waiver gate: buttons stay dark until the terms are accepted */
+function waiverInit(){
+  const chk=$('waiverCheck'),btns=[$('startGpsBtn'),$('startBrowseBtn')];
+  const sync=()=>btns.forEach(b=>b.disabled=!chk.checked);
+  try{if(localStorage.getItem(WAIVER_KEY))chk.checked=true;}catch(e){}
+  chk.addEventListener('change',sync);sync();
+  $('waiverToggle').addEventListener('click',()=>{const t=$('waiverText');t.hidden=!t.hidden;});
 }
 function begin(m){
   mode=m;
+  try{localStorage.setItem(WAIVER_KEY,new Date().toISOString());}catch(e){}
   /* unlock audio inside the user gesture (required on iOS/Android) */
   try{audio.play().catch(()=>{});audio.pause();}catch(e){}
   $('beginOverlay').style.display='none';
   requestWakeLock();
-  if(m==='gps'){startGPS();}
+  if(m==='gps'){startGPS();openMap();startCompass();/* compass permission needs this same tap */}
   else{setStatus('Browse mode — tap any stop to hear its story');stopNameEl.textContent='Pick a stop below';}
 }
 
@@ -210,12 +287,23 @@ function handlePosition(pos){
   positionBuffer.push({latitude,longitude,timestamp:now});
   if(positionBuffer.length>CONFIG.CONFIRM_SAMPLES)positionBuffer.shift();
   const avg=avgPos(positionBuffer);
+  updateUserMarker(avg.latitude,avg.longitude);
   const stop=nearestUnplayed(avg.latitude,avg.longitude)||nearestStop(avg.latitude,avg.longitude);
   if(!stop)return;
   const d=dist(avg.latitude,avg.longitude,stop.lat,stop.lng);
   const inRadius=d<stop.radius,inApproach=d<stop.radius*CONFIG.APPROACH_MULTIPLIER;
   const movingSlow=!speed||speed<CONFIG.MIN_SPEED;
-  if(state==='SEARCHING'&&inApproach&&!inRadius){state='APPROACHING';preload(stop,'on');}
+  if(state==='SEARCHING'&&inApproach&&!inRadius){
+    state='APPROACHING';preload(stop,'on');
+    /* the EARLY narration — recorded for every stop — plays once as you draw near */
+    if(!earlyDone[stop.id]&&!played[stop.id]&&audio.paused){
+      earlyDone[stop.id]=1;
+      $('nowLabel').textContent='Approaching';
+      stopNameEl.textContent=stop.name;
+      narrationTextEl.textContent=stop.early_arrival||'';
+      playFile(stop,'early');
+    }
+  }
   if((state==='SEARCHING'||state==='APPROACHING')&&inRadius){
     gpsConfidence=confidence(positionBuffer,stop);
     if(gpsConfidence>CONFIG.CONFIRM_THRESHOLD&&movingSlow){trigger(stop);return;}
@@ -224,10 +312,11 @@ function handlePosition(pos){
 }
 function guide(stop,d,from){
   stopNameEl.textContent=stop.name;
-  const b=bearing(from.latitude,from.longitude,stop.lat,stop.lng);
-  stopDistanceEl.textContent=Math.round(d)+' m — head '+b;
+  lastBrg=bearingDeg(from.latitude,from.longitude,stop.lat,stop.lng);
+  stopDistanceEl.textContent=Math.round(d)+' m — head '+cardinal(lastBrg);
   $('nowLabel').textContent='Next stop · '+stop.disp+' of '+(IS_GUEST?POOL.length-1+' +★':POOL.length);
   setStatus('Guiding you — audio starts by itself when you arrive');
+  updateBeam();
 }
 function trigger(stop){
   const now=Date.now();
@@ -236,6 +325,7 @@ function trigger(stop){
   $('nowLabel').textContent=(stop.order===1?'Guest prologue':'Stop '+stop.disp+' of '+(IS_GUEST?POOL.length-1:POOL.length));
   stopNameEl.textContent=stop.name;stopDistanceEl.textContent='You are here.';
   narrationTextEl.textContent=stop.on_time||'';
+  syncPins();
   playFile(stop,'on');
 }
 
@@ -246,7 +336,10 @@ function playFile(stop,which){
   audio.src='/audio/'+f;audio.preload='auto';
   audio.play().then(()=>{errorContainerEl.innerHTML='';}).catch(()=>{showError('Tap ▶ Play to start the story.');});
   audio.onended=()=>{
+    /* only the full ON story completes a stop — EARLY teasers never mark progress */
+    if(which!=='on'){if(mode==='gps'){state='SEARCHING';setStatus('Almost there — the story begins when you arrive');}return;}
     markPlayed(stop.id);
+    if(stop.id===POOL[POOL.length-1].id)showFinale();
     if(mode==='gps'){state='COOLDOWN';setStatus('Story finished — walk on to the next stop');setTimeout(()=>{state='SEARCHING';positionBuffer=[];},CONFIG.COOLDOWN);}
     else setStatus('Story finished — pick another stop');
   };
@@ -265,15 +358,18 @@ function renderList(){
   const el=$('stopList');if(!el||!tourData)return;
   el.innerHTML=POOL.map(s=>`<div class="stop-row${played[s.id]?' done':''}${currentStop&&currentStop.id===s.id?' active':''}" data-id="${s.id}" role="button" tabindex="0" aria-label="Play ${s.order===1?'guest prologue':'stop '+s.disp}: ${s.name}"><span class="num">${played[s.id]?'✓':s.disp}</span><span class="sn">${s.name}${s.order===1?' · guests of the house':''}</span><span class="play-ic">▶</span></div>`).join('');
 }
-document.addEventListener('click',e=>{
-  const row=e.target.closest('.stop-row');if(!row||!tourData)return;
-  const stop=POOL.find(s=>String(s.id)===row.dataset.id);if(!stop)return;
+function selectStop(stop){
   currentStop=stop;
   $('nowLabel').textContent=(stop.order===1?'Guest prologue':'Stop '+stop.disp+' of '+(IS_GUEST?POOL.length-1:POOL.length));
   stopNameEl.textContent=stop.name;stopDistanceEl.textContent='';
   narrationTextEl.textContent=stop.on_time||'';
-  renderList();
+  renderList();syncPins();
   playFile(stop,'on');
+}
+document.addEventListener('click',e=>{
+  const row=e.target.closest('.stop-row');if(!row||!tourData)return;
+  const stop=POOL.find(s=>String(s.id)===row.dataset.id);if(!stop)return;
+  selectStop(stop);
 });
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter'&&e.key!==' ')return;
@@ -287,9 +383,121 @@ function nearestStop(lat,lng){let n=null,m=Infinity;POOL.forEach(s=>{const d=dis
 function nearestUnplayed(lat,lng){let n=null,m=Infinity;POOL.forEach(s=>{if(played[s.id])return;const d=dist(lat,lng,s.lat,s.lng);if(d<m){m=d;n=s;}});return n;}
 function confidence(buf,stop){let k=0;for(const p of buf){if(dist(p.latitude,p.longitude,stop.lat,stop.lng)<stop.radius)k++;}return k/buf.length;}
 function dist(a,b,c,d){const R=6371e3,r=x=>x*Math.PI/180;const dp=r(c-a),dl=r(d-b);const s=Math.sin(dp/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));}
-function bearing(a,b,c,d){const r=x=>x*Math.PI/180;const y=Math.sin(r(d-b))*Math.cos(r(c));const x=Math.cos(r(a))*Math.sin(r(c))-Math.sin(r(a))*Math.cos(r(c))*Math.cos(r(d-b));const deg=(Math.atan2(y,x)*180/Math.PI+360)%360;return['north','northeast','east','southeast','south','southwest','west','northwest'][Math.round(deg/45)%8];}
+function bearingDeg(a,b,c,d){const r=x=>x*Math.PI/180;const y=Math.sin(r(d-b))*Math.cos(r(c));const x=Math.cos(r(a))*Math.sin(r(c))-Math.sin(r(a))*Math.cos(r(c))*Math.cos(r(d-b));return(Math.atan2(y,x)*180/Math.PI+360)%360;}
+function cardinal(deg){return['north','northeast','east','southeast','south','southwest','west','northwest'][Math.round(deg/45)%8];}
 function fmt(s){if(!s||isNaN(s))return'0:00';const m=Math.floor(s/60),x=Math.floor(s%60);return m+':'+(x<10?'0':'')+x;}
 function showError(msg){errorContainerEl.innerHTML='<div class="error-message">'+msg+'</div>';}
+
+/* ---------- map + directional cone ----------
+   OWNER RULE: the GPS map and directional cone are permanent fixtures of
+   every tour. Do not remove them in any future revision.
+   Ported from the original implementation (commit a431483): north-up map,
+   user puck with a flashlight cone that shows facing direction via compass,
+   falling back to the bearing of the next stop when no compass exists.
+   Tiles must stay on {s}.tile.openstreetmap.org — the live CSP allows that
+   wildcard and blocks other providers. */
+function loadLeaflet(){
+  if(leafletReady)return leafletReady;
+  leafletReady=new Promise((res,rej)=>{
+    const css=document.createElement('link');css.rel='stylesheet';
+    css.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+    document.head.appendChild(css);
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+    s.onload=res;s.onerror=()=>{leafletReady=null;rej();};
+    document.head.appendChild(s);
+  });
+  return leafletReady;
+}
+async function openMap(){
+  try{await loadLeaflet();}catch(e){setStatus('Map couldn’t load — distance guidance still works',false);return;}
+  $('mapPanel').hidden=false;
+  $('mapToggle').textContent='Hide the map';
+  $('mapToggle').setAttribute('aria-expanded','true');
+  if(!map)initMap();else setTimeout(()=>map.invalidateSize(),60);
+}
+function closeMap(){
+  $('mapPanel').hidden=true;
+  $('mapToggle').textContent='🗺 Show the map';
+  $('mapToggle').setAttribute('aria-expanded','false');
+}
+function initMap(){
+  const start=POOL[0]||{lat:32.0687,lng:-81.0949};
+  map=L.map('map',{zoomControl:false}).setView([start.lat,start.lng],15);
+  L.control.zoom({position:'topright'}).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors',maxZoom:19,subdomains:'abc'}).addTo(map);
+  map.attributionControl.setPrefix(false);
+  routeLine=L.polyline(POOL.map(s=>[s.lat,s.lng]),{color:'#c9a876',weight:3,opacity:.35,dashArray:'6,7'}).addTo(map);
+  POOL.forEach(s=>{
+    const m=L.marker([s.lat,s.lng],{icon:pinIcon(s),keyboard:false}).addTo(map);
+    m.bindTooltip((s.order===1?'★ ':s.disp+' · ')+s.name,{direction:'top',offset:[0,-12]});
+    m.on('click',()=>selectStop(s));
+    pinById[s.id]=m;
+  });
+  map.on('dragstart',()=>{follow=false;$('recenterBtn').style.display='block';});
+  $('recenterBtn').addEventListener('click',()=>{follow=true;$('recenterBtn').style.display='none';if(userMarker)map.panTo(userMarker.getLatLng());});
+}
+function pinIcon(s){
+  const cls='stop-pin'+(played[s.id]?' done':'')+(currentStop&&currentStop.id===s.id?' active':'');
+  return L.divIcon({className:cls,html:'<div>'+(played[s.id]?'✓':(s.order===1?'★':s.disp))+'</div>',iconSize:[22,22],iconAnchor:[11,11]});
+}
+function syncPins(){if(!map)return;POOL.forEach(s=>{const m=pinById[s.id];if(m)m.setIcon(pinIcon(s));});}
+function updateUserMarker(lat,lng){
+  if(!map)return;
+  if(!userMarker){
+    const html='<div class="user-rot" id="userRot" aria-hidden="true">'+
+      '<svg width="88" height="80" viewBox="0 0 88 80"><defs><radialGradient id="beamGrad" cx="50%" cy="100%" r="100%">'+
+      '<stop offset="0%" stop-color="#7CFC8A" stop-opacity="0.9"/><stop offset="55%" stop-color="#66bb6a" stop-opacity="0.45"/>'+
+      '<stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/></radialGradient></defs>'+
+      '<path d="M44 76 L8 10 A40 40 0 0 1 80 10 Z" fill="url(#beamGrad)"/></svg></div>'+
+      '<div class="user-dot2"></div>';
+    userMarker=L.marker([lat,lng],{icon:L.divIcon({className:'user-puck',html:html,iconSize:[0,0],iconAnchor:[0,0]}),interactive:false,keyboard:false,zIndexOffset:1000}).addTo(map);
+    map.setView([lat,lng],16);
+  }else{
+    userMarker.setLatLng([lat,lng]);
+    if(follow)map.panTo([lat,lng]);
+  }
+  updateBeam();
+}
+/* rotate by the shortest angular delta so crossing north never spins the long way */
+function setUserCone(deg){
+  const el=document.getElementById('userRot');if(!el)return;
+  let d=((deg-beamRot)%360+540)%360-180;
+  beamRot+=d;
+  el.style.transform='rotate('+beamRot+'deg)';
+}
+function updateBeam(){setUserCone(compassHeading!=null?compassHeading:lastBrg);}
+function startCompass(){
+  /* runs inside the begin tap — iOS requires the permission request in a gesture */
+  const attach=()=>{
+    const onOrient=e=>{
+      let h=null;
+      if(typeof e.webkitCompassHeading==='number')h=e.webkitCompassHeading; /* iOS: true north, CW */
+      else if(e.absolute===true&&typeof e.alpha==='number')h=(360-e.alpha)%360; /* Android absolute */
+      if(h==null||isNaN(h))return;
+      compassHeading=((h%360)+360)%360;
+      updateBeam();
+      const hint=$('mapHint');if(hint)hint.textContent='Compass on — the beam shows where you’re facing';
+    };
+    window.addEventListener('deviceorientationabsolute',onOrient,true);
+    window.addEventListener('deviceorientation',onOrient,true);
+  };
+  try{
+    if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission().then(st=>{if(st==='granted')attach();}).catch(()=>{});
+    }else attach();
+  }catch(e){}
+}
+
+/* ---------- finale + share ---------- */
+function showFinale(){$('finale').style.display='block';}
+function shareTour(){
+  const data={title:'Forsyth Ghost Tour — Free Self-Guided Savannah Audio Walk',
+    text:'A free self-guided ghost tour of Savannah — 17 narrated stops from Forsyth Park to the river. No app, no ticket.',
+    url:'https://forsythparkvacationrentals.com/savannah-ghost-tour'};
+  if(navigator.share){navigator.share(data).catch(()=>{});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(data.url).then(()=>setStatus('Link copied — pass the walk along'));}
+}
 
 window.addEventListener('load',init);
 window.addEventListener('beforeunload',()=>{if(watchId!==null)navigator.geolocation.clearWatch(watchId);});
