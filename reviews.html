@@ -48,14 +48,15 @@
 {"@context":"https://schema.org","@type":"LodgingBusiness","name":"The Wilder House — Forsyth Park Vacation Rentals","url":"https://forsythparkvacationrentals.com/reviews","image":"https://forsythparkvacationrentals.com/wilder-house-forsyth-park-savannah-vacation-rental.jpg","telephone":"+19122317502","priceRange":"From $195 per night","address":{"@type":"PostalAddress","streetAddress":"314-316 East Park Avenue","addressLocality":"Savannah","addressRegion":"GA","postalCode":"31401","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":"32.063892","longitude":"-81.093253"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.97","bestRating":"5","worstRating":"1","ratingCount":"238","reviewCount":"238"},"review":[{"@type":"Review","author":{"@type":"Person","name":"Paula"},"datePublished":"2025-10-27","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"You have a beautiful home — it is the best and our favorite of all the Airbnb we have stayed in. Five stars."},{"@type":"Review","author":{"@type":"Person","name":"Nick"},"datePublished":"2025-04-07","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Beautiful home with everything we needed. Great location — very walkable! We will definitely be staying here for our next trip to Savannah."},{"@type":"Review","author":{"@type":"Person","name":"Jim"},"datePublished":"2024-05-05","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Perfect hosts! Perfect place! Clean, comfortable, and the small details are a huge deal for guests. Loved the fresh flowers, coffee, and picnic basket. The Smart TVs were a huge bonus. Thanks!"},{"@type":"Review","author":{"@type":"Person","name":"Jacob"},"datePublished":"2023-04-16","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Loved the home and it was the most comfortable. The hydrangeas and hand-written note were a nice touch and very welcoming."},{"@type":"Review","author":{"@type":"Person","name":"The Dickersons & The Shisslers"},"datePublished":"2023-07-23","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Awesome place! Everything we needed and wanted — and such great taste! We will definitely recommend your place."},{"@type":"Review","author":{"@type":"Person","name":"Shelby"},"datePublished":"2023-10-11","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Amazing home. Beautiful place with super comfy beds. Clean! Thank you for hosting us. We want to come back again soon!"}]}
 </script>
 
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,700;1,400&display=optional" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,700;1,400&display=optional"></noscript>
 
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:400 500;font-display:optional;src:url(fonts/cormorant-garamond-latin.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:400;font-display:optional;src:url(fonts/cormorant-garamond-italic-latin.woff2) format('woff2')}
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:300 700;font-display:optional;src:url(fonts/dm-sans-latin.woff2) format('woff2')}
+@font-face{font-family:'DM Sans';font-style:italic;font-weight:400;font-display:optional;src:url(fonts/dm-sans-italic-latin.woff2) format('woff2')}
+
 :root{--g:#2a3c30;--g2:#3d5444;--gold:#c2a032;--gol:#e8c96a;--cr:#faf9f7;--cd:#f0ede7;--tx:#2e2e2e;--wh:#ffffff}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -130,7 +131,7 @@ nav{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.97);backdrop
 .rv-author{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--g);margin-bottom:6px;margin-top:0}
 .rv-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:.65rem}
 .rv-suite{background:rgba(42,60,48,.08);padding:4px 10px;border-radius:2px;font-weight:600;color:var(--g)}
-.rv-date{color:#999;font-weight:600}
+.rv-date{color:#6b6b6b;font-weight:600}
 .rv-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid rgba(42,60,48,.06)}
 .rv-tag{font-size:.62rem;background:rgba(194,160,50,.1);color:var(--g);padding:3px 8px;border-radius:2px;font-weight:600}
 
