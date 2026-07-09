@@ -162,12 +162,15 @@ export default {
       const ok = (obj, age) => new Response(JSON.stringify(obj), {
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 300) }
       });
-      if (!env.TICKETMASTER_KEY) return ok({ events: [], source: 'unconfigured' }, 300);
+      // trim(): secrets piped in from Windows PowerShell can carry a trailing CR/LF,
+      // which silently corrupts the apikey param upstream.
+      const tmKey = (env.TICKETMASTER_KEY || '').trim();
+      if (!tmKey) return ok({ events: [], source: 'unconfigured' }, 300);
       try {
-        const api = 'https://app.ticketmaster.com/discovery/v2/events.json?city=Savannah&stateCode=GA&radius=20&unit=miles&size=25&sort=date,asc&apikey=' + env.TICKETMASTER_KEY;
+        const api = 'https://app.ticketmaster.com/discovery/v2/events.json?city=Savannah&stateCode=GA&radius=20&unit=miles&size=25&sort=date,asc&apikey=' + tmKey;
         // Ticketmaster rejects UA-less requests (Workers fetch sends no User-Agent by default)
         const r = await fetch(api, { headers: { 'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)', 'Accept': 'application/json' } });
-        if (!r.ok) return ok({ events: [], source: 'error' }, 300);
+        if (!r.ok) return ok({ events: [], source: 'error', status: r.status }, 300);
         const d = await r.json();
         const raw = (d && d._embedded && d._embedded.events) || [];
         const events = raw.map(function (e) {
