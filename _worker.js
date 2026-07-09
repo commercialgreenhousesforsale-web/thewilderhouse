@@ -165,7 +165,8 @@ export default {
       if (!env.TICKETMASTER_KEY) return ok({ events: [], source: 'unconfigured' }, 300);
       try {
         const api = 'https://app.ticketmaster.com/discovery/v2/events.json?city=Savannah&stateCode=GA&radius=20&unit=miles&size=25&sort=date,asc&apikey=' + env.TICKETMASTER_KEY;
-        const r = await fetch(api);
+        // Ticketmaster rejects UA-less requests (Workers fetch sends no User-Agent by default)
+        const r = await fetch(api, { headers: { 'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)', 'Accept': 'application/json' } });
         if (!r.ok) return ok({ events: [], source: 'error' }, 300);
         const d = await r.json();
         const raw = (d && d._embedded && d._embedded.events) || [];
