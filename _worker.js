@@ -155,6 +155,31 @@ export default {
       }
     }
 
+    if (url.pathname === '/geo-proxy') {
+      // Same-origin geocoder for the free-transit trip planner (typed addresses).
+      // Proxies OpenStreetMap Nominatim, bounded to the Savannah area, so the
+      // browser never calls an external host (live CSP would block it).
+      const q = (url.searchParams.get('q') || '').toString().slice(0, 120);
+      const ok = (obj, age) => new Response(JSON.stringify(obj), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 86400) }
+      });
+      if (!q) return ok({ results: [] }, 300);
+      try {
+        // viewbox = Savannah/Chatham; bounded=1 keeps results local.
+        const api = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=3&bounded=1'
+          + '&viewbox=-81.30,32.15,-80.80,31.90&q=' + encodeURIComponent(q + ' Savannah GA');
+        const r = await fetch(api, { headers: { 'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)', 'Accept': 'application/json' } });
+        if (!r.ok) return ok({ results: [] }, 300);
+        const d = await r.json();
+        const results = (Array.isArray(d) ? d : []).map(function (x) {
+          return { name: x.display_name || '', lat: parseFloat(x.lat), lng: parseFloat(x.lon) };
+        }).filter(function (x) { return !isNaN(x.lat) && !isNaN(x.lng); });
+        return ok({ results: results }, 86400);
+      } catch (e) {
+        return ok({ results: [] }, 300);
+      }
+    }
+
     if (url.pathname === '/alerts-proxy') {
       // Active NWS weather alerts for Savannah (heat advisories, severe storms,
       // tropical systems, rip currents). The day planner shifts its scoring and

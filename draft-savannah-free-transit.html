@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Free Savannah Shuttle &amp; Ferry — How to Get Around Free</title>
+<meta name="description" content="Get around Savannah for free. A simple map and trip planner for the free dot shuttle and Savannah Belles Ferry — pick where you're going and see the closest stop, which loop, and when to get off.">
+<link rel="canonical" href="https://forsythparkvacationrentals.com/savannah-free-shuttle-ferry"/>
+<meta property="og:title" content="Get Around Savannah Free — the dot Shuttle &amp; Belles Ferry"/>
+<meta property="og:description" content="A simple map + trip planner for Savannah's free shuttle and ferry. Where are you going? See the closest stop, which loop, and when to get off."/>
+<meta property="og:url" content="https://forsythparkvacationrentals.com/savannah-free-shuttle-ferry"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://forsythparkvacationrentals.com/wilder-house-forsyth-park-savannah-vacation-rental.jpg"/>
+<meta property="og:site_name" content="The Wilder House | Forsyth Park Vacation Rentals"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Get Around Savannah Free — Shuttle &amp; Ferry Map"/>
+<meta name="twitter:description" content="Free dot shuttle + Belles Ferry, made simple. Pick your destination, get the closest stop and when to get off."/>
+<meta name="twitter:image" content="https://forsythparkvacationrentals.com/wilder-house-forsyth-park-savannah-vacation-rental.jpg"/>
+<meta name="robots" content="noindex, nofollow"><!-- DRAFT: flip to index,follow on approval + rename to savannah-free-shuttle-ferry.html -->
+<meta name="theme-color" content="#0a0805">
+<meta name="geo.region" content="US-GA"><meta name="geo.placename" content="Savannah, Georgia">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,serif;background:#0a0805;color:#e9dcc6;-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:#e7c389}
+.wrap{max-width:680px;margin:0 auto;padding:0 14px 48px}
+.header{padding:20px 0 10px;text-align:center;border-bottom:1px solid rgba(233,220,198,.12)}
+.header .brand{font-size:11px;color:#8b7d60;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;margin-bottom:8px}
+.header h1{font-size:clamp(23px,5vw,30px);color:#e7c389;font-weight:400;line-height:1.2}
+.header .sub{font-size:13px;color:#b7a888;margin-top:8px;max-width:520px;margin-left:auto;margin-right:auto}
+.free-pill{display:inline-block;background:rgba(90,160,42,.16);border:1px solid rgba(90,160,42,.5);color:#9db98a;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-top:10px}
+.status{font-size:12.5px;text-align:center;margin:12px 0 4px;color:#9db98a;min-height:18px}
+.status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#9db98a;margin-right:5px;vertical-align:middle}
+.status.closed{color:#c98a6a}.status.closed .dot{background:#c98a6a}
+/* planner */
+.planner{background:linear-gradient(180deg,#1a1410,#0d0a08);border:1px solid rgba(233,220,198,.14);border-radius:12px;padding:16px;margin:16px 0}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;color:#8b7d60;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.pt-row{display:flex;gap:8px}
+.pt-row select,.pt-row input{flex:1;min-width:0;background:rgba(0,0,0,.4);border:1px solid rgba(233,220,198,.2);color:#e9dcc6;padding:11px 10px;border-radius:7px;font-family:Georgia,serif;font-size:14px}
+.pt-row input::placeholder{color:#6b604a}
+.pt-btn{background:rgba(232,201,106,.14);border:1px solid rgba(232,201,106,.4);color:#e7c389;border-radius:7px;padding:0 12px;font-size:12px;cursor:pointer;white-space:nowrap;min-height:44px}
+.pt-btn:hover{background:rgba(232,201,106,.24)}
+.go-btn{width:100%;background:rgba(90,160,42,.22);border:1.5px solid rgba(90,160,42,.6);color:#b6d99a;padding:13px;border-radius:8px;font-family:Georgia,serif;font-size:15px;cursor:pointer;min-height:48px;margin-top:4px}
+.go-btn:hover{background:rgba(90,160,42,.32)}
+.swapb{background:none;border:1px solid rgba(233,220,198,.2);color:#b7a888;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;margin:2px 0 8px}
+.geo-opts{position:relative}
+.geo-list{position:absolute;left:0;right:0;top:100%;z-index:20;background:#171208;border:1px solid rgba(233,220,198,.25);border-radius:0 0 8px 8px;max-height:180px;overflow-y:auto;display:none}
+.geo-list div{padding:9px 10px;font-size:12.5px;cursor:pointer;border-bottom:1px solid rgba(233,220,198,.08)}
+.geo-list div:hover{background:rgba(232,201,106,.12)}
+/* result */
+#result{margin:16px 0}
+.rcard{background:linear-gradient(180deg,#17140f,#0c0a07);border:1px solid rgba(232,201,106,.3);border-radius:12px;padding:16px;margin-bottom:12px}
+.rcard.walk{border-color:rgba(157,185,138,.4)}
+.rcard.drive{border-color:rgba(201,138,106,.45)}
+.rverdict{font-size:18px;color:#e7c389;margin-bottom:4px}
+.rsum{font-size:13px;color:#b7a888;margin-bottom:12px}
+.leg{display:flex;gap:11px;padding:9px 0;border-top:1px solid rgba(233,220,198,.08)}
+.leg:first-of-type{border-top:none}
+.leg .ic{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(233,220,198,.08)}
+.leg.ride .ic{background:rgba(90,160,42,.2)}
+.leg.ferry .ic{background:rgba(42,160,160,.2)}
+.leg .lt{font-size:13.5px;color:#e9dcc6}
+.leg .ls{font-size:11.5px;color:#8b7d60;margin-top:2px}
+.rtip{font-size:11.5px;color:#8b7d60;margin-top:10px;font-style:italic}
+/* map */
+#mapPanel{border:1px solid rgba(233,220,198,.14);border-radius:12px;overflow:hidden;margin:6px 0 16px;position:relative}
+#map{height:340px;background:#11100c;position:relative}
+#map .leaflet-tile{filter:grayscale(1) invert(1) brightness(.82) contrast(1.12) sepia(.42)!important}
+#map::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:550;background:radial-gradient(ellipse at center,transparent 55%,rgba(6,4,2,.5) 100%)}
+.leaflet-container{font-family:Georgia,serif;background:#11100c}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:#b7a888;padding:8px 4px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
+.tstop{width:11px;height:11px;border-radius:50%;border:2px solid #fff;box-sizing:border-box}
+/* prose */
+.prose{margin-top:26px}
+.prose h2{font-size:19px;color:#e7c389;font-weight:400;margin:22px 0 8px}
+.prose h3{font-size:15px;color:#d9c9a6;font-weight:400;margin:16px 0 4px}
+.prose p{font-size:14px;color:#cdbf9f;margin-bottom:10px}
+.prose ul{margin:0 0 10px 18px}.prose li{font-size:14px;color:#cdbf9f;margin-bottom:5px}
+.foot{margin-top:30px;padding-top:18px;border-top:1px solid rgba(233,220,198,.12);text-align:center;font-size:12px;color:#6b604a;line-height:1.7}
+.foot a{color:#8b7d60}
+.home-note{background:rgba(232,201,106,.06);border:1px solid rgba(232,201,106,.2);border-radius:10px;padding:12px 14px;font-size:13px;color:#cdbf9f;margin:16px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <a class="brand" href="/">The Wilder House · Savannah</a>
+    <h1>Get Around Savannah for Free</h1>
+    <p class="sub">Savannah runs a free shuttle and a free river ferry that most visitors never figure out. Tell it where you're headed — it finds the closest stop, the right loop, and when to get off.</p>
+    <span class="free-pill">Always free · no ticket, no app</span>
+    <div class="status" id="svcStatus"><span class="dot"></span>Checking service hours…</div>
+  </div>
+
+  <div class="planner">
+    <div class="field geo-opts">
+      <label>Starting from</label>
+      <div class="pt-row">
+        <select id="fromSel"><option value="">— pick a place —</option></select>
+        <button class="pt-btn" id="fromGps" type="button">📍 Me</button>
+      </div>
+      <div class="pt-row" style="margin-top:6px"><input id="fromAddr" type="text" placeholder="…or type an address / landmark" autocomplete="off"></div>
+      <div class="geo-list" id="fromList"></div>
+    </div>
+    <button class="swapb" id="swapBtn" type="button">⇅ swap</button>
+    <div class="field geo-opts">
+      <label>Going to</label>
+      <div class="pt-row">
+        <select id="toSel"><option value="">— pick a place —</option></select>
+      </div>
+      <div class="pt-row" style="margin-top:6px"><input id="toAddr" type="text" placeholder="…or type an address / landmark" autocomplete="off"></div>
+      <div class="geo-list" id="toList"></div>
+    </div>
+    <button class="go-btn" id="goBtn" type="button">Find the free way there →</button>
+  </div>
+
+  <div id="result"></div>
+
+  <div id="mapPanel">
+    <div id="map" role="application" aria-label="Map of Savannah's free shuttle loops and ferry"></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:#5aa02a"></i> Forsyth loop</span>
+    <span><i style="background:#c9821f"></i> Downtown loop</span>
+    <span><i style="background:#2aa0a0"></i> Belles Ferry</span>
+    <span><i class="tstop" style="width:11px;height:11px;background:#2a2317;border-color:#e7c389"></i> stop</span>
+  </div>
+
+  <div class="prose">
+    <h2>Savannah's two free rides, in plain English</h2>
+    <p>The city's free transit is run by Chatham Area Transit and it comes in two parts. Neither one costs a cent, and you never need a ticket or an app to ride.</p>
+    <h3>🚌 The dot shuttle — two loops through the Historic District</h3>
+    <p>Small buses run two loops, about every 10 minutes. The <strong>Forsyth loop</strong> runs up Drayton Street and down Whitaker, connecting Forsyth Park with the squares and City Market. The <strong>Downtown loop</strong> circles the upper Historic District — Congress, Liberty, City Market — out to Eastern Wharf on the river. They meet near Liberty Street, so you can transfer between them.</p>
+    <p><strong>Hours:</strong> Monday–Friday 7am–7pm, Saturday &amp; Sunday 10am–6pm (lighter hours on some holidays; closed Thanksgiving, Christmas, and New Year's Day).</p>
+    <h3>⛴ The Savannah Belles Ferry — across the river, free</h3>
+    <p>Four little ferries — each named for a famous Savannah woman — cross the Savannah River between River Street and Hutchinson Island every 10 minutes, from 7am to 10pm, every day. Landings: <strong>City Hall</strong> and <strong>Waving Girl</strong> on the River Street side, and the <strong>Convention Center</strong> (by the Westin) on Hutchinson Island. It takes bikes, luggage, and leashed dogs — and the ride is a genuinely lovely (free) view of the waterfront.</p>
+    <h2>When the free ride is worth it — and when to just walk</h2>
+    <p>Honest truth: the Historic District is small and made for walking, and most of the squares are a 5–10 minute stroll apart. The free shuttle earns its keep when it's <strong>hot</strong>, when it's <strong>raining</strong>, when feet are tired, or for the longer hops — Forsyth Park up to River Street, or anything out to Eastern Wharf. The ferry is the easy way to the Convention Center and hotels on Hutchinson Island (and a fun little cruise for free). This planner will tell you honestly when walking is just as fast.</p>
+    <h2>Getting to Tybee, Bonaventure &amp; Wormsloe</h2>
+    <p>The free shuttle stays downtown — it does not reach Tybee Island, Bonaventure Cemetery, Wormsloe, or Skidaway. Those need a car or rideshare. (For River Street from the Forsyth Park area, though, the free shuttle is perfect.)</p>
+  </div>
+
+  <div class="home-note" id="homeNote">
+    Staying at <a href="/">The Wilder House</a>? You're about three blocks from a Forsyth-loop stop — an easy free ride to River Street, the squares, and the ferry. Set your starting point to <em>The Wilder House</em> above to see it.
+  </div>
+
+  <div class="foot">
+    Built as a free guide by <a href="/">The Wilder House</a> — two 1898 suites three blocks from Forsyth Park.<br>
+    Routes &amp; stops from Chatham Area Transit. Always confirm current hours at <a href="https://catchacat.org" target="_blank" rel="noopener">catchacat.org</a> before you rely on the last ride.
+  </div>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is Savannah's dot shuttle really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. The dot Express Shuttle is a zero-fare service from Chatham Area Transit — no ticket, no app, no charge. It runs two loops through the Historic District about every 10 minutes, Monday to Friday 7am to 7pm and weekends 10am to 6pm."}},
+{"@type":"Question","name":"How much is the Savannah Belles Ferry?","acceptedAnswer":{"@type":"Answer","text":"The Savannah Belles Ferry is completely free. It crosses the Savannah River between River Street (City Hall and Waving Girl landings) and Hutchinson Island (Convention Center landing) every 10 minutes, 7am to 10pm, every day."}},
+{"@type":"Question","name":"Does the free shuttle go to Tybee Island or Bonaventure Cemetery?","acceptedAnswer":{"@type":"Answer","text":"No. The free dot shuttle stays within downtown Savannah's Historic District. Tybee Island, Bonaventure Cemetery, Wormsloe, and Skidaway Island require a car or rideshare."}},
+{"@type":"Question","name":"How do I get from Forsyth Park to River Street for free?","acceptedAnswer":{"@type":"Answer","text":"Take the free dot Forsyth loop north toward the squares and City Market, near the River Street area — it runs up Drayton Street about every 10 minutes. It's one of the best uses of the free shuttle, especially in heat or rain."}}
+]}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ── SAVANNAH FREE TRANSIT PLANNER ───────────────────────────────────────
+   Data: /data/savannah-free-transit.json (built from CAT GTFS). Routing is
+   done entirely in-browser from the bundled loops — no live API, CSP-safe.
+   Typed addresses geocode through the same-origin /geo-proxy Worker.        */
+const $=id=>document.getElementById(id);
+let DATA=null,map=null,fromPt=null,toPt=null,routeLayer=null;
+const WALK_MPH=2.9, RIDE_MIN_PER_STOP=1.6;
+
+fetch('/data/savannah-free-transit.json?v='+Date.now()).then(r=>r.json()).then(d=>{DATA=d;boot();})
+  .catch(()=>{$('result').innerHTML='<div class="rcard">Could not load the transit data. Refresh to try again.</div>';});
+
+function boot(){
+  // fill destination dropdowns
+  const opts=DATA.destinations.map(d=>`<option value="${d.name}">${d.name}${d.drive?' (drive)':''}</option>`).join('');
+  $('fromSel').innerHTML+=opts;$('toSel').innerHTML+=opts;
+  renderStatus();initMap();
+  $('fromSel').addEventListener('change',e=>{const d=DATA.destinations.find(x=>x.name===e.target.value);if(d){fromPt={...d,label:d.name};$('fromAddr').value='';}});
+  $('toSel').addEventListener('change',e=>{const d=DATA.destinations.find(x=>x.name===e.target.value);if(d){toPt={...d,label:d.name};$('toAddr').value='';}});
+  $('fromGps').addEventListener('click',useLoc);
+  $('goBtn').addEventListener('click',plan);
+  $('swapBtn').addEventListener('click',()=>{const a=fromPt;fromPt=toPt;toPt=a;
+    $('fromSel').value=fromPt&&!fromPt.typed?(fromPt.label||''):'';$('toSel').value=toPt&&!toPt.typed?(toPt.label||''):'';
+    $('fromAddr').value=fromPt&&fromPt.typed?fromPt.label:'';$('toAddr').value=toPt&&toPt.typed?toPt.label:'';
+    if(fromPt&&toPt)plan();});
+  bindGeocode('fromAddr','fromList',p=>{fromPt=p;$('fromSel').value='';});
+  bindGeocode('toAddr','toList',p=>{toPt=p;$('toSel').value='';});
+}
+
+/* ── service status ── */
+function nowH(){const d=new Date();return d.getHours()+d.getMinutes()/60;}
+function renderStatus(){
+  const el=$('svcStatus');const day=new Date().getDay();const h=nowH();
+  const sh=DATA.schedule.shuttle;const win=day===0?sh.sunday:day===6?sh.saturday:sh.weekday;
+  const fw=DATA.schedule.ferry.daily;
+  const busOn=h>=win[0]&&h<win[1];const ferryOn=h>=fw[0]&&h<fw[1];
+  const fmt=x=>{const hh=Math.floor(x)%12||12;return hh+(x>=12?'pm':'am');};
+  if(busOn||ferryOn){el.className='status';
+    el.innerHTML=`<span class="dot"></span>Running now · shuttle ${busOn?'til '+fmt(win[1]):'closed'} · ferry ${ferryOn?'til '+fmt(fw[1]):'closed'} · about every 10 min`;}
+  else{el.className='status closed';
+    el.innerHTML=`<span class="dot"></span>Not running right now · shuttle ${fmt(win[0])}–${fmt(win[1])} · ferry ${fmt(fw[0])}–${fmt(fw[1])}`;}
+}
+
+/* ── geo helpers ── */
+function hav(a,b,c,d){const R=3958.8,tr=x=>x*Math.PI/180,dla=tr(c-a),dlo=tr(d-b);
+  const s=Math.sin(dla/2)**2+Math.cos(tr(a))*Math.cos(tr(c))*Math.sin(dlo/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
+function walkMin(mi){return Math.max(1,Math.round(mi/WALK_MPH*60));}
+function allStops(){const a=[];for(const k in DATA.loops)DATA.loops[k].stops.forEach((s,i)=>a.push({...s,loop:k,idx:i}));return a;}
+function nearestOn(pt,loopKey){let best=null;DATA.loops[loopKey].stops.forEach((s,i)=>{const mi=hav(pt.lat,pt.lng,s.lat,s.lng);if(!best||mi<best.mi)best={stop:s,idx:i,mi};});return best;}
+function rideStops(loopKey,i,j){const n=DATA.loops[loopKey].stops.length;return (j-i+n)%n;}
+const HW=()=>DATA.schedule.shuttle.headwayMin/2;
+/* On a LOOP the nearest stop can be heading the wrong way — so pick the
+   board+alight pair that minimizes total time (walk + wait + ride + walk). */
+function bestPair(loopKey,from,to){
+  const stops=DATA.loops[loopKey].stops,n=stops.length;let best=null;
+  stops.forEach((so,i)=>{const wo=hav(from.lat,from.lng,so.lat,so.lng);if(wo>0.5)return;
+    stops.forEach((sd,j)=>{const wd=hav(to.lat,to.lng,sd.lat,sd.lng);if(wd>0.5)return;
+      const ride=(j-i+n)%n;if(ride===0)return;
+      const t=walkMin(wo)+HW()+Math.max(1,Math.round(ride*RIDE_MIN_PER_STOP))+walkMin(wd);
+      if(!best||t<best.total)best={o:{stop:so,idx:i,mi:wo},d:{stop:sd,idx:j,mi:wd},ride,total:t};});});
+  return best;
+}
+/* River check: south bank (River St) < 32.0825 < Hutchinson Island (north). */
+const bank=pt=>pt.lat>32.0825?'north':'south';
+
+function useLoc(){
+  if(!navigator.geolocation){alert('Location not available on this device.');return;}
+  $('fromGps').textContent='…';
+  navigator.geolocation.getCurrentPosition(p=>{
+    fromPt={lat:p.coords.latitude,lng:p.coords.longitude,label:'My location'};
+    $('fromGps').textContent='📍 Me';$('fromSel').value='';$('fromAddr').value='';
+    if(toPt)plan();else $('fromGps').textContent='✓ set';
+  },()=>{$('fromGps').textContent='📍 Me';alert('Could not get your location. Pick a place or type an address instead.');},{enableHighAccuracy:true,timeout:8000});
+}
+
+/* typed-address geocode via same-origin proxy (debounced) */
+function bindGeocode(inputId,listId,set){
+  const inp=$(inputId),list=$(listId);let t=null;
+  inp.addEventListener('input',()=>{clearTimeout(t);const q=inp.value.trim();
+    if(q.length<3){list.style.display='none';return;}
+    t=setTimeout(async()=>{
+      try{const r=await fetch('/geo-proxy?q='+encodeURIComponent(q));const d=await r.json();
+        const res=(d.results||[]).slice(0,3);
+        if(!res.length){list.style.display='none';return;}
+        list.innerHTML=res.map((x,i)=>`<div data-i="${i}">${x.name.split(',').slice(0,2).join(', ')}</div>`).join('');
+        list.style.display='block';
+        list.querySelectorAll('div').forEach(el=>el.addEventListener('click',()=>{
+          const x=res[+el.dataset.i];set({lat:x.lat,lng:x.lng,label:inp.value,typed:true});
+          inp.value=el.textContent;list.style.display='none';}));
+      }catch(e){list.style.display='none';}
+    },420);
+  });
+}
+
+/* ── the router ── */
+function plan(){
+  if(!fromPt||!toPt){$('result').innerHTML='<div class="rcard">Pick both a start and a destination.</div>';return;}
+  fromPt.label=fromPt.label||fromPt.name||'your start';
+  toPt.label=toPt.label||toPt.name||'your destination';
+  const R=$('result');
+  const directMi=hav(fromPt.lat,fromPt.lng,toPt.lat,toPt.lng);
+  const directWalk=walkMin(directMi);
+  // drive-only destination
+  if(toPt.drive||fromPt.drive){
+    const far=toPt.drive?toPt:fromPt;
+    R.innerHTML=card('drive','🚗','The free shuttle doesn\'t reach '+(far.label||far.name),
+      'That spot is outside the free downtown network — it\'s about a '+Math.max(8,Math.round(directMi*2.6))+' min drive or rideshare. Everything downtown, though, the free shuttle and ferry have covered.',[]);
+    drawRoute(null);return;
+  }
+  const f=DATA.ferry.stops;
+  const oN=f.map((s,i)=>({i,mi:hav(fromPt.lat,fromPt.lng,s.lat,s.lng)})).sort((a,b)=>a.mi-b.mi)[0];
+  const dN=f.map((s,i)=>({i,mi:hav(toPt.lat,toPt.lng,s.lat,s.lng)})).sort((a,b)=>a.mi-b.mi)[0];
+  const crossesRiver=bank(fromPt)!==bank(toPt);
+  // Opposite banks: only the ferry connects them — walking/shuttle can't cross.
+  if(crossesRiver){
+    if(oN.mi<0.8&&dN.mi<0.8&&oN.i!==dN.i){
+      const t=walkMin(oN.mi)+DATA.schedule.ferry.headwayMin/2+6+walkMin(dN.mi);
+      R.innerHTML=renderRoute({type:'ferry',oN:{...f[oN.i],mi:oN.mi},dN:{...f[dN.i],mi:dN.mi},total:t},999);
+      drawRoute({type:'ferry'});return;
+    }
+    R.innerHTML=card('ferry','⛴','Take the Belles Ferry across the river',
+      'Your start and destination are on opposite banks of the Savannah River — the free ferry is the way across, between River Street and Hutchinson Island, every 10 minutes.',[]);
+    drawRoute({type:'ferry'});return;
+  }
+  // candidate transit routes (same bank)
+  const cands=[];
+  for(const k in DATA.loops){const bp=bestPair(k,fromPt,toPt);if(bp)cands.push({type:'single',loop:k,...bp});}
+  // cross-loop transfer (forsyth <-> downtown)
+  {
+    const pairs=[['forsyth','downtown'],['downtown','forsyth']];
+    pairs.forEach(([la,lb])=>{
+      let tr=null;DATA.loops[la].stops.forEach((sa,i)=>DATA.loops[lb].stops.forEach((sb,j)=>{const mi=hav(sa.lat,sa.lng,sb.lat,sb.lng);if(!tr||mi<tr.mi)tr={i,j,mi,sa,sb};}));
+      // best boarding on A toward the transfer, best alighting on B from the transfer
+      const A=DATA.loops[la].stops,B=DATA.loops[lb].stops,na=A.length,nb=B.length;
+      let bo=null;A.forEach((s,i)=>{const w=hav(fromPt.lat,fromPt.lng,s.lat,s.lng);if(w>0.5)return;const r=(tr.i-i+na)%na;const t=walkMin(w)+HW()+Math.max(1,Math.round(r*RIDE_MIN_PER_STOP));if(r>0&&(!bo||t<bo.t))bo={i,w,r,t};});
+      let ba=null;B.forEach((s,j)=>{const w=hav(toPt.lat,toPt.lng,s.lat,s.lng);if(w>0.5)return;const r=(j-tr.j+nb)%nb;const t=Math.max(1,Math.round(r*RIDE_MIN_PER_STOP))+walkMin(w);if(r>0&&(!ba||t<ba.t))ba={j,w,r,t};});
+      if(bo&&ba)cands.push({type:'transfer',la,lb,tr,
+        o:{stop:A[bo.i],idx:bo.i,mi:bo.w},d:{stop:B[ba.j],idx:ba.j,mi:ba.w},r1:bo.r,r2:ba.r,
+        total:bo.t+walkMin(tr.mi)+HW()+ba.t});
+    });
+  }
+  cands.sort((a,b)=>a.total-b.total);
+  const best=cands[0];
+  // walking wins when it's short and not much slower than the best ride
+  const walkWins=directWalk<=14 && (!best||directWalk<=best.total+3);
+  if(walkWins||!best){
+    R.innerHTML=card('walk','🚶','Just walk it — about '+directWalk+' min',
+      best?'It\'s close enough that walking beats waiting for the shuttle. (The free ride is there if you\'d rather: '+best.total+' min with the wait.)':'It\'s an easy walk, and no shuttle stop is close enough to save you time.',
+      [{ic:'🚶',t:'Walk '+directWalk+' min · about '+directMi.toFixed(1)+' mi',s:fromPt.label+' → '+toPt.label}]);
+    drawRoute({walk:[[fromPt.lat,fromPt.lng],[toPt.lat,toPt.lng]]});return;
+  }
+  R.innerHTML=renderRoute(best,directWalk);
+  drawRoute(best);
+}
+
+function loopName(k){return DATA.loops[k].name;}
+function renderRoute(r,directWalk){
+  const legs=[];let verdict,sum;
+  if(r.type==='single'){
+    verdict='Take the '+loopName(r.loop);
+    sum='About '+r.total+' min door to door · '+r.ride+' stop'+(r.ride>1?'s':'')+' on the shuttle';
+    legs.push({ic:'🚶',t:'Walk to '+r.o.stop.name,s:walkMin(r.o.mi)+' min ('+Math.round(r.o.mi*5280)+' ft)'});
+    legs.push({cls:'ride',ic:'🚌',t:'Ride the '+loopName(r.loop)+' · '+r.ride+' stop'+(r.ride>1?'s':''),s:'Get off at '+r.d.stop.name+' · about every 10 min'});
+    legs.push({ic:'🚶',t:'Walk to '+ (toPt.label||'your destination'),s:walkMin(r.d.mi)+' min'});
+  }else if(r.type==='transfer'){
+    verdict='Ride two loops (one easy transfer)';
+    sum='About '+r.total+' min · transfer near '+r.tr.sa.name;
+    legs.push({ic:'🚶',t:'Walk to '+r.o.stop.name,s:walkMin(r.o.mi)+' min'});
+    legs.push({cls:'ride',ic:'🚌',t:'Ride the '+loopName(r.la)+' · '+r.r1+' stop'+(r.r1>1?'s':''),s:'Get off at '+r.tr.sa.name});
+    legs.push({ic:'🔁',t:'Transfer to the '+loopName(r.lb),s:'a '+walkMin(r.tr.mi)+' min walk to '+r.tr.sb.name});
+    legs.push({cls:'ride',ic:'🚌',t:'Ride the '+loopName(r.lb)+' · '+r.r2+' stop'+(r.r2>1?'s':''),s:'Get off at '+r.d.stop.name});
+    legs.push({ic:'🚶',t:'Walk to '+(toPt.label||'your destination'),s:walkMin(r.d.mi)+' min'});
+  }else if(r.type==='ferry'){
+    verdict='Take the Belles Ferry';
+    sum='About '+r.total+' min · a free river crossing';
+    legs.push({ic:'🚶',t:'Walk to '+r.oN.name,s:walkMin(r.oN.mi)+' min'});
+    legs.push({cls:'ferry',ic:'⛴',t:'Ride the ferry to '+r.dN.name,s:'about every 10 min · 7am–10pm'});
+    legs.push({ic:'🚶',t:'Walk to '+(toPt.label||'your destination'),s:walkMin(r.dN.mi)+' min'});
+  }
+  const tip=directWalk<=22?('Prefer to stretch your legs? It\'s about a '+directWalk+' min walk straight there.'):'';
+  return card(r.type==='ferry'?'ferry':'',r.type==='ferry'?'⛴':'🚌',verdict,sum,legs,tip);
+}
+function card(cls,icon,verdict,sum,legs,tip){
+  return '<div class="rcard '+(cls||'')+'"><div class="rverdict">'+icon+' '+verdict+'</div><div class="rsum">'+sum+'</div>'
+    +legs.map(l=>'<div class="leg '+(l.cls||'')+'"><div class="ic">'+l.ic+'</div><div><div class="lt">'+l.t+'</div>'+(l.s?'<div class="ls">'+l.s+'</div>':'')+'</div></div>').join('')
+    +(tip?'<div class="rtip">'+tip+'</div>':'')+'</div>';
+}
+
+/* ── map ── */
+function initMap(){
+  map=L.map('map',{scrollWheelZoom:false}).setView([32.073,-81.091],14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,subdomains:'abc',attribution:'&copy; OpenStreetMap'}).addTo(map);
+  map.attributionControl.setPrefix(false);
+  for(const k in DATA.loops){const lp=DATA.loops[k];
+    L.polyline(lp.shape,{color:lp.color,weight:3,opacity:.55}).addTo(map);
+    lp.stops.forEach(s=>stopDot(s,lp.color));}
+  L.polyline(DATA.ferry.shape,{color:DATA.ferry.color,weight:3,opacity:.6,dashArray:'6,6'}).addTo(map);
+  DATA.ferry.stops.forEach(s=>stopDot(s,DATA.ferry.color));
+}
+function stopDot(s,color){
+  L.marker([s.lat,s.lng],{icon:L.divIcon({className:'',html:'<div class="tstop" style="background:#2a2317;border-color:'+color+'"></div>',iconSize:[11,11],iconAnchor:[5,5]})})
+    .addTo(map).bindTooltip(s.name,{direction:'top'});
+}
+function drawRoute(r){
+  if(routeLayer){map.removeLayer(routeLayer);routeLayer=null;}
+  if(!r)return;const g=L.layerGroup();
+  const pin=(pt,c,t)=>L.marker([pt.lat,pt.lng],{icon:L.divIcon({className:'',html:'<div style="width:16px;height:16px;border-radius:50%;background:'+c+';border:2.5px solid #fff;box-shadow:0 0 8px rgba(0,0,0,.7)"></div>',iconSize:[16,16],iconAnchor:[8,8]})}).bindTooltip(t);
+  if(fromPt)pin(fromPt,'#5aa02a','Start: '+(fromPt.label||'')).addTo(g);
+  if(toPt)pin(toPt,'#c95a34','Destination: '+(toPt.label||'')).addTo(g);
+  if(r.walk)L.polyline(r.walk,{color:'#e9dcc6',weight:2,dashArray:'2,6',opacity:.7}).addTo(g);
+  routeLayer=g.addTo(map);
+  try{const b=[];if(fromPt)b.push([fromPt.lat,fromPt.lng]);if(toPt)b.push([toPt.lat,toPt.lng]);if(b.length)map.fitBounds(b,{padding:[60,60],maxZoom:15});}catch(e){}
+}
+setInterval(renderStatus,60000);
+</script>
+</body>
+</html>
