@@ -439,6 +439,13 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .holiday-banner{background:linear-gradient(90deg,rgba(194,160,50,.16),rgba(187,106,61,.1));border:1px solid rgba(194,160,50,.35);border-radius:12px;padding:11px 15px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);line-height:1.45}
 .holiday-banner .hb-g{font-size:20px;flex-shrink:0}
 .holiday-banner b{color:var(--terra)}
+.alert-banner{background:linear-gradient(90deg,rgba(187,80,50,.16),rgba(194,120,50,.09));border:1px solid rgba(200,110,60,.45);border-radius:12px;padding:11px 15px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);line-height:1.45}
+.alert-banner .hb-g{font-size:20px;flex-shrink:0}
+.alert-banner b{color:#b85c34}
+.alert-severe{border-color:rgba(210,80,60,.7);background:linear-gradient(90deg,rgba(200,60,40,.2),rgba(194,100,50,.11))}
+.rn-happening{font-size:12.5px;color:var(--mu);margin:2px 0 10px;line-height:1.55}
+.rn-happening b{color:var(--ink);font-weight:600}
+.rn-happening a{color:var(--g)}
 
 /* ── ITINERARY (NEXT FEW HOURS) ───────────────────── */
 .itin{margin-top:18px;background:#fff;border:1.5px solid var(--g);border-radius:18px;padding:18px 20px;box-shadow:4px 4px 0 rgba(42,60,48,.08)}
@@ -520,6 +527,8 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 </div>
 
 <main class="planner" id="main">
+  <!-- NWS WEATHER ALERT BANNER (heat advisories, storms, tropical systems) -->
+  <div id="wxAlertBanner"></div>
   <!-- HOLIDAY BANNER -->
   <div id="holidayBanner"></div>
 
@@ -533,6 +542,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
         <p class="rn-reason" id="rnReason">The free, can&rsquo;t-miss default near The Wilder House: stroll three blocks to Forsyth Park&rsquo;s 1858 fountain, then north through Savannah&rsquo;s 22 moss-draped squares toward River Street. The moment this live planner loads it reads the current weather, tide and golden-hour light to name the single best thing to do in Savannah right now &mdash; and updates this pick automatically, hour by hour.</p>
         <div class="rn-meta" id="rnMeta"></div>
         <div class="rn-badges" id="rnBadges"></div>
+        <div class="rn-happening" id="rnHappening"></div>
         <div class="rn-actions">
           <button id="altBtn" class="rn-primary" type="button" aria-label="Show me a different pick">🔁 Show me another</button>
           <button id="geoBtn" class="rn-share" type="button" aria-label="Show walk times measured from my location">📍 Walk times from me</button>
@@ -1129,7 +1139,7 @@ const SAV={lat:32.0809,lng:-81.0912,tz:'America/New_York'};
 const toSav=(d)=>new Date(d.toLocaleString('en-US',{timeZone:SAV.tz}));
 const savNow=()=>toSav(new Date());
 let today=savNow();
-let weather=null,sun=null,tide=null;
+let weather=null,sun=null,tide=null,wxAlerts=[];
 let FILTER={who:'any',vibe:'any',area:'any',indoorOnly:false,timeBias:null};
 
 /* ── HOLIDAYS / SEASONAL ────────────────────────── */
@@ -1354,7 +1364,16 @@ function buildCtx(){
   const uvHigh=weather&&weather.uv!=null&&weather.uv>=8;
   const lowSoon=tide&&tide.nextLow&&Math.abs(tide.nextLow.t-today)<2.5*3600*1000;
   const highSoon=tide&&tide.nextHigh&&Math.abs(tide.nextHigh.t-today)<2*3600*1000;
-  return{h,wc,isRainy,riseH,setH,inMornGold,inEveGold,hot,cold,windy,uvHigh,lowSoon,highSoon,holiday:currentHoliday()};
+  // Savannah's real summer signal is the dew point, not the thermometer:
+  // ≥73° air is oppressive on foot even when feels-like sits below the 95° gate.
+  const muggy=!!(weather&&weather.dew!=null&&weather.dew>=73&&weather.tempF>=85);
+  const heatAlert=wxAlerts.some(a=>/heat/i.test(a.event));
+  const stormAlert=wxAlerts.some(a=>/(severe thunderstorm|tornado|hurricane|tropical)/i.test(a.event));
+  const ripAlert=wxAlerts.some(a=>/rip current/i.test(a.event));
+  // Hours until forecast rain arrives — used to check a visit FITS before it.
+  const rr=weather&&weather.rain;
+  const rainInH=(rr&&rr.state==='incoming'&&rr.at)?Math.max(0,(rr.at-today)/3600000):null;
+  return{h,wc,isRainy,riseH,setH,inMornGold,inEveGold,hot,cold,windy,uvHigh,lowSoon,highSoon,muggy,heatAlert,stormAlert,ripAlert,rainInH,holiday:currentHoliday()};
 }
 const MARSH=['kayaking','wildlife-refuge','skidaway-state-park'];
 
@@ -1466,6 +1485,14 @@ function scoreOf(e,ctx){
   if(ctx.windy&&e.cat==='Rooftop Bar')s-=12;       // 18+ mph gusts empty the rooftops
   if(ctx.windy&&e.id==='belles-ferry')s-=6;
   if(ctx.uvHigh&&!ctx.hot&&!e.indoor&&h>=10&&h<=16)s-=12;
+  if(ctx.muggy&&!ctx.hot&&h>=10&&h<=18){if(!e.indoor)s-=16;else s+=8;}   // dew point ≥73° — thick Savannah air
+  if(ctx.heatAlert&&h>=10&&h<=19){if(!e.indoor)s-=22;else s+=12;}        // NWS heat advisory in effect
+  if(ctx.stormAlert){if(!e.indoor)s-=30;if(['tybee','kayaking','belles-ferry','wildlife-refuge','skidaway-state-park'].includes(e.id))s-=25;} // severe/tropical alert — stay near cover
+  if(ctx.ripAlert&&(e.id==='tybee'||e.id==='kayaking'))s-=20;            // rip current advisory
+  // Does the visit FIT before forecast rain? travel + a real stay must beat the clock.
+  if(ctx.rainInH!=null&&!e.indoor){const need=(travelMins(e)+Math.min(dwellOf(e),90))/60;if(need>ctx.rainInH)s-=Math.min(30,Math.round((need-ctx.rainInH)*18));}
+  // With the visitor's location shared, "right now" also means "near you" — gently.
+  if(userPos)s+=Math.round(Math.max(-14,Math.min(10,(15-travelMins(e))*0.8)));
   if(ctx.lowSoon&&MARSH.includes(e.id))s+=26;
   if(ctx.highSoon&&e.id==='tybee')s+=14;
   if(FILTER.timeBias==='morning'&&a<=11)s+=18;
@@ -1506,6 +1533,10 @@ function actionFor(pick,ctx,h){
 function reasonFor(pick,ctx){
   const h=ctx.h;const r=weather&&weather.rain;
   if(ctx.holiday)return ctx.holiday.reason;
+  if(ctx.stormAlert&&pick.indoor){
+    const sa=wxAlerts.find(a=>/(severe thunderstorm|tornado|hurricane|tropical)/i.test(a.event));
+    if(sa)return `A ${sa.event.toLowerCase()} is in effect for Savannah — ${stripTags(pick.title)} keeps you comfortable and close to cover.`;
+  }
   if(ctx.isRainy){
     if(r&&r.state==='clearing'&&r.at)return `Rain eases by ${fts(r.at)} — duck into ${stripTags(pick.title)} now, then the patios reopen.`;
     return `Rain's falling — ${stripTags(pick.title)} is the best of indoor Savannah right now.`;
@@ -1514,6 +1545,8 @@ function reasonFor(pick,ctx){
   const bits=[];
   if(weather)bits.push(`${weather.tempF}° and ${label(weather.code).toLowerCase()}`);
   if(ctx.hot)bits.push(`feels like ${weather.feelsF}°`);
+  else if(ctx.heatAlert)bits.push('a heat advisory is in effect');
+  else if(ctx.muggy)bits.push(`dew point ${weather.dew}° — thick, wet air out there`);
   let timeBit='';
   if(ctx.inEveGold)timeBit=`golden hour has about ${Math.max(5,Math.round((ctx.setH-h)*60))} minutes of soft light left`;
   else if(ctx.inMornGold)timeBit='the morning light is at its best';
@@ -1529,6 +1562,29 @@ function reasonFor(pick,ctx){
   return lead?`${cap(lead)} — ${action}.`:`${cap(action)}.`;
 }
 
+/* ── HAPPENING NOW (events, surfaced at the decision point) ── */
+/* Live or imminent (≤90 min) happenings shown inside the Right Now card, so
+   "jazz in the squares tonight" isn't buried in a list below the fold. */
+function happeningNow(){
+  const h=today.getHours()+today.getMinutes()/60;
+  const rows=[];
+  for(const ev of EVENTS.filter(e=>evMatchesDate(e,today))){
+    const live=h>=ev.sh&&h<ev.eh;
+    const minU=Math.round((ev.sh-h)*60);
+    if(live)rows.push({g:ev.g,name:ev.name,when:'on now'});
+    else if(minU>0&&minU<=90)rows.push({g:ev.g,name:ev.name,when:minU<60?`in ${minU} min`:`in ~${Math.ceil(minU/60)} hr`});
+  }
+  for(const ev of liveToday()){
+    if(rows.length>=2)break;
+    if(ev.sh==null)continue;
+    const live=h>=ev.sh&&h<ev.sh+3;
+    const minU=Math.round((ev.sh-h)*60);
+    if(live)rows.push({g:ev.g,name:ev.name,when:'on now'});
+    else if(minU>0&&minU<=90)rows.push({g:ev.g,name:ev.name,when:`in ${minU} min`});
+  }
+  return rows.slice(0,2);
+}
+
 /* ── RENDER RIGHT NOW ───────────────────────────── */
 let pickOffset=0; // 0 = engine's #1; "Show me another" cycles the top picks
 function renderRightNow(){
@@ -1541,6 +1597,7 @@ function renderRightNow(){
     document.getElementById('rnTitle').textContent='Explore freely today';
     document.getElementById('rnReason').textContent='Pick a square and see where it leads.';
     document.getElementById('rnMeta').innerHTML='';document.getElementById('rnBadges').innerHTML='';document.getElementById('rnRunners').innerHTML='';
+    const he0=document.getElementById('rnHappening');if(he0)he0.innerHTML='';
     return;
   }
   window.__rnPickId=pick.id;
@@ -1566,6 +1623,9 @@ function renderRightNow(){
   if(pick.free)bdg.push('<span class="rn-badge free">✓ Free</span>');
   if(pick.book)bdg.push(`<span class="rn-badge bookahead">⏰ ${pick.bookNote}</span>`);
   document.getElementById('rnBadges').innerHTML=bdg.join('');
+  const hap=happeningNow();
+  const hEl=document.getElementById('rnHappening');
+  if(hEl)hEl.innerHTML=hap.length?`🎪 Also in town: ${hap.map(x=>`<b>${x.g} ${x.name}</b> <span>(${x.when})</span>`).join(' · ')} — <a href="#evLabel">today's events</a>`:'';
   // Runners are tappable: tapping one promotes it to the main pick.
   const runners=scored.map((e,i)=>({e,i})).filter(x=>x.i!==idx).slice(0,2);
   document.getElementById('rnRunners').innerHTML=runners.map(x=>`<div class="rn-runner" role="button" tabindex="0" data-i="${x.i}" aria-label="Make ${stripTags(x.e.title)} the main pick"><div class="rn-runner-icon">${x.e.g}</div><div><div class="rn-runner-title">${x.e.title}</div><div class="rn-runner-sub">${x.e.place}</div></div><span class="rn-runner-go" aria-hidden="true">›</span></div>`).join('');
@@ -1584,8 +1644,11 @@ function whyNot(e,ctx){
   }
   const tm=timing(e,h);
   if(tm.tooLate)return 'closes before you could get there';
+  if(ctx.stormAlert&&!e.indoor)return 'a severe-weather alert is up — better to stay near cover';
   if(ctx.isRainy&&!e.indoor&&!e.wfit.includes('rain'))return 'better saved for dry weather';
+  if(ctx.rainInH!=null&&!e.indoor&&(travelMins(e)+Math.min(dwellOf(e),90))/60>ctx.rainInH)return `rain arrives ~${fts(weather.rain.at)} — not enough dry time for a real visit`;
   if(ctx.hot&&!e.indoor&&h>=11&&h<=17)return `too exposed in the ${weather.feelsF}° heat right now`;
+  if(ctx.muggy&&!ctx.hot&&!e.indoor&&h>=10&&h<=18)return `dew point ${weather.dew}° — the air out there is thick right now`;
   if(ctx.cold&&!e.indoor)return `feels like ${weather.feelsF}° — better with a coat or saved for midday`;
   if(ctx.windy&&e.cat==='Rooftop Bar')return `${weather.wind} mph winds — rooftops are blustery right now`;
   const ch=crowdHit(e,h);
@@ -1649,6 +1712,7 @@ function renderConditions(){
     parts.push(`<span class="rc-i">feels <b>${weather.feelsF}°</b></span>`);
     parts.push(`<span class="rc-i">wind <b>${weather.wind}</b> mph ${weather.dir}</span>`);
     parts.push(`<span class="rc-i">humidity <b>${weather.hum}%</b></span>`);
+    if(weather.dew!=null&&weather.dew>=68)parts.push(`<span class="rc-i">dew point <b>${weather.dew}°</b>${weather.dew>=73?' · thick air':''}</span>`);
     const r=weather.rain;
     if(r&&r.state==='clearing'&&r.at)parts.push(`<span class="rc-i"><span class="rc-g">🌤</span>rain eases by <b>${fts(r.at)}</b></span>`);
     else if(r&&r.state==='wet')parts.push(`<span class="rc-i"><span class="rc-g">🌧</span>wet into the evening</span>`);
@@ -1671,7 +1735,33 @@ function renderConditions(){
     else g=`sunset was <b>${fts(sun.set)}</b>`;
     parts.push(`<span class="rc-i"><span class="rc-g">🌅</span>${g}</span>`);
   }
+  if(wxAlerts.length)parts.unshift(`<span class="rc-i" style="color:var(--terra)"><span class="rc-g">⚠️</span><b>${wxAlerts[0].event}</b></span>`);
   el.innerHTML=parts.join('<span class="rc-sep"></span>');
+}
+
+/* ── NWS WEATHER ALERTS ─────────────────────────── */
+/* Active advisories/warnings for Savannah via the same-origin Worker proxy.
+   A heat advisory or a tropical system should change the pick, not just the mood. */
+async function loadAlerts(){
+  try{
+    const j=await fetchT('/alerts-proxy',6000);
+    const raw=Array.isArray(j&&j.alerts)?j.alerts:[];
+    const keep=raw.filter(a=>/heat|thunderstorm|tornado|hurricane|tropical|flood|wind|fog|rip current|freeze|winter/i.test(a.event)&&!/small craft|marine|gale|special weather/i.test(a.event));
+    const rank=s=>/extreme/i.test(s)?0:/severe/i.test(s)?1:2;
+    keep.sort((x,y)=>rank(x.severity)-rank(y.severity));
+    wxAlerts=keep;
+  }catch{wxAlerts=[];}
+  renderAlert();renderAll();
+}
+function renderAlert(){
+  const el=document.getElementById('wxAlertBanner');if(!el)return;
+  if(!wxAlerts.length){el.innerHTML='';return;}
+  const a=wxAlerts[0];
+  let ends='';
+  try{if(a.ends)ends=` until ${fts(toSav(new Date(a.ends)))}`;}catch(e){}
+  const sev=/extreme|severe/i.test(a.severity);
+  const steer=/heat/i.test(a.event)?'shade, water and air-conditioned':'indoor and close-to-cover';
+  el.innerHTML=`<div class="alert-banner${sev?' alert-severe':''}" role="status"><span class="hb-g">⚠️</span><span><b>${a.event}${ends}</b> — National Weather Service. The planner is steering toward ${steer} picks while it's in effect.</span></div>`;
 }
 
 /* ── RENDER HOLIDAY BANNER ──────────────────────── */
@@ -1810,12 +1900,12 @@ async function loadData(){
     /* Same-origin Worker proxy — api.open-meteo.com is blocked by the live CSP,
        so a direct fetch silently falls back to canned weather. Via /meteo-proxy
        the data is genuinely live. */
-    const j=await fetchT(`/meteo-proxy?latitude=${SAV.lat}&longitude=${SAV.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,apparent_temperature,uv_index&hourly=precipitation,precipitation_probability&forecast_days=2&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=${encodeURIComponent(SAV.tz)}`);
+    const j=await fetchT(`/meteo-proxy?latitude=${SAV.lat}&longitude=${SAV.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,apparent_temperature,uv_index,dew_point_2m&hourly=precipitation,precipitation_probability&forecast_days=2&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=${encodeURIComponent(SAV.tz)}`);
     if(j.current){
       const c=j.current;
-      weather={tempF:Math.round(c.temperature_2m),feelsF:Math.round(c.apparent_temperature),code:c.weather_code,wind:Math.round(c.wind_speed_10m),dir:compass(c.wind_direction_10m),hum:Math.round(c.relative_humidity_2m),uv:c.uv_index!=null?Math.round(c.uv_index):null,rain:parseRain(j.hourly,c.weather_code)};
+      weather={tempF:Math.round(c.temperature_2m),feelsF:Math.round(c.apparent_temperature),code:c.weather_code,wind:Math.round(c.wind_speed_10m),dir:compass(c.wind_direction_10m),hum:Math.round(c.relative_humidity_2m),uv:c.uv_index!=null?Math.round(c.uv_index):null,dew:c.dew_point_2m!=null?Math.round(c.dew_point_2m):null,rain:parseRain(j.hourly,c.weather_code)};
     }
-  }catch{weather={tempF:76,feelsF:79,code:2,wind:8,dir:'SSW',hum:65,uv:6,rain:{state:'dry'},fallback:true};}
+  }catch{weather={tempF:76,feelsF:79,code:2,wind:8,dir:'SSW',hum:65,uv:6,dew:66,rain:{state:'dry'},fallback:true};}
   renderWeather();renderAll();
   // Ground-truth rain override: open-meteo's model 'current' sometimes reports
   // 0mm while it's actually raining. Cross-check the NWS Savannah observation
@@ -1969,6 +2059,7 @@ function init(){
   loadData();
   loadTide();
   loadEvents();
+  loadAlerts();
 }
 
 /* ── LIVE SAVANNAH CLOCK ────────────────────────── */
@@ -1980,13 +2071,13 @@ setInterval(()=>{
   document.getElementById('heroTime').textContent=ft(today);
   document.getElementById('heroDate').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('heroDay').textContent=today.toLocaleDateString('en-US',{weekday:'long'});
-  if(today.getHours()!==lastHour){lastHour=today.getHours();renderHoliday();renderEvents();loadData();loadTide();loadEvents();}
+  if(today.getHours()!==lastHour){lastHour=today.getHours();renderHoliday();renderEvents();loadData();loadTide();loadEvents();loadAlerts();}
   else renderAll();
 },60000);
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='visible')return;
   const now=savNow();
-  if(now-today>5*60000){today=now;lastHour=today.getHours();document.getElementById('heroTime').textContent=ft(today);renderHoliday();renderEvents();loadData();loadTide();loadEvents();}
+  if(now-today>5*60000){today=now;lastHour=today.getHours();document.getElementById('heroTime').textContent=ft(today);renderHoliday();renderEvents();loadData();loadTide();loadEvents();loadAlerts();}
 });
 
 /* ── BACK TO TOP ─────────────────────────────────── */

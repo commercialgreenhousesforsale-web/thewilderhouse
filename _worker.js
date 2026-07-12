@@ -155,6 +155,37 @@ export default {
       }
     }
 
+    if (url.pathname === '/alerts-proxy') {
+      // Active NWS weather alerts for Savannah (heat advisories, severe storms,
+      // tropical systems, rip currents). The day planner shifts its scoring and
+      // shows a banner when one is in effect. Same-origin, so no CSP change.
+      const ok = (obj, age) => new Response(JSON.stringify(obj), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 300) }
+      });
+      try {
+        const resp = await fetch('https://api.weather.gov/alerts/active?point=32.0709,-81.0959', {
+          headers: {
+            'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)',
+            'Accept': 'application/geo+json'
+          }
+        });
+        if (!resp.ok) return ok({ alerts: [] }, 300);
+        const d = await resp.json();
+        const alerts = (d.features || []).map(function (f) {
+          const p = f.properties || {};
+          return {
+            event: p.event || '',
+            severity: p.severity || '',
+            headline: p.headline || '',
+            ends: p.ends || p.expires || ''
+          };
+        }).filter(function (a) { return a.event; });
+        return ok({ alerts: alerts }, 600);
+      } catch (e) {
+        return ok({ alerts: [] }, 300);
+      }
+    }
+
     if (url.pathname === '/events-proxy') {
       // Live local events via the Ticketmaster Discovery API. Lights up only when
       // a TICKETMASTER_KEY secret is configured; otherwise returns an empty list
