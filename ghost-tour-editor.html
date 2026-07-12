@@ -7,306 +7,69 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Forsyth Ghost Tour — Fine-Tune All 17 Stops</title>
+<title>Tour Studio — edit any tour, no code</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
+/* TOUR STUDIO — the assembly line. Edit words, spirits, coordinates; add,
+   delete, reorder stops; export a complete, lossless tour JSON. Owner rule:
+   audio filenames are PERMANENT IDs — order is position; renumbering never
+   renames audio, new stops get the next unused file number. */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'Georgia', serif;
-  background: #0a0805;
-  color: #e9dcc6;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-.memory-container {
-  display: flex;
-  height: 100vh;
-  background: #0a0805;
-}
-
-#map {
-  flex: 1;
-  background: #1a1410;
-  z-index: 1;
-  cursor: crosshair;
-}
-
-.story-panel {
-  width: 100%;
-  max-width: 520px;
-  background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
-  border-left: 1px solid rgba(233, 220, 198, 0.1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.7);
-}
-
-.story-header {
-  background: rgba(10, 8, 6, 0.95);
-  border-bottom: 1px solid rgba(233, 220, 198, 0.15);
-  padding: 16px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-}
-
-.story-header h1 {
-  font-size: 20px;
-  color: #e7c389;
-  margin-bottom: 4px;
-  font-weight: 400;
-}
-
-.story-header p {
-  font-size: 10px;
-  color: #8b7d60;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.story-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.stop-card {
-  background: rgba(42, 37, 32, 0.5);
-  border: 1px solid rgba(233, 220, 198, 0.1);
-  border-radius: 6px;
-  padding: 12px;
-}
-
-.stop-card.modified {
-  border-color: rgba(232, 201, 106, 0.6);
-  background: rgba(232, 201, 106, 0.05);
-}
-
-.stop-number {
-  font-size: 9px;
-  color: #8b7d60;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.stop-name {
-  font-size: 16px;
-  color: #e7c389;
-  font-weight: 400;
-  margin-bottom: 6px;
-}
-
-.coords-group {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-size: 10px;
-}
-
-.coord-input {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-  padding: 4px 6px;
-  border-radius: 3px;
-  font-family: monospace;
-  font-size: 11px;
-}
-
-.coord-input:focus {
-  outline: none;
-  border-color: rgba(102, 187, 106, 0.7);
-  background: rgba(102, 187, 106, 0.1);
-}
-
-.radius-group {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 10px;
-}
-
-.radius-input {
-  width: 50px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-  padding: 4px 6px;
-  border-radius: 3px;
-  font-family: monospace;
-  font-size: 11px;
-}
-
-.radius-input:focus {
-  outline: none;
-  border-color: rgba(102, 187, 106, 0.7);
-  background: rgba(102, 187, 106, 0.1);
-}
-
-.narration-text {
-  font-size: 10px;
-  color: #d4c5b9;
-  line-height: 1.3;
-  padding: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 2px solid rgba(232, 201, 106, 0.4);
-  border-radius: 3px;
-  max-height: 80px;
-  overflow-y: auto;
-}
-
-.nav-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(10, 8, 6, 0.95);
-  border-top: 1px solid rgba(233, 220, 198, 0.1);
-}
-
-.nav-row {
-  display: flex;
-  gap: 8px;
-}
-
-.nav-btn {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-}
-
-.nav-btn-prev {
-  background: rgba(139, 115, 85, 0.3);
-  color: #a89968;
-  border: 1px solid rgba(139, 115, 85, 0.5);
-}
-
-.nav-btn-next {
-  background: rgba(102, 187, 106, 0.3);
-  color: #66bb6a;
-  border: 1px solid rgba(102, 187, 106, 0.5);
-}
-
-.nav-btn-export {
-  background: rgba(156, 39, 176, 0.3);
-  color: #ce93d8;
-  border: 1px solid rgba(156, 39, 176, 0.5);
-}
-
-.nav-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.nav-btn:hover:not(:disabled) {
-  opacity: 1;
-  filter: brightness(1.1);
-}
-
-.stop-marker {
-  opacity: 0.7;
-  transition: all 0.3s;
-  cursor: grab;
-}
-
-.stop-marker.active {
-  opacity: 1;
-  filter: drop-shadow(0 0 10px rgba(232, 201, 106, 0.8));
-}
-
-.stop-marker.dragging {
-  cursor: grabbing;
-}
-
-.marker-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  background: #e8c96a;
-  box-sizing: border-box;
-  box-shadow: 0 0 10px rgba(232, 201, 106, 0.6);
-}
-
-.marker-dot.modified {
-  background: #ff9800;
-  border-color: #fff;
-  box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
-}
-
-.instructions {
-  font-size: 9px;
-  color: #8b7d60;
-  padding: 6px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  margin-bottom: 8px;
-  line-height: 1.3;
-}
-
-.stop-selector {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 8px;
-  max-height: 120px;
-  overflow-y: auto;
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.stop-selector-btn {
-  padding: 6px 8px;
-  background: rgba(139, 115, 85, 0.2);
-  border: 1px solid rgba(139, 115, 85, 0.4);
-  color: #a89968;
-  border-radius: 3px;
-  font-size: 9px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.stop-selector-btn:hover {
-  background: rgba(139, 115, 85, 0.4);
-}
-
-.stop-selector-btn.active {
-  background: rgba(232, 201, 106, 0.3);
-  border-color: rgba(232, 201, 106, 0.6);
-  color: #e7c389;
-}
-
+body { font-family: 'Georgia', serif; background: #0a0805; color: #e9dcc6; overflow: hidden; -webkit-font-smoothing: antialiased; }
+.memory-container { display: flex; height: 100vh; background: #0a0805; }
+#map { flex: 1; background: #1a1410; z-index: 1; cursor: crosshair; }
+#map.placing { outline: 3px dashed rgba(102,187,106,.7); outline-offset: -3px; }
+.story-panel { width: 100%; max-width: 560px; background: linear-gradient(180deg,#1a1410 0%,#0d0a08 100%); border-left: 1px solid rgba(233,220,198,.1); display: flex; flex-direction: column; overflow: hidden; box-shadow: -8px 0 24px rgba(0,0,0,.7); }
+.story-header { background: rgba(10,8,6,.95); border-bottom: 1px solid rgba(233,220,198,.15); padding: 12px 16px; text-align: center; }
+.story-header h1 { font-size: 18px; color: #e7c389; font-weight: 400; }
+.story-header p { font-size: 10px; color: #8b7d60; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+.story-content { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.stop-card { background: rgba(42,37,32,.5); border: 1px solid rgba(233,220,198,.1); border-radius: 6px; padding: 12px; }
+.stop-card.modified { border-color: rgba(232,201,106,.6); background: rgba(232,201,106,.05); }
+.stop-number { font-size: 9px; color: #8b7d60; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; display:flex; justify-content:space-between; align-items:center; }
+.name-input { width:100%; background: rgba(0,0,0,.4); border:1px solid rgba(232,201,106,.3); color:#e7c389; padding:6px 8px; border-radius:4px; font-family:Georgia,serif; font-size:15px; margin-bottom:8px; }
+.coords-group { display: flex; gap: 6px; margin-bottom: 8px; font-size: 10px; }
+.coord-input { flex: 1; background: rgba(0,0,0,.4); border: 1px solid rgba(102,187,106,.3); color: #66bb6a; padding: 4px 6px; border-radius: 3px; font-family: monospace; font-size: 11px; }
+.coord-input:focus, .radius-input:focus, .name-input:focus, .script-ta:focus, .spirit-sel:focus { outline: none; border-color: rgba(232,201,106,.7); }
+.radius-group { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; font-size: 10px; flex-wrap: wrap; }
+.radius-input { width: 58px; background: rgba(0,0,0,.4); border: 1px solid rgba(102,187,106,.3); color: #66bb6a; padding: 4px 6px; border-radius: 3px; font-family: monospace; font-size: 11px; }
+.spirit-sel { background: rgba(0,0,0,.5); border: 1px solid rgba(156,39,176,.5); color: #ce93d8; padding: 4px 8px; border-radius: 3px; font-family: Georgia,serif; font-size: 12px; }
+.script-block { margin-bottom: 8px; }
+.script-block label { display:flex; justify-content:space-between; font-size: 9px; color: #8b7d60; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.script-block label .wc { color:#66bb6a; text-transform:none; letter-spacing:0; }
+.script-block label .wc.regen { color:#ff9800; font-weight:700; }
+.script-ta { width: 100%; min-height: 84px; background: rgba(0,0,0,.35); border: 1px solid rgba(233,220,198,.2); border-left: 2px solid rgba(232,201,106,.4); color: #d4c5b9; padding: 7px 8px; border-radius: 3px; font-family: Georgia,serif; font-size: 12px; line-height: 1.5; resize: vertical; }
+.audio-line { font-size: 9px; color: #6b604a; font-family: monospace; margin-bottom: 8px; word-break: break-all; }
+.rowbtns { display:flex; gap:6px; flex-wrap:wrap; }
+.mini-btn { padding: 6px 9px; border: 1px solid rgba(139,115,85,.5); background: rgba(139,115,85,.2); color: #a89968; border-radius: 3px; font-size: 10px; cursor: pointer; }
+.mini-btn:hover { background: rgba(139,115,85,.4); }
+.mini-btn.danger { border-color: rgba(229,57,53,.5); color:#ff8a80; background: rgba(229,57,53,.12); }
+.mini-btn.go { border-color: rgba(102,187,106,.5); color:#81c784; background: rgba(102,187,106,.15); }
+.instructions { font-size: 9px; color: #8b7d60; padding: 6px; background: rgba(0,0,0,.2); border-radius: 3px; margin-bottom: 8px; line-height: 1.4; }
+.nav-controls { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: rgba(10,8,6,.95); border-top: 1px solid rgba(233,220,198,.1); }
+.nav-row { display: flex; gap: 8px; }
+.nav-btn { flex: 1; padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; transition: all .3s; }
+.nav-btn-prev { background: rgba(139,115,85,.3); color: #a89968; border: 1px solid rgba(139,115,85,.5); }
+.nav-btn-next { background: rgba(102,187,106,.3); color: #66bb6a; border: 1px solid rgba(102,187,106,.5); }
+.nav-btn-export { background: rgba(156,39,176,.3); color: #ce93d8; border: 1px solid rgba(156,39,176,.5); }
+.nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+.nav-btn:hover:not(:disabled) { opacity: 1; filter: brightness(1.1); }
+.stop-marker { opacity: .7; transition: all .3s; cursor: grab; }
+.stop-marker.active { opacity: 1; filter: drop-shadow(0 0 10px rgba(232,201,106,.8)); }
+.marker-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; background: #e8c96a; box-sizing: border-box; box-shadow: 0 0 10px rgba(232,201,106,.6); }
+.marker-dot.modified { background: #ff9800; box-shadow: 0 0 10px rgba(255,152,0,.8); }
+#report { display:none; position:fixed; inset:0; z-index:2000; background:rgba(5,4,2,.92); overflow-y:auto; padding:26px; }
+#report .box { max-width:640px; margin:0 auto; background:#14100b; border:1px solid rgba(232,201,106,.4); border-radius:10px; padding:20px; }
+#report h2 { color:#e7c389; font-weight:400; font-size:19px; margin-bottom:10px; }
+#report pre { background:rgba(0,0,0,.5); color:#9db98a; font-size:11px; padding:10px; border-radius:6px; overflow-x:auto; white-space:pre-wrap; margin:8px 0; }
+#report p, #report li { font-size:12.5px; color:#d4c5a9; line-height:1.65; }
+#report ol { margin:8px 0 8px 20px; }
+#report .warn { color:#ff9800; }
 @media (max-width: 1024px) {
-  .memory-container {
-    flex-direction: column;
-  }
-  #map {
-    height: 50%;
-    order: 2;
-  }
-  .story-panel {
-    height: 50%;
-    max-width: 100%;
-    border-left: none;
-    border-top: 1px solid rgba(233, 220, 198, 0.1);
-    order: 1;
-  }
+  .memory-container { flex-direction: column; }
+  #map { height: 42%; order: 2; }
+  .story-panel { height: 58%; max-width: 100%; border-left: none; border-top: 1px solid rgba(233,220,198,.1); order: 1; }
 }
 </style>
 </head>
@@ -317,14 +80,12 @@ body {
 
   <div class="story-panel">
     <div class="story-header">
-      <h1>Forsyth Ghost Tour</h1>
-      <p>Fine-Tune All 17 Stops — Drag Markers or Edit Coordinates</p>
+      <h1 id="hdrTitle">Tour Studio</h1>
+      <p id="hdrSub">words · spirits · pins · stops — export when done</p>
     </div>
 
     <div class="story-content" id="storyContent">
-      <p style="color: #8b7d60; text-align: center; padding: 20px 10px; font-size: 11px;">
-        Loading 17 stops...
-      </p>
+      <p style="color:#8b7d60;text-align:center;padding:20px 10px;font-size:11px;">Loading tour…</p>
     </div>
 
     <div class="nav-controls">
@@ -332,258 +93,245 @@ body {
         <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="previousStop()">← Prev</button>
         <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStop()">Next →</button>
       </div>
-      <button class="nav-btn nav-btn-export" onclick="exportCoordinates()">📋 Copy JSON</button>
+      <div class="nav-row">
+        <button class="nav-btn nav-btn-next" onclick="startPlacing()">➕ Add stop (click map)</button>
+        <button class="nav-btn nav-btn-export" onclick="exportTour()">💾 Export tour file</button>
+      </div>
     </div>
   </div>
 </div>
 
+<div id="report"><div class="box" id="reportBox"></div></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
-let TOUR_DATA = null;
-let ORIGINAL_COORDS = {};
+/* ── TOUR STUDIO ─────────────────────────────────────────────────────────
+   Loads /data/{slug}.json (?tour=slug, default "tour"). Everything about a
+   stop is editable here: name, scripts (early/on/late), spirit, pin, radius.
+   Add / delete / reorder stops. Export produces the COMPLETE tour JSON —
+   lossless: unknown keys pass through untouched — plus an audio-regeneration
+   report listing exactly which recordings the text edits require.
+   RULES the studio enforces:
+   - audio filename = PERMANENT ID; order = position. Renumbering never
+     renames audio; a new stop is allocated the next unused file number.
+   - the prologue is tracked by identity: if it moves, tour.prologue_order
+     in the manifest is updated automatically.                                */
+const SPIRITS=['shade','lady','hat','tall','child','soldier','veil'];
+const VARIANTS=[['early_arrival','early','Early arrival'],['on_time','on','On time (main story + transcript)'],['late_arrival','late','Late arrival']];
+let TOUR=null,STOPS=[],ORIGINAL=[],prologueRef=null;
+let map,currentStopIndex=0,markers=[],routePolyline=null,placing=false,dirty=false;
+let RADIUS_KEY='radius';
 
-let map;
-let currentStopIndex = 0;
-let markers = [];
-let routePolyline = null;
-let draggingMarkerIndex = null;
+const TOUR_PARAM=(new URLSearchParams(location.search).get('tour')||'tour').replace(/[^a-z0-9_-]/gi,'');
+const DATA_URL=TOUR_PARAM==='legacy'?'/FORSYTH_GHOST_TOUR_17_STOPS.json':('/data/'+TOUR_PARAM+'.json');
 
-// Load JSON data. Default: the legacy working file. With ?tour={slug} in the
-// URL, edit any tour's live data instead (e.g. ?tour=tour loads /data/tour.json).
-const TOUR_PARAM = (new URLSearchParams(location.search).get('tour') || '').replace(/[^a-z0-9_-]/gi, '');
-const DATA_URL = TOUR_PARAM ? ('/data/' + TOUR_PARAM + '.json') : '/FORSYTH_GHOST_TOUR_17_STOPS.json';
-// The legacy file names the trigger radius `radius_m`; live tour JSONs name it
-// `radius`. The editor works in radius_m internally and exports back using
-// whichever key the loaded file used — so a live-data edit round-trips intact.
-let RADIUS_KEY = 'radius_m';
-fetch(DATA_URL + '?v=' + Date.now())
-  .then(res => res.json())
-  .then(data => {
-    TOUR_DATA = data.stops;
-    if (TOUR_DATA.length && TOUR_DATA[0].radius_m === undefined && TOUR_DATA[0].radius !== undefined) RADIUS_KEY = 'radius';
-    TOUR_DATA.forEach(s => { if (s.radius_m === undefined) s.radius_m = (s.radius !== undefined ? s.radius : 40); });
-    ORIGINAL_COORDS = JSON.parse(JSON.stringify(TOUR_DATA));
-    initApp();
+fetch(DATA_URL+'?v='+Date.now())
+  .then(r=>{if(!r.ok)throw new Error(r.status);return r.json();})
+  .then(data=>{
+    TOUR=data.stops?data:{stops:data};           // tolerate bare stop arrays
+    STOPS=TOUR.stops.slice().sort((a,b)=>(a.order||0)-(b.order||0));
+    if(STOPS.length&&STOPS[0].radius===undefined&&STOPS[0].radius_m!==undefined)RADIUS_KEY='radius_m';
+    STOPS.forEach(s=>{if(s.radius_m===undefined)s.radius_m=(s.radius!==undefined?s.radius:40);});
+    const po=TOUR.tour&&TOUR.tour.prologue_order;
+    prologueRef=po!=null?STOPS.find(s=>s.order===po)||null:null;
+    ORIGINAL=JSON.parse(JSON.stringify(STOPS));
+    document.getElementById('hdrTitle').textContent=(TOUR.tour&&TOUR.tour.name)||'Tour Studio';
+    document.getElementById('hdrSub').textContent=DATA_URL+' · '+STOPS.length+' stops · edit anything, then Export';
+    initMap();renderCurrentStop();
   })
-  .catch(err => {
-    console.error('Error loading tour data:', err);
-    document.getElementById('storyContent').innerHTML = '<p style="color: #ff6b6b;">Error loading tour data from ' + DATA_URL + '.</p>';
+  .catch(err=>{
+    document.getElementById('storyContent').innerHTML='<p style="color:#ff6b6b;padding:14px;">Could not load '+DATA_URL+' ('+err.message+').</p>';
   });
 
-function initApp() {
-  initMap();
-  renderCurrentStop();
+/* ── ORIGINAL lookup by stop id (survives add/delete/reorder) ── */
+function origOf(s){return ORIGINAL.find(o=>o.id===s.id&&o.id!==undefined)||ORIGINAL[STOPS.indexOf(s)]||null;}
+function isNewStop(s){return !ORIGINAL.some(o=>o.id!==undefined?o.id===s.id:false)&&!ORIGINAL[STOPS.indexOf(s)];}
+function stopModified(s){
+  const o=origOf(s);if(!o)return true;
+  if(s.lat!==o.lat||s.lng!==o.lng||s.radius_m!==o.radius_m)return true;
+  if(s.name!==o.name||s.spirit!==o.spirit)return true;
+  return VARIANTS.some(v=>String(s[v[0]]||'')!==String(o[v[0]]||''));
+}
+function textChanged(s,key){const o=origOf(s);return !o||String(s[key]||'')!==String(o[key]||'');}
+
+/* ── AUDIO FILE-ID ALLOCATION ── */
+function audioPattern(){
+  for(const s of STOPS){
+    const on=s.audio&&s.audio.on;if(!on)continue;
+    const m=on.match(/^(.*?_)(\d{2,})(_[A-Za-z]+_)ON(\.mp3)$/);
+    if(m)return{pre:m[1],pad:m[2].length,mid:m[3],ext:m[4]};
+  }
+  return null;
+}
+function nextFileNum(){
+  let mx=0;
+  STOPS.forEach(s=>{['early','on','late'].forEach(k=>{
+    const f=s.audio&&s.audio[k];if(!f)return;
+    const m=f.match(/_(\d{2,})_/);if(m)mx=Math.max(mx,parseInt(m[1],10));
+  });});
+  return mx+1;
 }
 
-function initMap() {
-  map = L.map('map').setView([32.0730, -81.0900], 13);
-  // OSM tiles — the live CSP allows {s}.tile.openstreetmap.org and blocks CARTO
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-    maxZoom: 19, subdomains: 'abc'
-  }).addTo(map);
+/* ── MAP ── */
+function initMap(){
+  const c=STOPS.length?[STOPS[0].lat,STOPS[0].lng]:[32.0730,-81.0900];
+  map=L.map('map').setView(c,14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors',maxZoom:19,subdomains:'abc'}).addTo(map);
   map.attributionControl.setPrefix(false);
-
-  for (let idx = 0; idx < TOUR_DATA.length; idx++) {
-    const stop = TOUR_DATA[idx];
-
-    const icon = L.divIcon({
-      className: `stop-marker`,
-      html: `<div class="marker-dot"></div>`,
-      iconSize: [14, 14],
-      iconAnchor: [7, 7]
-    });
-
-    const marker = L.marker([stop.lat, stop.lng], {
-      icon,
-      draggable: true
-    }).addTo(map);
-
-    marker.bindTooltip(`${stop.order}. ${stop.name}`, {
-      permanent: false,
-      direction: 'top',
-      offset: [0, -10]
-    });
-
-    // Use closure to capture idx
-    marker.on('click', (function(index) {
-      return function() { jumpToStop(index); };
-    })(idx));
-
-    marker.on('dragstart', (function(index) {
-      return function() {
-        draggingMarkerIndex = index;
-        if (marker._icon) marker._icon.classList.add('dragging');
-      };
-    })(idx));
-
-    marker.on('drag', (function(index, m) {
-      return function() {
-        const pos = m.getLatLng();
-        TOUR_DATA[index].lat = parseFloat(pos.lat.toFixed(6));
-        TOUR_DATA[index].lng = parseFloat(pos.lng.toFixed(6));
-        updateRoutePolyline();
-        if (index === currentStopIndex) {
-          renderCurrentStop();
-        }
-      };
-    })(idx, marker));
-
-    marker.on('dragend', (function(index, m) {
-      return function() {
-        draggingMarkerIndex = null;
-        if (m._icon) m._icon.classList.remove('dragging');
-        updateMarkerStyles();
-      };
-    })(idx, marker));
-
+  map.on('click',e=>{if(placing)addStopAt(e.latlng.lat,e.latlng.lng);});
+  rebuildMarkers();
+}
+function rebuildMarkers(){
+  markers.forEach(m=>map.removeLayer(m));markers=[];
+  STOPS.forEach((stop,idx)=>{
+    const marker=L.marker([stop.lat,stop.lng],{icon:markerIcon(idx),draggable:true}).addTo(map);
+    marker.bindTooltip((prologueRef===stop?'★ ':'')+stop.order+'. '+stop.name,{direction:'top',offset:[0,-10]});
+    marker.on('click',()=>jumpToStop(idx));
+    marker.on('drag',()=>{const p=marker.getLatLng();stop.lat=+p.lat.toFixed(6);stop.lng=+p.lng.toFixed(6);dirty=true;updateRoutePolyline();if(idx===currentStopIndex)renderCurrentStop();});
+    marker.on('dragend',()=>updateMarkerStyles());
     markers.push(marker);
-  }
-
-  updateRoutePolyline();
-}
-
-function updateRoutePolyline() {
-  if (routePolyline) map.removeLayer(routePolyline);
-  const routeCoords = TOUR_DATA.map(stop => [stop.lat, stop.lng]);
-  routePolyline = L.polyline(routeCoords, {
-    color: '#c9a876',
-    weight: 2,
-    opacity: 0.3,
-    dashArray: '5,5'
-  }).addTo(map);
-}
-
-function renderCurrentStop() {
-  const stop = TOUR_DATA[currentStopIndex];
-  const orig = ORIGINAL_COORDS[currentStopIndex];
-  const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
-
-  const container = document.getElementById('storyContent');
-
-  let html = `<div class="stop-card ${isModified ? 'modified' : ''}">`;
-  html += `<div class="stop-number">Stop ${stop.order} of ${TOUR_DATA.length}</div>`;
-  html += `<div class="stop-name">${stop.name}</div>`;
-
-  html += `<div class="instructions">💡 Drag marker on map or edit below. Orange highlight = changed.</div>`;
-
-  html += `<div class="coords-group">`;
-  html += `<input type="number" class="coord-input" id="latInput" step="0.000001" placeholder="Latitude" value="${stop.lat.toFixed(6)}" onchange="updateStopFromInput('lat')">`;
-  html += `<input type="number" class="coord-input" id="lngInput" step="0.000001" placeholder="Longitude" value="${stop.lng.toFixed(6)}" onchange="updateStopFromInput('lng')">`;
-  html += `</div>`;
-
-  html += `<div class="radius-group">`;
-  html += `<label style="color: #8b7d60;">Radius (m):</label>`;
-  html += `<input type="number" class="radius-input" id="radiusInput" min="20" max="200" value="${stop.radius_m}" onchange="updateStopFromInput('radius')">`;
-  html += `</div>`;
-
-  if (isModified) {
-    html += `<div style="font-size: 9px; color: #ff9800; padding: 6px; background: rgba(255, 152, 0, 0.1); border-radius: 3px; margin-bottom: 6px;">✎ Modified from original</div>`;
-  }
-
-  html += `<div style="font-size: 9px; color: #8b7d60; margin-bottom: 6px;">Walk time: ${stop.walking_time_to_next} | Target narration: ${stop.narration_target}</div>`;
-  html += `<div class="narration-text"><strong>Theme:</strong> ${stop.theme}</div>`;
-
-  html += `</div>`;
-
-  container.innerHTML = html;
-
-  document.getElementById('prevBtn').disabled = currentStopIndex === 0;
-  document.getElementById('nextBtn').disabled = currentStopIndex === TOUR_DATA.length - 1;
-
-  map.setView([stop.lat, stop.lng], 15);
-  updateMarkerStyles();
-}
-
-function updateMarkerStyles() {
-  markers.forEach((marker, idx) => {
-    const stop = TOUR_DATA[idx];
-    const orig = ORIGINAL_COORDS[idx];
-    const isModified = (stop.lat !== orig.lat || stop.lng !== orig.lng || stop.radius_m !== orig.radius_m);
-
-    marker.setIcon(L.divIcon({
-      className: `stop-marker ${idx === currentStopIndex ? 'active' : ''}`,
-      html: `<div class="marker-dot ${isModified ? 'modified' : ''}"></div>`,
-      iconSize: [14, 14],
-      iconAnchor: [7, 7]
-    }));
   });
+  updateRoutePolyline();updateMarkerStyles();
+}
+function markerIcon(idx){
+  const s=STOPS[idx];
+  return L.divIcon({className:'stop-marker'+(idx===currentStopIndex?' active':''),html:'<div class="marker-dot'+(stopModified(s)?' modified':'')+'"></div>',iconSize:[14,14],iconAnchor:[7,7]});
+}
+function updateMarkerStyles(){markers.forEach((m,i)=>m.setIcon(markerIcon(i)));}
+function updateRoutePolyline(){
+  if(routePolyline)map.removeLayer(routePolyline);
+  routePolyline=L.polyline(STOPS.map(s=>[s.lat,s.lng]),{color:'#c9a876',weight:2,opacity:.3,dashArray:'5,5'}).addTo(map);
 }
 
-function updateStopFromInput(field) {
-  const stop = TOUR_DATA[currentStopIndex];
-
-  if (field === 'lat') {
-    const val = parseFloat(document.getElementById('latInput').value);
-    if (!isNaN(val)) {
-      stop.lat = val;
-      markers[currentStopIndex].setLatLng([val, stop.lng]);
-      updateRoutePolyline();
-    }
-  } else if (field === 'lng') {
-    const val = parseFloat(document.getElementById('lngInput').value);
-    if (!isNaN(val)) {
-      stop.lng = val;
-      markers[currentStopIndex].setLatLng([stop.lat, val]);
-      updateRoutePolyline();
-    }
-  } else if (field === 'radius') {
-    const val = parseInt(document.getElementById('radiusInput').value);
-    if (!isNaN(val)) {
-      stop.radius_m = val;
-    }
-  }
-
-  updateMarkerStyles();
-  renderCurrentStop();
-}
-
-function nextStop() {
-  if (currentStopIndex < TOUR_DATA.length - 1) {
-    currentStopIndex++;
-    renderCurrentStop();
-  }
-}
-
-function previousStop() {
-  if (currentStopIndex > 0) {
-    currentStopIndex--;
-    renderCurrentStop();
-  }
-}
-
-function jumpToStop(idx) {
-  currentStopIndex = idx;
-  renderCurrentStop();
-}
-
-function exportCoordinates() {
-  const output = TOUR_DATA.map(stop => ({
-    order: stop.order,
-    name: stop.name,
-    lat: stop.lat,
-    lng: stop.lng,
-    [RADIUS_KEY]: stop.radius_m
-  }));
-
-  const json = JSON.stringify(output, null, 2);
-  navigator.clipboard.writeText(json).then(() => {
-    alert('✓ Coordinates copied to clipboard!\n\nPaste into your editor or share with the team.');
-  }).catch(() => {
-    const textarea = document.createElement('textarea');
-    textarea.value = json;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    alert('✓ Coordinates copied to clipboard!');
+/* ── STOP CARD ── */
+function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function wc(t){return String(t||'').trim()?String(t).trim().split(/\s+/).length:0;}
+function renderCurrentStop(){
+  if(!STOPS.length){document.getElementById('storyContent').innerHTML='<p style="padding:14px;color:#8b7d60;">No stops. ➕ Add one.</p>';return;}
+  if(currentStopIndex>=STOPS.length)currentStopIndex=STOPS.length-1;
+  const stop=STOPS[currentStopIndex];
+  let h='<div class="stop-card'+(stopModified(stop)?' modified':'')+'">';
+  h+='<div class="stop-number"><span>'+(prologueRef===stop?'★ prologue · ':'')+'Stop '+stop.order+' of '+STOPS.length+'</span>'
+    +'<span class="rowbtns">'
+    +'<button class="mini-btn" onclick="moveStop(-1)" '+(currentStopIndex===0?'disabled':'')+'>↑</button>'
+    +'<button class="mini-btn" onclick="moveStop(1)" '+(currentStopIndex===STOPS.length-1?'disabled':'')+'>↓</button>'
+    +'<button class="mini-btn danger" onclick="deleteStop()">🗑 delete</button></span></div>';
+  h+='<input class="name-input" id="nameInput" value="'+esc(stop.name)+'" onchange="setField(\'name\',this.value)">';
+  h+='<div class="instructions">💡 Drag the pin or edit below. Spirit = which apparition the Ghost Lens summons here. Word counts show ≈spoken seconds at 150&nbsp;wpm (aim 60–90s for the main story). Orange = changed since load.</div>';
+  h+='<div class="coords-group">'
+    +'<input type="number" class="coord-input" step="0.000001" value="'+Number(stop.lat).toFixed(6)+'" onchange="setNum(\'lat\',this.value)">'
+    +'<input type="number" class="coord-input" step="0.000001" value="'+Number(stop.lng).toFixed(6)+'" onchange="setNum(\'lng\',this.value)">'
+    +'</div>';
+  h+='<div class="radius-group"><label style="color:#8b7d60;">Radius (m):</label>'
+    +'<input type="number" class="radius-input" min="20" max="200" value="'+stop.radius_m+'" onchange="setNum(\'radius_m\',this.value)">'
+    +'<label style="color:#8b7d60;margin-left:8px;">Spirit:</label><select class="spirit-sel" onchange="setField(\'spirit\',this.value)">'
+    +SPIRITS.map(k=>'<option value="'+k+'"'+((stop.spirit||'shade')===k?' selected':'')+'>'+k+'</option>').join('')
+    +'</select></div>';
+  VARIANTS.forEach(([key,ak,label])=>{
+    const words=wc(stop[key]);const secs=Math.round(words/150*60);
+    const regen=textChanged(stop,key);
+    h+='<div class="script-block"><label><span>'+label+'</span><span class="wc'+(regen?' regen':'')+'">'+words+' words ≈ '+secs+'s'+(regen?' · 🔴 regen audio':'')+'</span></label>'
+      +'<textarea class="script-ta" onchange="setField(\''+key+'\',this.value)">'+esc(stop[key])+'</textarea></div>';
   });
+  const a=stop.audio||{};
+  h+='<div class="audio-line">🎧 '+esc(a.early||'—')+'<br>🎧 '+esc(a.on||'—')+'<br>🎧 '+esc(a.late||'—')+'</div>';
+  h+='</div>';
+  document.getElementById('storyContent').innerHTML=h;
+  document.getElementById('prevBtn').disabled=currentStopIndex===0;
+  document.getElementById('nextBtn').disabled=currentStopIndex===STOPS.length-1;
+  map.setView([stop.lat,stop.lng],15);
+  updateMarkerStyles();
+  document.getElementById('hdrSub').textContent=DATA_URL+' · '+STOPS.length+' stops'+(dirty?' · UNSAVED EDITS — Export when done':'');
+}
+function setField(k,v){STOPS[currentStopIndex][k]=v;dirty=true;renderCurrentStop();}
+function setNum(k,v){const n=parseFloat(v);if(isNaN(n))return;const s=STOPS[currentStopIndex];s[k]=k==='radius_m'?Math.round(n):+n.toFixed(6);dirty=true;
+  if(k==='lat'||k==='lng')markers[currentStopIndex].setLatLng([s.lat,s.lng]);updateRoutePolyline();renderCurrentStop();}
+
+/* ── ADD / DELETE / REORDER ── */
+function renumber(){
+  STOPS.forEach((s,i)=>s.order=i+1);
+  if(prologueRef&&TOUR.tour&&TOUR.tour.prologue_order!==prologueRef.order){
+    TOUR.tour.prologue_order=prologueRef.order; // prologue tracked by identity
+  }
+}
+function startPlacing(){placing=true;document.getElementById('map').classList.add('placing');alert('Click the map where the new stop stands. It will be inserted AFTER the current stop.');}
+function addStopAt(lat,lng){
+  placing=false;document.getElementById('map').classList.remove('placing');
+  const pat=audioPattern();const n=nextFileNum();
+  const nn=String(n).padStart(pat?pat.pad:2,'0');
+  const audio=pat?{early:pat.pre+nn+pat.mid+'EARLY'+pat.ext,on:pat.pre+nn+pat.mid+'ON'+pat.ext,late:pat.pre+nn+pat.mid+'LATE'+pat.ext}:{early:'',on:'',late:''};
+  const s={id:'stop_new_'+n,order:0,name:'New Stop',lat:+lat.toFixed(6),lng:+lng.toFixed(6),radius:45,radius_m:45,theme:'',tags:[],audio:audio,character_voice:null,early_arrival:'',on_time:'',late_arrival:'',spirit:'shade'};
+  STOPS.splice(currentStopIndex+1,0,s);
+  renumber();currentStopIndex=STOPS.indexOf(s);dirty=true;
+  rebuildMarkers();renderCurrentStop();
+  if(!pat)alert('Could not derive the audio filename pattern — set the three filenames by hand in the exported JSON.');
+}
+function deleteStop(){
+  const s=STOPS[currentStopIndex];
+  if(!confirm('Delete stop '+s.order+' — '+s.name+'?\n(The audio files stay on the server; only the stop leaves the tour.)'))return;
+  if(prologueRef===s)prologueRef=null;
+  STOPS.splice(currentStopIndex,1);renumber();dirty=true;
+  if(currentStopIndex>0)currentStopIndex--;
+  rebuildMarkers();renderCurrentStop();
+}
+function moveStop(delta){
+  const i=currentStopIndex,j=i+delta;if(j<0||j>=STOPS.length)return;
+  [STOPS[i],STOPS[j]]=[STOPS[j],STOPS[i]];renumber();currentStopIndex=j;dirty=true;
+  rebuildMarkers();renderCurrentStop();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // App will start once JSON loads
-});
+function nextStop(){if(currentStopIndex<STOPS.length-1){currentStopIndex++;renderCurrentStop();}}
+function previousStop(){if(currentStopIndex>0){currentStopIndex--;renderCurrentStop();}}
+function jumpToStop(i){currentStopIndex=i;renderCurrentStop();}
+
+/* ── EXPORT — the complete file + the regen report ── */
+function exportTour(){
+  const out=JSON.parse(JSON.stringify(TOUR));
+  out.stops=STOPS.map(s=>{
+    const c=JSON.parse(JSON.stringify(s));
+    if(RADIUS_KEY==='radius'){c.radius=c.radius_m;delete c.radius_m;}
+    else{c.radius_m=c.radius_m;delete c.radius;}
+    return c;
+  });
+  const json=JSON.stringify(out,null,2);
+  // regen report: exactly which recordings the text edits require
+  const regen=[];const news=[];
+  STOPS.forEach(s=>{
+    const o=origOf(s);
+    if(!o){news.push('Stop '+s.order+' "'+s.name+'" is NEW — record all three: '+[s.audio.early,s.audio.on,s.audio.late].filter(Boolean).join(', '));return;}
+    VARIANTS.forEach(([key,ak])=>{
+      if(textChanged(s,key))regen.push('Stop '+s.order+' "'+s.name+'" — '+ak.toUpperCase()+' → '+((s.audio||{})[ak]||'(no filename)'));
+    });
+  });
+  const removed=ORIGINAL.filter(o=>!STOPS.some(s=>s.id===o.id)).map(o=>'Stop "'+o.name+'" was removed (its audio files can stay; they are ignored).');
+  const publicCount=STOPS.length-(prologueRef?1:0);
+  // download
+  const base=(DATA_URL.split('/').pop()||'tour.json');
+  const blob=new Blob([json],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=base;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},3000);
+  // report
+  let r='<h2>Exported '+base+'</h2>';
+  r+='<p>The complete tour file just downloaded. To ship it:</p>';
+  r+='<ol><li>Replace <b>'+esc(DATA_URL)+'</b> in the project folder with the downloaded file</li>';
+  r+='<li>Run <b>python check_tour.py</b> (validates everything, incl. audio files)</li>';
+  r+='<li>Deploy: <b>pwsh ./deploy.ps1</b></li></ol>';
+  if(news.length)r+='<p class="warn"><b>New stops — record audio:</b></p><pre>'+news.join('\n')+'</pre>';
+  if(regen.length)r+='<p class="warn"><b>Words changed — regenerate these recordings</b> (generate_audio_via_cloudflare.py):</p><pre>'+regen.join('\n')+'</pre>';
+  if(removed.length)r+='<pre>'+removed.join('\n')+'</pre>';
+  if(!news.length&&!regen.length)r+='<p>✅ No script text changed — no audio work needed.</p>';
+  r+='<p>Public stop count is now <b>'+publicCount+'</b>'+(prologueRef?' (+1 guest prologue)':'')+'. If that number changed, update the tour page schema/FAQ counts — check_tour.py will flag exactly where.</p>';
+  r+='<p style="margin-top:10px"><button class="mini-btn go" onclick="copyExport()">📋 also copy JSON to clipboard</button> <button class="mini-btn" onclick="document.getElementById(\'report\').style.display=\'none\'">close</button></p>';
+  window.__exportJson=json;
+  document.getElementById('reportBox').innerHTML=r;
+  document.getElementById('report').style.display='block';
+  dirty=false;
+}
+function copyExport(){
+  navigator.clipboard.writeText(window.__exportJson||'').then(()=>alert('✓ JSON copied'));
+}
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 </script>
 
 </body>
