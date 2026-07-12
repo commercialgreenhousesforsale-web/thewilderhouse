@@ -90,7 +90,14 @@ a{color:#e7c389}
 .map-hint{font-size:10px;color:#8b7d60;padding:7px 10px;text-align:center;border-top:1px solid rgba(233,220,198,.1)}
 .recenter{position:absolute;right:10px;bottom:44px;z-index:800;background:rgba(15,15,20,.92);border:1px solid rgba(232,201,106,.4);color:#e7c389;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;display:none;min-height:40px}
 .leaflet-container{font-family:Georgia,serif}
-.leaflet-tile{filter:grayscale(.25) brightness(.85) sepia(.15)}
+/* Spooky night map: OSM tiles (the only CSP-allowed provider) inverted to
+   black, then warmed to brown — candlelit parchment look, pure CSS, no new
+   tile host. Owner preference 2026-07-11: dark map, not color. */
+/* !important + #map specificity: leaflet.min.css loads AFTER this style block
+   and sets .leaflet-tile{filter:inherit}, which silently killed earlier tints */
+#map .leaflet-tile{filter:grayscale(1) invert(1) brightness(.82) contrast(1.12) sepia(.42)!important}
+/* vignette above the tiles (550) but below pins (600) — edges fall into dark */
+#map::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:550;background:radial-gradient(ellipse at center,transparent 52%,rgba(6,4,2,.62) 100%)}
 .stop-pin div{width:18px;height:18px;border-radius:50%;background:#2a2317;border:2px solid rgba(232,201,106,.75);box-shadow:0 0 6px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font-size:9px;color:#e7c389}
 .stop-pin.done div{border-color:rgba(157,185,138,.85);background:#1c241a;color:#9db98a}
 .stop-pin.active div{background:#e7c389;border-color:#fff;color:#10210f}
