@@ -353,10 +353,16 @@ let draggingMarkerIndex = null;
 // URL, edit any tour's live data instead (e.g. ?tour=tour loads /data/tour.json).
 const TOUR_PARAM = (new URLSearchParams(location.search).get('tour') || '').replace(/[^a-z0-9_-]/gi, '');
 const DATA_URL = TOUR_PARAM ? ('/data/' + TOUR_PARAM + '.json') : '/FORSYTH_GHOST_TOUR_17_STOPS.json';
+// The legacy file names the trigger radius `radius_m`; live tour JSONs name it
+// `radius`. The editor works in radius_m internally and exports back using
+// whichever key the loaded file used — so a live-data edit round-trips intact.
+let RADIUS_KEY = 'radius_m';
 fetch(DATA_URL + '?v=' + Date.now())
   .then(res => res.json())
   .then(data => {
     TOUR_DATA = data.stops;
+    if (TOUR_DATA.length && TOUR_DATA[0].radius_m === undefined && TOUR_DATA[0].radius !== undefined) RADIUS_KEY = 'radius';
+    TOUR_DATA.forEach(s => { if (s.radius_m === undefined) s.radius_m = (s.radius !== undefined ? s.radius : 40); });
     ORIGINAL_COORDS = JSON.parse(JSON.stringify(TOUR_DATA));
     initApp();
   })
@@ -558,7 +564,7 @@ function exportCoordinates() {
     name: stop.name,
     lat: stop.lat,
     lng: stop.lng,
-    radius_m: stop.radius_m
+    [RADIUS_KEY]: stop.radius_m
   }));
 
   const json = JSON.stringify(output, null, 2);
