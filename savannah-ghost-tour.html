@@ -582,25 +582,29 @@ function shareTour(){
    captured photo shows exactly what the guest saw. */
 let lensStream=null,lensRaf=0,lensFacing='environment',lensSprite=null,lensT0=0,
     lensBearing=null,lensHeading=null,lensOnOrient=null,lensBlob=null;
-/* Five generic apparitions — silhouettes only, never named real people.
-   Each stop has a RESIDENT spirit (same one every visit, so it becomes lore);
-   away from a stop, one finds you at random. 12am-4am = the witching hour
-   (colder, bolder). In October a second, fainter one sometimes lurks behind. */
-const GHOST_KINDS=['shade','lady','hat','tall','child'];
-const GHOST_RESIDENTS={2:'lady',7:'lady',16:'hat',17:'hat',18:'hat'};
-const GHOST_H={shade:.62,lady:.64,hat:.66,tall:.72,child:.42};
+/* Story-matched apparitions — silhouettes only, never named real people.
+   Each stop's RESIDENT spirit echoes its story (soldier at the war memorials,
+   the lady at Mary Telfair's hospital, a veiled mourner at the fountain's
+   sorrow, the hatted man on the merchant river). Authored per stop as
+   stop.spirit in the tour JSON; GHOST_RESIDENTS is the built-in fallback.
+   At the finale the layers gather — a second spirit always joins.
+   12am-4am = witching hour (colder, bolder). October: chance of a lurker. */
+const GHOST_KINDS=['shade','lady','hat','tall','child','soldier','veil'];
+const GHOST_RESIDENTS={1:'shade',2:'lady',3:'soldier',4:'tall',5:'soldier',6:'veil',7:'child',8:'soldier',9:'shade',10:'soldier',11:'hat',12:'veil',13:'shade',14:'soldier',15:'hat',16:'hat',17:'hat',18:'hat'};
+const GHOST_H={shade:.62,lady:.64,hat:.66,tall:.72,child:.42,soldier:.68,veil:.64};
 let lensKind='shade',lensWitching=false,lensSecond=false;
 function pickGhost(){
   lensWitching=(new Date().getHours()<4);
   lensSecond=(new Date().getMonth()===9)&&Math.random()<.25;
   if(currentStop&&currentStop.order!=null){
-    lensKind=GHOST_RESIDENTS[currentStop.order]||GHOST_KINDS[currentStop.order%GHOST_KINDS.length];
+    lensKind=currentStop.spirit||GHOST_RESIDENTS[currentStop.order]||GHOST_KINDS[currentStop.order%GHOST_KINDS.length];
+    if(currentStop.order===18)lensSecond=true; /* the gathering at the river */
   }else lensKind=GHOST_KINDS[Math.floor(Math.random()*GHOST_KINDS.length)];
 }
 function makeGhostSprite(){
   const w=440,h=640,c=document.createElement('canvas');c.width=w;c.height=h;
   const x=c.getContext('2d');
-  const T={shade:[235,240,255],lady:[245,238,225],hat:[222,230,246],tall:[218,228,248],child:[242,240,232]}[lensKind]||[235,240,255];
+  const T={shade:[235,240,255],lady:[245,238,225],hat:[222,230,246],tall:[218,228,248],child:[242,240,232],soldier:[214,224,242],veil:[244,238,230]}[lensKind]||[235,240,255];
   const blob=(cx,cy,rx,ry,a)=>{x.save();x.translate(cx,cy);x.scale(rx/100,ry/100);
     const g=x.createRadialGradient(0,0,10,0,0,100);
     g.addColorStop(0,'rgba('+T[0]+','+T[1]+','+T[2]+','+a+')');g.addColorStop(.55,'rgba('+Math.round(T[0]*.92)+','+Math.round(T[1]*.94)+','+Math.round(T[2]*.98)+','+(a*.55)+')');g.addColorStop(1,'rgba(200,215,240,0)');
@@ -633,6 +637,23 @@ function makeGhostSprite(){
     blob(w/2-20,545,85,140,.48);        /* fading feetless drift */
     blob(w/2+45,520,70,120,.4);
     eye(w/2-22,98,15,.55);eye(w/2+22,98,15,.55);
+  }else if(lensKind==='soldier'){
+    blob(w/2,92,64,30,.78);             /* flat forage cap */
+    blob(w/2+42,108,34,14,.6);          /* visor hint */
+    blob(w/2,168,78,86,.96);            /* head at attention */
+    blob(w/2-118,255,52,60,.6);         /* squared shoulders */
+    blob(w/2+118,255,52,60,.6);
+    blob(w/2,330,118,205,.72);          /* rigid upright coat */
+    blob(w/2,545,95,120,.48);           /* fading below the knee */
+    eye(w/2-28,170,18,.5);eye(w/2+28,170,18,.5);
+  }else if(lensKind==='veil'){
+    blob(w/2,150,92,120,.7);            /* the veil, draped over everything */
+    blob(w/2+6,172,72,84,.9);           /* bowed head beneath it */
+    blob(w/2,175,110,60,.5);            /* veil settling on the shoulders */
+    blob(w/2,320,105,150,.72);          /* slight frame */
+    blob(w/2,470,150,170,.58);          /* long mourning skirt */
+    blob(w/2,575,175,105,.44);          /* hem into mist */
+    /* no eyes — her face is veiled */
   }else if(lensKind==='child'){
     blob(w/2,255,85,92,.96);            /* round head, low in frame */
     blob(w/2,395,115,140,.74);          /* small body */
