@@ -65,6 +65,25 @@ a{color:#e7c389}
 .leg .lt{font-size:13.5px;color:#e9dcc6}
 .leg .ls{font-size:11.5px;color:#8b7d60;margin-top:2px}
 .rtip{font-size:11.5px;color:#8b7d60;margin-top:10px;font-style:italic}
+.steps{margin:4px 0 2px 41px}
+.steps summary{font-size:11.5px;color:#9db98a;cursor:pointer;list-style:none}
+.steps summary::before{content:'▸ '}
+.steps[open] summary::before{content:'▾ '}
+.steps ol{margin:6px 0 4px 16px}
+.steps li{font-size:12px;color:#b7a888;margin-bottom:4px;line-height:1.45}
+.steps li b{color:#d9c9a6;font-weight:400}
+.guide-btn{width:100%;margin-top:12px;background:rgba(90,160,42,.18);border:1.5px solid rgba(90,160,42,.55);color:#b6d99a;padding:12px;border-radius:8px;font-family:Georgia,serif;font-size:14.5px;cursor:pointer;min-height:46px}
+.guide-btn:hover{background:rgba(90,160,42,.3)}
+#guideBar{position:fixed;left:0;right:0;bottom:0;z-index:1500;background:linear-gradient(180deg,#17130c,#0d0a06);border-top:2px solid rgba(90,160,42,.6);padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:none;box-shadow:0 -8px 30px rgba(0,0,0,.6)}
+#guideBar.on{display:block}
+#guideBar.alert{border-top-color:#e7c389;background:linear-gradient(180deg,#2a1f0e,#141006)}
+.gb-phase{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8b7d60;margin-bottom:4px}
+.gb-main{font-size:17px;color:#e9dcc6;line-height:1.35}
+.gb-sub{font-size:12.5px;color:#9db98a;margin-top:4px;min-height:16px}
+.gb-row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.gb-x{background:none;border:1px solid rgba(233,220,198,.3);color:#b7a888;border-radius:7px;padding:9px 13px;font-size:12px;cursor:pointer;flex-shrink:0;min-height:42px}
+.bus-marker{filter:drop-shadow(0 0 6px rgba(0,0,0,.8))}
+.live-pill{display:inline-block;background:rgba(90,160,42,.15);border:1px solid rgba(90,160,42,.45);color:#9db98a;font-size:10px;letter-spacing:1px;padding:2px 8px;border-radius:12px;vertical-align:middle;margin-left:6px}
 /* map */
 #mapPanel{border:1px solid rgba(233,220,198,.14);border-radius:12px;overflow:hidden;margin:6px 0 16px;position:relative}
 #map{height:340px;background:#11100c;position:relative}
@@ -150,7 +169,20 @@ a{color:#e7c389}
 
   <div class="foot">
     Built as a free guide by <a href="/">The Wilder House</a> — two 1898 suites three blocks from Forsyth Park.<br>
-    Routes &amp; stops from Chatham Area Transit. Always confirm current hours at <a href="https://catchacat.org" target="_blank" rel="noopener">catchacat.org</a> before you rely on the last ride.
+    Routes &amp; stops from Chatham Area Transit. Walking directions &copy; <a href="https://project-osrm.org" target="_blank" rel="noopener">OSRM</a> / OpenStreetMap contributors.<br>
+    Always confirm current hours at <a href="https://catchacat.org" target="_blank" rel="noopener">catchacat.org</a> before you rely on the last ride.
+  </div>
+</div>
+
+<!-- GUIDE-ME live navigation bar -->
+<div id="guideBar" role="status" aria-live="polite">
+  <div class="gb-phase" id="gbPhase">Walking to your stop</div>
+  <div class="gb-row">
+    <div style="min-width:0">
+      <div class="gb-main" id="gbMain">Head along Drayton St</div>
+      <div class="gb-sub" id="gbSub"></div>
+    </div>
+    <button class="gb-x" id="gbStop" type="button">✕ End</button>
   </div>
 </div>
 
@@ -181,6 +213,7 @@ function boot(){
   const opts=DATA.destinations.map(d=>`<option value="${d.name}">${d.name}${d.drive?' (drive)':''}</option>`).join('');
   $('fromSel').innerHTML+=opts;$('toSel').innerHTML+=opts;
   renderStatus();initMap();
+  pollBuses();busTimer=setInterval(pollBuses,20000);
   $('fromSel').addEventListener('change',e=>{const d=DATA.destinations.find(x=>x.name===e.target.value);if(d){fromPt={...d,label:d.name};$('fromAddr').value='';}});
   $('toSel').addEventListener('change',e=>{const d=DATA.destinations.find(x=>x.name===e.target.value);if(d){toPt={...d,label:d.name};$('toAddr').value='';}});
   $('fromGps').addEventListener('click',useLoc);
@@ -281,12 +314,11 @@ function plan(){
   if(crossesRiver){
     if(oN.mi<0.8&&dN.mi<0.8&&oN.i!==dN.i){
       const t=walkMin(oN.mi)+DATA.schedule.ferry.headwayMin/2+6+walkMin(dN.mi);
-      R.innerHTML=renderRoute({type:'ferry',oN:{...f[oN.i],mi:oN.mi},dN:{...f[dN.i],mi:dN.mi},total:t},999);
-      drawRoute({type:'ferry'});return;
+      finalize({type:'ferry',oN:{...f[oN.i],mi:oN.mi},dN:{...f[dN.i],mi:dN.mi},total:t},999);return;
     }
     R.innerHTML=card('ferry','⛴','Take the Belles Ferry across the river',
       'Your start and destination are on opposite banks of the Savannah River — the free ferry is the way across, between River Street and Hutchinson Island, every 10 minutes.',[]);
-    drawRoute({type:'ferry'});return;
+    drawRoute(null);return;
   }
   // candidate transit routes (same bank)
   const cands=[];
@@ -310,46 +342,100 @@ function plan(){
   // walking wins when it's short and not much slower than the best ride
   const walkWins=directWalk<=14 && (!best||directWalk<=best.total+3);
   if(walkWins||!best){
-    R.innerHTML=card('walk','🚶','Just walk it — about '+directWalk+' min',
-      best?'It\'s close enough that walking beats waiting for the shuttle. (The free ride is there if you\'d rather: '+best.total+' min with the wait.)':'It\'s an easy walk, and no shuttle stop is close enough to save you time.',
-      [{ic:'🚶',t:'Walk '+directWalk+' min · about '+directMi.toFixed(1)+' mi',s:fromPt.label+' → '+toPt.label}]);
-    drawRoute({walk:[[fromPt.lat,fromPt.lng],[toPt.lat,toPt.lng]]});return;
+    finalize({type:'walk',min:directWalk,mi:directMi,alt:best},directWalk);return;
   }
-  R.innerHTML=renderRoute(best,directWalk);
-  drawRoute(best);
+  finalize(best,directWalk);
+}
+
+/* ── enrichment: real street walking legs from /route-proxy ── */
+const RP_CACHE={};
+async function routeProxy(a,b){
+  const k=[a.lat.toFixed(5),a.lng.toFixed(5),b.lat.toFixed(5),b.lng.toFixed(5)].join(',');
+  if(k in RP_CACHE)return RP_CACHE[k];
+  try{
+    const r=await fetch('/route-proxy?from='+a.lat+','+a.lng+'&to='+b.lat+','+b.lng);
+    const d=await r.json();
+    if(d&&d.geom&&d.geom.length>1){RP_CACHE[k]=d;return d;}
+  }catch(e){}
+  RP_CACHE[k]=null;return null;
+}
+function legSpec(r){
+  if(r.type==='walk')return[{key:'w1',a:fromPt,b:toPt}];
+  if(r.type==='ferry')return[{key:'w1',a:fromPt,b:r.oN},{key:'w2',a:r.dN,b:toPt}];
+  if(r.type==='single')return[{key:'w1',a:fromPt,b:r.o.stop},{key:'w2',a:r.d.stop,b:toPt}];
+  if(r.type==='transfer')return[{key:'w1',a:fromPt,b:r.o.stop},{key:'wt',a:r.tr.sa,b:r.tr.sb},{key:'w2',a:r.d.stop,b:toPt}];
+  return[];
+}
+async function finalize(r,directWalk){
+  window.__route=r;r.directWalk=directWalk;r._legs=legSpec(r);
+  $('result').innerHTML=renderAny(r);drawRoute(r);
+  const got=await Promise.all(r._legs.map(l=>routeProxy(l.a,l.b)));
+  if(window.__route!==r)return; // superseded by a newer plan
+  r._legs.forEach((l,i)=>{r[l.key]=got[i];});
+  // refine total time with real walking minutes
+  const wm=k=>r[k]?r[k].min:null;
+  if(r.type==='walk'&&wm('w1'))r.min=wm('w1');
+  if(r.type==='single'&&wm('w1')!=null&&wm('w2')!=null)r.total=wm('w1')+HW()+Math.max(1,Math.round(r.ride*RIDE_MIN_PER_STOP))+wm('w2');
+  if(r.type==='ferry'&&wm('w1')!=null&&wm('w2')!=null)r.total=wm('w1')+DATA.schedule.ferry.headwayMin/2+6+wm('w2');
+  if(r.type==='transfer'&&wm('w1')!=null&&wm('w2')!=null)r.total=wm('w1')+HW()+Math.max(1,Math.round(r.r1*RIDE_MIN_PER_STOP))+(r.wt?r.wt.min:walkMin(r.tr.mi))+HW()+Math.max(1,Math.round(r.r2*RIDE_MIN_PER_STOP))+wm('w2');
+  $('result').innerHTML=renderAny(r);drawRoute(r);
+}
+function stepsHtml(w){
+  if(!w||!w.steps||w.steps.length<2)return'';
+  const ftTxt=f=>f>900?(f/5280).toFixed(1)+' mi':f+' ft';
+  return'<details class="steps"><summary>turn-by-turn ('+w.min+' min · '+w.mi+' mi)</summary><ol>'
+    +w.steps.map(s=>'<li><b>'+s.t+'</b>'+(s.ft>15?' · '+ftTxt(s.ft):'')+'</li>').join('')+'</ol></details>';
+}
+function walkLegRow(w,fallbackMin,fallbackMi,title,sub){
+  const min=w?w.min:fallbackMin;
+  return{ic:'🚶',t:title.replace('{m}',min),s:sub,steps:stepsHtml(w)};
+}
+function renderAny(r){
+  if(r.type==='walk'){
+    const min=r.w1?r.w1.min:r.min;
+    const legs=[walkLegRow(r.w1,r.min,r.mi,'Walk {m} min · about '+(r.w1?r.w1.mi:r.mi.toFixed(1))+' mi',fromPt.label+' → '+toPt.label)];
+    return card('walk','🚶','Just walk it — about '+min+' min',
+      r.alt?'It\'s close enough that walking beats waiting for the shuttle. (The free ride is there if you\'d rather: '+r.alt.total+' min with the wait.)':'It\'s an easy walk, and no shuttle stop is close enough to save you time.',
+      legs,'', true);
+  }
+  return renderRoute(r,r.directWalk);
 }
 
 function loopName(k){return DATA.loops[k].name;}
 function renderRoute(r,directWalk){
   const legs=[];let verdict,sum;
+  const wmin=(w,fb)=>w?w.min:fb;
   if(r.type==='single'){
     verdict='Take the '+loopName(r.loop);
-    sum='About '+r.total+' min door to door · '+r.ride+' stop'+(r.ride>1?'s':'')+' on the shuttle';
-    legs.push({ic:'🚶',t:'Walk to '+r.o.stop.name,s:walkMin(r.o.mi)+' min ('+Math.round(r.o.mi*5280)+' ft)'});
+    sum='About '+r.total+' min door to door · '+r.ride+' stop'+(r.ride>1?'s':'')+' on the shuttle'+liveNote();
+    legs.push({ic:'🚶',t:'Walk '+wmin(r.w1,walkMin(r.o.mi))+' min to '+r.o.stop.name,s:r.w1?r.w1.mi+' mi on foot':Math.round(r.o.mi*5280)+' ft',steps:stepsHtml(r.w1)});
     legs.push({cls:'ride',ic:'🚌',t:'Ride the '+loopName(r.loop)+' · '+r.ride+' stop'+(r.ride>1?'s':''),s:'Get off at '+r.d.stop.name+' · about every 10 min'});
-    legs.push({ic:'🚶',t:'Walk to '+ (toPt.label||'your destination'),s:walkMin(r.d.mi)+' min'});
+    legs.push({ic:'🚶',t:'Walk '+wmin(r.w2,walkMin(r.d.mi))+' min to '+(toPt.label||'your destination'),s:'',steps:stepsHtml(r.w2)});
   }else if(r.type==='transfer'){
     verdict='Ride two loops (one easy transfer)';
-    sum='About '+r.total+' min · transfer near '+r.tr.sa.name;
-    legs.push({ic:'🚶',t:'Walk to '+r.o.stop.name,s:walkMin(r.o.mi)+' min'});
+    sum='About '+r.total+' min · transfer near '+r.tr.sa.name+liveNote();
+    legs.push({ic:'🚶',t:'Walk '+wmin(r.w1,walkMin(r.o.mi))+' min to '+r.o.stop.name,s:'',steps:stepsHtml(r.w1)});
     legs.push({cls:'ride',ic:'🚌',t:'Ride the '+loopName(r.la)+' · '+r.r1+' stop'+(r.r1>1?'s':''),s:'Get off at '+r.tr.sa.name});
-    legs.push({ic:'🔁',t:'Transfer to the '+loopName(r.lb),s:'a '+walkMin(r.tr.mi)+' min walk to '+r.tr.sb.name});
+    legs.push({ic:'🔁',t:'Transfer to the '+loopName(r.lb),s:'a '+wmin(r.wt,walkMin(r.tr.mi))+' min walk to '+r.tr.sb.name,steps:stepsHtml(r.wt)});
     legs.push({cls:'ride',ic:'🚌',t:'Ride the '+loopName(r.lb)+' · '+r.r2+' stop'+(r.r2>1?'s':''),s:'Get off at '+r.d.stop.name});
-    legs.push({ic:'🚶',t:'Walk to '+(toPt.label||'your destination'),s:walkMin(r.d.mi)+' min'});
+    legs.push({ic:'🚶',t:'Walk '+wmin(r.w2,walkMin(r.d.mi))+' min to '+(toPt.label||'your destination'),s:'',steps:stepsHtml(r.w2)});
   }else if(r.type==='ferry'){
     verdict='Take the Belles Ferry';
     sum='About '+r.total+' min · a free river crossing';
-    legs.push({ic:'🚶',t:'Walk to '+r.oN.name,s:walkMin(r.oN.mi)+' min'});
+    legs.push({ic:'🚶',t:'Walk '+wmin(r.w1,walkMin(r.oN.mi))+' min to '+r.oN.name,s:'',steps:stepsHtml(r.w1)});
     legs.push({cls:'ferry',ic:'⛴',t:'Ride the ferry to '+r.dN.name,s:'about every 10 min · 7am–10pm'});
-    legs.push({ic:'🚶',t:'Walk to '+(toPt.label||'your destination'),s:walkMin(r.dN.mi)+' min'});
+    legs.push({ic:'🚶',t:'Walk '+wmin(r.w2,walkMin(r.dN.mi))+' min to '+(toPt.label||'your destination'),s:'',steps:stepsHtml(r.w2)});
   }
   const tip=directWalk<=22?('Prefer to stretch your legs? It\'s about a '+directWalk+' min walk straight there.'):'';
-  return card(r.type==='ferry'?'ferry':'',r.type==='ferry'?'⛴':'🚌',verdict,sum,legs,tip);
+  return card(r.type==='ferry'?'ferry':'',r.type==='ferry'?'⛴':'🚌',verdict,sum,legs,tip,r.type!=='transfer');
 }
-function card(cls,icon,verdict,sum,legs,tip){
+function liveNote(){return window.__busLive?' <span class="live-pill">LIVE buses on map</span>':'';}
+function card(cls,icon,verdict,sum,legs,tip,guidable){
   return '<div class="rcard '+(cls||'')+'"><div class="rverdict">'+icon+' '+verdict+'</div><div class="rsum">'+sum+'</div>'
-    +legs.map(l=>'<div class="leg '+(l.cls||'')+'"><div class="ic">'+l.ic+'</div><div><div class="lt">'+l.t+'</div>'+(l.s?'<div class="ls">'+l.s+'</div>':'')+'</div></div>').join('')
-    +(tip?'<div class="rtip">'+tip+'</div>':'')+'</div>';
+    +legs.map(l=>'<div class="leg '+(l.cls||'')+'"><div class="ic">'+l.ic+'</div><div style="min-width:0"><div class="lt">'+l.t+'</div>'+(l.s?'<div class="ls">'+l.s+'</div>':'')+'</div></div>'+(l.steps||'')).join('')
+    +(tip?'<div class="rtip">'+tip+'</div>':'')
+    +(guidable?'<button class="guide-btn" type="button" data-guide>🧭 Guide me — live directions as I go</button>':'')
+    +'</div>';
 }
 
 /* ── map ── */
@@ -367,16 +453,137 @@ function stopDot(s,color){
   L.marker([s.lat,s.lng],{icon:L.divIcon({className:'',html:'<div class="tstop" style="background:#2a2317;border-color:'+color+'"></div>',iconSize:[11,11],iconAnchor:[5,5]})})
     .addTo(map).bindTooltip(s.name,{direction:'top'});
 }
+function ringChain(loopKey,i,j){
+  const st=DATA.loops[loopKey].stops,n=st.length,pts=[];
+  for(let k=0;k<=((j-i+n)%n);k++){const s=st[(i+k)%n];pts.push([s.lat,s.lng]);}
+  return pts;
+}
 function drawRoute(r){
   if(routeLayer){map.removeLayer(routeLayer);routeLayer=null;}
-  if(!r)return;const g=L.layerGroup();
+  if(!r)return;const g=L.layerGroup();const bounds=[];
   const pin=(pt,c,t)=>L.marker([pt.lat,pt.lng],{icon:L.divIcon({className:'',html:'<div style="width:16px;height:16px;border-radius:50%;background:'+c+';border:2.5px solid #fff;box-shadow:0 0 8px rgba(0,0,0,.7)"></div>',iconSize:[16,16],iconAnchor:[8,8]})}).bindTooltip(t);
-  if(fromPt)pin(fromPt,'#5aa02a','Start: '+(fromPt.label||'')).addTo(g);
-  if(toPt)pin(toPt,'#c95a34','Destination: '+(toPt.label||'')).addTo(g);
-  if(r.walk)L.polyline(r.walk,{color:'#e9dcc6',weight:2,dashArray:'2,6',opacity:.7}).addTo(g);
+  if(fromPt){pin(fromPt,'#5aa02a','Start: '+(fromPt.label||'')).addTo(g);bounds.push([fromPt.lat,fromPt.lng]);}
+  if(toPt){pin(toPt,'#c95a34','Destination: '+(toPt.label||'')).addTo(g);bounds.push([toPt.lat,toPt.lng]);}
+  // walking legs: real street geometry when the proxy answered, straight dash otherwise
+  (r._legs||[]).forEach(l=>{
+    const w=r[l.key];
+    const line=w&&w.geom?w.geom:[[l.a.lat,l.a.lng],[l.b.lat,l.b.lng]];
+    L.polyline(line,{color:'#e9dcc6',weight:3,dashArray:'3,7',opacity:.8}).addTo(g);
+    line.forEach(p=>bounds.push(p));
+  });
+  // ride segments
+  if(r.type==='single'){
+    const line=ringChain(r.loop,r.o.idx,r.d.idx);
+    L.polyline(line,{color:DATA.loops[r.loop].color,weight:5,opacity:.85}).addTo(g);line.forEach(p=>bounds.push(p));
+  }else if(r.type==='transfer'){
+    const l1=ringChain(r.la,r.o.idx,r.tr.i),l2=ringChain(r.lb,r.tr.j,r.d.idx);
+    L.polyline(l1,{color:DATA.loops[r.la].color,weight:5,opacity:.85}).addTo(g);
+    L.polyline(l2,{color:DATA.loops[r.lb].color,weight:5,opacity:.85}).addTo(g);
+    l1.concat(l2).forEach(p=>bounds.push(p));
+  }else if(r.type==='ferry'){
+    L.polyline(DATA.ferry.shape,{color:DATA.ferry.color,weight:5,opacity:.9}).addTo(g);
+    DATA.ferry.shape.forEach(p=>bounds.push(p));
+  }
   routeLayer=g.addTo(map);
-  try{const b=[];if(fromPt)b.push([fromPt.lat,fromPt.lng]);if(toPt)b.push([toPt.lat,toPt.lng]);if(b.length)map.fitBounds(b,{padding:[60,60],maxZoom:15});}catch(e){}
+  try{if(bounds.length)map.fitBounds(bounds,{padding:[46,46],maxZoom:16});}catch(e){}
 }
+
+/* ── LIVE BUSES (lights up when the CATTRACKER_KEY secret is set) ── */
+let busLayer=null,busTimer=null;
+async function pollBuses(){
+  if(document.visibilityState!=='visible')return;
+  try{
+    const d=await(await fetch('/bus-proxy?what=vehicles&rt=7F,7D,2550')).json();
+    if(d.source!=='live'){if(busTimer&&d.source==='unconfigured'){clearInterval(busTimer);busTimer=null;}return;}
+    window.__busLive=true;
+    if(busLayer)map.removeLayer(busLayer);
+    busLayer=L.layerGroup(d.vehicles.map(v=>{
+      const c=v.rt==='7F'?'#5aa02a':v.rt==='7D'?'#c9821f':'#2aa0a0';
+      const glyph=v.rt==='2550'?'⛴':'🚌';
+      return L.marker([v.lat,v.lng],{icon:L.divIcon({className:'bus-marker',html:'<div style="font-size:17px;line-height:1;filter:drop-shadow(0 0 4px '+c+')">'+glyph+'</div>',iconSize:[20,20],iconAnchor:[10,10]}),zIndexOffset:900}).bindTooltip((v.rt==='2550'?'Belles Ferry':v.rt==='7F'?'dot Forsyth loop':'dot Downtown loop')+' · live');
+    })).addTo(map);
+  }catch(e){}
+}
+
+/* ── GUIDE ME — live walking + get-off-here alerts ── */
+let G={on:false};
+function gDist(pos,pt){return hav(pos.lat,pos.lng,pt.lat,pt.lng);}
+function ftOf(mi){return Math.round(mi*5280);}
+function startGuide(){
+  const r=window.__route;if(!r)return;
+  if(!navigator.geolocation){alert('This device has no location — the written steps above still work.');return;}
+  const phases=r.type==='walk'?['walk2']:['walk1',r.type==='ferry'?'ferryRide':'ride','walk2'];
+  G={on:true,r,phases,pi:0,si:0,alerted:false,
+     watch:navigator.geolocation.watchPosition(onGuidePos,
+       e=>{$('gbSub').textContent=e.code===1?'Location permission denied — steps above still work.':'Searching for GPS…';},
+       {enableHighAccuracy:true,maximumAge:2000,timeout:15000})};
+  $('guideBar').classList.add('on');$('guideBar').classList.remove('alert');
+  $('gbPhase').textContent='Starting…';$('gbMain').textContent='Waiting for GPS';$('gbSub').textContent='';
+  try{if(navigator.vibrate)navigator.vibrate(30);}catch(e){}
+}
+function stopGuide(){
+  if(G.watch!=null)try{navigator.geolocation.clearWatch(G.watch);}catch(e){}
+  G={on:false};$('guideBar').classList.remove('on','alert');
+}
+function guideTargets(){
+  const r=G.r,ph=G.phases[G.pi];
+  if(ph==='walk1')return{steps:r.w1&&r.w1.steps,end:r.type==='ferry'?r.oN:r.o.stop,endName:(r.type==='ferry'?r.oN:r.o.stop).name,phase:'Walking to your '+(r.type==='ferry'?'landing':'stop')};
+  if(ph==='ride')return{end:r.d.stop,endName:r.d.stop.name,phase:'On the '+loopName(r.loop)};
+  if(ph==='ferryRide')return{end:r.dN,endName:r.dN.name,phase:'On the Belles Ferry'};
+  return{steps:(r.type==='walk'?r.w1:r.w2)&&(r.type==='walk'?r.w1:r.w2).steps,end:toPt,endName:toPt.label||'your destination',phase:'Walking to your destination'};
+}
+function onGuidePos(p){
+  if(!G.on)return;
+  if(p.coords.accuracy>90)return; // ignore junk fixes
+  const pos={lat:p.coords.latitude,lng:p.coords.longitude};
+  const r=G.r,ph=G.phases[G.pi],T=guideTargets();
+  const dEnd=gDist(pos,T.end);
+  $('gbPhase').textContent=T.phase;
+  if(ph==='walk1'&&dEnd<0.019){ // ~100 ft: you're at the stop
+    G.pi++;G.si=0;G.alerted=false;$('guideBar').classList.remove('alert');
+    $('gbMain').textContent='You\'re at '+T.endName;
+    $('gbSub').textContent=r.type==='ferry'?'Board the next ferry — about every 10 min.':'Board the next shuttle — about every 10 min.';
+    try{if(navigator.vibrate)navigator.vibrate([80,60,80]);}catch(e){}
+    return;
+  }
+  if(ph==='ride'||ph==='ferryRide'){
+    if(ph==='ride'){
+      const st=DATA.loops[r.loop].stops,n=st.length;
+      let cur=0,bm=1e9;st.forEach((s,i)=>{const m=gDist(pos,s);if(m<bm){bm=m;cur=i;}});
+      const left=(r.d.idx-cur+n)%n;
+      $('gbSub').textContent=left>0?left+' stop'+(left>1?'s':'')+' to go':'';
+    }else $('gbSub').textContent='';
+    if(dEnd<0.015){ // ~80 ft: you're at the stop — off the bus
+      G.pi++;G.si=0;G.alerted=false;$('guideBar').classList.remove('alert');
+      try{if(navigator.vibrate)navigator.vibrate(80);}catch(e){}
+    }else if(dEnd<0.112&&!G.alerted){ // ~600 ft / 180 m out: get ready
+      G.alerted=true;$('guideBar').classList.add('alert');
+      $('gbMain').textContent='Your stop is next — get off at '+T.endName;
+      try{if(navigator.vibrate)navigator.vibrate([250,120,250]);}catch(e){}
+    }else if(!G.alerted){$('gbMain').textContent='Get off at '+T.endName;}
+    return;
+  }
+  // walking phases: advance through real turn-by-turn steps when we have them
+  if(dEnd<0.0055){ // ~30 ft: arrived
+    $('gbPhase').textContent='Arrived';
+    $('gbMain').textContent='You made it — '+T.endName;
+    $('gbSub').textContent='Enjoy. This guide closes itself in a moment.';
+    try{if(navigator.vibrate)navigator.vibrate([120,80,120,80,200]);}catch(e){}
+    setTimeout(stopGuide,9000);return;
+  }
+  if(T.steps&&T.steps.length){
+    while(G.si<T.steps.length-1&&T.steps[G.si+1].loc&&gDist(pos,{lat:T.steps[G.si+1].loc[0],lng:T.steps[G.si+1].loc[1]})<0.0045)G.si++;
+    const s=T.steps[G.si],nx=T.steps[G.si+1];
+    $('gbMain').textContent=s.t;
+    $('gbSub').textContent=(nx&&nx.loc?ftOf(gDist(pos,{lat:nx.loc[0],lng:nx.loc[1]}))+' ft to the next turn · ':'')+ftOf(dEnd)+' ft to '+T.endName;
+  }else{
+    $('gbMain').textContent='Walk toward '+T.endName;
+    $('gbSub').textContent=ftOf(dEnd)+' ft away';
+  }
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-guide]'))startGuide();});
+$('gbStop').addEventListener('click',stopGuide);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pollBuses();});
 setInterval(renderStatus,60000);
 </script>
 </body>

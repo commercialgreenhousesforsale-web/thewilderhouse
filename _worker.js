@@ -155,6 +155,86 @@ export default {
       }
     }
 
+    if (url.pathname === '/route-proxy') {
+      // Turn-by-turn WALKING directions for the free-transit planner, via the
+      // FOSSGIS OSRM foot profile (OpenStreetMap data, no API key). Responses
+      // are slimmed server-side and edge-cached hard: coordinates are rounded
+      // to ~1 m so repeat trips between the same stops hit the cache, keeping
+      // upstream usage well inside light-use policy.
+      const ok = (obj, age) => new Response(JSON.stringify(obj), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 604800) }
+      });
+      const pt = s => {
+        const m = /^(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/.exec((s || '').trim());
+        if (!m) return null;
+        const lat = +(+m[1]).toFixed(5), lng = +(+m[2]).toFixed(5);
+        if (lat < 31.8 || lat > 32.3 || lng < -81.4 || lng > -80.6) return null; // Savannah area only
+        return { lat, lng };
+      };
+      const a = pt(url.searchParams.get('from')), b = pt(url.searchParams.get('to'));
+      if (!a || !b) return ok({ error: 'bad coords' }, 300);
+      try {
+        const api = 'https://routing.openstreetmap.de/routed-foot/route/v1/foot/'
+          + a.lng + ',' + a.lat + ';' + b.lng + ',' + b.lat
+          + '?overview=full&geometries=geojson&steps=true';
+        const r = await fetch(api, { headers: { 'User-Agent': 'forsythparkvacationrentals.com free-transit-guide (commercialgreenhousesforsale@gmail.com)' } });
+        if (!r.ok) return ok({ error: 'upstream ' + r.status }, 300);
+        const j = await r.json();
+        const rt = j.routes && j.routes[0];
+        if (!rt) return ok({ error: 'no route' }, 3600);
+        const geom = (rt.geometry.coordinates || []).map(c => [+c[1].toFixed(5), +c[0].toFixed(5)]);
+        const dirTxt = { left: 'left', right: 'right', 'slight left': 'slightly left', 'slight right': 'slightly right', 'sharp left': 'sharp left', 'sharp right': 'sharp right', straight: 'straight', uturn: 'around' };
+        const steps = ((rt.legs && rt.legs[0] && rt.legs[0].steps) || []).map(function (s) {
+          const name = s.name || '';
+          const mv = s.maneuver || {}; const mod = dirTxt[mv.modifier] || '';
+          let t;
+          if (mv.type === 'depart') t = 'Head ' + (name ? 'along ' + name : 'out');
+          else if (mv.type === 'arrive') t = 'You have arrived';
+          else if (mv.type === 'turn' || mv.type === 'end of road' || mv.type === 'continue') t = (mod ? 'Turn ' + mod : 'Continue') + (name ? ' onto ' + name : '');
+          else t = (mv.type || 'Continue') + (name ? ' — ' + name : '');
+          return { t: t, ft: Math.round((s.distance || 0) * 3.281), loc: mv.location ? [+mv.location[1].toFixed(5), +mv.location[0].toFixed(5)] : null };
+        }).filter(s => s.ft > 15 || s.t === 'You have arrived');
+        return ok({ min: Math.max(1, Math.round(rt.duration / 60)), mi: +(rt.distance / 1609.34).toFixed(2), geom: geom, steps: steps }, 604800);
+      } catch (e) {
+        return ok({ error: e.message }, 300);
+      }
+    }
+
+    if (url.pathname === '/bus-proxy') {
+      // LIVE dot-shuttle positions + arrival predictions from CAT's BusTime
+      // developer API (cattracker.catchacat.org). Lights up when a free
+      // CATTRACKER_KEY secret is configured (register in the CATTracker web
+      // app under Developer API); until then returns source:'unconfigured'
+      // and the planner falls back to schedule-based timing.
+      const ok = (obj, age) => new Response(JSON.stringify(obj), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 20) }
+      });
+      const key = (env.CATTRACKER_KEY || '').trim();
+      if (!key) return ok({ source: 'unconfigured', vehicles: [], prd: [] }, 300);
+      const what = url.searchParams.get('what') || 'vehicles';
+      try {
+        if (what === 'predictions') {
+          const stpid = (url.searchParams.get('stpid') || '').replace(/[^0-9,]/g, '').slice(0, 40);
+          if (!stpid) return ok({ source: 'live', prd: [] }, 20);
+          const r = await fetch('https://cattracker.catchacat.org/bustime/api/v3/getpredictions?key=' + key + '&stpid=' + stpid + '&format=json', { headers: { 'Accept': 'application/json' } });
+          const d = await r.json();
+          const prd = ((d['bustime-response'] || {}).prd || []).map(function (p) {
+            return { rt: p.rt, stop: p.stpnm, min: p.prdctdn === 'DUE' ? 0 : parseInt(p.prdctdn, 10) };
+          }).filter(p => !isNaN(p.min));
+          return ok({ source: 'live', prd: prd }, 20);
+        }
+        const rt = (url.searchParams.get('rt') || '7F,7D,2550').replace(/[^0-9A-Za-z,]/g, '').slice(0, 30);
+        const r = await fetch('https://cattracker.catchacat.org/bustime/api/v3/getvehicles?key=' + key + '&rt=' + rt + '&format=json', { headers: { 'Accept': 'application/json' } });
+        const d = await r.json();
+        const veh = ((d['bustime-response'] || {}).vehicle || []).map(function (v) {
+          return { rt: v.rt, lat: +v.lat, lng: +v.lon, hdg: +v.hdg || 0 };
+        }).filter(v => !isNaN(v.lat) && !isNaN(v.lng));
+        return ok({ source: 'live', vehicles: veh }, 20);
+      } catch (e) {
+        return ok({ source: 'error', vehicles: [], prd: [] }, 60);
+      }
+    }
+
     if (url.pathname === '/geo-proxy') {
       // Same-origin geocoder for the free-transit trip planner (typed addresses).
       // Proxies OpenStreetMap Nominatim, bounded to the Savannah area, so the
