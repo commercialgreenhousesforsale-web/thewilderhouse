@@ -514,7 +514,7 @@ function renderRoute(r,directWalk){
     legs.push({ic:'🚶',t:'Walk '+wmin(r.w2,walkMin(r.dN.mi))+' min to '+(toPt.label||'your destination'),s:'',steps:stepsHtml(r.w2)});
   }
   const tip=directWalk<=22?('Prefer to stretch your legs? It\'s about a '+directWalk+' min walk straight there.'):'';
-  return card(r.type==='ferry'?'ferry':'',r.type==='ferry'?'⛴':'🚌',verdict,sum,legs,tip,r.type!=='transfer');
+  return card(r.type==='ferry'?'ferry':'',r.type==='ferry'?'⛴':'🚌',verdict,sum,legs,tip,true);
 }
 function liveNote(){return window.__busLive?' <span class="live-pill">LIVE buses on map</span>':'';}
 /* Handoff row: open the same trip in the maps app the visitor already trusts.
@@ -616,7 +616,9 @@ function ftOf(mi){return Math.round(mi*5280);}
 function startGuide(){
   const r=window.__route;if(!r)return;
   if(!navigator.geolocation){alert('This device has no location — the written steps above still work.');return;}
-  const phases=r.type==='walk'?['walk2']:['walk1',r.type==='ferry'?'ferryRide':'ride','walk2'];
+  const phases=r.type==='walk'?['walk2']
+    :r.type==='transfer'?['walk1','ride1','walkT','ride2','walk2']
+    :['walk1',r.type==='ferry'?'ferryRide':'ride','walk2'];
   G={on:true,r,phases,pi:0,si:0,alerted:false,
      watch:navigator.geolocation.watchPosition(onGuidePos,
        e=>{$('gbSub').textContent=e.code===1?'Location permission denied — steps above still work.':'Searching for GPS…';},
@@ -632,7 +634,10 @@ function stopGuide(){
 function guideTargets(){
   const r=G.r,ph=G.phases[G.pi];
   if(ph==='walk1')return{steps:r.w1&&r.w1.steps,end:r.type==='ferry'?r.oN:r.o.stop,endName:(r.type==='ferry'?r.oN:r.o.stop).name,phase:'Walking to your '+(r.type==='ferry'?'landing':'stop')};
-  if(ph==='ride')return{end:r.d.stop,endName:r.d.stop.name,phase:'On the '+loopName(r.loop)};
+  if(ph==='ride')return{end:r.d.stop,endName:r.d.stop.name,loop:r.loop,endIdx:r.d.idx,phase:'On the '+loopName(r.loop)};
+  if(ph==='ride1')return{end:r.tr.sa,endName:r.tr.sa.name,loop:r.la,endIdx:r.tr.i,phase:'On the '+loopName(r.la)};
+  if(ph==='walkT')return{steps:r.wt&&r.wt.steps,end:r.tr.sb,endName:r.tr.sb.name,phase:'Transfer — walking to your next stop'};
+  if(ph==='ride2')return{end:r.d.stop,endName:r.d.stop.name,loop:r.lb,endIdx:r.d.idx,phase:'On the '+loopName(r.lb)};
   if(ph==='ferryRide')return{end:r.dN,endName:r.dN.name,phase:'On the Belles Ferry'};
   return{steps:(r.type==='walk'?r.w1:r.w2)&&(r.type==='walk'?r.w1:r.w2).steps,end:toPt,endName:toPt.label||'your destination',phase:'Walking to your destination'};
 }
@@ -643,18 +648,18 @@ function onGuidePos(p){
   const r=G.r,ph=G.phases[G.pi],T=guideTargets();
   const dEnd=gDist(pos,T.end);
   $('gbPhase').textContent=T.phase;
-  if(ph==='walk1'&&dEnd<0.019){ // ~100 ft: you're at the stop
+  if((ph==='walk1'||ph==='walkT')&&dEnd<0.019){ // ~100 ft: you're at the stop
     G.pi++;G.si=0;G.alerted=false;$('guideBar').classList.remove('alert');
     $('gbMain').textContent='You\'re at '+T.endName;
     $('gbSub').textContent=r.type==='ferry'?'Board the next ferry — about every 10 min.':'Board the next shuttle — about every 10 min.';
     try{if(navigator.vibrate)navigator.vibrate([80,60,80]);}catch(e){}
     return;
   }
-  if(ph==='ride'||ph==='ferryRide'){
-    if(ph==='ride'){
-      const st=DATA.loops[r.loop].stops,n=st.length;
+  if(ph==='ride'||ph==='ride1'||ph==='ride2'||ph==='ferryRide'){
+    if(ph!=='ferryRide'){
+      const st=DATA.loops[T.loop].stops,n=st.length;
       let cur=0,bm=1e9;st.forEach((s,i)=>{const m=gDist(pos,s);if(m<bm){bm=m;cur=i;}});
-      const left=(r.d.idx-cur+n)%n;
+      const left=(T.endIdx-cur+n)%n;
       $('gbSub').textContent=left>0?left+' stop'+(left>1?'s':'')+' to go':'';
     }else $('gbSub').textContent='';
     if(dEnd<0.015){ // ~80 ft: you're at the stop — off the bus
