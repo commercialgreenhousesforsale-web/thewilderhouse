@@ -81,6 +81,10 @@ a{color:#e7c389}
 .handoff a{color:#c9b795;text-decoration:underline;text-underline-offset:2px}
 .geo-miss{padding:10px 12px;font-size:12px;color:#8b7d60;line-height:1.5;cursor:default}
 .geo-miss a{color:#c9b795;text-decoration:underline;text-underline-offset:2px}
+.sched-line{font-size:12.5px;color:#d4c5a9;background:rgba(232,201,106,.07);border:1px solid rgba(233,220,198,.14);border-radius:8px;padding:10px 12px;margin:10px 0 14px;line-height:1.6}
+.stoplist{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.stopchip{background:rgba(233,220,198,.06);border:1px solid rgba(233,220,198,.18);color:#c9b795;padding:6px 10px;border-radius:999px;font-size:11.5px;cursor:pointer;font-family:Georgia,serif}
+.stopchip:hover{background:rgba(232,201,106,.18);color:#e7c389}
 .steps{margin:4px 0 2px 41px}
 .steps summary{font-size:11.5px;color:#9db98a;cursor:pointer;list-style:none}
 .steps summary::before{content:'▸ '}
@@ -167,6 +171,16 @@ a{color:#e7c389}
     <p><strong>Hours:</strong> Monday–Friday 7am–7pm, Saturday &amp; Sunday 10am–6pm (lighter hours on some holidays; closed Thanksgiving, Christmas, and New Year's Day).</p>
     <h3>⛴ The Savannah Belles Ferry — across the river, free</h3>
     <p>Four little ferries — each named for a famous Savannah woman — cross the Savannah River between River Street and Hutchinson Island every 10 minutes, from 7am to 10pm, every day. Landings: <strong>City Hall</strong> and <strong>Waving Girl</strong> on the River Street side, and the <strong>Convention Center</strong> (by the Westin) on Hutchinson Island. It takes bikes, luggage, and leashed dogs — and the ride is a genuinely lovely (free) view of the waterfront.</p>
+
+    <h2 id="stops">Every dot shuttle stop &amp; ferry landing — tap one to route there</h2>
+    <p>The official map lives in a PDF; here is every stop as plain text. Tap any stop and this page routes you to it from wherever you're standing.</p>
+    <div class="sched-line">🚌 <strong>Shuttle:</strong> Mon–Fri 7am–7pm · Sat &amp; Sun 10am–6pm · about every 10 min &nbsp;&nbsp; ⛴ <strong>Ferry:</strong> every day 7am–10pm · about every 10 min · both always free</div>
+    <h3><span style="color:#5aa02a">●</span> Forsyth loop — up Drayton, down Whitaker (21 stops)</h3>
+    <div class="stoplist" data-kind="loop"><button type="button" class="stopchip" data-loop="forsyth" data-i="0">Drayton & Maupas</button><button type="button" class="stopchip" data-loop="forsyth" data-i="1">Drayton & 38th</button><button type="button" class="stopchip" data-loop="forsyth" data-i="2">Drayton & 33rd</button><button type="button" class="stopchip" data-loop="forsyth" data-i="3">Drayton & Duffy</button><button type="button" class="stopchip" data-loop="forsyth" data-i="4">Drayton & Gwinnett</button><button type="button" class="stopchip" data-loop="forsyth" data-i="5">Drayton & Huntington</button><button type="button" class="stopchip" data-loop="forsyth" data-i="6">Drayton & Charlton</button><button type="button" class="stopchip" data-loop="forsyth" data-i="7">Drayton & Liberty</button><button type="button" class="stopchip" data-loop="forsyth" data-i="8">Drayton & Oglethorpe</button><button type="button" class="stopchip" data-loop="forsyth" data-i="9">Drayton & Broughton</button><button type="button" class="stopchip" data-loop="forsyth" data-i="10">Bryan & Bull</button><button type="button" class="stopchip" data-loop="forsyth" data-i="11">Whitaker & Broughton</button><button type="button" class="stopchip" data-loop="forsyth" data-i="12">Whitaker & Hull</button><button type="button" class="stopchip" data-loop="forsyth" data-i="13">Liberty & Whitaker</button><button type="button" class="stopchip" data-loop="forsyth" data-i="14">Whitaker & Jones (southbound)</button><button type="button" class="stopchip" data-loop="forsyth" data-i="15">Whitaker & Gaston</button><button type="button" class="stopchip" data-loop="forsyth" data-i="16">Whitaker & Hall</button><button type="button" class="stopchip" data-loop="forsyth" data-i="17">Whitaker & Park</button><button type="button" class="stopchip" data-loop="forsyth" data-i="18">Whitaker & Anderson</button><button type="button" class="stopchip" data-loop="forsyth" data-i="19">Whitaker & 36th</button><button type="button" class="stopchip" data-loop="forsyth" data-i="20">Whitaker & 40th</button></div>
+    <h3><span style="color:#c9821f">●</span> Downtown loop — Liberty, MLK, City Market, out to Eastern Wharf (12 stops)</h3>
+    <div class="stoplist" data-kind="loop"><button type="button" class="stopchip" data-loop="downtown" data-i="0">Liberty & Jefferson</button><button type="button" class="stopchip" data-loop="downtown" data-i="1">MLK @ W Perry Lane</button><button type="button" class="stopchip" data-loop="downtown" data-i="2">JMR Transit Center</button><button type="button" class="stopchip" data-loop="downtown" data-i="3">Court House</button><button type="button" class="stopchip" data-loop="downtown" data-i="4">Congress & Jefferson</button><button type="button" class="stopchip" data-loop="downtown" data-i="5">Congress & Bull</button><button type="button" class="stopchip" data-loop="downtown" data-i="6">Lincoln & Congress</button><button type="button" class="stopchip" data-loop="downtown" data-i="7">Oglethorpe & Price (eastbound)</button><button type="button" class="stopchip" data-loop="downtown" data-i="8">Eastern Wharf</button><button type="button" class="stopchip" data-loop="downtown" data-i="9">Randolph & Broughton</button><button type="button" class="stopchip" data-loop="downtown" data-i="10">Price & Liberty (southbound)</button><button type="button" class="stopchip" data-loop="downtown" data-i="11">Liberty & Floyd St</button></div>
+    <h3><span style="color:#2aa0a0">●</span> Belles Ferry landings (3)</h3>
+    <div class="stoplist" data-kind="ferry"><button type="button" class="stopchip" data-ferry="0">City Hall Landing</button><button type="button" class="stopchip" data-ferry="1">Convention Center Landing</button><button type="button" class="stopchip" data-ferry="2">Waving Girl Landing</button></div>
     <h2>When the free ride is worth it — and when to just walk</h2>
     <p>Honest truth: the Historic District is small and made for walking, and most of the squares are a 5–10 minute stroll apart. The free shuttle earns its keep when it's <strong>hot</strong>, when it's <strong>raining</strong>, when feet are tired, or for the longer hops — Forsyth Park up to River Street, or anything out to Eastern Wharf. The ferry is the easy way to the Convention Center and hotels on Hutchinson Island (and a fun little cruise for free). This planner will tell you honestly when walking is just as fast.</p>
     <h2>Getting to Tybee, Bonaventure &amp; Wormsloe</h2>
@@ -239,6 +253,17 @@ function boot(){
   $('fromChange').addEventListener('click',()=>{const r=$('fromRow');r.hidden=!r.hidden;if(!r.hidden)$('fromAddr').focus();});
   $('fromGps').addEventListener('click',useLoc);
   $('mapPeek').addEventListener('click',()=>{ $('mapPanel').hidden?showMap():hideMap(); });
+  // the crawlable stop list doubles as a destination picker
+  document.querySelectorAll('.stoplist').forEach(el=>el.addEventListener('click',e=>{
+    const b=e.target.closest('.stopchip');if(!b)return;
+    const st=b.dataset.ferry!==undefined?DATA.ferry.stops[+b.dataset.ferry]:DATA.loops[b.dataset.loop].stops[+b.dataset.i];
+    if(!st)return;
+    toPt={lat:st.lat,lng:st.lng,label:b.textContent};
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    $('toAddr').value=b.textContent;
+    window.scrollTo({top:0,behavior:'smooth'});
+    autoFromThenPlan();
+  }));
 }
 function setFrom(p,quiet){
   fromPt=p;
