@@ -79,6 +79,8 @@ a{color:#e7c389}
 #mapPanel[hidden]{display:none}
 .handoff{font-size:11px;color:#6b604a;margin-top:10px;padding-top:9px;border-top:1px solid rgba(233,220,198,.1)}
 .handoff a{color:#c9b795;text-decoration:underline;text-underline-offset:2px}
+.geo-miss{padding:10px 12px;font-size:12px;color:#8b7d60;line-height:1.5;cursor:default}
+.geo-miss a{color:#c9b795;text-decoration:underline;text-underline-offset:2px}
 .steps{margin:4px 0 2px 41px}
 .steps summary{font-size:11.5px;color:#9db98a;cursor:pointer;list-style:none}
 .steps summary::before{content:'▸ '}
@@ -328,8 +330,19 @@ function bindGeocode(inputId,listId,set){
     t=setTimeout(async()=>{
       try{
         let res=localMatches(q);
-        if(!res.length){const r=await fetch('/geo-proxy?q='+encodeURIComponent(q));const d=await r.json();res=(d.results||[]).slice(0,3);}
-        if(!res.length){list.style.display='none';return;}
+        if(!res.length){
+          // geocoder trouble (offline, proxy error) must land on the handoff
+          // row too — an empty result and a failed lookup deserve the same exit
+          try{const r=await fetch('/geo-proxy?q='+encodeURIComponent(q));const d=await r.json();res=(d.results||[]).slice(0,3);}catch(e){}
+        }
+        if(!res.length){
+          // never a dead end: what we can't find, the big maps apps can
+          const enc=encodeURIComponent(q+' Savannah GA');
+          list.innerHTML='<div class="geo-miss">Can\'t find that one here — open it in '
+            +'<a href="https://www.google.com/maps/search/?api=1&query='+enc+'" target="_blank" rel="noopener noreferrer">Google&nbsp;Maps</a> or '
+            +'<a href="https://maps.apple.com/?q='+enc+'" target="_blank" rel="noopener noreferrer">Apple&nbsp;Maps</a></div>';
+          list.style.display='block';return;
+        }
         list.innerHTML=res.map((x,i)=>`<div data-i="${i}">${x.name.split(',').slice(0,2).join(', ')}</div>`).join('');
         list.style.display='block';
         list.querySelectorAll('div').forEach(el=>el.addEventListener('click',()=>{
