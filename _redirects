@@ -5,8 +5,8 @@
 /index.html / 301
 
 # Legacy/mistyped planner URL -> the real planner
-/savannah-day-planner /savannah-by-the-hour 301
-/savannah-day-planner.html /savannah-by-the-hour 301
+/savannah-day-planner /concierge 301
+/savannah-day-planner.html /concierge 301
 
 # Catch-all for .html files
 # legacy suite pages (noindexed relics with off-brand copy + a dead /both nav) -> modern pages
@@ -14,6 +14,12 @@
 /316A /savannah-victorian-district-vacation-rental-316a 301
 /units /savannah-group-vacation-rental-4-bedroom 301
 /both /savannah-group-vacation-rental-4-bedroom 301
+# Planner -> Forsyth Park Concierge (renamed 2026-07-15; domain already says Forsyth Park)
+/savannah-by-the-hour /concierge 301
+/savannah-by-the-hour.html /concierge 301
+# the old "right now" duplicate folds into the Concierge (one page per query)
+/right-now-savannah /concierge 301
+/right-now-savannah.html /concierge 301
 /*.html /:splat 301
 
 # Service worker must be at root
