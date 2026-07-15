@@ -244,30 +244,39 @@ export default {
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=' + (age || 86400) }
       });
       if (!q) return ok({ results: [] }, 300);
+      const hdrs = { 'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)', 'Accept': 'application/json' };
+      const inBox = function (la, lo) { return la >= 31.90 && la <= 32.15 && lo >= -81.30 && lo <= -80.80; };
+      // 1) Photon — fuzzy, typo-tolerant OSM search ("leopolds" finds Leopold's,
+      //    "husk" finds the restaurant). Every business OSM knows, no curation.
       try {
-        // viewbox = Savannah/Chatham; bounded=1 keeps results local.
-        // Nominatim has NO fuzzy matching, and double-suffixing a query that
-        // already says "savannah" returns nothing — so suffix only when
-        // missing, and retry once without the suffix on an empty first pass.
+        const r = await fetch('https://photon.komoot.io/api/?limit=4&lat=32.0709&lon=-81.0959&bbox=-81.30,31.90,-80.80,32.15&q=' + encodeURIComponent(q), { headers: hdrs });
+        if (r.ok) {
+          const d = await r.json();
+          const results = ((d && d.features) || []).map(function (f) {
+            const p = f.properties || {}; const c = (f.geometry || {}).coordinates || [];
+            const bits = [p.name, p.street, p.city].filter(Boolean);
+            return { name: bits.join(', '), lat: c[1], lng: c[0] };
+          }).filter(function (x) { return x.name && inBox(x.lat, x.lng); }).slice(0, 3);
+          if (results.length) return ok({ results: results }, 86400);
+        }
+      } catch (e) {}
+      // 2) Nominatim — exact matching, still the best for street ADDRESSES.
+      //    Suffix "Savannah GA" only when the query lacks it (double-suffix = 0 hits).
+      try {
         const base = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=3&bounded=1'
           + '&viewbox=-81.30,32.15,-80.80,31.90&q=';
-        const hdrs = { 'User-Agent': 'forsythparkvacationrentals.com (commercialgreenhousesforsale@gmail.com)', 'Accept': 'application/json' };
-        const hasSav = /savannah/i.test(q);
-        const attempts = hasSav ? [q] : [q + ' Savannah GA', q];
-        let results = [];
+        const attempts = /savannah/i.test(q) ? [q] : [q + ' Savannah GA', q];
         for (const attempt of attempts) {
           const r = await fetch(base + encodeURIComponent(attempt), { headers: hdrs });
           if (!r.ok) continue;
           const d = await r.json();
-          results = (Array.isArray(d) ? d : []).map(function (x) {
+          const results = (Array.isArray(d) ? d : []).map(function (x) {
             return { name: x.display_name || '', lat: parseFloat(x.lat), lng: parseFloat(x.lon) };
           }).filter(function (x) { return !isNaN(x.lat) && !isNaN(x.lng); });
-          if (results.length) break;
+          if (results.length) return ok({ results: results }, 86400);
         }
-        return ok({ results: results }, 86400);
-      } catch (e) {
-        return ok({ results: [] }, 300);
-      }
+      } catch (e) {}
+      return ok({ results: [] }, 300);
     }
 
     if (url.pathname === '/alerts-proxy') {
