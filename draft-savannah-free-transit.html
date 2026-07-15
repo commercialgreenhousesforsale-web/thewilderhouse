@@ -66,6 +66,9 @@ a{color:#e7c389}
 .leg .ls{font-size:11.5px;color:#8b7d60;margin-top:2px}
 .rtip{font-size:11.5px;color:#8b7d60;margin-top:10px;font-style:italic}
 /* one-question UI */
+.nearest-btn{width:100%;background:rgba(90,160,42,.2);border:1.5px solid rgba(90,160,42,.6);color:#b6d99a;padding:14px;border-radius:9px;font-family:Georgia,serif;font-size:15.5px;cursor:pointer;min-height:50px;margin-bottom:4px}
+.nearest-btn:hover{background:rgba(90,160,42,.3)}
+.orline{text-align:center;font-size:10.5px;color:#6b604a;letter-spacing:2px;text-transform:uppercase;margin:9px 0}
 .bigq{display:block;font-size:19px;color:#e7c389;margin:2px 0 10px;font-weight:400}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
 .chip{background:rgba(232,201,106,.1);border:1px solid rgba(232,201,106,.3);color:#d4c5a9;padding:8px 12px;border-radius:999px;font-size:12.5px;cursor:pointer;font-family:Georgia,serif;min-height:38px}
@@ -136,6 +139,8 @@ a{color:#e7c389}
   </div>
 
   <div class="planner">
+    <button class="nearest-btn" id="nearestBtn" type="button">📍 Take me to my closest dot stop</button>
+    <div class="orline">— or —</div>
     <label class="bigq" for="toAddr">Where do you want to go?</label>
     <div class="pt-row"><input id="toAddr" type="text" placeholder="Type any place — Leopold&rsquo;s, River Street, your hotel…" autocomplete="off"></div>
     <div class="geo-list" id="toList"></div>
@@ -251,6 +256,26 @@ function boot(){
   bindGeocode('toAddr','toList',p=>{toPt=p;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));autoFromThenPlan();});
   bindGeocode('fromAddr','fromList',p=>{setFrom(p);});
   $('fromChange').addEventListener('click',()=>{const r=$('fromRow');r.hidden=!r.hidden;if(!r.hidden)$('fromAddr').focus();});
+  // the zero-typing primary action: locate, find the nearest shuttle stop on
+  // either loop, and route to it through the normal pipeline (walk verdict +
+  // Guide Me). The tool's simplest promise: "take me to the bus."
+  $('nearestBtn').addEventListener('click',()=>{
+    if(!navigator.geolocation){revealFrom();return;}
+    $('result').innerHTML='<div class="rcard"><div class="rsum">📍 Finding you and your closest dot stop…</div></div>';
+    navigator.geolocation.getCurrentPosition(p=>{
+      setFrom({lat:p.coords.latitude,lng:p.coords.longitude,label:'My location'},true);
+      let best=null;
+      for(const k in DATA.loops)DATA.loops[k].stops.forEach(st=>{
+        const mi=hav(fromPt.lat,fromPt.lng,st.lat,st.lng);
+        if(!best||mi<best.mi)best={st,mi,loop:k};
+      });
+      if(!best){revealFrom();return;}
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      $('toAddr').value='';
+      toPt={lat:best.st.lat,lng:best.st.lng,label:best.st.name+' (dot '+DATA.loops[best.loop].name.replace('dot ','')+')'};
+      plan();
+    },()=>{revealFrom();},{enableHighAccuracy:true,timeout:8000,maximumAge:120000});
+  });
   $('fromGps').addEventListener('click',useLoc);
   $('mapPeek').addEventListener('click',()=>{ $('mapPanel').hidden?showMap():hideMap(); });
   // the crawlable stop list doubles as a destination picker

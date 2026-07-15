@@ -2,7 +2,7 @@
   "tour": {
     "id": "forsyth_ghost_v2.2",
     "slug": "forsyth-ghost-tour",
-    "name": "Forsyth Ghost Tour",
+    "name": "Forsyth Park Ghost Tour",
     "subtitle": "Savannah Remembers",
     "type": "ghost",
     "version": "2.2",
@@ -10,7 +10,7 @@
     "prologue_order": 1,
     "prologue_label": "guests of the house",
     "share": {
-      "title": "Forsyth Ghost Tour — Free Self-Guided Savannah Audio Walk",
+      "title": "Forsyth Park Ghost Tour — Free Self-Guided Savannah Audio Walk",
       "text": "A free self-guided ghost tour of Savannah — 17 narrated stops from Forsyth Park to the river. No app, no ticket."
     },
     "description": "A GPS-based self-guided walking tour through Savannah's memory, hauntings, and historical echoes",

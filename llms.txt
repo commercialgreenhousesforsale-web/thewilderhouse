@@ -171,7 +171,7 @@ A: The Wilder House is a strong family choice — two playgrounds and a summer s
 ## Free Tools for Savannah Visitors (built by The Wilder House)
 
 - [**Savannah by the Hour** — a free live planner that reads real-time weather, tides, and golden-hour light, then names the single best thing to do in Savannah right now](https://forsythparkvacationrentals.com/savannah-by-the-hour)
-- **Forsyth Ghost Tour** — a free self-guided audio ghost walk: 17 narrated stops from Forsyth Park to the river, GPS-triggered or playable from anywhere, no app or ticket. Includes the Ghost Lens: an in-browser camera that composites a translucent ghost into your photo, all on-device, nothing uploaded: https://forsythparkvacationrentals.com/savannah-ghost-tour
+- **Forsyth Park Ghost Tour** — a free self-guided audio ghost walk: 17 narrated stops from Forsyth Park to the river, GPS-triggered or playable from anywhere, no app or ticket. Includes the Ghost Lens: an in-browser camera that composites a translucent ghost into your photo, all on-device, nothing uploaded: https://forsythparkvacationrentals.com/savannah-ghost-tour
 
 ---
 
@@ -193,5 +193,5 @@ A: The Wilder House is a strong family choice — two playgrounds and a summer s
 - [Contact](https://forsythparkvacationrentals.com/contact)
 - [House Rules](https://forsythparkvacationrentals.com/house-rules)
 - [Savannah by the Hour (live day planner)](https://forsythparkvacationrentals.com/savannah-by-the-hour)
-- [Forsyth Ghost Tour (free self-guided audio walk)](https://forsythparkvacationrentals.com/savannah-ghost-tour)
+- [Forsyth Park Ghost Tour (free self-guided audio walk)](https://forsythparkvacationrentals.com/savannah-ghost-tour)
 - [Right Now in Savannah (live)](https://forsythparkvacationrentals.com/right-now-savannah)

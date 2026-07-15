@@ -160,7 +160,7 @@ a{color:#e7c389}
   <p class="ov-desc">{{OVERLAY_DESC}}</p>
   <label class="wv-row"><input type="checkbox" id="waiverCheck"><span>One housekeeping matter before the city speaks: I have read and accept <button type="button" class="wv-link" id="waiverToggle">the terms</button> — for myself and everyone walking with me.</span></label>
   <div class="wv-text" id="waiverText" hidden>
-    <p>The Forsyth Ghost Tour is a free, self-guided audio experience provided by The Wilder House ("the Provider"). By accepting, you agree:</p>
+    <p>The Forsyth Park Ghost Tour is a free, self-guided audio experience provided by The Wilder House ("the Provider"). By accepting, you agree:</p>
     <h3>1. Assumption of Risk</h3><p>The tour takes place on public streets, sidewalks, squares, and riverfront areas the Provider does not control. Surfaces may be uneven, poorly lit, wet, or under repair — including brick sidewalks, tree roots, curbs, and the historic cobblestones and steep ramps near River Street. You voluntarily assume all risks of participation, including trips, slips, falls, and other injury.</p>
     <h3>2. Traffic &amp; Awareness</h3><p>You are solely responsible for your own safety. Obey all traffic signals and laws, use marked crosswalks, and stay aware of vehicles, cyclists, and pedestrians. Keep audio volume low enough to hear your surroundings. Never look at your screen while crossing a street.</p>
     <h3>3. Weather &amp; Conditions</h3><p>You are responsible for judging weather and environmental conditions (heat, storms, lightning, flooding, darkness) and for stopping the tour if conditions become unsafe.</p>
@@ -772,9 +772,9 @@ function lensCapture(){
   const fs=Math.round(Math.max(16,W*.022));
   x.textBaseline='bottom';x.shadowColor='rgba(0,0,0,.85)';x.shadowBlur=6;
   x.font='600 '+fs+'px Georgia,serif';x.fillStyle='rgba(231,195,137,.92)';
-  x.fillText('👻 Forsyth Ghost Tour',fs,H-fs*2.1);
+  x.fillText('👻 '+((typeof tourData!=='undefined'&&tourData&&tourData.tour&&tourData.tour.name)||'Forsyth Park Ghost Tour'),fs,H-fs*2.1);
   x.font=Math.round(fs*.72)+'px Georgia,serif';x.fillStyle='rgba(233,220,198,.85)';
-  x.fillText('The Wilder House · Savannah',fs,H-fs*1.05);
+  x.fillText('Forsyth Park Tours · Savannah',fs,H-fs*1.05);
   x.shadowBlur=0;
   $('lensResult').classList.add('open');
   lensBlob=null;
@@ -789,7 +789,7 @@ function lensSave(){
 async function lensShare(){
   const f=lensBlob?new File([lensBlob],'savannah-ghost-photo.jpg',{type:'image/jpeg'}):null;
   if(f&&navigator.canShare&&navigator.canShare({files:[f]})){
-    try{await navigator.share({files:[f],title:'Savannah ghost photo',text:'Caught on the free Forsyth Ghost Tour — Savannah.'});return;}catch(e){}
+    try{await navigator.share({files:[f],title:'Savannah ghost photo',text:'Caught on the free '+((typeof tourData!=='undefined'&&tourData&&tourData.tour&&tourData.tour.name)||'Forsyth Park Ghost Tour')+' — by Forsyth Park Tours, Savannah.'});return;}catch(e){}
   }
   lensSave();
 }
