@@ -65,6 +65,18 @@ a{color:#e7c389}
 .leg .lt{font-size:13.5px;color:#e9dcc6}
 .leg .ls{font-size:11.5px;color:#8b7d60;margin-top:2px}
 .rtip{font-size:11.5px;color:#8b7d60;margin-top:10px;font-style:italic}
+/* one-question UI */
+.bigq{display:block;font-size:19px;color:#e7c389;margin:2px 0 10px;font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.chip{background:rgba(232,201,106,.1);border:1px solid rgba(232,201,106,.3);color:#d4c5a9;padding:8px 12px;border-radius:999px;font-size:12.5px;cursor:pointer;font-family:Georgia,serif;min-height:38px}
+.chip:hover{background:rgba(232,201,106,.2)}
+.chip.active{background:rgba(232,201,106,.32);color:#fff;border-color:rgba(232,201,106,.7)}
+.fromline{font-size:12px;color:#8b7d60;margin-top:12px}
+.fromline b{color:#9db98a;font-weight:600}
+.linkb{background:none;border:none;color:#c9b795;text-decoration:underline;text-underline-offset:2px;cursor:pointer;font:inherit;padding:0}
+.map-peek{display:block;width:100%;background:rgba(232,201,106,.07);border:1px solid rgba(233,220,198,.14);color:#c9b795;padding:10px;border-radius:8px;cursor:pointer;font-family:Georgia,serif;font-size:12.5px;margin:0 0 12px;min-height:44px}
+.map-peek:hover{background:rgba(232,201,106,.14)}
+#mapPanel[hidden]{display:none}
 .handoff{font-size:11px;color:#6b604a;margin-top:10px;padding-top:9px;border-top:1px solid rgba(233,220,198,.1)}
 .handoff a{color:#c9b795;text-decoration:underline;text-underline-offset:2px}
 .steps{margin:4px 0 2px 41px}
@@ -112,43 +124,37 @@ a{color:#e7c389}
   <div class="header">
     <a class="brand" href="/">The Wilder House · Savannah</a>
     <h1>Get Around Savannah for Free</h1>
-    <p class="sub">Savannah runs a free shuttle and a free river ferry that most visitors never figure out. Tell it where you're headed — it finds the closest stop, the right loop, and when to get off.</p>
+    <p class="sub">Savannah runs a free shuttle and a free river ferry. Say where you're headed — this does the rest.</p>
     <span class="free-pill">Always free · no ticket, no app</span>
     <div class="status" id="svcStatus"><span class="dot"></span>Checking service hours…</div>
   </div>
 
   <div class="planner">
-    <div class="field geo-opts">
-      <label>Starting from</label>
-      <div class="pt-row">
-        <select id="fromSel"><option value="">— pick a place —</option></select>
+    <label class="bigq" for="toAddr">Where do you want to go?</label>
+    <div class="pt-row"><input id="toAddr" type="text" placeholder="Type any place — Leopold&rsquo;s, River Street, your hotel…" autocomplete="off"></div>
+    <div class="geo-list" id="toList"></div>
+    <div class="chips" id="destChips"></div>
+    <div class="fromline">from <b id="fromLabel">📍 right where you're standing</b> · <button class="linkb" id="fromChange" type="button">start somewhere else</button></div>
+    <div class="field geo-opts" id="fromRow" hidden>
+      <div class="pt-row" style="margin-top:8px">
+        <input id="fromAddr" type="text" placeholder="Starting point — place or address…" autocomplete="off">
         <button class="pt-btn" id="fromGps" type="button">📍 Me</button>
       </div>
-      <div class="pt-row" style="margin-top:6px"><input id="fromAddr" type="text" placeholder="…or type an address / landmark" autocomplete="off"></div>
       <div class="geo-list" id="fromList"></div>
     </div>
-    <button class="swapb" id="swapBtn" type="button">⇅ swap</button>
-    <div class="field geo-opts">
-      <label>Going to</label>
-      <div class="pt-row">
-        <select id="toSel"><option value="">— pick a place —</option></select>
-      </div>
-      <div class="pt-row" style="margin-top:6px"><input id="toAddr" type="text" placeholder="…or type an address / landmark" autocomplete="off"></div>
-      <div class="geo-list" id="toList"></div>
-    </div>
-    <button class="go-btn" id="goBtn" type="button">Find the free way there →</button>
   </div>
 
   <div id="result"></div>
 
-  <div id="mapPanel">
+  <button class="map-peek" id="mapPeek" type="button">🗺 Peek at the free routes map</button>
+  <div id="mapPanel" hidden>
     <div id="map" role="application" aria-label="Map of Savannah's free shuttle loops and ferry"></div>
-  </div>
-  <div class="legend">
-    <span><i style="background:#5aa02a"></i> Forsyth loop</span>
-    <span><i style="background:#c9821f"></i> Downtown loop</span>
-    <span><i style="background:#2aa0a0"></i> Belles Ferry</span>
-    <span><i class="tstop" style="width:11px;height:11px;background:#2a2317;border-color:#e7c389"></i> stop</span>
+    <div class="legend">
+      <span><i style="background:#5aa02a"></i> Forsyth loop</span>
+      <span><i style="background:#c9821f"></i> Downtown loop</span>
+      <span><i style="background:#2aa0a0"></i> Belles Ferry</span>
+      <span><i class="tstop" style="width:11px;height:11px;background:#2a2317;border-color:#e7c389"></i> stop</span>
+    </div>
   </div>
 
   <div class="prose">
@@ -166,7 +172,7 @@ a{color:#e7c389}
   </div>
 
   <div class="home-note" id="homeNote">
-    Staying at <a href="/">The Wilder House</a>? You're about three blocks from a Forsyth-loop stop — an easy free ride to River Street, the squares, and the ferry. Set your starting point to <em>The Wilder House</em> above to see it.
+    Staying at <a href="/">The Wilder House</a>? You're about three blocks from a Forsyth-loop stop. Tap <em>River Street</em> above and it'll walk you from the door to the ride.
   </div>
 
   <div class="foot">
@@ -210,23 +216,56 @@ const WALK_MPH=2.9, RIDE_MIN_PER_STOP=1.6;
 fetch('/data/savannah-free-transit.json?v='+Date.now()).then(r=>r.json()).then(d=>{DATA=d;boot();})
   .catch(()=>{$('result').innerHTML='<div class="rcard">Could not load the transit data. Refresh to try again.</div>';});
 
+/* ONE question — "where do you want to go?" — then everything else is
+   automatic: start = where you're standing (asked politely on first pick),
+   planning fires the moment a destination is chosen, and the map appears
+   only once there is an answer worth drawing. */
+const CHIP_PICKS=[/River Street/i,/City Market/i,/Forsyth Park/i,/Leopold/i,/Cathedral/i,/Plant Riverside/i,/Broughton/i,/Mrs Wilkes/i];
 function boot(){
-  // fill destination dropdowns
-  const opts=DATA.destinations.map(d=>`<option value="${d.name}">${d.name}${d.drive?' (drive)':''}</option>`).join('');
-  $('fromSel').innerHTML+=opts;$('toSel').innerHTML+=opts;
-  renderStatus();initMap();
-  pollBuses();busTimer=setInterval(pollBuses,20000);
-  $('fromSel').addEventListener('change',e=>{const d=DATA.destinations.find(x=>x.name===e.target.value);if(d){fromPt={...d,label:d.name};$('fromAddr').value='';}});
-  $('toSel').addEventListener('change',e=>{const d=DATA.destinations.find(x=>x.name===e.target.value);if(d){toPt={...d,label:d.name};$('toAddr').value='';}});
+  renderStatus();
+  const chips=[];
+  CHIP_PICKS.forEach(rx=>{const d=DATA.destinations.find(x=>rx.test(x.name)&&!x.drive);if(d&&!chips.includes(d))chips.push(d);});
+  $('destChips').innerHTML=chips.map((d,i)=>'<button class="chip" type="button" data-n="'+d.name.replace(/"/g,'&quot;')+'">'+d.name+'</button>').join('');
+  $('destChips').addEventListener('click',e=>{
+    const b=e.target.closest('.chip');if(!b)return;
+    const d=DATA.destinations.find(x=>x.name===b.dataset.n);if(!d)return;
+    document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c===b));
+    $('toAddr').value='';toPt={...d,label:d.name};autoFromThenPlan();
+  });
+  bindGeocode('toAddr','toList',p=>{toPt=p;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));autoFromThenPlan();});
+  bindGeocode('fromAddr','fromList',p=>{setFrom(p);});
+  $('fromChange').addEventListener('click',()=>{const r=$('fromRow');r.hidden=!r.hidden;if(!r.hidden)$('fromAddr').focus();});
   $('fromGps').addEventListener('click',useLoc);
-  $('goBtn').addEventListener('click',plan);
-  $('swapBtn').addEventListener('click',()=>{const a=fromPt;fromPt=toPt;toPt=a;
-    $('fromSel').value=fromPt&&!fromPt.typed?(fromPt.label||''):'';$('toSel').value=toPt&&!toPt.typed?(toPt.label||''):'';
-    $('fromAddr').value=fromPt&&fromPt.typed?fromPt.label:'';$('toAddr').value=toPt&&toPt.typed?toPt.label:'';
-    if(fromPt&&toPt)plan();});
-  bindGeocode('fromAddr','fromList',p=>{fromPt=p;$('fromSel').value='';});
-  bindGeocode('toAddr','toList',p=>{toPt=p;$('toSel').value='';});
+  $('mapPeek').addEventListener('click',()=>{ $('mapPanel').hidden?showMap():hideMap(); });
 }
+function setFrom(p,quiet){
+  fromPt=p;
+  $('fromLabel').textContent=p.label==='My location'?'📍 your location':p.label;
+  $('fromRow').hidden=true;
+  if(toPt&&!quiet)plan();
+}
+let askedGeo=false;
+function autoFromThenPlan(){
+  if(fromPt){plan();return;}
+  if(!navigator.geolocation){revealFrom();return;}
+  $('result').innerHTML='<div class="rcard"><div class="rsum">📍 Finding where you are…</div></div>';
+  askedGeo=true;
+  navigator.geolocation.getCurrentPosition(p=>{
+    setFrom({lat:p.coords.latitude,lng:p.coords.longitude,label:'My location'},true);plan();
+  },()=>{revealFrom();},{enableHighAccuracy:true,timeout:8000,maximumAge:120000});
+}
+function revealFrom(){
+  $('result').innerHTML='<div class="rcard"><div class="rsum">Where are you starting from? Type a place below — or allow location and it\'s automatic.</div></div>';
+  $('fromRow').hidden=false;$('fromAddr').focus();
+}
+/* map appears only when there is something to show */
+function showMap(){
+  const first=!map;
+  $('mapPanel').hidden=false;$('mapPeek').textContent='🗺 Hide the map';
+  if(first){initMap();pollBuses();if(!busTimer)busTimer=setInterval(pollBuses,20000);}
+  setTimeout(()=>{try{map.invalidateSize();}catch(e){}},60);
+}
+function hideMap(){$('mapPanel').hidden=true;$('mapPeek').textContent='🗺 Peek at the free routes map';}
 
 /* ── service status ── */
 function nowH(){const d=new Date();return d.getHours()+d.getMinutes()/60;}
@@ -268,10 +307,9 @@ function useLoc(){
   if(!navigator.geolocation){alert('Location not available on this device.');return;}
   $('fromGps').textContent='…';
   navigator.geolocation.getCurrentPosition(p=>{
-    fromPt={lat:p.coords.latitude,lng:p.coords.longitude,label:'My location'};
-    $('fromGps').textContent='📍 Me';$('fromSel').value='';$('fromAddr').value='';
-    if(toPt)plan();else $('fromGps').textContent='✓ set';
-  },()=>{$('fromGps').textContent='📍 Me';alert('Could not get your location. Pick a place or type an address instead.');},{enableHighAccuracy:true,timeout:8000});
+    $('fromGps').textContent='📍 Me';$('fromAddr').value='';
+    setFrom({lat:p.coords.latitude,lng:p.coords.longitude,label:'My location'});
+  },()=>{$('fromGps').textContent='📍 Me';alert('Could not get your location. Type a place or address instead.');},{enableHighAccuracy:true,timeout:8000});
 }
 
 /* typed search: the curated destinations answer FIRST (apostrophe- and
@@ -295,7 +333,7 @@ function bindGeocode(inputId,listId,set){
         list.innerHTML=res.map((x,i)=>`<div data-i="${i}">${x.name.split(',').slice(0,2).join(', ')}</div>`).join('');
         list.style.display='block';
         list.querySelectorAll('div').forEach(el=>el.addEventListener('click',()=>{
-          const x=res[+el.dataset.i];set({lat:x.lat,lng:x.lng,label:inp.value,typed:true});
+          const x=res[+el.dataset.i];set({lat:x.lat,lng:x.lng,label:(x.name||'').split(',')[0]||inp.value,typed:true});
           inp.value=el.textContent;list.style.display='none';}));
       }catch(e){list.style.display='none';}
     },420);
@@ -485,8 +523,10 @@ function ringChain(loopKey,i,j){
   return pts;
 }
 function drawRoute(r){
+  if(!r){if(map&&routeLayer){map.removeLayer(routeLayer);routeLayer=null;}return;}
+  showMap(); // the map earns its screen space only once there's an answer on it
   if(routeLayer){map.removeLayer(routeLayer);routeLayer=null;}
-  if(!r)return;const g=L.layerGroup();const bounds=[];
+  const g=L.layerGroup();const bounds=[];
   const pin=(pt,c,t)=>L.marker([pt.lat,pt.lng],{icon:L.divIcon({className:'',html:'<div style="width:16px;height:16px;border-radius:50%;background:'+c+';border:2.5px solid #fff;box-shadow:0 0 8px rgba(0,0,0,.7)"></div>',iconSize:[16,16],iconAnchor:[8,8]})}).bindTooltip(t);
   if(fromPt){pin(fromPt,'#5aa02a','Start: '+(fromPt.label||'')).addTo(g);bounds.push([fromPt.lat,fromPt.lng]);}
   if(toPt){pin(toPt,'#c95a34','Destination: '+(toPt.label||'')).addTo(g);bounds.push([toPt.lat,toPt.lng]);}
@@ -517,7 +557,7 @@ function drawRoute(r){
 /* ── LIVE BUSES (lights up when the CATTRACKER_KEY secret is set) ── */
 let busLayer=null,busTimer=null;
 async function pollBuses(){
-  if(document.visibilityState!=='visible')return;
+  if(!map||document.visibilityState!=='visible')return;
   try{
     const d=await(await fetch('/bus-proxy?what=vehicles&rt=7F,7D,2550')).json();
     if(d.source!=='live'){if(busTimer&&d.source==='unconfigured'){clearInterval(busTimer);busTimer=null;}return;}
