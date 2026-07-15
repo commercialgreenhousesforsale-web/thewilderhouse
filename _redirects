@@ -9,6 +9,11 @@
 /savannah-day-planner.html /savannah-by-the-hour 301
 
 # Catch-all for .html files
+# legacy suite pages (noindexed relics with off-brand copy + a dead /both nav) -> modern pages
+/314A /forsyth-park-vacation-rental-savannah-314a 301
+/316A /savannah-victorian-district-vacation-rental-316a 301
+/units /savannah-group-vacation-rental-4-bedroom 301
+/both /savannah-group-vacation-rental-4-bedroom 301
 /*.html /:splat 301
 
 # Service worker must be at root
