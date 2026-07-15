@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Forsyth Park Ghost Tour — Free Self-Guided Audio Walk"/>
 <meta name="twitter:description" content="17 narrated stops, Forsyth Park to the river. GPS-triggered stories or listen from anywhere. Free."/>
 <meta name="twitter:image" content="https://forsythparkvacationrentals.com/wilder-house-forsyth-park-savannah-vacation-rental.jpg"/>
-<meta name="robots" content="noindex, nofollow"/><!-- OWNER: unlisted for now — do not index or link until launch -->
+<meta name="robots" content="index, follow"/><!-- OWNER: indexed but NOT linked from the site until launch; page carries an under-construction notice -->
 <meta name="theme-color" content="#0a0805">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,6 +35,7 @@ a{color:#e7c389}
 .header h1{font-size:26px;color:#e7c389;font-weight:400}
 .header .sub{font-size:10px;color:#8b7d60;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
 .status{font-size:11px;color:#9db98a;margin-top:10px;min-height:15px}
+.uc-banner{background:rgba(201,130,31,.14);border:1px solid rgba(201,130,31,.45);color:#d9a75f;font-size:12px;line-height:1.55;border-radius:8px;padding:9px 12px;margin:10px 0 2px;text-align:center}
 /* begin overlay */
 #beginOverlay{position:fixed;inset:0;background:linear-gradient(180deg,#0a0805 0%,#151009 100%);z-index:1000;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}
 #beginOverlay h1{color:#e7c389;font-size:32px;font-weight:400;margin-bottom:6px}
@@ -142,6 +143,7 @@ a{color:#e7c389}
 <div id="beginOverlay">
   <h1>Forsyth Park Ghost Tour</h1>
   <div class="ov-sub">Savannah Remembers · The Wilder House</div>
+  <div class="uc-banner" style="max-width:420px">🚧 Under construction — stories and recordings are still being polished. You're welcome to walk it early.</div>
   <p class="ov-desc">A free, self-guided audio walk through Savannah's Historic District — 17 narrated stops from Forsyth Park north to the river. About 90 minutes on foot, best after dark. No app. No ticket. Just walk, and the stories find you.</p>
   <label class="wv-row"><input type="checkbox" id="waiverCheck"><span>One housekeeping matter before the city speaks: I have read and accept <button type="button" class="wv-link" id="waiverToggle">the terms</button> — for myself and everyone walking with me.</span></label>
   <div class="wv-text" id="waiverText" hidden>
@@ -170,6 +172,7 @@ a{color:#e7c389}
   <div class="header">
     <a class="brand" href="/">The Wilder House · Est. 1898</a>
     <h1>Forsyth Park Ghost Tour</h1>
+    <div class="uc-banner">🚧 Under construction — stories and recordings are still being polished. You're welcome to walk it early.</div>
     <div class="sub">Savannah Remembers</div>
     <div class="status" id="status">Loading the tour…</div>
   </div>

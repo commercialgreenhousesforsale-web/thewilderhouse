@@ -11,12 +11,6 @@
 /nara-archive-research
   X-Robots-Tag: noindex, nofollow
 
-# Ghost tour — OWNER: unlisted until launch; never index
-/savannah-ghost-tour
-  X-Robots-Tag: noindex, nofollow
-/savannah-ghost-tour.html
-  X-Robots-Tag: noindex, nofollow
-
 # Internal ghost-tour coordinate editor — never index
 /ghost-tour-editor
   X-Robots-Tag: noindex, nofollow
