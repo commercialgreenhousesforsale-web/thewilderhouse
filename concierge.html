@@ -75,86 +75,7 @@
 html{scroll-behavior:auto}
 body{background:var(--cr);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
 
-/* DARK MODE */
-@media(prefers-color-scheme:dark){
-  body{background:#121212;color:#f5f5f5}
-  nav{background:rgba(30,30,30,.98);border-bottom-color:rgba(255,255,255,.1)}
-  .logo-name{color:#b8e6d5}
-  .logo-est{color:#c2a032}
-  .nav-links a{color:#d0d0d0}
-  .nav-links a:hover,.nav-links a.active{color:var(--gol)}
-  .nav-cta{background:var(--gol)!important;color:#000!important}
-  .page-header{background:linear-gradient(158deg,#1a2418 0%,#151d19 54%,#0f1815 100%)}
-  .page-header h1{color:#e0e0e0}
-  .page-header .ph-intro,.page-header .ph-tagline{color:rgba(255,255,255,.7)}
-  .page-header .ph-meta{color:rgba(255,255,255,.5)}
-  .page-header .ph-meta b{color:rgba(255,255,255,.85)}
-  .rn-card{background:#1e1e1e;border-color:rgba(232,201,106,.3)}
-  .rn-left{border-right-color:rgba(255,255,255,.12);color:#f5f5f5}
-  .rn-title{color:#e0e0e0}
-  .rn-reason{color:#b0b0b0}
-  .rn-right{background:linear-gradient(180deg,#242424,#1a1a1a)}
-  .rn-runner-title{color:var(--gol)}
-  .rn-runners-h{color:rgba(255,255,255,.5)}
-  .rn-badge{border-color:rgba(255,255,255,.2)}
-  .weather-card{background:#1e1e1e;border-color:rgba(255,255,255,.12)}
-  .w-temp{color:#e0e0e0}
-  .w-sky,.w-feel{color:#b0b0b0}
-  .w-stats{border-top-color:rgba(255,255,255,.12)}
-  .sun-card{background:#1e1e1e;border-color:rgba(255,255,255,.12)}
-  .sun-kicker,.sun-pts{color:rgba(255,255,255,.6)}
-  .sun-pts .sv{color:#e0e0e0}
-  .golden-row{border-top-color:rgba(255,255,255,.12)}
-  .ev-list{gap:10px}
-  .ev-row{background:linear-gradient(135deg,#1e1e1e 0%,#1a1a1a 100%);border-color:rgba(232,201,106,.2);color:#e0e0e0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-  .ev-row:hover{border-color:rgba(232,201,106,.3);box-shadow:0 6px 16px rgba(232,201,106,.12)}
-  .ev-row.ev-live{border-color:rgba(232,201,106,.4);background:rgba(232,201,106,.12)}
-  .ev-when{color:var(--terra)}
-  .ev-name{color:#e0e0e0}
-  .ev-place{color:#999}
-  .act-card{background:linear-gradient(135deg,#1e1e1e 0%,#1a1a1a 100%);border-color:rgba(232,201,106,.2);color:#e0e0e0;box-shadow:0 4px 16px rgba(0,0,0,.3)}
-  .act-card:hover{border-color:rgba(232,201,106,.35);box-shadow:0 12px 32px rgba(232,201,106,.15),0 2px 8px rgba(0,0,0,.4)}
-  .act-title{color:#e0e0e0}
-  .act-place{color:#999}
-  .act-desc{color:#b0b0b0}
-  .act-foot{border-top-color:rgba(255,255,255,.12)}
-  .acts-foot{color:#666}
-  .acts-foot a{color:var(--gol)}
-  .qchip{background:linear-gradient(135deg,#2a2a2a 0%,#242424 100%);border-color:rgba(232,201,106,.25);color:#d8d8d8;box-shadow:0 2px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1);font-family:var(--serif)}
-  .qchip:hover{border-color:rgba(232,201,106,.5);color:var(--gol);background:linear-gradient(135deg,#333 0%,#2d2d2d 100%);box-shadow:0 6px 20px rgba(232,201,106,.18),inset 0 1px 0 rgba(255,255,255,.15)}
-  .qchip.active{background:linear-gradient(135deg,var(--gol) 0%,#d4af5a 50%,#c2a032 100%);color:#1a2b1a;border-color:rgba(194,160,50,.6);box-shadow:0 8px 28px rgba(232,201,106,.3),inset 0 2px 6px rgba(255,255,255,.2),inset 0 -2px 6px rgba(0,0,0,.3);text-shadow:0 1px 2px rgba(0,0,0,.3)}
-  .quiz-bar{background:#1a1a1a;border-bottom-color:rgba(255,255,255,.1)}
-  .itin{background:#1e1e1e;border-color:rgba(232,201,106,.3);color:#e0e0e0;box-shadow:4px 4px 0 rgba(0,0,0,.4)}
-  .itin-title{color:var(--gol)}
-  .itin-step{border-top-color:rgba(255,255,255,.12)}
-  .itin-why{color:#b0b0b0}
-  .tip-card{background:#1e1e1e;border-color:rgba(255,255,255,.12)}
-  .tip-q:hover{background:rgba(255,255,255,.05)}
-  .tip-question{color:#e0e0e0}
-  .tip-body{color:#b0b0b0;border-top-color:rgba(255,255,255,.12)}
-  .tip-body a{color:var(--gol)}
-  .tid-card{background:#1e1e1e;border-color:rgba(255,255,255,.12);color:#e0e0e0}
-  .insider-section{background:#0f1815}
-  .insider-title{color:var(--gol)}
-  .sbh-guide{background:#121212;color:#e0e0e0}
-  .sbh-inner h2{color:var(--gol)}
-  .sbh-inner p{color:#b0b0b0}
-  .sbh-inner a{color:var(--gol)}
-  .sbh-faq{border-top-color:rgba(255,255,255,.12)}
-  .sbh-faq details{border-bottom-color:rgba(255,255,255,.12)}
-  .sbh-faq summary{color:var(--gol)}
-  .sbh-ans{color:#b0b0b0}
-  footer{background:#0f0f0f;border-top-color:rgba(232,201,106,.15);color:rgba(255,255,255,.8)}
-  .mini-footer{border-top-color:rgba(232,201,106,.15);color:rgba(255,255,255,.4)}
-  .mini-footer a{color:rgba(255,255,255,.6)}
-  .rn-cond{background:linear-gradient(180deg,#1e1e1e,#1a1a1a);border-top-color:rgba(255,255,255,.12);color:#b0b0b0}
-  .rn-cond .rc-i b{color:#e0e0e0}
-  .rc-sep{background:rgba(255,255,255,.2)}
-  input,textarea,select{background:#2a2a2a;color:#e0e0e0;border-color:rgba(255,255,255,.2)}
-  #toast{background:#0f0f0f;color:#e0e0e0;border:1px solid rgba(232,201,106,.3)}
-  .refresh-control{background:linear-gradient(135deg,var(--gol) 0%,#b8a520 100%);color:#1a2b1a;border-color:rgba(194,160,50,.5);box-shadow:0 10px 30px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.2)}
-  .refresh-control:hover{box-shadow:0 14px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3)}
-}
+
 
 /* ── FOCUS STATES (KEYBOARD NAV) ───────────────── */
 button:focus,a:focus{outline:3px solid var(--gold);outline-offset:2px}
@@ -190,7 +111,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 }
 
 /* ── PAGE HEADER ──────────────────────────────────── */
-.page-header{position:relative;overflow:hidden;color:rgba(255,255,255,.9);padding:42px 0 34px;
+.page-header{position:relative;overflow:hidden;color:rgba(255,255,255,.9);padding:18px 0 16px;
   background:
     radial-gradient(150% 130% at 86% -25%, rgba(232,201,106,.16), rgba(232,201,106,0) 46%),
     radial-gradient(120% 110% at -5% 120%, rgba(61,84,68,.65), rgba(61,84,68,0) 52%),
@@ -200,7 +121,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
   background:radial-gradient(circle at 50% 50%, rgba(232,201,106,.10), transparent 62%)}
 .ph-inner{max-width:1200px;margin:0 auto;padding:0 24px}
 .ph-dot{width:7px;height:7px;border-radius:50%;background:var(--gol);animation:pulse 2.4s ease-in-out infinite}
-.ph-brand{display:flex;align-items:baseline;gap:.34em;margin-bottom:14px}
+.ph-brand{display:flex;align-items:baseline;gap:.34em;margin-bottom:7px}
 .ph-wordmark{font-family:var(--serif);font-size:clamp(1.7rem,4.2vw,2.5rem);font-weight:500;letter-spacing:.005em;color:#fff;line-height:1}
 .ph-bth{font-style:italic;font-weight:500;color:var(--gol)}
 .ph-tagline{font-family:var(--serif);font-style:italic;font-size:clamp(1.02rem,2.1vw,1.28rem);color:rgba(255,255,255,.72);max-width:46ch;margin-bottom:16px;line-height:1.35}
@@ -221,14 +142,14 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 .stay-btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.32)}
 .stay-btn.ghost:hover{border-color:var(--gol);color:var(--gol);box-shadow:none}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.page-header h1{font-family:var(--serif);font-size:clamp(2.4rem,6vw,3.8rem);font-weight:400;line-height:.95;letter-spacing:-.02em;margin-bottom:12px}
+.page-header h1{font-family:var(--serif);font-size:clamp(1.35rem,2.4vw,1.72rem);font-weight:400;line-height:1.25;letter-spacing:0;margin-bottom:9px;color:rgba(255,255,255,.74)}
 .page-header h1 em{font-style:italic;color:var(--gol)}
 .ph-meta{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.06em;display:flex;flex-wrap:wrap;gap:8px 24px}
 .ph-meta b{color:rgba(255,255,255,.88);font-weight:500}
 /* ── MOBILE HERO TIGHTENING (iPhone) ─────────────── */
 @media(max-width:600px){
   .page-header{padding:24px 0 26px}
-  .page-header h1{font-size:2.05rem;line-height:1.03;margin-bottom:10px}
+  .page-header h1{font-size:1.16rem;line-height:1.3;margin-bottom:7px}
   .ph-wordmark{font-size:1.95rem}
   .ph-brand{margin-bottom:9px}
   .ph-tagline{font-size:1.02rem;line-height:1.4;margin-bottom:13px;max-width:none}
@@ -237,7 +158,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 }
 
 /* ── LAYOUT ───────────────────────────────────────── */
-.planner{max-width:1200px;margin:0 auto;padding:28px 20px 80px;-webkit-overflow-scrolling:touch;overflow-y:auto}
+.planner{max-width:1200px;margin:0 auto;padding:16px 20px 80px;-webkit-overflow-scrolling:touch;overflow-y:auto}
 @media(max-width:600px){.planner{padding:18px 14px 60px;padding-bottom:calc(60px + env(safe-area-inset-bottom))}}
 .panel-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:start}
 @media(max-width:760px){
@@ -249,7 +170,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
 
 /* ── RIGHT NOW ────────────────────────────────────── */
 .rn-feature{margin-bottom:30px}
-.rn-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-bottom:12px}
+.rn-promise{max-width:640px;margin:14px auto 0;text-align:center;font-family:var(--serif);font-size:1.06rem;line-height:1.5;color:var(--mu);font-style:italic}
+@media(prefers-color-scheme:dark){.rn-promise{color:#a99d85}}
+/* filters sit under the answer now — quieter, clearly secondary */
+.quiz-bar{margin:26px 0 6px;border-radius:14px;border:1px solid var(--rule)!important;border-bottom:1px solid var(--rule)!important;box-shadow:none!important}
+.quiz-bar .quiz-inner{padding-top:2px}
+.rn-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-bottom:8px}
 .rn-pulse{width:8px;height:8px;border-radius:50%;background:var(--terra);animation:rnp 1.8s ease-out infinite}
 @keyframes rnp{0%{box-shadow:0 0 0 0 rgba(187,106,61,.55)}70%{box-shadow:0 0 0 10px rgba(187,106,61,0)}100%{box-shadow:0 0 0 0 rgba(187,106,61,0)}}
 
@@ -262,8 +188,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-
   .status-badge{background:rgba(139,195,74,.15);color:#7cb342}
   .pulse-dot{background-color:#7cb342}
 }
-.rn-card{display:grid;grid-template-columns:1.7fr 1fr;border:2px solid var(--g);border-radius:22px;overflow:hidden;background:#fff;box-shadow:8px 8px 0 var(--g);min-height:312px}
-@media(max-width:640px){.rn-card{grid-template-columns:1fr;box-shadow:4px 4px 0 var(--g)}}
+.rn-card{display:grid;grid-template-columns:1.7fr 1fr;border:1px solid var(--rule);border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 24px 60px -18px rgba(42,60,48,.30),0 4px 14px rgba(42,60,48,.05);min-height:312px}
+@media(max-width:640px){.rn-card{grid-template-columns:1fr;box-shadow:0 10px 28px -8px rgba(42,60,48,.24),0 2px 8px rgba(42,60,48,.05)}}
 .rn-left{padding:clamp(28px,4vw,42px) clamp(28px,4vw,46px) 32px;border-right:1px solid var(--rule);display:flex;flex-direction:column;justify-content:center}
 @media(max-width:640px){.rn-left{border-right:none;border-bottom:1px solid var(--rule)}}
 .rn-kicker{font-family:var(--mono);font-size:clamp(15px,2vw,19px);letter-spacing:.06em;text-transform:uppercase;color:var(--terra);font-weight:800;margin-bottom:18px}
@@ -448,7 +374,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .rn-happening a{color:var(--g)}
 
 /* ── ITINERARY (NEXT FEW HOURS) ───────────────────── */
-.itin{margin-top:18px;background:#fff;border:1.5px solid var(--g);border-radius:18px;padding:18px 20px;box-shadow:4px 4px 0 rgba(42,60,48,.08)}
+.itin{margin-top:18px;background:#fff;border:1.5px solid var(--g);border-radius:18px;padding:18px 20px;box-shadow:0 8px 22px -8px rgba(42,60,48,.18)}
 .itin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .itin-title{font-family:var(--serif);font-size:1.3rem;font-weight:500;color:var(--g);display:flex;align-items:center;gap:8px}
 .itin-sub{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
@@ -464,6 +390,92 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
 .itin-meta{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);margin-top:5px;display:flex;gap:12px;flex-wrap:wrap}
 .itin-foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:11.5px;color:var(--mu);font-style:italic;line-height:1.45}
 
+
+
+/* DARK MODE — must stay LAST: these are overrides, and same-specificity
+   rules only win when they come after the base rules they override.
+   (It used to sit above the components, so dark cards rendered white
+   with cream text on them — invisible. Do not move it back up.) */
+/* DARK MODE */
+@media(prefers-color-scheme:dark){
+  body{background:#14120e;color:#efe6d4}
+  nav{background:rgba(20,18,14,.97);border-bottom-color:rgba(232,201,106,.14)}
+  .logo-name{color:#cbb98a}
+  .logo-est{color:#c2a032}
+  .nav-links a{color:#cfc3a8}
+  .nav-links a:hover,.nav-links a.active{color:var(--gol)}
+  .nav-cta{background:var(--gol)!important;color:#000!important}
+  .page-header{background:linear-gradient(158deg,#1a2418 0%,#151d19 54%,#0f1815 100%)}
+  .page-header h1{color:#f2e8d5}
+  .page-header .ph-intro,.page-header .ph-tagline{color:rgba(255,255,255,.7)}
+  .page-header .ph-meta{color:rgba(255,255,255,.5)}
+  .page-header .ph-meta b{color:rgba(255,255,255,.85)}
+  .rn-card{background:#1c1813;border-color:rgba(232,201,106,.3)}
+  .rn-left{border-right-color:rgba(232,201,106,.16);color:#efe6d4}
+  .rn-title{color:#f2e8d5}
+  .rn-reason{color:#b9ac92}
+  .rn-right{background:linear-gradient(180deg,#221d17,#161209)}
+  .rn-runner-title{color:var(--gol)}
+  .rn-runners-h{color:rgba(255,255,255,.5)}
+  .rn-badge{border-color:rgba(255,255,255,.2)}
+  .weather-card{background:#1c1813;border-color:rgba(232,201,106,.16)}
+  .w-temp{color:#f2e8d5}
+  .w-sky,.w-feel{color:#b9ac92}
+  .w-stats{border-top-color:rgba(232,201,106,.16)}
+  .sun-card{background:#1c1813;border-color:rgba(232,201,106,.16)}
+  .sun-kicker,.sun-pts{color:rgba(255,255,255,.6)}
+  .sun-pts .sv{color:#f2e8d5}
+  .golden-row{border-top-color:rgba(232,201,106,.16)}
+  .ev-list{gap:10px}
+  .ev-row{background:linear-gradient(135deg,#1c1813 0%,#161209 100%);border-color:rgba(232,201,106,.2);color:#f2e8d5;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .ev-row:hover{border-color:rgba(232,201,106,.3);box-shadow:0 6px 16px rgba(232,201,106,.12)}
+  .ev-row.ev-live{border-color:rgba(232,201,106,.4);background:rgba(232,201,106,.12)}
+  .ev-when{color:var(--terra)}
+  .ev-name{color:#f2e8d5}
+  .ev-place{color:#999}
+  .act-card{background:linear-gradient(135deg,#1c1813 0%,#161209 100%);border-color:rgba(232,201,106,.2);color:#f2e8d5;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+  .act-card:hover{border-color:rgba(232,201,106,.35);box-shadow:0 12px 32px rgba(232,201,106,.15),0 2px 8px rgba(0,0,0,.4)}
+  .act-title{color:#f2e8d5}
+  .act-place{color:#999}
+  .act-desc{color:#b9ac92}
+  .act-foot{border-top-color:rgba(232,201,106,.16)}
+  .acts-foot{color:#666}
+  .acts-foot a{color:var(--gol)}
+  .qchip{background:linear-gradient(135deg,#2a2a2a 0%,#221d17 100%);border-color:rgba(232,201,106,.25);color:#d8d8d8;box-shadow:0 2px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(232,201,106,.14);font-family:var(--serif)}
+  .qchip:hover{border-color:rgba(232,201,106,.5);color:var(--gol);background:linear-gradient(135deg,#333 0%,#2d2d2d 100%);box-shadow:0 6px 20px rgba(232,201,106,.18),inset 0 1px 0 rgba(255,255,255,.15)}
+  .qchip.active{background:linear-gradient(135deg,var(--gol) 0%,#d4af5a 50%,#c2a032 100%);color:#1a2b1a;border-color:rgba(194,160,50,.6);box-shadow:0 8px 28px rgba(232,201,106,.3),inset 0 2px 6px rgba(255,255,255,.2),inset 0 -2px 6px rgba(0,0,0,.3);text-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .quiz-bar{background:#161209;border-bottom-color:rgba(232,201,106,.14)}
+  .itin{background:#1c1813;border-color:rgba(232,201,106,.3);color:#f2e8d5;box-shadow:0 12px 30px -8px rgba(0,0,0,.55)}
+  .itin-title{color:var(--gol)}
+  .itin-step{border-top-color:rgba(232,201,106,.16)}
+  .itin-why{color:#b9ac92}
+  .tip-card{background:#1c1813;border-color:rgba(232,201,106,.16)}
+  .tip-q:hover{background:rgba(255,255,255,.05)}
+  .tip-question{color:#f2e8d5}
+  .tip-body{color:#b9ac92;border-top-color:rgba(232,201,106,.16)}
+  .tip-body a{color:var(--gol)}
+  .tid-card{background:#1c1813;border-color:rgba(232,201,106,.16);color:#f2e8d5}
+  .insider-section{background:#0f1815}
+  .insider-title{color:var(--gol)}
+  .sbh-guide{background:#14120e;color:#f2e8d5}
+  .sbh-inner h2{color:var(--gol)}
+  .sbh-inner p{color:#b9ac92}
+  .sbh-inner a{color:var(--gol)}
+  .sbh-faq{border-top-color:rgba(232,201,106,.16)}
+  .sbh-faq details{border-bottom-color:rgba(232,201,106,.16)}
+  .sbh-faq summary{color:var(--gol)}
+  .sbh-ans{color:#b9ac92}
+  footer{background:#0f0f0f;border-top-color:rgba(232,201,106,.15);color:rgba(255,255,255,.8)}
+  .mini-footer{border-top-color:rgba(232,201,106,.15);color:rgba(255,255,255,.4)}
+  .mini-footer a{color:rgba(255,255,255,.6)}
+  .rn-cond{background:linear-gradient(180deg,#1c1813,#161209);border-top-color:rgba(232,201,106,.16);color:#b9ac92}
+  .rn-cond .rc-i b{color:#f2e8d5}
+  .rc-sep{background:rgba(255,255,255,.2)}
+  input,textarea,select{background:#2a2a2a;color:#f2e8d5;border-color:rgba(255,255,255,.2)}
+  #toast{background:#0f0f0f;color:#f2e8d5;border:1px solid rgba(232,201,106,.3)}
+  .refresh-control{background:linear-gradient(135deg,var(--gol) 0%,#b8a520 100%);color:#1a2b1a;border-color:rgba(194,160,50,.5);box-shadow:0 10px 30px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+  .refresh-control:hover{box-shadow:0 14px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3)}
+}
 </style>
 </head>
 <body>
@@ -484,7 +496,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
   <div class="ph-inner">
     <div class="ph-brand"><span class="ph-wordmark">Forsyth Park <span class="ph-bth">Concierge</span></span></div>
     <h1>What to Do in Savannah Right Now &mdash; <em>Near Forsyth Park</em></h1>
-    <p class="ph-tagline">Stop scrolling top-ten lists. One free tool reads the weather, the tide and the time &mdash; and just tells you the one best thing to do. No deciding.</p>
     <div class="ph-meta">
       <span><b>Date</b>&nbsp;&nbsp;<span id="heroDate">—</span></span>
       <span><b>Day</b>&nbsp;&nbsp;<span id="heroDay">—</span></span>
@@ -492,39 +503,6 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
     </div>
   </div>
 </header>
-
-<!-- QUIZ BAR -->
-<div class="quiz-bar" id="quizBar" role="search" aria-label="Filter activities by travel style">
-  <button class="quiz-toggle" id="quizToggle" aria-expanded="false" aria-controls="quizInner">⚙ Filters <span id="quizCount"></span><span class="qt-chev">▾</span></button>
-  <div class="quiz-inner" id="quizInner">
-    <div class="quiz-q">
-      <span class="quiz-label">Getting around</span>
-      <div class="quiz-chips" id="qArea" role="group" aria-label="How far you can travel">
-        <button class="qchip active" data-val="any">All of Savannah</button>
-        <button class="qchip" data-val="walk">Downtown · no car</button>
-      </div>
-    </div>
-    <div class="quiz-q">
-      <span class="quiz-label">Traveling as</span>
-      <div class="quiz-chips" id="qWho" role="group" aria-label="Who are you traveling with">
-        <button class="qchip active" data-val="any">Everyone</button>
-        <button class="qchip" data-val="solo">Solo</button>
-        <button class="qchip" data-val="romantic">Couple</button>
-        <button class="qchip" data-val="family">Family</button>
-      </div>
-    </div>
-    <div class="quiz-q">
-      <span class="quiz-label">Vibe</span>
-      <div class="quiz-chips" id="qVibe" role="group" aria-label="What kind of experience">
-        <button class="qchip active" data-val="any">All</button>
-        <button class="qchip" data-val="outdoor">Outdoors</button>
-        <button class="qchip" data-val="culture">Culture</button>
-        <button class="qchip" data-val="food">Food & Drinks</button>
-        <button class="qchip" data-val="free">Free only</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <main class="planner" id="main">
   <!-- NWS WEATHER ALERT BANNER (heat advisories, storms, tropical systems) -->
@@ -557,8 +535,43 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
       <div class="rn-cond" id="rnCond"></div>
     </div>
     <p class="rn-sync" id="rnSync"><span class="rn-sync-dot"></span>Live tool &middot; data synced <time id="rnSyncTime" datetime="2026-06-03">June 3, 2026</time> &middot; weather, tide &amp; golden hour refresh every hour</p>
-    <div id="whyNot"></div>
+    <p class="rn-promise">Stop scrolling top-ten lists. This reads the weather, the tide and the time &mdash; and just tells you the one best thing to do. No deciding.</p>
+  <div id="whyNot"></div>
   </section>
+
+  <!-- Filters live BELOW the answer: the promise is "no deciding" — the pick
+       leads, adjustments follow. -->
+  <div class="quiz-bar" id="quizBar" role="search" aria-label="Filter activities by travel style">
+    <button class="quiz-toggle" id="quizToggle" aria-expanded="false" aria-controls="quizInner">⚙ Filters <span id="quizCount"></span><span class="qt-chev">▾</span></button>
+    <div class="quiz-inner" id="quizInner">
+      <div class="quiz-q">
+        <span class="quiz-label">Getting around</span>
+        <div class="quiz-chips" id="qArea" role="group" aria-label="How far you can travel">
+          <button class="qchip active" data-val="any">All of Savannah</button>
+          <button class="qchip" data-val="walk">Downtown · no car</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <span class="quiz-label">Traveling as</span>
+        <div class="quiz-chips" id="qWho" role="group" aria-label="Who are you traveling with">
+          <button class="qchip active" data-val="any">Everyone</button>
+          <button class="qchip" data-val="solo">Solo</button>
+          <button class="qchip" data-val="romantic">Couple</button>
+          <button class="qchip" data-val="family">Family</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <span class="quiz-label">Vibe</span>
+        <div class="quiz-chips" id="qVibe" role="group" aria-label="What kind of experience">
+          <button class="qchip active" data-val="any">All</button>
+          <button class="qchip" data-val="outdoor">Outdoors</button>
+          <button class="qchip" data-val="culture">Culture</button>
+          <button class="qchip" data-val="food">Food & Drinks</button>
+          <button class="qchip" data-val="free">Free only</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <noscript>
     <div class="rn-fallback">
@@ -679,10 +692,10 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:56px 24px calc(32
   .whynot-t{font-family:var(--serif);font-weight:500;font-size:.98rem;flex-shrink:0}
   .whynot-w{font-size:12.5px;color:var(--mu);font-style:italic;line-height:1.4}
   @media(prefers-color-scheme:dark){
-    .whynot{background:#1e1e1e;border-color:rgba(255,255,255,.12);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .whynot{background:#1c1813;border-color:rgba(232,201,106,.16);--x:rgba(255,255,255,.12);box-shadow:0 2px 8px rgba(0,0,0,.3)}
     .whynot summary{color:var(--gol)}
     .whynot-row{border-top-color:rgba(255,255,255,.1)}
-    .whynot-t{color:#e0e0e0}
+    .whynot-t{color:#f2e8d5}
     .whynot-w{color:#999}
   }
   .rn-fallback{max-width:760px;margin:0 auto 26px;padding:20px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:14px;font-family:var(--sans);color:rgba(255,255,255,.72);line-height:1.6;font-size:.95rem}
