@@ -603,75 +603,104 @@ function pickGhost(){
   }else lensKind=GHOST_KINDS[Math.floor(Math.random()*GHOST_KINDS.length)];
 }
 function makeGhostSprite(){
+  /* Translucent PEOPLE, not cartoon ghosts (owner ruling 2026-07-15): each
+     spirit is a properly proportioned period figure — head, shoulders, arms,
+     legs or skirt, standing on the ground — rendered soft-edged and see-through
+     like Victorian double-exposure photography. Drawn via the shadowBlur trick
+     (paths drawn 1000px off-canvas cast a blurred "shadow" into frame), which
+     blurs on every browser without ctx.filter. */
   const w=440,h=640,c=document.createElement('canvas');c.width=w;c.height=h;
   const x=c.getContext('2d');
   const T={shade:[235,240,255],lady:[245,238,225],hat:[222,230,246],tall:[218,228,248],child:[242,240,232],soldier:[214,224,242],veil:[244,238,230]}[lensKind]||[235,240,255];
-  const blob=(cx,cy,rx,ry,a)=>{x.save();x.translate(cx,cy);x.scale(rx/100,ry/100);
-    const g=x.createRadialGradient(0,0,10,0,0,100);
-    g.addColorStop(0,'rgba('+T[0]+','+T[1]+','+T[2]+','+a+')');g.addColorStop(.55,'rgba('+Math.round(T[0]*.92)+','+Math.round(T[1]*.94)+','+Math.round(T[2]*.98)+','+(a*.55)+')');g.addColorStop(1,'rgba(200,215,240,0)');
-    x.fillStyle=g;x.beginPath();x.arc(0,0,100,0,7);x.fill();x.restore();};
-  const eye=(cx,cy,r,a)=>{const g=x.createRadialGradient(cx,cy,2,cx,cy,r);
-    g.addColorStop(0,'rgba(15,18,30,'+a+')');g.addColorStop(1,'rgba(15,18,30,0)');
-    x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();};
-  if(lensSecond){ /* October: a fainter one, behind and to the side */
-    blob(w*.2,h*.28,42,52,.3);blob(w*.2,h*.42,60,80,.22);eye(w*.2-13,h*.27,9,.2);eye(w*.2+13,h*.27,9,.2);
+  const cx=w/2;
+  const els=[]; // [type,...args] collected, then rendered in two blur passes
+  const E=(cx,cy,rx,ry,rot)=>els.push(['e',cx,cy,rx,ry,rot||0]);
+  const TZ=(cx,topY,topW,botY,botW,curve)=>els.push(['t',cx,topY,topW,botY,botW,curve||0]);
+  function buildPath(g){
+    for(const s of els){
+      g.beginPath();
+      if(s[0]==='e'){g.ellipse(s[1],s[2],s[3],s[4],s[5],0,7);}
+      else{const[,c0,ty,tw,by,bw,cv]=s;
+        g.moveTo(c0-tw,ty);
+        g.quadraticCurveTo(c0-(tw+bw)/2-cv,(ty+by)/2,c0-bw,by);
+        g.lineTo(c0+bw,by);
+        g.quadraticCurveTo(c0+(tw+bw)/2+cv,(ty+by)/2,c0+tw,ty);
+        g.closePath();}
+      g.fill();
+    }
   }
+  /* — figure construction per spirit (440×640; feet ~y612) — */
+  const head=(hy,r)=>E(cx,hy,r,r*1.16);
+  const neck=(ny)=>TZ(cx,ny,11,ny+24,13);
+  const arms=(sy,sw,len,flare)=>{E(cx-sw-9,sy+len/2,12,len/2,-(flare||.07));E(cx+sw+9,sy+len/2,12,len/2,(flare||.07));};
+  const legs=(hy,gap,lw,fy)=>{TZ(cx-gap-lw/2,hy,lw/2,fy,lw/2-2);TZ(cx+gap+lw/2,hy,lw/2,fy,lw/2-2);E(cx-gap-lw/2,fy+6,lw/2+4,7);E(cx+gap+lw/2,fy+6,lw/2+4,7);};
   if(lensKind==='lady'){
-    blob(w/2,130,78,92,.96);            /* head, higher and finer */
-    blob(w/2,265,105,145,.76);          /* narrow bodice */
-    blob(w/2-95,300,45,95,.42);         /* slim arms */
-    blob(w/2+95,300,45,95,.42);
-    blob(w/2,455,165,175,.6);           /* bell of the skirt */
-    blob(w/2,565,195,115,.46);          /* hem trailing to mist */
-    eye(w/2-28,122,18,.5);eye(w/2+28,122,18,.5);
-  }else if(lensKind==='hat'){
-    blob(w/2,72,66,42,.68);             /* crown */
-    blob(w/2,112,148,26,.8);            /* wide brim */
-    blob(w/2,175,80,88,.96);            /* head beneath */
-    blob(w/2,330,158,185,.72);          /* broad coat */
-    blob(w/2-70,500,85,145,.5);         /* trailing wisps */
-    blob(w/2+55,520,90,150,.52);
-    eye(w/2-30,178,19,.52);eye(w/2+30,178,19,.52);
-  }else if(lensKind==='tall'){
-    blob(w/2,105,66,82,.92);            /* small head, far up */
-    blob(w/2,300,100,235,.66);          /* long narrow body */
-    blob(w/2-20,545,85,140,.48);        /* fading feetless drift */
-    blob(w/2+45,520,70,120,.4);
-    eye(w/2-22,98,15,.55);eye(w/2+22,98,15,.55);
-  }else if(lensKind==='soldier'){
-    blob(w/2,92,64,30,.78);             /* flat forage cap */
-    blob(w/2+42,108,34,14,.6);          /* visor hint */
-    blob(w/2,168,78,86,.96);            /* head at attention */
-    blob(w/2-118,255,52,60,.6);         /* squared shoulders */
-    blob(w/2+118,255,52,60,.6);
-    blob(w/2,330,118,205,.72);          /* rigid upright coat */
-    blob(w/2,545,95,120,.48);           /* fading below the knee */
-    eye(w/2-28,170,18,.5);eye(w/2+28,170,18,.5);
+    E(cx,58,13,13);head(96,31);neck(130);
+    TZ(cx,152,44,236,26,4);            /* bodice to a corseted waist */
+    arms(160,44,150);
+    TZ(cx,236,26,600,96,26);           /* floor-length bell skirt */
   }else if(lensKind==='veil'){
-    blob(w/2,150,92,120,.7);            /* the veil, draped over everything */
-    blob(w/2+6,172,72,84,.9);           /* bowed head beneath it */
-    blob(w/2,175,110,60,.5);            /* veil settling on the shoulders */
-    blob(w/2,320,105,150,.72);          /* slight frame */
-    blob(w/2,470,150,170,.58);          /* long mourning skirt */
-    blob(w/2,575,175,105,.44);          /* hem into mist */
-    /* no eyes — her face is veiled */
+    head(102,30);neck(134);
+    TZ(cx,64,20,210,62,10);            /* the veil, crown to shoulders */
+    TZ(cx,152,42,240,25,3);
+    arms(162,42,146);
+    TZ(cx,240,25,604,88,22);
+  }else if(lensKind==='hat'){
+    E(cx,66,56,9);E(cx,46,25,20);      /* wide brim + crown */
+    head(96,30);neck(128);
+    TZ(cx,150,52,392,44,2);            /* long frock coat */
+    arms(158,52,168,.05);
+    legs(392,10,26,600);
+  }else if(lensKind==='soldier'){
+    TZ(cx,52,25,70,26);E(cx+20,72,15,5);/* kepi + visor */
+    head(98,29);neck(128);
+    TZ(cx,148,47,330,40,0);            /* rigid tunic, squared */
+    arms(154,47,160,.02);              /* arms at attention */
+    legs(330,6,24,600);
   }else if(lensKind==='child'){
-    blob(w/2,255,85,92,.96);            /* round head, low in frame */
-    blob(w/2,395,115,140,.74);          /* small body */
-    blob(w/2-45,520,70,110,.5);         /* short trailing mist */
-    blob(w/2+40,530,75,115,.52);
-    eye(w/2-26,250,20,.55);eye(w/2+26,250,20,.55);
-  }else{ /* the classic shade */
-    blob(w/2,150,95,110,.96);
-    blob(w/2,300,150,190,.74);
-    blob(w/2-120,320,55,110,.4);
-    blob(w/2+120,330,55,110,.4);
-    blob(w/2-60,470,80,150,.52);
-    blob(w/2+15,500,95,170,.56);
-    blob(w/2+90,450,60,120,.4);
-    eye(w/2-32,140,20,.5);eye(w/2+32,140,20,.5);
+    head(226,34);neck(266);            /* small figure, bigger head ratio */
+    TZ(cx,286,34,420,44,6);            /* short dress */
+    arms(292,34,104,.1);
+    legs(420,9,17,586);
+  }else if(lensKind==='tall'){
+    head(64,26);neck(92);
+    TZ(cx,112,36,430,30,0);            /* impossibly long thin coat */
+    arms(120,36,210,.03);
+    legs(430,7,19,606);
+  }else{ /* shade: an anonymous figure in a long coat, almost a person */
+    head(90,30);neck(122);
+    TZ(cx,144,46,470,52,6);            /* coat falling near the ankles */
+    arms(152,46,164,.06);
+    TZ(cx-16,470,12,596,10);TZ(cx+16,470,12,596,10);
   }
-  if(lensWitching){ /* witching hour: colder and a shade bolder */
+  if(lensSecond){                       /* October: a second figure, far back */
+    const kept=els.splice(0,els.length);
+    E(110,300,16,19);TZ(110,322,20,470,26,4);
+    const small=els.splice(0,els.length);
+    els.push(...small,...kept);
+    /* draw the distant one fainter by pre-pass */
+  }
+  const rgb=T.join(',');
+  /* Soft edges via tiny-canvas upscale (bilinear smoothing = free blur).
+     The shadowBlur approach took ~4s/sprite under software raster — this
+     renders in milliseconds on anything. */
+  const pass=(pw,ph,alpha)=>{
+    const t=document.createElement('canvas');t.width=pw;t.height=ph;
+    const tx=t.getContext('2d');tx.scale(pw/w,ph/h);
+    tx.fillStyle='rgba('+rgb+','+alpha+')';
+    buildPath(tx);
+    return t;
+  };
+  x.imageSmoothingEnabled=true;try{x.imageSmoothingQuality='high';}catch(e){}
+  x.globalAlpha=.42;x.drawImage(pass(62,90,1),0,0,w,h);      /* wide soft aura */
+  x.globalAlpha=1;x.drawImage(pass(150,218,.92),0,0,w,h);    /* the figure, soft-edged */
+  /* photographic fade: figures thin out toward the extremities */
+  x.globalCompositeOperation='destination-out';
+  const fade=x.createLinearGradient(0,h*.78,0,h);
+  fade.addColorStop(0,'rgba(0,0,0,0)');fade.addColorStop(1,'rgba(0,0,0,.38)');
+  x.fillStyle=fade;x.fillRect(0,0,w,h);
+  x.globalCompositeOperation='source-over';
+  if(lensWitching){
     x.globalCompositeOperation='source-atop';
     x.fillStyle='rgba(150,180,255,.16)';x.fillRect(0,0,w,h);
     x.globalCompositeOperation='source-over';
@@ -683,8 +712,8 @@ function lensResize(){const g=$('lensGhost');if(!g)return;const r=devicePixelRat
    every 11s, materialising over the first 1.4s. Compass holds the ghost at a
    world bearing so it feels anchored; without a compass it drifts slowly. */
 function ghostPose(t,vw,vh){
-  const bob=Math.sin(t/2100)*vh*.012;
-  const sway=Math.sin(t/3400)*vw*.02;
+  const bob=Math.sin(t/2400)*vh*.004;
+  const sway=Math.sin(t/3600)*vw*.008;
   let op=.5+.22*Math.sin(t/1300)+.12*Math.sin(t/470);
   const cyc=(t%11000)/11000;
   if(cyc>.86)op*=Math.max(.06,1-((cyc-.86)/.07));
@@ -695,7 +724,7 @@ function ghostPose(t,vw,vh){
     ox=Math.max(-.38,Math.min(.38,d/55))*vw;
   }else ox=Math.sin(t/5200)*vw*.1;
   const gh=vh*(GHOST_H[lensKind]||.62),gw=gh*(440/640);
-  return{x:vw/2-gw/2+sway+ox,y:vh*.88-gh+bob,w:gw,h:gh,op:Math.max(0,Math.min(.9,op))};
+  return{x:vw/2-gw/2+sway+ox,y:vh*.94-gh+bob,w:gw,h:gh,op:Math.max(0,Math.min(.78,op))};
 }
 function lensLoop(ts){
   const g=$('lensGhost'),x=g.getContext('2d');
