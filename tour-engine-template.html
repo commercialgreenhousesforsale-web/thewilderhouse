@@ -583,16 +583,27 @@ function shareTour(){
    captured photo shows exactly what the guest saw. */
 let lensStream=null,lensRaf=0,lensFacing='environment',lensSprite=null,lensT0=0,
     lensBearing=null,lensHeading=null,lensOnOrient=null,lensBlob=null;
-/* Story-matched apparitions — silhouettes only, never named real people.
-   Each stop's RESIDENT spirit echoes its story (soldier at the war memorials,
-   the lady at Mary Telfair's hospital, a veiled mourner at the fountain's
-   sorrow, the hatted man on the merchant river). Authored per stop as
-   stop.spirit in the tour JSON; GHOST_RESIDENTS is the built-in fallback.
-   At the finale the layers gather — a second spirit always joins.
+/* Story-matched apparitions — HISTORICALLY PLAUSIBLE PERIOD FIGURES
+   (owner ruling 2026-07-19: each spirit should look like the story's person
+   MAY have looked in real life — era-true dress, hair, posture. Still
+   translucent impressions; NEVER a claimed likeness of a real face.)
+   Cast: grocer(1890s man) · telfair(1870s elderly lady, bun+shawl) ·
+   hiker(1898 campaign hat) · elder(the long listener) · widow(full mourning,
+   veil down) · mourner(1820 fever year, poke bonnet) · magnate(1917 homburg,
+   chesterfield) · dragoon(1779 tricorn cavalry) · mason(shirtsleeves, flat
+   cap, hand to his work) · officer(1864 kepi greatcoat) · tophat(Victorian
+   topper, caped coat) · parish(bonneted parishioner) · alice(1735 mob cap,
+   petite) · continental(1786 tricorn line officer) · alderman(1906 bowler) ·
+   factor(topper + ledger under arm) · sailor(peacoat, flat cap).
+   Old kinds (shade/lady/hat/tall/child/soldier/veil) alias to the cast so
+   existing data and Studio keep working. Authored per stop as stop.spirit;
+   GHOST_RESIDENTS is the built-in fallback.
+   Finale: a second figure always joins, far off — a woman, arm raised.
    12am-4am = witching hour (colder, bolder). October: chance of a lurker. */
-const GHOST_KINDS=['shade','lady','hat','tall','child','soldier','veil'];
-const GHOST_RESIDENTS={1:'shade',2:'lady',3:'soldier',4:'tall',5:'soldier',6:'veil',7:'child',8:'soldier',9:'shade',10:'soldier',11:'hat',12:'veil',13:'shade',14:'soldier',15:'hat',16:'hat',17:'hat',18:'hat'};
-const GHOST_H={shade:.62,lady:.64,hat:.66,tall:.72,child:.42,soldier:.68,veil:.64};
+const GHOST_KINDS=['grocer','telfair','hiker','elder','widow','mourner','magnate','dragoon','mason','officer','tophat','parish','alice','continental','alderman','factor','sailor','shade','child'];
+const SPIRIT_ALIAS={shade:'shade',lady:'telfair',hat:'tophat',tall:'elder',child:'child',soldier:'officer',veil:'widow'};
+const GHOST_RESIDENTS={1:'grocer',2:'telfair',3:'hiker',4:'elder',5:'widow',6:'mourner',7:'magnate',8:'dragoon',9:'mason',10:'officer',11:'tophat',12:'parish',13:'alice',14:'continental',15:'alderman',16:'factor',17:'sailor',18:'sailor'};
+const GHOST_H={grocer:.64,telfair:.63,hiker:.68,elder:.72,widow:.64,mourner:.63,magnate:.67,dragoon:.68,mason:.65,officer:.68,tophat:.68,parish:.62,alice:.55,continental:.68,alderman:.66,factor:.68,sailor:.65,shade:.62,child:.42,lady:.63,hat:.68,tall:.72,soldier:.68,veil:.64};
 let lensKind='shade',lensWitching=false,lensSecond=false;
 function pickGhost(){
   lensWitching=(new Date().getHours()<4);
@@ -601,21 +612,23 @@ function pickGhost(){
     lensKind=currentStop.spirit||GHOST_RESIDENTS[currentStop.order]||GHOST_KINDS[currentStop.order%GHOST_KINDS.length];
     if(currentStop.order===18)lensSecond=true; /* the gathering at the river */
   }else lensKind=GHOST_KINDS[Math.floor(Math.random()*GHOST_KINDS.length)];
+  lensKind=SPIRIT_ALIAS[lensKind]||lensKind;
 }
 function makeGhostSprite(){
-  /* Translucent PEOPLE, not cartoon ghosts (owner ruling 2026-07-15): each
-     spirit is a properly proportioned period figure — head, shoulders, arms,
-     legs or skirt, standing on the ground — rendered soft-edged and see-through
-     like Victorian double-exposure photography. Drawn via the shadowBlur trick
-     (paths drawn 1000px off-canvas cast a blurred "shadow" into frame), which
-     blurs on every browser without ctx.filter. */
+  /* Translucent PEOPLE in the dress of their own era (owner rulings 2026-07-15
+     + 2026-07-19) — properly proportioned figures, head to ground, rendered
+     soft-edged and see-through like Victorian double-exposure photography. */
   const w=440,h=640,c=document.createElement('canvas');c.width=w;c.height=h;
   const x=c.getContext('2d');
-  const T={shade:[235,240,255],lady:[245,238,225],hat:[222,230,246],tall:[218,228,248],child:[242,240,232],soldier:[214,224,242],veil:[244,238,230]}[lensKind]||[235,240,255];
+  const TINT={telfair:[245,238,225],widow:[236,230,224],mourner:[244,238,230],parish:[243,238,228],alice:[247,241,229],
+              hiker:[218,228,244],dragoon:[216,226,244],officer:[214,224,242],continental:[217,227,245],
+              grocer:[228,234,246],magnate:[224,231,245],tophat:[222,230,246],alderman:[224,231,245],factor:[222,230,246],
+              mason:[232,235,240],sailor:[220,229,243],elder:[218,228,248],child:[242,240,232],shade:[235,240,255]};
+  const T=TINT[lensKind]||[235,240,255];
   const cx=w/2;
   const els=[]; // [type,...args] collected, then rendered in two blur passes
-  const E=(cx,cy,rx,ry,rot)=>els.push(['e',cx,cy,rx,ry,rot||0]);
-  const TZ=(cx,topY,topW,botY,botW,curve)=>els.push(['t',cx,topY,topW,botY,botW,curve||0]);
+  const E=(ex,ey,rx,ry,rot)=>els.push(['e',ex,ey,rx,ry,rot||0]);
+  const TZ=(c0,topY,topW,botY,botW,curve)=>els.push(['t',c0,topY,topW,botY,botW,curve||0]);
   function buildPath(g){
     for(const s of els){
       g.beginPath();
@@ -629,53 +642,126 @@ function makeGhostSprite(){
       g.fill();
     }
   }
-  /* — figure construction per spirit (440×640; feet ~y612) — */
-  const head=(hy,r)=>E(cx,hy,r,r*1.16);
-  const neck=(ny)=>TZ(cx,ny,11,ny+24,13);
+  /* — shared anatomy (440×640; feet ~y612) — */
+  const head=(hy,r,rot)=>E(cx,hy,r,r*1.16,rot||0);
+  const neck=(ny,nw)=>TZ(cx,ny,nw||11,ny+24,(nw||11)+2);
   const arms=(sy,sw,len,flare)=>{E(cx-sw-9,sy+len/2,12,len/2,-(flare||.07));E(cx+sw+9,sy+len/2,12,len/2,(flare||.07));};
   const legs=(hy,gap,lw,fy)=>{TZ(cx-gap-lw/2,hy,lw/2,fy,lw/2-2);TZ(cx+gap+lw/2,hy,lw/2,fy,lw/2-2);E(cx-gap-lw/2,fy+6,lw/2+4,7);E(cx+gap+lw/2,fy+6,lw/2+4,7);};
-  if(lensKind==='lady'){
-    E(cx,58,13,13);head(96,31);neck(130);
-    TZ(cx,152,44,236,26,4);            /* bodice to a corseted waist */
-    arms(160,44,150);
-    TZ(cx,236,26,600,96,26);           /* floor-length bell skirt */
-  }else if(lensKind==='veil'){
-    head(102,30);neck(134);
-    TZ(cx,64,20,210,62,10);            /* the veil, crown to shoulders */
-    TZ(cx,152,42,240,25,3);
-    arms(162,42,146);
-    TZ(cx,240,25,604,88,22);
-  }else if(lensKind==='hat'){
-    E(cx,66,56,9);E(cx,46,25,20);      /* wide brim + crown */
-    head(96,30);neck(128);
-    TZ(cx,150,52,392,44,2);            /* long frock coat */
-    arms(158,52,168,.05);
-    legs(392,10,26,600);
-  }else if(lensKind==='soldier'){
-    TZ(cx,52,25,70,26);E(cx+20,72,15,5);/* kepi + visor */
-    head(98,29);neck(128);
-    TZ(cx,148,47,330,40,0);            /* rigid tunic, squared */
-    arms(154,47,160,.02);              /* arms at attention */
-    legs(330,6,24,600);
+  const clasp=(yy)=>E(cx,yy,15,10);              /* hands folded at the waist */
+  /* — hats & hair (drawn around a head at hy, radius r) — */
+  const tricorn=(hy)=>{E(cx,hy-30,40,9);E(cx,hy-38,16,9);E(cx-30,hy-34,9,14,.5);E(cx+30,hy-34,9,14,-.5);};
+  const topper =(hy)=>{E(cx,hy-26,40,8);TZ(cx,hy-80,22,hy-26,25);};
+  const bowler =(hy)=>{E(cx,hy-23,34,8);E(cx,hy-34,23,15);};
+  const campaign=(hy)=>{E(cx,hy-24,50,9);TZ(cx,hy-52,15,hy-24,22);E(cx,hy-52,10,6);};
+  const kepi  =(hy)=>{TZ(cx,hy-46,25,hy-28,26);E(cx+20,hy-26,15,5);};
+  const homburg=(hy)=>{E(cx,hy-25,38,8);TZ(cx,hy-50,19,hy-25,23);};
+  const flatcap=(hy)=>{E(cx,hy-28,30,10);E(cx+19,hy-23,14,5);};
+  const mobcap=(hy,r)=>{E(cx,hy-r*.92,r*1.06,r*.66);};
+  const bun   =(hy,r)=>{E(cx,hy-r*1.08,r*.46,r*.4);};
+  /* — figure construction per spirit — */
+  if(lensKind==='telfair'){                 /* 1870s elderly lady: bun, high
+       collar, shawl over the shoulders, bell skirt with a hint of bustle */
+    head(96,30);bun(96,30);neck(128,13);
+    TZ(cx,150,52,262,40,7);                 /* shawl */
+    TZ(cx,150,44,242,26,4);arms(162,44,144);
+    TZ(cx,242,26,602,92,24);E(cx+26,320,22,42);clasp(250);
+  }else if(lensKind==='widow'){             /* full mourning, veil DOWN — the
+       head vanishes inside the veil's cone */
+    TZ(cx,54,25,254,68,13);                 /* veil, crown to below the chest */
+    TZ(cx,158,42,244,26,3);arms(166,42,142);
+    TZ(cx,244,26,604,90,22);clasp(254);
+  }else if(lensKind==='mourner'){           /* 1820 fever year: poke bonnet,
+       high Regency waist, columnar skirt */
+    E(cx,88,34,31);E(cx,68,21,15);          /* deep bonnet framing the face */
+    neck(120,10);
+    TZ(cx,140,36,192,29,2);arms(150,36,124,.05);
+    TZ(cx,192,29,600,64,8);clasp(206);
+  }else if(lensKind==='parish'){            /* bonneted parishioner, shawl */
+    head(98,29);E(cx,74,27,13);neck(130,11);
+    TZ(cx,152,46,250,34,6);                 /* shawl */
+    TZ(cx,152,40,240,25,3);arms(162,40,140);
+    TZ(cx,240,25,600,82,18);
+  }else if(lensKind==='alice'){             /* 1735: a small young woman — mob
+       cap, narrow shoulders, plain ankle-length petticoat, head a little
+       tilted, hands clasped */
+    head(124,27,.07);mobcap(124,27);neck(154,9);
+    TZ(cx,172,34,246,22,3);arms(180,34,122,.05);
+    TZ(cx,246,22,600,68,12);clasp(254);
+  }else if(lensKind==='hiker'){             /* 1898: campaign hat, neckerchief,
+       field tunic, leggings */
+    campaign(96);head(96,29);neck(128,11);E(cx,142,19,10);
+    TZ(cx,150,46,322,40,0);arms(156,46,158,.02);
+    legs(322,7,22,600);
+  }else if(lensKind==='dragoon'){           /* 1779 cavalry: tricorn, coat with
+       flared skirts, tall boots */
+    tricorn(96);head(96,28);neck(126,11);
+    TZ(cx,148,46,362,58,9);arms(154,46,160,.04);
+    legs(362,8,29,600);
+  }else if(lensKind==='continental'){       /* 1786 line officer: tricorn,
+       straight regimental coat, at attention */
+    tricorn(96);head(96,28);neck(126,11);
+    TZ(cx,148,47,338,40,0);arms(154,47,158,.02);
+    legs(338,6,24,600);
+  }else if(lensKind==='officer'){           /* 1864: kepi, double greatcoat */
+    kepi(98);head(98,29);neck(128,11);
+    TZ(cx,148,48,382,44,1);arms(154,48,162,.02);
+    legs(382,7,24,600);
+  }else if(lensKind==='grocer'){            /* 1890s working man: derby, sack
+       coat, square stance */
+    bowler(96);head(96,29);neck(126,11);
+    TZ(cx,148,46,362,42,2);arms(156,46,158,.05);
+    legs(362,8,24,600);
+  }else if(lensKind==='magnate'){           /* 1917: homburg, long chesterfield */
+    homburg(96);head(96,29);neck(126,12);
+    TZ(cx,148,50,432,42,2);arms(156,50,170,.03);
+    legs(432,8,22,602);
+  }else if(lensKind==='alderman'){          /* 1906: bowler, city overcoat */
+    bowler(96);head(96,29);neck(126,11);
+    TZ(cx,148,49,402,44,2);arms(156,49,166,.04);
+    legs(402,8,23,600);
+  }else if(lensKind==='factor'){            /* cotton factor: topper, frock,
+       ledger under the left arm */
+    topper(96);head(96,29);neck(126,11);
+    TZ(cx,150,50,394,44,2);arms(158,50,166,.04);
+    E(cx-60,262,11,24,.15);                 /* the ledger */
+    legs(394,9,25,600);
+  }else if(lensKind==='tophat'){            /* Victorian gentleman: tall topper,
+       shoulder-caped overcoat */
+    topper(94);head(94,29);neck(126,11);
+    TZ(cx,148,60,238,50,8);                 /* shoulder cape */
+    TZ(cx,150,50,396,44,2);arms(158,50,168,.05);
+    legs(396,10,26,600);
+  }else if(lensKind==='mason'){             /* the craftsman: flat cap,
+       waistcoat, sleeves rolled, one hand raised to his work */
+    flatcap(96);head(96,29);neck(126,12);
+    TZ(cx,150,42,304,34,0);
+    E(cx-51,228,13,76,-.07);                /* left arm down, heavier */
+    E(cx+52,198,11,28,.45);E(cx+36,242,10,26,1.3); /* right arm bent to his work */
+    legs(304,8,24,600);
+  }else if(lensKind==='sailor'){            /* river man: flat cap, boxy
+       peacoat, collar, wide stance */
+    flatcap(96);head(96,29);neck(126,12);
+    E(cx-34,152,16,9,.3);E(cx+34,152,16,9,-.3); /* peacoat collar */
+    TZ(cx,150,50,344,48,0);arms(158,50,156,.06);
+    legs(344,13,26,600);
   }else if(lensKind==='child'){
-    head(226,34);neck(266);            /* small figure, bigger head ratio */
-    TZ(cx,286,34,420,44,6);            /* short dress */
-    arms(292,34,104,.1);
+    head(226,34);neck(266);
+    TZ(cx,286,34,420,44,6);arms(292,34,104,.1);
     legs(420,9,17,586);
-  }else if(lensKind==='tall'){
+  }else if(lensKind==='elder'){             /* the long listener under the oaks */
     head(64,26);neck(92);
-    TZ(cx,112,36,430,30,0);            /* impossibly long thin coat */
-    arms(120,36,210,.03);
+    TZ(cx,112,36,430,30,0);arms(120,36,210,.03);
     legs(430,7,19,606);
   }else{ /* shade: an anonymous figure in a long coat, almost a person */
     head(90,30);neck(122);
-    TZ(cx,144,46,470,52,6);            /* coat falling near the ankles */
-    arms(152,46,164,.06);
+    TZ(cx,144,46,470,52,6);arms(152,46,164,.06);
     TZ(cx-16,470,12,596,10);TZ(cx+16,470,12,596,10);
   }
-  if(lensSecond){                       /* October: a second figure, far back */
+  if(lensSecond){                           /* far back: a woman, arm raised —
+       the way someone waves who has waited a long time */
     const kept=els.splice(0,els.length);
-    E(110,300,16,19);TZ(110,322,20,470,26,4);
+    E(110,296,16,19);TZ(110,318,20,470,26,4);
+    E(134,286,8,24,-.62);E(146,262,7,5);    /* the raised arm, the kerchief */
     const small=els.splice(0,els.length);
     els.push(...small,...kept);
     /* draw the distant one fainter by pre-pass */
