@@ -88,7 +88,7 @@
       "early_arrival": "You're early. Take a breath. This is a threshold — a protected place where nothing dark can follow. Wait here. Settle yourself.",
       "on_time": "Welcome to the Wilder House. Before we step into Savannah's memory, understand this: you are standing in a protected place. Reverend Wilder blessed these walls long ago. That blessing still holds. Nothing we encounter in the streets ahead will follow you back here. This house is your sanctuary. Breathe. Ground yourself. The city is waiting.",
       "late_arrival": "You've found the threshold. The Wilder House. A protected place before memory begins. Take one breath here.",
-      "spirit": "grocer"
+      "spirit": "none"
     },
     {
       "id": 2,

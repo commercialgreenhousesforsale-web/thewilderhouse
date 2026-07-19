@@ -602,7 +602,7 @@ let lensStream=null,lensRaf=0,lensFacing='environment',lensSprite=null,lensT0=0,
    12am-4am = witching hour (colder, bolder). October: chance of a lurker. */
 const GHOST_KINDS=['grocer','telfair','hiker','elder','widow','mourner','magnate','dragoon','mason','officer','tophat','parish','alice','continental','alderman','factor','sailor','shade','child'];
 const SPIRIT_ALIAS={shade:'shade',lady:'telfair',hat:'tophat',tall:'elder',child:'child',soldier:'officer',veil:'widow'};
-const GHOST_RESIDENTS={1:'grocer',2:'telfair',3:'hiker',4:'elder',5:'widow',6:'mourner',7:'magnate',8:'dragoon',9:'mason',10:'officer',11:'tophat',12:'parish',13:'alice',14:'continental',15:'alderman',16:'factor',17:'sailor',18:'sailor'};
+const GHOST_RESIDENTS={1:'none',2:'telfair',3:'hiker',4:'elder',5:'widow',6:'mourner',7:'magnate',8:'dragoon',9:'mason',10:'officer',11:'tophat',12:'parish',13:'alice',14:'continental',15:'alderman',16:'factor',17:'sailor',18:'sailor'};
 const GHOST_H={grocer:.64,telfair:.63,hiker:.68,elder:.72,widow:.64,mourner:.63,magnate:.67,dragoon:.68,mason:.65,officer:.68,tophat:.68,parish:.62,alice:.55,continental:.68,alderman:.66,factor:.68,sailor:.65,shade:.62,child:.42,lady:.63,hat:.68,tall:.72,soldier:.68,veil:.64};
 let lensKind='shade',lensWitching=false,lensSecond=false;
 function pickGhost(){
@@ -620,6 +620,9 @@ function makeGhostSprite(){
      soft-edged and see-through like Victorian double-exposure photography. */
   const w=440,h=640,c=document.createElement('canvas');c.width=w;c.height=h;
   const x=c.getContext('2d');
+  if(lensKind==='none')return c; /* OWNER RULE 2026-07-19: the Wilder House is
+     NOT haunted and Wilder is NOT a ghost — no apparition at stop 1, ever.
+     The Lens still works there: a clean night photo, nothing in it. */
   const TINT={telfair:[245,238,225],widow:[236,230,224],mourner:[244,238,230],parish:[243,238,228],alice:[247,241,229],
               hiker:[218,228,244],dragoon:[216,226,244],officer:[214,224,242],continental:[217,227,245],
               grocer:[228,234,246],magnate:[224,231,245],tophat:[222,230,246],alderman:[224,231,245],factor:[222,230,246],
