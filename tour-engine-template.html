@@ -52,7 +52,7 @@ a{color:#e7c389}
 .status{font-size:11px;color:#9db98a;margin-top:10px;min-height:15px}
 /* begin overlay */
 #beginOverlay{position:fixed;inset:0;background:linear-gradient(180deg,#0a0805 0%,#151009 100%);z-index:1000;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}
-#beginOverlay h1{color:#e7c389;font-size:32px;font-weight:400;margin-bottom:6px}
+#beginOverlay .ov-h1{color:#e7c389;font-size:32px;font-weight:400;margin-bottom:6px}
 #beginOverlay .ov-sub{color:#8b7d60;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:26px}
 #beginOverlay .ov-desc{color:#d4c5a9;font-size:14.5px;line-height:1.7;max-width:420px;margin-bottom:30px}
 .ov-btn{display:block;width:100%;max-width:380px;margin:0 auto 14px;background:rgba(232,201,106,.14);border:2px solid rgba(232,201,106,.35);color:#e7c389;padding:16px 20px;border-radius:8px;cursor:pointer;font-family:Georgia,serif;font-size:16px;transition:background .2s}
@@ -155,7 +155,7 @@ a{color:#e7c389}
 
 <!-- BEGIN OVERLAY: one tap = audio unlock + mode choice -->
 <div id="beginOverlay">
-  <h1>{{TOUR_NAME}}</h1>
+  <div class="ov-h1">{{TOUR_NAME}}</div>
   <div class="ov-sub">{{TOUR_SUBTITLE}} · The Wilder House</div>
   <p class="ov-desc">{{OVERLAY_DESC}}</p>
   <label class="wv-row"><input type="checkbox" id="waiverCheck"><span>One housekeeping matter before the city speaks: I have read and accept <button type="button" class="wv-link" id="waiverToggle">the terms</button> — for myself and everyone walking with me.</span></label>

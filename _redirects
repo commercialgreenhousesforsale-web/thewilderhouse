@@ -20,6 +20,9 @@
 # the old "right now" duplicate folds into the Concierge (one page per query)
 /right-now-savannah /concierge 301
 /right-now-savannah.html /concierge 301
+# plural duplicate folds into the singular historic page (was canonical-only; page removed 2026-07-19)
+/historic-savannah-vacation-rentals /historic-savannah-vacation-rental 301
+/historic-savannah-vacation-rentals.html /historic-savannah-vacation-rental 301
 /*.html /:splat 301
 
 # Service worker must be at root
