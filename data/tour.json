@@ -422,7 +422,7 @@
       "name": "Cotton Exchange",
       "lat": 32.080711,
       "lng": -81.090099,
-      "radius": 40,
+      "radius": 36,
       "theme": "Commerce, economic foundation, the bridge between past and future",
       "tags": [
         "history",
@@ -446,7 +446,7 @@
       "name": "River Access Ramp",
       "lat": 32.08057,
       "lng": -81.089315,
-      "radius": 50,
+      "radius": 28,
       "theme": "Threshold revisited, liminal space, final approach to water",
       "tags": [
         "history",
@@ -470,7 +470,7 @@
       "name": "Final Anchor - Sea Merchants Statue",
       "lat": 32.080981,
       "lng": -81.088771,
-      "radius": 80,
+      "radius": 34,
       "theme": "Dissolution, release, return to water, integration of all stories",
       "tags": [
         "ghost",
