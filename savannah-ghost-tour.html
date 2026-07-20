@@ -300,12 +300,18 @@ function ftInit(){if(!FT)return;
   ftBadge.style.cssText='position:fixed;left:10px;bottom:10px;z-index:3000;background:#3a1010;color:#ffb3b3;border:1px solid #a33;border-radius:6px;padding:6px 10px;font-size:11px;font-family:monospace;cursor:pointer';
   ftBadge.textContent='● REC';ftBadge.title='Field recorder - tap to download the log';
   document.body.appendChild(ftBadge);
-  ftBadge.addEventListener('click',()=>{
+  ftBadge.addEventListener('click',async()=>{
     try{localStorage.setItem('sgt_fieldlog',JSON.stringify(ftLog));}catch(e){}
-    const b=new Blob([JSON.stringify({v:1,exported:Date.now(),log:ftLog})],{type:'application/json'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);
-    a.download='fieldlog-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.json';
-    document.body.appendChild(a);a.click();a.remove();});
+    const name='fieldlog-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.json';
+    const payload=JSON.stringify({v:1,exported:Date.now(),log:ftLog});
+    const file=new File([payload],name,{type:'application/json'});
+    /* iPhone-first: the iOS share sheet (AirDrop / Save to Files / Mail) — the
+       same path Ghost Lens photos use. Anchor download is the fallback. */
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:'Tour field log'});return;}catch(e){}
+    }
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([payload],{type:'application/json'}));
+    a.download=name;document.body.appendChild(a);a.click();a.remove();});
   window.addEventListener('error',e=>ft('jserror',String(e.message||e).slice(0,140)));
   document.addEventListener('visibilitychange',()=>ft('vis',document.visibilityState));
   if(navigator.getBattery)navigator.getBattery().then(b=>{ft('batt',Math.round(b.level*100));
