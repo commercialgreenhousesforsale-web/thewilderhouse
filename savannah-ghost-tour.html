@@ -798,6 +798,56 @@ function makeGhostSprite(){
   }
   return c;
 }
+/* PHOTO SPIRITS (owner-supplied period portraits, 2026-07-19): each stop's
+   figure can be a photographic cutout at /spirits/spirit-<kind>.png —
+   "how they may have looked in real life," never a claimed likeness.
+   Loaded lazily per stop; the drawn silhouette above renders instantly and
+   remains the fallback if a file is missing or slow. The images are SOLID
+   people on purpose — the ENGINE supplies translucency, flicker, feet-fade. */
+const SPIRIT_VER='1';
+let lensImgKind=null,lensImgEl=null,lensWaver=null,lensWaverTried=false;
+function makePhotoSprite(img,waver){
+  const w=440,h=640,c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');
+  x.imageSmoothingEnabled=true;try{x.imageSmoothingQuality='high';}catch(e){}
+  const fit=(im,fh)=>({w:im.width*(fh/im.height),h:fh});
+  if(waver){const g=fit(waver,300);
+    x.globalAlpha=.5;x.drawImage(waver,96-g.w/2,470-g.h,g.w,g.h);}
+  const f=fit(img,560),dx=(w-f.w)/2,dy=612-f.h;
+  const t=document.createElement('canvas');t.width=62;t.height=90;
+  const tx=t.getContext('2d');tx.drawImage(img,dx*62/w,dy*90/h,f.w*62/w,f.h*90/h);
+  x.globalAlpha=.4;x.drawImage(t,0,0,w,h);          /* soft aura */
+  x.globalAlpha=.94;x.drawImage(img,dx,dy,f.w,f.h); /* the person */
+  x.globalAlpha=1;
+  x.globalCompositeOperation='destination-out';
+  const fade=x.createLinearGradient(0,h*.78,0,h);
+  fade.addColorStop(0,'rgba(0,0,0,0)');fade.addColorStop(1,'rgba(0,0,0,.38)');
+  x.fillStyle=fade;x.fillRect(0,0,w,h);
+  x.globalCompositeOperation='source-over';
+  if(lensWitching){
+    x.globalCompositeOperation='source-atop';
+    x.fillStyle='rgba(150,180,255,.16)';x.fillRect(0,0,w,h);
+    x.globalCompositeOperation='source-over';
+  }
+  return c;
+}
+function loadPhotoSpirit(){
+  if(lensKind==='none')return;
+  const want=lensKind,needW=lensSecond;
+  const build=()=>{if(lensKind===want&&lensImgEl)lensSprite=makePhotoSprite(lensImgEl,(needW&&lensWaver)||null);};
+  if(lensImgKind===want&&lensImgEl){build();}
+  else{
+    const im=new Image();
+    im.onload=()=>{lensImgKind=want;lensImgEl=im;build();};
+    im.src='/spirits/spirit-'+want+'.png?v='+SPIRIT_VER;
+  }
+  if(needW&&!lensWaver&&!lensWaverTried){
+    lensWaverTried=true;
+    const wv=new Image();
+    wv.onload=()=>{lensWaver=wv;build();};
+    wv.src='/spirits/spirit-waver.png?v='+SPIRIT_VER;
+  }
+}
 function lensResize(){const g=$('lensGhost');if(!g)return;const r=devicePixelRatio||1;g.width=g.clientWidth*r;g.height=g.clientHeight*r;}
 /* deterministic organic motion: bob + sway + irregular flicker + a near-vanish
    every 11s, materialising over the first 1.4s. Compass holds the ghost at a
@@ -828,7 +878,7 @@ function lensLoop(ts){
 async function openLens(){
   $('lensOverlay').classList.add('open');$('lensResult').classList.remove('open');
   $('lensErr').style.display='none';
-  pickGhost();lensSprite=makeGhostSprite();
+  pickGhost();lensSprite=makeGhostSprite();loadPhotoSpirit();
   lensResize();
   try{ /* compass permission must live in this same tap (iOS) */
     if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){DeviceOrientationEvent.requestPermission().catch(()=>{});}
