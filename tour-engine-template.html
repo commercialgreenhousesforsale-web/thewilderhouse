@@ -279,6 +279,37 @@ let map=null,userMarker=null,pinById={},routeLine=null,leafletReady=null,follow=
     compassHeading=null,lastBrg=0,beamRot=0,earlyDone={};
 const WAIVER_KEY='sgt_waiver_v1';
 const CONFIG={APPROACH_MULTIPLIER:1.8,CONFIRM_SAMPLES:6,CONFIRM_THRESHOLD:0.72,MIN_SPEED:1.5,COOLDOWN:10000,GPS_STALE_LIMIT:12000};
+/* FIELD RECORDER (?fieldtest) — black-box telemetry for the owner's walk.
+   Records every GPS fix, trigger (with firing distance + confidence), audio
+   play/end/stall, screen-lock, Ghost Lens use, battery and JS errors to
+   localStorage; the red REC badge downloads one JSON file for the analyzer
+   (field_report.py). Never activates without the URL flag — guests unaffected. */
+const FT=new URLSearchParams(location.search).has('fieldtest');
+let ftBadge=null,ftLog=[];
+try{if(FT&&localStorage.getItem('sgt_fieldlog'))ftLog=JSON.parse(localStorage.getItem('sgt_fieldlog'));}catch(e){}
+function ft(type,data){if(!FT)return;ftLog.push([Date.now(),type,data===undefined?null:data]);
+  if(ftLog.length%20===0){try{localStorage.setItem('sgt_fieldlog',JSON.stringify(ftLog));}catch(e){}}
+  if(ftBadge)ftBadge.textContent='● REC '+ftLog.length;}
+function ftInit(){if(!FT)return;
+  ft('session',{ua:navigator.userAgent.slice(0,90),url:location.href.slice(0,120)});
+  ftBadge=document.createElement('button');
+  ftBadge.style.cssText='position:fixed;left:10px;bottom:10px;z-index:3000;background:#3a1010;color:#ffb3b3;border:1px solid #a33;border-radius:6px;padding:6px 10px;font-size:11px;font-family:monospace;cursor:pointer';
+  ftBadge.textContent='● REC';ftBadge.title='Field recorder - tap to download the log';
+  document.body.appendChild(ftBadge);
+  ftBadge.addEventListener('click',()=>{
+    try{localStorage.setItem('sgt_fieldlog',JSON.stringify(ftLog));}catch(e){}
+    const b=new Blob([JSON.stringify({v:1,exported:Date.now(),log:ftLog})],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);
+    a.download='fieldlog-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.json';
+    document.body.appendChild(a);a.click();a.remove();});
+  window.addEventListener('error',e=>ft('jserror',String(e.message||e).slice(0,140)));
+  document.addEventListener('visibilitychange',()=>ft('vis',document.visibilityState));
+  if(navigator.getBattery)navigator.getBattery().then(b=>{ft('batt',Math.round(b.level*100));
+    setInterval(()=>ft('batt',Math.round(b.level*100)),120000);}).catch(()=>{});
+  setInterval(()=>{try{localStorage.setItem('sgt_fieldlog',JSON.stringify(ftLog));}catch(e){}},15000);
+}
+if(document.readyState!=='loading')ftInit();else document.addEventListener('DOMContentLoaded',ftInit);
+
 const $=id=>document.getElementById(id);
 const statusEl=$('status'),stopNameEl=$('stopName'),stopDistanceEl=$('stopDistance'),narrationTextEl=$('narrationText'),errorContainerEl=$('errorContainer'),progressFillEl=$('progressFill'),currentTimeEl=$('currentTime'),durationEl=$('duration');
 
@@ -358,7 +389,7 @@ function startGPS(){
   },{enableHighAccuracy:true,maximumAge:1000,timeout:8000});
 }
 function handlePosition(pos){
-  const{latitude,longitude,speed}=pos.coords;const now=Date.now();
+  const{latitude,longitude,speed}=pos.coords;const now=Date.now();ft('gps',[+latitude.toFixed(6),+longitude.toFixed(6),Math.round(pos.coords.accuracy||0),speed==null?null:+(+speed).toFixed(1)]);
   if(pos.timestamp&&now-pos.timestamp>CONFIG.GPS_STALE_LIMIT){positionBuffer=[];gpsConfidence=0;return;}
   positionBuffer.push({latitude,longitude,timestamp:now});
   if(positionBuffer.length>CONFIG.CONFIRM_SAMPLES)positionBuffer.shift();
@@ -370,10 +401,10 @@ function handlePosition(pos){
   const inRadius=d<stop.radius,inApproach=d<stop.radius*CONFIG.APPROACH_MULTIPLIER;
   const movingSlow=!speed||speed<CONFIG.MIN_SPEED;
   if(state==='SEARCHING'&&inApproach&&!inRadius){
-    state='APPROACHING';preload(stop,'on');
+    state='APPROACHING';preload(stop,'on');ft('approach',[stop.order,Math.round(d)]);
     /* the EARLY narration — recorded for every stop — plays once as you draw near */
     if(!earlyDone[stop.id]&&!played[stop.id]&&audio.paused){
-      earlyDone[stop.id]=1;
+      earlyDone[stop.id]=1;ft('early',[stop.order,Math.round(d)]);
       $('nowLabel').textContent='Approaching';
       stopNameEl.textContent=stop.name;
       narrationTextEl.textContent=stop.early_arrival||'';
@@ -382,7 +413,7 @@ function handlePosition(pos){
   }
   if((state==='SEARCHING'||state==='APPROACHING')&&inRadius){
     gpsConfidence=confidence(positionBuffer,stop);
-    if(gpsConfidence>CONFIG.CONFIRM_THRESHOLD&&movingSlow){trigger(stop);return;}
+    if(gpsConfidence>CONFIG.CONFIRM_THRESHOLD&&movingSlow){ft('trigger',[stop.order,Math.round(d),+gpsConfidence.toFixed(2)]);trigger(stop);return;}
   }
   if(state==='SEARCHING'||state==='APPROACHING')guide(stop,d,avg);
 }
@@ -409,9 +440,10 @@ function trigger(stop){
 function playFile(stop,which){
   const f=stop.audio&&stop.audio[which];
   if(!f){showError('No recording for this stop yet.');return;}
-  audio.src=AUDIO_BASE+f;audio.preload='auto';
+  ft('play',[stop.order,which]);audio.src=AUDIO_BASE+f;audio.preload='auto';audio.onwaiting=()=>ft('stall',[stop.order,which]);
   audio.play().then(()=>{errorContainerEl.innerHTML='';}).catch(()=>{showError('Tap ▶ Play to start the story.');});
   audio.onended=()=>{
+    ft('ended',[stop.order,which]);
     /* only the full ON story completes a stop — EARLY teasers never mark progress */
     if(which!=='on'){if(mode==='gps'){state='SEARCHING';setStatus('Almost there — the story begins when you arrive');}return;}
     markPlayed(stop.id);
@@ -437,7 +469,7 @@ function renderList(){
   const el=$('stopList');if(!el||!tourData)return;
   el.innerHTML=POOL.map(s=>`<div class="stop-row${played[s.id]?' done':''}${currentStop&&currentStop.id===s.id?' active':''}" data-id="${s.id}" role="button" tabindex="0" aria-label="Play ${isPrologue(s)?'guest prologue':'stop '+s.disp}: ${s.name}"><span class="num">${played[s.id]?'✓':s.disp}</span>${cameoTag(s)}<span class="sn">${s.name}${isPrologue(s)?' · '+PRO_LABEL:''}</span><span class="play-ic">▶</span></div>`).join('');
 }
-function selectStop(stop){
+function selectStop(stop){ft('tap',[stop.order]);
   currentStop=stop;
   $('nowLabel').textContent=(isPrologue(stop)?'Guest prologue':'Stop '+stop.disp+' of '+(IS_GUEST&&PRO!=null?POOL.length-1:POOL.length));
   stopNameEl.textContent=stop.name;stopDistanceEl.textContent='';
@@ -880,7 +912,7 @@ function lensLoop(ts){
 async function openLens(){
   $('lensOverlay').classList.add('open');$('lensResult').classList.remove('open');
   $('lensErr').style.display='none';
-  pickGhost();lensSprite=makeGhostSprite();loadPhotoSpirit();
+  pickGhost();lensSprite=makeGhostSprite();loadPhotoSpirit();ft('lens',['open',lensKind]);
   lensResize();
   try{ /* compass permission must live in this same tap (iOS) */
     if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){DeviceOrientationEvent.requestPermission().catch(()=>{});}
