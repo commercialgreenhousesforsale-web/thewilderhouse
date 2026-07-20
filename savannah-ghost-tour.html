@@ -64,6 +64,7 @@ a{color:#e7c389}
 .stop-row:hover{background:rgba(232,201,106,.06)}
 .stop-row .num{width:26px;height:26px;border-radius:50%;border:1px solid rgba(232,201,106,.35);color:#e7c389;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .stop-row.done .num{background:rgba(157,185,138,.18);border-color:rgba(157,185,138,.5);color:#9db98a}
+.stop-row .cameo{width:34px;height:45px;border-radius:4px;flex-shrink:0;border:1px solid rgba(232,201,106,.18);opacity:.9}
 .stop-row .sn{font-size:14px;color:#d4c5a9;flex:1}
 .stop-row.active .sn{color:#e7c389}
 .stop-row.active{background:rgba(232,201,106,.08)}
@@ -431,9 +432,12 @@ function attachAudioControls(){
 }
 
 /* ---------- browse mode / stop list ---------- */
+/* tiny tintype of each stop's resident (owner call 2026-07-19); ~1KB webp,
+   lazy, self-removing if missing; the Wilder House shows none by rule */
+function cameoTag(s){const k=SPIRIT_ALIAS[s.spirit]||s.spirit;return(k&&k!=='none')?'<img class="cameo" src="/spirits/cameo-'+k+'.webp?v='+SPIRIT_VER+'" alt="" loading="lazy" onerror="this.remove()">':'';}
 function renderList(){
   const el=$('stopList');if(!el||!tourData)return;
-  el.innerHTML=POOL.map(s=>`<div class="stop-row${played[s.id]?' done':''}${currentStop&&currentStop.id===s.id?' active':''}" data-id="${s.id}" role="button" tabindex="0" aria-label="Play ${isPrologue(s)?'guest prologue':'stop '+s.disp}: ${s.name}"><span class="num">${played[s.id]?'✓':s.disp}</span><span class="sn">${s.name}${isPrologue(s)?' · '+PRO_LABEL:''}</span><span class="play-ic">▶</span></div>`).join('');
+  el.innerHTML=POOL.map(s=>`<div class="stop-row${played[s.id]?' done':''}${currentStop&&currentStop.id===s.id?' active':''}" data-id="${s.id}" role="button" tabindex="0" aria-label="Play ${isPrologue(s)?'guest prologue':'stop '+s.disp}: ${s.name}"><span class="num">${played[s.id]?'✓':s.disp}</span>${cameoTag(s)}<span class="sn">${s.name}${isPrologue(s)?' · '+PRO_LABEL:''}</span><span class="play-ic">▶</span></div>`).join('');
 }
 function selectStop(stop){
   currentStop=stop;
