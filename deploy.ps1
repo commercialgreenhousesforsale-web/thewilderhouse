@@ -12,6 +12,12 @@
 #>
 
 $ErrorActionPreference = 'Stop'
+
+# Always deploy THIS script's folder, never the caller's working directory.
+# (2026-07-19: a shell sitting in the main folder ran a deploy and shipped a
+# stale snapshot over production. Set-Location makes that impossible here.)
+Set-Location $PSScriptRoot
+
 $index = Join-Path $PSScriptRoot 'index.html'
 
 if (-not (Test-Path $index)) { Write-Host "ABORT: index.html not found." -ForegroundColor Red; exit 1 }
@@ -38,3 +44,20 @@ if ($problems) {
 
 Write-Host "index.html check passed ($bytes bytes, all markers present). Deploying to production..." -ForegroundColor Green
 npx wrangler pages deploy . --project-name=thewilderhouse --branch=main --commit-dirty=true
+
+# IndexNow: tell Bing/Copilot (and the AI engines they feed) the site changed.
+# Best-effort - a ping failure never fails the deploy. Google uses the sitemap.
+if ($LASTEXITCODE -eq 0) {
+  try {
+    $inKey = '03555a5e7f87e2a72eedd8d7a5cd06a2'
+    $inHost = 'forsythparkvacationrentals.com'
+    $urls = @("https://$inHost/", "https://$inHost/concierge", "https://$inHost/about",
+              "https://$inHost/savannah-ghost-tour", "https://$inHost/reviews",
+              "https://$inHost/savannah-victorian-district")
+    $body = @{ host = $inHost; key = $inKey; keyLocation = "https://$inHost/$inKey.txt"; urlList = $urls } | ConvertTo-Json
+    $r = Invoke-WebRequest -Method Post -Uri 'https://api.indexnow.org/indexnow' -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body)) -UseBasicParsing
+    Write-Host ("IndexNow ping: HTTP " + [int]$r.StatusCode + " for " + $urls.Count + " URLs") -ForegroundColor Green
+  } catch {
+    Write-Host ("IndexNow ping skipped: " + $_.Exception.Message) -ForegroundColor DarkGray
+  }
+}
