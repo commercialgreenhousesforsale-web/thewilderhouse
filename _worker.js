@@ -8,7 +8,11 @@ export default {
     // public assets on this static site.
     if (/\.(md|py|ps1|local\.md)$/i.test(url.pathname) ||
         /(^|\/)\.(?!well-known\/)[^/]+/.test(url.pathname) ||
-        /^\/tour-engine-template(\.html)?$/i.test(url.pathname)) {
+        /^\/tour-engine-template(\.html)?$/i.test(url.pathname) ||
+        // staged/unreleased tour data (tour.v2.json etc.) must never be
+        // publicly readable before promote — only the released tour.json
+        // and other launched data files are servable. Added 2026-07-19.
+        /^\/data\/.*\.(v\d+|staged)\.json$/i.test(url.pathname)) {
       return new Response('Not found', { status: 404 });
     }
 
@@ -109,7 +113,11 @@ export default {
           headers: {
             'xi-api-key': env.ELEVENLABS_KEY,
             'Content-Type': 'application/json',
-            'Accept': 'audio/mpeg'
+            'Accept': 'audio/mpeg',
+            // ElevenLabs' edge started bot-blocking anonymous server fetches
+            // (bare "error code: 502" before our request ever reached them) —
+            // a real UA lets the call through. Diagnosed 2026-07-19.
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
           },
           body: JSON.stringify({ text: text, model_id: 'eleven_v3' })
         });
