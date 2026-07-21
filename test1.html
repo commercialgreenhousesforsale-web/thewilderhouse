@@ -45,6 +45,47 @@ audio{width:100%;display:block}
 <li><b>Her voice</b> &mdash; composed, warm, reporting, never performing.</li>
 </ol>
 </div>
+
+<div class="card" style="margin-top:24px">
+<h2>Edit the words</h2>
+<p class="meta">Change any word below. Markers: <b style="color:#e7c389">[P3]</b> = 3-second silence &middot; <b style="color:#e7c389">[[&nbsp;]]</b> = slower, leaned-in delivery. Leave the markers, edit the words. The preview shows what you&rsquo;ll get.</p>
+<div id="ed-preview" style="background:#0d0a06;border:1px solid rgba(231,195,137,.16);border-radius:8px;padding:14px 16px;font-size:15px;line-height:1.85;color:#d4c5a9;margin:0 0 12px;min-height:60px"></div>
+<textarea id="ed-src" spellcheck="true" style="width:100%;box-sizing:border-box;min-height:220px;background:#12100b;color:#f2e9d8;border:1px solid rgba(231,195,137,.22);border-radius:8px;padding:12px 14px;font:15px/1.7 Georgia,serif;resize:vertical">[[Welcome to Savannah.]] [P3] They call this the most historic city in America — and in two thousand two they went further, and crowned her the most haunted city in the country. [P3] Tonight, you get both. [P3] This is the Forsyth Park Ghost Tour — the most haunted walk in Savannah — and it begins exactly where it should: at the dark end of the park. The quiet corner, the far end from the fountain and the crowds, where the dark arrives first. [P3] [[Feel it settling in around you.]] [P4] No gates here, no fences — the park just begins, the way everything in Savannah begins: the sidewalk simply gives way to oaks. [P3] Thirty acres of moss and shadow ahead of you — and every story of the night already waiting under the trees. But before we step beneath the trees — turn around. That tall brick building on the corner watched over this end of the park for seventy years, and it's the reason the first voice you meet tonight is a woman's. [P4] Mary Telfair — the richest woman in Savannah, and one of the stubbornest. She never married. She answered to nobody. And in eighteen seventy-five, days before she died, she put one line in her will: build a hospital, for women, run by women. The men of Savannah contested it. They lost. The Telfair Hospital for Females opened on this corner in eighteen eighty-six — the first hospital in Georgia that existed only for women, a board of directresses over it, her name over the door. [P3] For seventy years the women of this neighborhood were born here, delivered here, and said their goodbyes here — within sight of the porch you may be sitting on tonight. [P4] Now — the guides will tell you Mary still walks the halls in a brown dress, trailing lavender perfume. Here's what the record says instead: she died eleven years before the first patient ever came. [P5] [[Whatever walks a building it never lived to see — that isn't memory. That's will.]] [P3] And if you believe a will can outlast a body, hers is the one I'd bet on. Cross into the park now, toward the bronze soldier standing alone where the path opens ahead of you. He's held his post for a hundred years, and nobody has relieved him.</textarea>
+<div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+<button id="ed-copy" style="background:#2a2113;color:#e7c389;border:1px solid rgba(231,195,137,.4);border-radius:8px;padding:11px 18px;font:15px Georgia,serif;cursor:pointer">Copy edited script</button>
+<button id="ed-reset" style="background:transparent;color:#9a8763;border:1px solid rgba(231,195,137,.22);border-radius:8px;padding:11px 18px;font:15px Georgia,serif;cursor:pointer">Reset</button>
+</div>
+<p class="meta" id="ed-note" style="margin-top:12px">Edit &rarr; Copy &rarr; paste it to me in chat. I regenerate only the lines you changed &mdash; everything else stays as you heard it.</p>
+</div>
+<script>
+(function(){
+  var src=document.getElementById('ed-src'),pv=document.getElementById('ed-preview'),
+      original=src.value;
+  function render(){
+    var t=src.value, out='', re=/(\[P\d+\]|\[\[|\]\])/g, parts=t.split(re), slow=false;
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i]; if(!p) continue;
+      var pm=/^\[P(\d+)\]$/.exec(p);
+      if(pm){ out+='<span style="display:inline-block;background:#241a0d;color:#c9a765;border:1px solid rgba(231,195,137,.3);border-radius:10px;padding:0 8px;font-size:12px;margin:0 3px;vertical-align:middle">&#9208; '+pm[1]+'s</span>'; }
+      else if(p==='[['){ slow=true; out+='<span style="color:#f0d9a6;border-bottom:1px dotted rgba(231,195,137,.5)">'; }
+      else if(p===']]'){ slow=false; out+='</span>'; }
+      else { out+=p.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    }
+    if(slow) out+='</span>';
+    pv.innerHTML=out;
+  }
+  src.addEventListener('input',render); render();
+  document.getElementById('ed-reset').addEventListener('click',function(){src.value=original;render();});
+  document.getElementById('ed-copy').addEventListener('click',function(){
+    var txt=src.value, note=document.getElementById('ed-note');
+    function ok(){note.innerHTML='&#10003; Copied &mdash; now paste it to me in chat.';note.style.color='#9db98a';}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok,function(){src.select();document.execCommand('copy');ok();});
+    } else { src.select(); document.execCommand('copy'); ok(); }
+  });
+})();
+</script>
+
 </div>
 </body>
 </html>
