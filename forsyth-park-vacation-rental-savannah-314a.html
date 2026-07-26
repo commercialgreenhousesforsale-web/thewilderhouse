@@ -320,6 +320,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:64px 24px 36px}
 .sticky-date-inp::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.7;cursor:pointer}
 .sticky-bar-btn{background:var(--wh);color:var(--g);padding:9px 18px;border-radius:3px;font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:background .2s;flex-shrink:0}
 .sticky-bar-btn:hover{background:var(--cr)}
+.sticky-cal-link{color:rgba(255,255,255,.85);font-size:.7rem;letter-spacing:1px;white-space:nowrap;text-decoration:underline;text-underline-offset:3px}
 /* REVIEW CAROUSEL */
 .rv-sec{background:var(--g);padding:72px 24px;text-align:center}
 .rv-inner{max-width:780px;margin:0 auto}
@@ -515,7 +516,7 @@ footer{background:var(--g);color:rgba(255,255,255,.82);padding:64px 24px 36px}
           <span class="st" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
           <span>4.97 stars &bull; 238 verified stays &bull; 3-Year Superhost</span>
         </div>
-        <a href="https://www.airbnb.com/h/forsyth-park-vacation-rental-savannah" rel="nofollow noopener noreferrer" target="_blank" class="btn-g">Check Availability &rarr;</a>
+        <a href="#availability" class="btn-g">Check Availability &rarr;</a>
       </div>
       <div>
         <div class="stat-grid">
@@ -1248,7 +1249,8 @@ document.addEventListener('DOMContentLoaded', function() {
     <input type="date" class="sticky-date-inp" id="stickyCI" aria-label="Check-in date">
     <input type="date" class="sticky-date-inp" id="stickyCO" aria-label="Check-out date">
   </div>
-  <a href="#" class="sticky-bar-btn" id="stickyBookBtn" data-base="https://www.airbnb.com/h/forsyth-park-vacation-rental-savannah">Check Availability</a>
+  <a href="#availability" class="sticky-cal-link">Calendar &darr;</a>
+  <a href="#" class="sticky-bar-btn" id="stickyBookBtn" data-base="https://www.airbnb.com/h/forsyth-park-vacation-rental-savannah">Book These Dates &#8599;</a>
 </div>
 <div class="mbb" id="mbb" role="complementary" aria-label="Book Suite 314A">
   <div class="mbb-inner">
