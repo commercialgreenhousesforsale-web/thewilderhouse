@@ -319,10 +319,22 @@ function hideMap(){$('mapPanel').hidden=true;$('mapPeek').textContent='🗺 Peek
 
 /* ── service status ── */
 function nowH(){const d=new Date();return d.getHours()+d.getMinutes()/60;}
+function shuttleHoliday(){
+  // the dot doesn't run Thanksgiving (4th Thu of Nov), Christmas Day, or New Year's Day
+  const d=new Date(),m=d.getMonth(),dt=d.getDate();
+  if(m===11&&dt===25)return'Christmas Day';
+  if(m===0&&dt===1)return"New Year's Day";
+  if(m===10&&d.getDay()===4&&dt>=22&&dt<=28)return'Thanksgiving';
+  return null;
+}
 function renderStatus(){
   const el=$('svcStatus');const day=new Date().getDay();const h=nowH();
   const sh=DATA.schedule.shuttle;const win=day===0?sh.sunday:day===6?sh.saturday:sh.weekday;
   const fw=DATA.schedule.ferry.daily;
+  const hol=shuttleHoliday();
+  if(hol){el.className='status closed';
+    el.innerHTML=`<span class="dot"></span>No shuttle today — the dot doesn't run on ${hol}. Ferry hours may differ too — check catchacat.org.`;
+    return;}
   const busOn=h>=win[0]&&h<win[1];const ferryOn=h>=fw[0]&&h<fw[1];
   const fmt=x=>{const hh=Math.floor(x)%12||12;return hh+(x>=12?'pm':'am');};
   if(busOn||ferryOn){el.className='status';
