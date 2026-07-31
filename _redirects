@@ -4,6 +4,9 @@
 /savannah-ghost-tour.html /savannah-ghost-tour 301
 /index.html / 301
 
+# transit planner: draft preview URL -> launched slug
+/draft-savannah-free-transit /savannah-dot-shuttle 301
+
 # Legacy/mistyped planner URL -> the real planner
 /savannah-day-planner /concierge 301
 /savannah-day-planner.html /concierge 301
