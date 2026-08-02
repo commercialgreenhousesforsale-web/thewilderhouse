@@ -216,6 +216,7 @@ a{color:#e7c389}
       <div class="gb-main" id="gbMain">Head along Drayton St</div>
       <div class="gb-sub" id="gbSub"></div>
     </div>
+    <button class="gb-x" id="gbBoard" type="button" style="display:none">🚌 I'm on board</button>
     <button class="gb-x" id="gbStop" type="button">✕ End</button>
   </div>
 </div>
@@ -278,6 +279,13 @@ function boot(){
   });
   $('fromGps').addEventListener('click',useLoc);
   $('mapPeek').addEventListener('click',()=>{ $('mapPanel').hidden?showMap():hideMap(); });
+  $('gbBoard').addEventListener('click',()=>{
+    if(!G.on)return;const ph=G.phases[G.pi];
+    if(ph!=='walk1'&&ph!=='walkT')return;
+    G.pi++;G.si=0;G.alerted=false;$('guideBar').classList.remove('alert');$('gbBoard').style.display='none';
+    const T=guideTargets();$('gbPhase').textContent=T.phase;$('gbMain').textContent='Riding — get off at '+T.endName;$('gbSub').textContent='';
+    try{if(navigator.vibrate)navigator.vibrate(60);}catch(e){}
+  });
   $('mapLocate').addEventListener('click',()=>{
     if(!navigator.geolocation)return;
     navigator.geolocation.getCurrentPosition(p=>{
@@ -745,6 +753,12 @@ function onGuidePos(p){
     $('gbMain').textContent='Walk toward '+T.endName;
     $('gbSub').textContent=ftOf(dEnd)+' ft away';
   }
+  if(ph==='walk1'||ph==='walkT'){
+    // trust line: say what the guide is waiting for, and give a manual out —
+    // downtown GPS can miss the 100-ft gate between the bricks
+    $('gbSub').textContent+=' · ride mode starts at the stop';
+    $('gbBoard').style.display='';
+  }else{$('gbBoard').style.display='none';}
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-guide]'))startGuide();});
 $('gbStop').addEventListener('click',stopGuide);
