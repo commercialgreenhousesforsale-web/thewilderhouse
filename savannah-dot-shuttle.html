@@ -481,7 +481,10 @@ function plan(){
   cands.sort((a,b)=>a.total-b.total);
   const best=cands[0];
   // walking wins when it's short and not much slower than the best ride
-  const walkWins=directWalk<=14 && (!best||directWalk<=best.total+3);
+  // OWNER RULE 2026-07-31: this is a BUS tool — the ride is the default answer.
+  // Walking only wins when a bus would be absurd (you're a few minutes away)
+  // or no ride exists; the card's tip line still tells them the honest walk time.
+  const walkWins=(!best)||directWalk<=6;
   if(walkWins||!best){
     finalize({type:'walk',min:directWalk,mi:directMi,alt:best},directWalk);return;
   }
