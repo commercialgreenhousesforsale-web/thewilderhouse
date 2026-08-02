@@ -109,6 +109,7 @@ a{color:#e7c389}
 .live-pill{display:inline-block;background:rgba(90,160,42,.15);border:1px solid rgba(90,160,42,.45);color:#9db98a;font-size:10px;letter-spacing:1px;padding:2px 8px;border-radius:12px;vertical-align:middle;margin-left:6px}
 /* map */
 #mapPanel{border:1px solid rgba(233,220,198,.14);border-radius:12px;overflow:hidden;margin:6px 0 16px;position:relative}
+#mapLocate{position:absolute;right:10px;top:10px;z-index:800;width:40px;height:40px;border-radius:50%;background:#faf9f7;border:1px solid rgba(42,60,48,.4);font-size:17px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 #map{height:340px;background:#e8e4da;position:relative}
 #map .leaflet-tile{filter:saturate(.92) contrast(1.03)}
 #map::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:550;background:radial-gradient(ellipse at center,transparent 60%,rgba(20,15,6,.16) 100%)}
@@ -160,6 +161,7 @@ a{color:#e7c389}
   <button class="map-peek" id="mapPeek" type="button">🗺 Peek at the free routes map</button>
   <div id="mapPanel" hidden>
     <div id="map" role="application" aria-label="Map of Savannah's free shuttle loops and ferry"></div>
+    <button id="mapLocate" type="button" aria-label="Show my location on the map">📍</button>
     <div class="legend">
       <span><i style="background:#5aa02a"></i> Forsyth loop</span>
       <span><i style="background:#c9821f"></i> Downtown loop</span>
@@ -276,6 +278,15 @@ function boot(){
   });
   $('fromGps').addEventListener('click',useLoc);
   $('mapPeek').addEventListener('click',()=>{ $('mapPanel').hidden?showMap():hideMap(); });
+  $('mapLocate').addEventListener('click',()=>{
+    if(!navigator.geolocation)return;
+    navigator.geolocation.getCurrentPosition(p=>{
+      const ll=[p.coords.latitude,p.coords.longitude];
+      if(!window.__meMk)window.__meMk=L.circleMarker(ll,{radius:7,color:'#fff',weight:2,fillColor:'#2a7ab8',fillOpacity:1}).addTo(map);
+      else window.__meMk.setLatLng(ll);
+      map.setView(ll,16);
+    },()=>{},{enableHighAccuracy:true,timeout:8000,maximumAge:30000});
+  });
   // the crawlable stop list doubles as a destination picker
   document.querySelectorAll('.stoplist').forEach(el=>el.addEventListener('click',e=>{
     const b=e.target.closest('.stopchip');if(!b)return;
@@ -557,11 +568,18 @@ function liveNote(){return window.__busLive?' <span class="live-pill">LIVE buses
    only (no walk/transit modes), so it appears just on drive-only results. */
 function handoff(cls){
   if(!fromPt||!toPt)return'';
-  const o=fromPt.lat+','+fromPt.lng,d=toPt.lat+','+toPt.lng;
-  const gm={drive:'driving',walk:'walking'}[cls]||'transit';
-  const am={drive:'d',walk:'w'}[cls]||'r';
-  let h='<div class="handoff">or open in&nbsp; '
-    +'<a href="https://www.google.com/maps/dir/?api=1&origin='+o+'&destination='+d+'&travelmode='+gm+'" target="_blank" rel="noopener noreferrer">Google&nbsp;Maps</a>'
+  const o=fromPt.lat+','+fromPt.lng;
+  // HONEST HANDOFF: Google's transit layer doesn't know the dot exists (CAT's
+  // public feed is stale), so transit-mode links would surface paid routes or
+  // nothing. Ride/ferry cards hand off WALKING directions to the boarding
+  // stop/landing instead — the card already says which ride and where to get off.
+  const r=window.__route;let dPt=toPt,gm='walking',am='w',label='or open in&nbsp; ';
+  if(cls==='drive'){gm='driving';am='d';}
+  else if(cls==='ferry'&&r&&r.type==='ferry'&&r.oN){dPt=r.oN;label='or walk to your landing with&nbsp; ';}
+  else if(cls===''&&r&&(r.type==='single'||r.type==='transfer')&&r.o){dPt=r.o.stop;label='or walk to your stop with&nbsp; ';}
+  const d=dPt.lat+','+dPt.lng;
+  let h='<div class="handoff">'+label
+    +'<a href="https://www.google.com/maps/dir/?api=1&origin='+o+'&destination='+d+'&travelmode='+gm+'&dir_action=navigate" target="_blank" rel="noopener noreferrer">Google&nbsp;Maps</a>'
     +' · <a href="https://maps.apple.com/?saddr='+o+'&daddr='+d+'&dirflg='+am+'" target="_blank" rel="noopener noreferrer">Apple&nbsp;Maps</a>';
   if(cls==='drive')h+=' · <a href="https://waze.com/ul?ll='+d+'&navigate=yes" target="_blank" rel="noopener noreferrer">Waze</a>';
   return h+'</div>';
@@ -661,11 +679,14 @@ function startGuide(){
   $('guideBar').classList.add('on');$('guideBar').classList.remove('alert');
   $('gbPhase').textContent='Starting…';$('gbMain').textContent='Waiting for GPS';$('gbSub').textContent='';
   try{if(navigator.vibrate)navigator.vibrate(30);}catch(e){}
+  try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(wl=>{G.wl=wl;}).catch(()=>{});}catch(e){}
 }
 function stopGuide(){
   if(G.watch!=null)try{navigator.geolocation.clearWatch(G.watch);}catch(e){}
+  if(G.wl)try{G.wl.release();}catch(e){}
   G={on:false};$('guideBar').classList.remove('on','alert');
 }
+document.addEventListener('visibilitychange',()=>{if(G&&G.on&&document.visibilityState==='visible'&&navigator.wakeLock)try{navigator.wakeLock.request('screen').then(wl=>{G.wl=wl;}).catch(()=>{});}catch(e){}});
 function guideTargets(){
   const r=G.r,ph=G.phases[G.pi];
   if(ph==='walk1')return{steps:r.w1&&r.w1.steps,end:r.type==='ferry'?r.oN:r.o.stop,endName:(r.type==='ferry'?r.oN:r.o.stop).name,phase:'Walking to your '+(r.type==='ferry'?'landing':'stop')};
